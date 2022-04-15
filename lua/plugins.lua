@@ -1,5 +1,4 @@
 local fn = vim.fn
-
 -- Automatically install packer
 local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
@@ -62,9 +61,7 @@ return packer.startup(function(use)
   use "folke/which-key.nvim"
 
   -- Colorschemes
-  -- use "lunarvim/colorschemes" -- A bunch of colorschemes you can try out
   use "lunarvim/darkplus.nvim"
-  
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-cmdline'
@@ -85,6 +82,11 @@ return packer.startup(function(use)
   --For snippy users.
   use 'dcampos/nvim-snippy'
   use 'dcampos/cmp-snippy'
+
+  -- CMP
+  use "ray-x/cmp-treesitter"
+  use "tamago324/cmp-zsh"
+  use 'Shougo/deol.nvim'
 
   -- LSP
   use "neovim/nvim-lspconfig" -- enable LSP

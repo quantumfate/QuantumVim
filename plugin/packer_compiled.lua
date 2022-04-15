@@ -129,10 +129,20 @@ _G.packer_plugins = {
     path = "/home/leonch/.local/share/nvim/site/pack/packer/start/cmp-snippy",
     url = "https://github.com/dcampos/cmp-snippy"
   },
+  ["cmp-treesitter"] = {
+    loaded = true,
+    path = "/home/leonch/.local/share/nvim/site/pack/packer/start/cmp-treesitter",
+    url = "https://github.com/ray-x/cmp-treesitter"
+  },
   ["cmp-vsnip"] = {
     loaded = true,
     path = "/home/leonch/.local/share/nvim/site/pack/packer/start/cmp-vsnip",
     url = "https://github.com/hrsh7th/cmp-vsnip"
+  },
+  ["cmp-zsh"] = {
+    loaded = true,
+    path = "/home/leonch/.local/share/nvim/site/pack/packer/start/cmp-zsh",
+    url = "https://github.com/tamago324/cmp-zsh"
   },
   cmp_luasnip = {
     loaded = true,
@@ -143,6 +153,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/leonch/.local/share/nvim/site/pack/packer/start/darkplus.nvim",
     url = "https://github.com/lunarvim/darkplus.nvim"
+  },
+  ["deol.nvim"] = {
+    loaded = true,
+    path = "/home/leonch/.local/share/nvim/site/pack/packer/start/deol.nvim",
+    url = "https://github.com/Shougo/deol.nvim"
   },
   ["gitsigns.nvim"] = {
     loaded = true,

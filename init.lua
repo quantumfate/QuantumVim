@@ -1,11 +1,12 @@
 require "plugins"
 require "keymap"
+require "colorscheme"
 require "options"
 require "lsp"
 require "nvim-cmp"
 require "bufferline"
 require "lualine"
-
-
-
+require "treesitter"
+require "autopairs"
+require "gitsigns"
 
