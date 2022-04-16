@@ -19,6 +19,10 @@ comment.setup {
       location = location,
     }
   end,
+  opleader = {
+    line = "gc",
+    block = "gb",
+  },
   mappings = {
     ---Operator-pending mapping
     ---Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
