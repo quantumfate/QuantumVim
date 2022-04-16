@@ -1,3 +1,5 @@
+local M = {}
+
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
   return
@@ -15,8 +17,8 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 local lspconfig = require('lspconfig')
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'clangd', 'jsonls','rust_analyzer', 'pyright', 'tsserver', 'jsonls', 'ansiblels', 'bashls', 'cssls', 'jdtls', 'sumneko_lua' }
-for _, lsp in ipairs(servers) do
+M.servers = { 'clangd', 'jsonls','rust_analyzer', 'pyright', 'tsserver', 'jsonls', 'ansiblels', 'bashls', 'cssls', 'jdtls', 'sumneko_lua' }
+for _, lsp in ipairs(M.servers) do
   lspconfig[lsp].setup {
     -- on_attach = my_custom_on_attach,
     capabilities = capabilities,
@@ -62,7 +64,6 @@ local kind_icons = {
 }
 -- find more here: https://www.nerdfonts.com/cheat-sheet
 -- nvim-cmp setup
-local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -134,3 +135,4 @@ cmp.setup {
     native_menu = false,
   },
 }
+return M
