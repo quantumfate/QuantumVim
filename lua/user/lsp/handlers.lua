@@ -87,6 +87,7 @@ end
 local server = require("user.nvim-cmp").servers
 
 M.on_attach = function(client, bufnr)
+  -- Set Null-ls as default formatting option for all language server
 	for _, value in pairs(server) do
 		if value == client.name then
 			client.resolved_capabilities.document_formatting = false
