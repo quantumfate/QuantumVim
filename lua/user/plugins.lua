@@ -59,7 +59,6 @@ return packer.startup(function(use)
   use "goolord/alpha-nvim"
   use "antoinemadec/FixCursorHold.nvim" -- This is needed to fix lsp doc highlight
   use "folke/which-key.nvim"
-
   -- Git
   use 'lewis6991/gitsigns.nvim'
   -- Colorschemes
@@ -76,7 +75,6 @@ return packer.startup(function(use)
   -- For vsnip users.
   use 'hrsh7th/cmp-vsnip'
   use 'hrsh7th/vim-vsnip'
-
 
   -- For ultisnips users.
   use 'SirVer/ultisnips'
