@@ -48,6 +48,12 @@ local location = {
 	padding = 0,
 }
 
+local current_path = function ()
+  local path = vim.fn.expand('%:p')
+  local icon = " "
+  return icon .. path
+end
+
 -- cool function for progress
 local progress = function()
 	local current_line = vim.fn.line(".")
@@ -78,7 +84,7 @@ lualine.setup({
 		-- lualine_x = { "encoding", "fileformat", "filetype" },
 		lualine_x = { diff, spaces, "encoding", filetype },
 		lualine_y = { location },
-		lualine_z = { progress },
+		lualine_z = { progress, current_path }
 	},
 	inactive_sections = {
 		lualine_a = {},
