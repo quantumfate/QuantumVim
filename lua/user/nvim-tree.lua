@@ -1,15 +1,15 @@
 -- following options are the default
--- each of these are documented in `:help nvim-tree.OPTION_NAME`
+-- each of these are documented in `:help nvim-tree.option_name`
 vim.g.nvim_tree_icons = {
   default = "",
   symlink = "",
   git = {
    unstaged = "",
-    staged = "S",
+    staged = "s",
     unmerged = "",
     renamed = "➜",
     deleted = "",
-    untracked = "U",
+    untracked = "u",
     ignored = "◌",
   },
   folder = {
@@ -86,7 +86,7 @@ nvim_tree.setup {
     mappings = {
       custom_only = false,
       list = {
-        { key = { "l", "<CR>", "o" }, cb = tree_cb "edit" },
+        { key = { "l", "<cr>", "o" }, cb = tree_cb "edit" },
         { key = "h", cb = tree_cb "close_node" },
         { key = "v", cb = tree_cb "vsplit" },
       },
