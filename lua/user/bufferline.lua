@@ -4,6 +4,11 @@ if not status_ok then
   return
 end
 
+local highlights = require("nord").bufferline.highlights({
+    italic = true,
+    bold = true,
+})
+
 bufferline.setup {
   options = {
     numbers = "none", -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
@@ -72,29 +77,30 @@ bufferline.setup {
     --   return buffer_a.modified > buffer_b.modified
     -- end
   },
-  highlights = {
-    fill = {
-      fg = { attribute = "fg", highlight = "#ff0000" },
-      bg = { attribute = "bg", highlight = "TabLine" },
-    },
-    background = {
-      fg = { attribute = "fg", highlight = "TabLine" },
-      bg = { attribute = "bg", highlight = "TabLine" },
-    },
-
-    -- buffer_selected = {
-    --   fg = {attribute='fg',highlight='#ff0000'},
-    --   bg = {attribute='bg',highlight='#0000ff'},
-    --   gui = 'none'
-    --   },
-    buffer_visible = {
-      fg = { attribute = "fg", highlight = "TabLine" },
-      bg = { attribute = "bg", highlight = "TabLine" },
-    },
-
-    close_button = {
-      fg = { attribute = "fg", highlight = "TabLine" },
-      bg = { attribute = "bg", highlight = "TabLine" },
-    },
-  }
+  -- highlights = {
+  --   fill = {
+  --     fg = { attribute = "fg", highlight = "#ff0000" },
+  --     bg = { attribute = "bg", highlight = "TabLine" },
+  --   },
+  --   background = {
+  --     fg = { attribute = "fg", highlight = "TabLine" },
+  --     bg = { attribute = "bg", highlight = "TabLine" },
+  --   },
+  --
+  --   -- buffer_selected = {
+  --   --   fg = {attribute='fg',highlight='#ff0000'},
+  --   --   bg = {attribute='bg',highlight='#0000ff'},
+  --   --   gui = 'none'
+  --   --   },
+  --   buffer_visible = {
+  --     fg = { attribute = "fg", highlight = "TabLine" },
+  --     bg = { attribute = "bg", highlight = "TabLine" },
+  --   },
+  --
+  --   close_button = {
+  --     fg = { attribute = "fg", highlight = "TabLine" },
+  --     bg = { attribute = "bg", highlight = "TabLine" },
+  --   },
+  -- }
+  highlights = highlights,
 }

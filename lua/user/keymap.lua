@@ -1,4 +1,4 @@
-
+local vim = require "user.utils.nvim-api"
 local opts = { noremap = true, silent = true }
 
 local term_opts = { silent = true }
@@ -69,6 +69,9 @@ keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
 keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
+
+keymap("n", "<C,p>", ":lua require'telescope'.extensions.project.project{}<CR>", opts)
+keymap("x", "<C,p>", ":lua require'telescope'.extensions.project.project{}<CR>", opts)
 
 -- Nvimtree
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
