@@ -1,5 +1,3 @@
-
-local vim = require "user.utils.nvim-api"
 vim.cmd [[
 try
   colorscheme nord

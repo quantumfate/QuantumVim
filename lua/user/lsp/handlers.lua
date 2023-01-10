@@ -1,6 +1,4 @@
 local M = {}
-
-local vim = require "user.utils.nvim-api"
 -- TODO: backfill this to template
 M.setup = function()
 	local signs = {

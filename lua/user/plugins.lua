@@ -38,94 +38,106 @@ packer.init({
 })
 
 -- Install your plugins here
+--
+--
+-- Plugins listed in order of init.lua
 return packer.startup(function(use)
-	-- My plugins here
-	use("mfussenegger/nvim-dap")
-	use("mfussenegger/nvim-jdtls") -- java
+  -- global plugins 
 	use("wbthomason/packer.nvim") -- Have packer manage itself
-	use("nvim-lua/popup.nvim") -- An implementation of the Popup API from vim in Neovim
-	use("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
-	use("windwp/nvim-autopairs") -- Autopairs, integrates with both cmp and treesitter
-	use({
+	use("lewis6991/impatient.nvim")
+  use({
 		"numToStr/Comment.nvim", -- Easily comment stuff
 		tag = "v0.6",
 	})
-	use("kyazdani42/nvim-web-devicons")
-	use("kyazdani42/nvim-tree.lua")
-	use("moll/vim-bbye")
-	use({ "akinsho/bufferline.nvim", tag = "*", requires = "kyazdani42/nvim-web-devicons" })
-	use("nvim-lualine/lualine.nvim")
-	use("akinsho/toggleterm.nvim")
-	use("ahmedkhalf/project.nvim")
-	use("lewis6991/impatient.nvim")
-	use("lukas-reineke/indent-blankline.nvim")
-	use("goolord/alpha-nvim")
-	use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
-	use("folke/which-key.nvim")
-	-- Git
-	use("lewis6991/gitsigns.nvim")
-	-- Colorschemes
-	-- use "EdenEast/nightfox.nvim"
-	-- use 'shaunsingh/moonlight.nvim'
-	-- use 'shaunsingh/nord.nvim'
-	use("folke/tokyonight.nvim")
-	use("hrsh7th/cmp-buffer")
-	use("hrsh7th/cmp-path")
-	use("hrsh7th/cmp-cmdline")
-	use("hrsh7th/nvim-cmp") -- Autocompletion plugin
-	use("hrsh7th/cmp-nvim-lsp") -- LSP source for nvim-cmp
-	use("saadparwaiz1/cmp_luasnip") -- Snippets source for nvim-cmp
-	use("L3MON4D3/LuaSnip") -- Snippets plugin
-	use("hrsh7th/cmp-nvim-lua")
-	-- For vsnip users.
-	use("hrsh7th/cmp-vsnip")
-	use("hrsh7th/vim-vsnip")
+  use('unblevable/quick-scope') 
+  use('tpope/vim-speeddating')
+  use('tpope/vim-repeat')
+  -- Easymotion -> specific plugins 
+  use('suy/vim-context-commentstring')
+  use('RRethy/vim-illuminate')
+  use('glts/vim-radical')
 
-	-- For ultisnips users.
-	use("SirVer/ultisnips")
-	use("quangnguyen30192/cmp-nvim-ultisnips")
+  use {'asvetliakov/vim-easymotion', as = 'vscode-easymotion' }
 
-	--For snippy users.
-	use("dcampos/nvim-snippy")
-	use("dcampos/cmp-snippy")
+  if vim.g.vscode == nil then
 
-	-- CMP
-	use("ray-x/cmp-treesitter")
-	use("tamago324/cmp-zsh")
-	use("Shougo/deol.nvim")
+    use {'easymotion/vim-easymotion', as = 'nvim-easymotion'}
+    use("goolord/alpha-nvim") -- greeter
+    -- Colorschemes
+    use('shaunsingh/nord.nvim')
+  
+    -- LSP
+    use("neovim/nvim-lspconfig") -- enable lsp
+    use("williamboman/nvim-lsp-installer") -- simple to use language server installer
+    use("tamago324/nlsp-settings.nvim") -- language server settings defined in json for
+    use("rcarriga/nvim-notify")
+    use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
 
-	-- LSP
-	use("neovim/nvim-lspconfig") -- enable LSP
-	use("williamboman/nvim-lsp-installer") -- simple to use language server installer
-	use("tamago324/nlsp-settings.nvim") -- language server settings defined in json for
-	use("rcarriga/nvim-notify")
-	use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
+    -- CMP
+    use("ray-x/cmp-treesitter")
+    use("tamago324/cmp-zsh")
+    use("Shougo/deol.nvim")
+    use("hrsh7th/cmp-buffer")
+    use("hrsh7th/cmp-path")
+    use("hrsh7th/cmp-cmdline")
+    use("hrsh7th/nvim-cmp") -- Autocompletion plugin
+    use("hrsh7th/cmp-nvim-lsp") -- LSP source for nvim-cmp
+    use("saadparwaiz1/cmp_luasnip") -- Snippets source for nvim-cmp
+    use("hrsh7th/cmp-nvim-lua")
+    -- For vsnip users.
+    use("hrsh7th/cmp-vsnip")
+    use("hrsh7th/vim-vsnip")
+    -- snippets
+    use "L3MON4D3/LuaSnip" --snippet engine
+    use "rafamadriz/friendly-snippets" -- a bunch of snippets to use
+    use("antoinemadec/FixCursorHold.nvim") -- This is needed to fix lsp doc highlight
+    use("folke/which-key.nvim")
+    -- Git
+    use("lewis6991/gitsigns.nvim")
+    -- Colorschemes
 
-	-- Telescope
-	use("nvim-telescope/telescope.nvim")
+      -- For ultisnips users.
+    use("SirVer/ultisnips")
+    use("quangnguyen30192/cmp-nvim-ultisnips")
 
-	-- Treesitter
-	use({
-		"nvim-treesitter/nvim-treesitter",
-		run = ":TSUpdate",
-	})
-	use("JoosepAlviste/nvim-ts-context-commentstring")
+    --For snippy users.
+    use("dcampos/nvim-snippy")
+    use("dcampos/cmp-snippy")
 
-  use 'jbyuki/instant.nvim'
-  -- SSH
-	use({
-		"chipsenkbeil/distant.nvim",
-		config = function()
-			require("distant").setup({
-				-- Applies Chip's personal settings to every machine you connect to
-				--
-				-- 1. Ensures that distant servers terminate with no connections
-				-- 2. Provides navigation bindings for remote directories
-				-- 3. Provides keybinding to jump into a remote file's parent directory
-				["*"] = require("distant.settings").chip_default(),
-			})
-		end,
-	})
+
+    -- Telescope
+    use("nvim-telescope/telescope.nvim")
+    use 'nvim-telescope/telescope-media-files.nvim'
+    use("ahmedkhalf/project.nvim")
+    -- Treesitter
+    
+    use("kyazdani42/nvim-tree.lua")
+    use({
+      "nvim-treesitter/nvim-treesitter",
+      run = ":TSUpdate",
+    })
+    use("JoosepAlviste/nvim-ts-context-commentstring")
+
+    -- Editor
+    use("windwp/nvim-autopairs") -- Autopairs, integrates with both cmp and treesitter
+    use("lukas-reineke/indent-blankline.nvim")
+    use("akinsho/toggleterm.nvim")
+    use("nvim-lualine/lualine.nvim")
+    use({ "akinsho/bufferline.nvim", tag = "*", requires = "kyazdani42/nvim-web-devicons" })
+
+
+    -- bbye
+    use("moll/vim-bbye")
+
+    -- language
+    use('p00f/clangd_extensions.nvim')
+    use 'simrat39/rust-tools.nvim'
+    use("mfussenegger/nvim-jdtls") -- java
+    -- debugging
+    use("nvim-lua/popup.nvim") -- An implementation of the Popup API from vim in Neovim
+    use("nvim-lua/plenary.nvim") -- Useful lua functions used ny lots of plugins
+    use 'mfussenegger/nvim-dap'
+  end		
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins
 	if PACKER_BOOTSTRAP then

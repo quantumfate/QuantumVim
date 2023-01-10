@@ -1,4 +1,3 @@
-local vim = require "user.utils.nvim-api"
 local opts = { noremap = true, silent = true }
 
 local term_opts = { silent = true }
@@ -75,3 +74,5 @@ keymap("x", "<C,p>", ":lua require'telescope'.extensions.project.project{}<CR>",
 
 -- Nvimtree
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)

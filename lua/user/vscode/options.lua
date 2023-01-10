@@ -1,4 +1,3 @@
-local vim = require "user.utils.nvim-api"
 -- VSCode specific options
 vim.cmd [[
   " split the workspace
@@ -9,6 +8,7 @@ vim.cmd [[
   if file != ''
       call VSCodeExtensionNotify('open-file', expand(file), 'all')
   endif
+  endfunction
 
   " create a new split
   function! s:splitNew(...)
@@ -37,58 +37,50 @@ vim.cmd [[
   command! -complete=file -nargs=? New call <SID>split('h', '__vscode_new__')
   command! -complete=file -nargs=? Vnew call <SID>split('v', '__vscode_new__')
   command! -bang Only if <q-bang> == '!' | call <SID>closeOtherEditors() | else | call VSCodeNotify('workbench.action.joinAllGroups') | endif
+  nnoremap <silent> <C-w>s :call <SID>split('h')<CR>
+xnoremap <silent> <C-w>s :call <SID>split('h')<CR>
+
+nnoremap <silent> <C-w>v :call <SID>split('v')<CR>
+xnoremap <silent> <C-w>v :call <SID>split('v')<CR>
+
+nnoremap <silent> <C-w>n :call <SID>splitNew('h', '__vscode_new__')<CR>
+xnoremap <silent> <C-w>n :call <SID>splitNew('h', '__vscode_new__')<CR>
+
+
+nnoremap <silent> <C-w>= :<C-u>call VSCodeNotify('workbench.action.evenEditorWidths')<CR>
+xnoremap <silent> <C-w>= :<C-u>call VSCodeNotify('workbench.action.evenEditorWidths')<CR>
+
+nnoremap <silent> <C-w>> :<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>
+xnoremap <silent> <C-w>> :<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>
+nnoremap <silent> <C-w>+ :<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>
+xnoremap <silent> <C-w>+ :<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>
+nnoremap <silent> <C-w>< :<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>
+xnoremap <silent> <C-w>< :<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>
+nnoremap <silent> <C-w>- :<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>
+xnoremap <silent> <C-w>- :<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>
+
+" Better Navigation
+nnoremap <silent> <C-j> :call VSCodeNotify('workbench.action.navigateDown')<CR>
+xnoremap <silent> <C-j> :call VSCodeNotify('workbench.action.navigateDown')<CR>
+nnoremap <silent> <C-k> :call VSCodeNotify('workbench.action.navigateUp')<CR>
+xnoremap <silent> <C-k> :call VSCodeNotify('workbench.action.navigateUp')<CR>
+nnoremap <silent> <C-h> :call VSCodeNotify('workbench.action.navigateLeft')<CR>
+xnoremap <silent> <C-h> :call VSCodeNotify('workbench.action.navigateLeft')<CR>
+nnoremap <silent> <C-l> :call VSCodeNotify('workbench.action.navigateRight')<CR>
+xnoremap <silent> <C-l> :call VSCodeNotify('workbench.action.navigateRight')<CR>
+
+nnoremap <silent> <S-d> :call VSCodeNotify('workbench.action.openLink')<CR>"
+xnoremap <silent> <S-d> :call VSCodeNotify('workbench.action.openLink')<CR>"
+
+nnoremap <silent> <Space>c :call VSCodeNotify('editor.action.addCommentLine')<CR>"
+xnoremap <silent> <Space>c :call VSCodeNotify('editor.action.addCommentLine')<CR>"
+nnoremap <silent> <Space>b :call VSCodeNotify('editor.action.addBlockComment')<CR>"
+xnoremap <silent> <Space>b :call VSCodeNotify('editor.action.addBlockComment')<CR>"
+
+
+nnoremap <silent> <C-w>_ :<C-u> :call VSCodeNotify('workbench.action.toggleEditorWidths')<CR>
+
+nnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
+xnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
+
 ]]
-
--- remap default vim bindings
-local opts = { noremap = true, silent = true }
-
-local keymap = vim.keymap
-
--- split horizontally
-keymap("n", "<C-w>s", ":call <SID>split('h')<CR>", opts)
-keymap("x", "<C-w>s", ":call <SID>split('h')<CR>", opts)
--- split vertically
-keymap("n", "<C-w>v", ":call <SID>split('v')<CR>", opts)
-keymap("x", "<C-w>v", ":call <SID>split('v')<CR>", opts)
--- split horizontally with new window
-keymap("n", "<C-w>n", ":call <SID>splitNew('h', '__vscode_new__')<CR>", opts)
-keymap("x", "<C-w>n", ":call <SID>splitNew('h', '__vscode_new__')<CR>", opts)
--- span editor widths
-keymap("n", "<C-w>=", ":<C-u>call VSCodeNotify('workbench.action.evenEditorWidths')<CR>", opts)
-keymap("x", "<C-w>=", ":<C-u>call VSCodeNotify('workbench.action.evenEditorWidths')<CR>", opts)
--- resize windows
-keymap("n", "<C-w>>", ":<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>", opts)
-keymap("x", "<C-w>>", ":<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>", opts)
-keymap("n", "<C-w>+", ":<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>", opts)
-keymap("x", "<C-w>+", ":<C-u>call <SID>manageEditorSize(v:count, 'increase')<CR>", opts)
-keymap("n", "<C-w><", ":<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>", opts)
-keymap("x", "<C-w><", ":<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>", opts)
-keymap("n", "<C-w>-", ":<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>", opts)
-keymap("x", "<C-w>-", ":<C-u>call <SID>manageEditorSize(v:count, 'decrease')<CR>", opts)
-
--- Better Navigation
-keymap("n", "<C-j>", ":call VSCodeNotify('workbench.action.navigateDown')<CR>", opts)
-keymap("x", "<C-j>", ":call VSCodeNotify('workbench.action.navigateDown')<CR>", opts)
-keymap("n", "<C-k>", ":call VSCodeNotify('workbench.action.navigateUp')<CR>", opts)
-keymap("x", "<C-k>", ":call VSCodeNotify('workbench.action.navigateUp')<CR>", opts)
-keymap("n", "<C-h>", ":call VSCodeNotify('workbench.action.navigateLeft')<CR>", opts)
-keymap("x", "<C-h>", ":call VSCodeNotify('workbench.action.navigateLeft')<CR>", opts)
-keymap("n", "<C-l>", ":call VSCodeNotify('workbench.action.navigateRight')<CR>", opts)
-keymap("x", "<C-l>", ":call VSCodeNotify('workbench.action.navigateRight')<CR>", opts)
-
--- open links
-keymap("n", "<S-d>", ":call VSCodeNotify('workbench.action.openLink')<CR>", opts)
-keymap("x", "<S-d>", ":call VSCodeNotify('workbench.action.openLink')<CR>", opts)
-
-
--- Bind C-/ to vscode commentary since calling from vscode produces double comments due to multiple cursors
-keymap("n", "<C-/>", ":call Commend()<CR>", opts)
-keymap("x", "<S-/>", ":call Comment()<CR>", opts)
-
--- Toggle editor widths back and forth
-keymap("n", "<C-w>", ":<C-u>call VSCodeNotify('workbench.action.toggleEditorWidths')<CR>", opts)
-keymap("x", "<C-w>", "::<C-u>call VSCodeNotify('workbench.action.toggleEditorWidths')<CR>", opts)
-
--- Call the which key menu
-keymap("n", "<Space>", ":call VSCodeNotify('whichkey.show')<CR>", opts)
-keymap("x", "<Space>", ":call VSCodeNotify('whichkey.show')<CR>", opts)
