@@ -44,7 +44,7 @@ clangd_extensions.setup {
             priority = 100,
         },
         ast = {
-            -- These are unicode, should be available in any font
+            --[[ These are unicode, should be available in any font
             role_icons = {
                  type = "🄣",
                  declaration = "🄓",
@@ -61,8 +61,8 @@ clangd_extensions.setup {
                 TemplateTypeParm = "🅃",
                 TemplateTemplateParm = "🅃",
                 TemplateParamObject = "🅃",
-            },
-            --[[ These require codicons (https://github.com/microsoft/vscode-codicons)
+            },]]
+            -- These require codicons (https://github.com/microsoft/vscode-codicons)
             role_icons = {
                 type = "",
                 declaration = "",
@@ -80,7 +80,7 @@ clangd_extensions.setup {
                 TemplateTypeParm = "",
                 TemplateTemplateParm = "",
                 TemplateParamObject = "",
-            }, ]]
+            },
 
             highlights = {
                 detail = "Comment",

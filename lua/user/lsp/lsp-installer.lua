@@ -7,6 +7,10 @@ lsp_installer.on_server_ready(function(server)
 		on_attach = require("user.lsp.handlers").on_attach,
 		capabilities = require("user.lsp.handlers").capabilities,
 	}
+  if server.name == "ansiblels" then
+    local ansiblels_opts = require("user.lsp.settings.ansiblels")
+    opts = vim.tbl_deep_extend("force", ansiblels_opts, opts)
+  end
 
 	if server.name == "jsonls" then
 	  local jsonls_opts = require("user.lsp.settings.jsonls")

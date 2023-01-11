@@ -7,13 +7,12 @@ vg.EasyMotion_startofline = 0 -- keep cursor column when JK motion
 vg.EasyMotion_do_mapping = 0 -- Disable default mappings
 vg.EasyMotion_use_upper= 1 -- Use uppercase target labels and type as a lower case
 vg.EasyMotion_use_smartsign_us = 1 -- Smartsign (type `3` and match `3`&`#`) - US layout
+vg.EasyMotion_prompt = "" -- remove the annoying output popup in vscode
 
 -- remap default vim bindings
 local opts = { noremap = true, silent = true }
 local keymap = vim.api.nvim_set_keymap
 
-vim.g.mapleader = "g"
-vim.g.maplocalleader = "g"
 -- VSCODE specific bindings
 -- Easy motion on default l,j,k,h
 keymap("n", "<Leader>l", "<Plug>(easymotion-lineforward)", opts)

@@ -2,8 +2,9 @@ require "user.plugins"
 require "user.impatient"
 require "user.keymap"
 require "user.options"
---require "user.quickscope"
-if vim.g.vscode ~= nil then
+require "user.quickscope"
+require "user.illuminate"
+if vim.g.vscode then
   -- VSCode extension
   require "user.vscode"
 else
@@ -15,7 +16,6 @@ else
   require "user.nvim-cmp"
   require "user.lang"
   require "user.telescope"
-  require "user.project"
   require "user.bufferline"
   require "user.nvim-tree"
   require "user.treesitter"
@@ -25,7 +25,7 @@ else
   require "user.gitsigns"
   require "user.bufferline"
   require "user.indentline"
-  require "user.whichkey"  
+--  require "user.whichkey"  
 end
 
 

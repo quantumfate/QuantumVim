@@ -12,8 +12,6 @@ vg.EasyMotion_use_smartsign_us = 1 -- Smartsign (type `3` and match `3`&`#`) - U
 local opts = { noremap = false, silent = true }
 local keymap = vim.api.nvim_set_keymap
 
-vim.g.mapleader = "g"
-vim.g.maplocalleader = "g"
 -- VSCODE specific bindings
 -- Easy motion on default l,j,k,h
 keymap("n", "<Leader>l", "<Plug>(easymotion-lineforward)", opts)
