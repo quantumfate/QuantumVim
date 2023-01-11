@@ -2,6 +2,10 @@
 
 This section covers the [LSP](https://neovim.io/doc/user/lsp.html) section. 
 
+## Installed
+
+- [mason](https://github.com/williamboman/mason.nvim) and [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim) will ensure that this section is setup
+
 ## LSP-Config
 
 - a list for [language specific settings](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md)

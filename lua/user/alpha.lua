@@ -28,9 +28,9 @@ local function footer()
   -- local fortune = handle:read("*a")
   -- handle:close()
   -- return fortune
-  return "quantumfate"
-end
+  return "quantumfate:"
 
+end
 dashboard.section.footer.val = footer()
 
 dashboard.section.footer.opts.hl = "Type"

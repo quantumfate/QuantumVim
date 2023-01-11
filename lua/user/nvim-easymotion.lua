@@ -25,3 +25,9 @@ keymap("o", "/", "<Plug>(easymotion-tn)", opts)
 -- Adcanced n and N search navigation
 keymap("n", "n", "<Plug>(easymotion-next)", opts)
 keymap("n", "N", "<Plug>(easymotion-prev)", opts)
+
+
+vim.cmd[[
+  autocmd User EasyMotionPromptEnd silent! let g:is_doing_easymotion = 1
+  autocmd User EasyMotionPromptBegin silent! let g:is_doing_easymotion = 0
+]]

@@ -12,9 +12,7 @@ else
   require "user.alpha"
   require "user.comment"
   require "user.colorscheme"
-  require "user.lsp"
-  require "user.nvim-cmp"
-  require "user.lang"
+  require "user.languages"
   require "user.telescope"
   require "user.bufferline"
   require "user.nvim-tree"
@@ -25,6 +23,7 @@ else
   require "user.gitsigns"
   require "user.bufferline"
   require "user.indentline"
+  require "user.vimtex"
 --  require "user.whichkey"  
 end
 

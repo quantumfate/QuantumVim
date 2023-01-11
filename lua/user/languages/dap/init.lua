@@ -4,4 +4,4 @@ if not status_ok then
   return
 end
 
-require "user.dap.codelldb"
+require "user.languages.dap.codelldb"
