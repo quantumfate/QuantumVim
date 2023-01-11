@@ -10,7 +10,9 @@ end
 
 local setup = {
   -- Language Server
-  "mason-lspconfig" = properties.servers
+  "mason-lspconfig" = properties.servers,
+  "mason-nvim-dap" = properties.debuggers,
+  "mason-null-ls" = properties.formatters,
 }
 
 
