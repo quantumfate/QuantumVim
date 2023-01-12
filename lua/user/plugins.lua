@@ -109,6 +109,7 @@ return packer.startup(function(use)
     "neovim/nvim-lspconfig", -- enable lsp
     "tamago324/nlsp-settings.nvim", -- language server settings defined in json for
     "jose-elias-alvarez/null-ls.nvim", -- for formatters and linters
+    requires = "nvim-lua/plenary.nvim"
   }
   -- CMP
   use { 
