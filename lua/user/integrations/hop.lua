@@ -2,11 +2,18 @@ local status_ok, hop = pcall(require, "hop")
 if not status_ok then
   return
 end
+--[[
+--  
+--  Author: Leon Connor Holm
+--  Plugin: https://github.com/phaazon/hop.nvim
+--  
+--]]
 
 hop.setup {
   keys = 'etovxqpdygfblzhckisuran'
 }
 
+-- Options to parse to a keymap
 local opts = { 
   silent = true, 
   noremap=true,
@@ -22,13 +29,13 @@ local bindings = {
       mode = 'n',
       mapping = 'f', 
       desc = '',
-      func = function() hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true }) end
+      func = function() hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false }) end
     },
     { 
       mode = 'n', 
       mapping = 'F',
       desc = '',
-      func = function() hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true }) end
+      func = function() hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false }) end
     },
     {
       mode = 'n', 

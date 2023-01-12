@@ -3,16 +3,16 @@ if not status_mason_ok then
   return
 end
 
-local status_mason_ok, properties = pcall(require, "properties")
-if not status_mason_ok then
+local status_properties_ok, properties = pcall(require, "properties")
+if not status_properties_ok then
   return
 end
 
 local setup = {
   -- Language Server
-  "mason-lspconfig" = properties.servers,
-  "mason-nvim-dap" = properties.debuggers,
-  "mason-null-ls" = properties.builtins,
+  masonlspconfig = properties.servers,
+  masonnvimdap = properties.debuggers,
+  masonnullls = properties.builtins,
 }
 
 
