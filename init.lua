@@ -2,7 +2,7 @@ require "user.plugins"
 require "user.impatient"
 require "user.keymap"
 require "user.options"
-require "user.quickscope"
+--require "user.quickscope"
 require "user.illuminate"
 if vim.g.vscode then
   -- VSCode extension

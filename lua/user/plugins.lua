@@ -58,16 +58,10 @@ return packer.startup(function(use)
   use("RRethy/vim-illuminate")
   use("glts/vim-radical")
 
-  use({
-    "asvetliakov/vim-easymotion",
-    as = "vscode-easymotion",
-    cond = vim.g.vscode ~= nil,
-  })
-  use({
-    "easymotion/vim-easymotion",
-    as = "nvim-easymotion",
-    cond = vim.g.vscode == nil,
-  })
+  use {
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+  }
   use("goolord/alpha-nvim") -- greeter
   -- Colorschemes
   use("shaunsingh/nord.nvim")
