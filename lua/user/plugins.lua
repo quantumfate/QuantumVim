@@ -50,10 +50,8 @@ return packer.startup(function(use)
     "numToStr/Comment.nvim", -- Easily comment stuff
     tag = "v0.6",
   })
-  use("unblevable/quick-scope")
   use("tpope/vim-speeddating")
   use("tpope/vim-repeat")
-  -- Easymotion -> specific plugins
   use("suy/vim-context-commentstring")
   use("RRethy/vim-illuminate")
   use("glts/vim-radical")
