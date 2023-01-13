@@ -3,6 +3,27 @@ if not null_ls_status_ok then
   return
 end
 
+local mason_null_ls_status_ok, mason_null_ls = pcall(require, "mason-null-ls")
+if not mason_null_ls_status_ok then
+  return
+end
+
+local properties_status_ok, properties = pcall(require, "user.languages.utils.properties")
+if not properties_status_ok then
+  return
+end
+
+-- TODO apply proper diagnostics and formatting engines
+require("null-ls").setup(
+    sources = {
+        -- all sources go here.
+    }
+)
+require("mason-null-ls").setup({
+    ensure_installed = nil,
+    automatic_installation = true,
+    automatic_setup = true,
+})
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
 local formatting = null_ls.builtins.formatting
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics

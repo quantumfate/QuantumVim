@@ -1,5 +1,14 @@
 M = {}
 
+-- Servers and language configuration that require their own specific
+-- configuration in the lang directory for very special needs
+M.maintained = {
+  "clangd",
+  -- TODO add rust https://github.com/simrat39/rust-tools.nvim
+  -- TODO add java
+  -- TODO add Ansible - probably requires a completely scuffed setup
+}
+
 -- Reflect LSP Servers
 M.servers = {
   "sumneko_lua",  -- Lua

@@ -65,7 +65,7 @@ return packer.startup(function(use)
   use("shaunsingh/nord.nvim")
 
   use("rcarriga/nvim-notify")
-
+  use("lervag/vimtex")
   --[[ 
     Language,
     Linters,
@@ -88,7 +88,7 @@ return packer.startup(function(use)
     "p00f/clangd_extensions.nvim",
     "simrat39/rust-tools.nvim",
     "mfussenegger/nvim-jdtls", -- java
-    "lervag/vimtex"
+    requires = "neovim/nvim-lspconfig",
   }
   -- debugging
   use{

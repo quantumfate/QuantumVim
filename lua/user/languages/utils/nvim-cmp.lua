@@ -1,5 +1,3 @@
-local M = {}
-
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
   return
@@ -9,22 +7,6 @@ local snip_status_ok, luasnip = pcall(require, "luasnip")
 if not snip_status_ok then
   return
 end
-
--- Add additional capabilities supported by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
-local lspconfig = require('lspconfig')
-
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-M.servers = { 'clangd', 'jsonls','rust_analyzer', 'pyright', 'tsserver', 'jsonls', 'ansiblels', 'bashls', 'cssls', 'jdtls', 'sumneko_lua' }
-for _, lsp in ipairs(M.servers) do
-  lspconfig[lsp].setup {
-    -- on_attach = my_custom_on_attach,
-    capabilities = capabilities,
-  }
-end
-
 -- luasnip setup
 local luasnip = require 'luasnip'
 require("luasnip/loaders/from_vscode").lazy_load()
@@ -120,6 +102,7 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lua'},
     { name = 'treesitter' },
     { name = 'luasnip' },
@@ -135,4 +118,3 @@ cmp.setup {
     native_menu = false,
   },
 }
-return M
