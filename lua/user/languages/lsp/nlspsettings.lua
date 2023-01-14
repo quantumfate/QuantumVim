@@ -1,5 +1,3 @@
-local lsp_installer = require("nvim-lsp-installer")
-local lspconfig = require("lspconfig")
 local nlspsettings = require("nlspsettings")
 
 nlspsettings.setup({

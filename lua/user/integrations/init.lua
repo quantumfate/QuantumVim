@@ -1,3 +1,4 @@
+require "user.integrations.vimnotify"
 require "user.integrations.autopairs"
 require "user.integrations.bufferline"
 require "user.integrations.colorscheme"

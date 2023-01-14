@@ -11,6 +11,7 @@ M.maintained = {
 
 -- Reflect LSP Servers
 M.servers = {
+  -- TODO make sure language names are properly mapped to mason
   "sumneko_lua",  -- Lua
   "pyright",      -- Python
   "ansiblels",    -- Ansible

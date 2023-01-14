@@ -14,12 +14,12 @@ if not properties_status_ok then
 end
 
 -- TODO apply proper diagnostics and formatting engines
-require("null-ls").setup(
-    sources = {
-        -- all sources go here.
-    }
-)
-require("mason-null-ls").setup({
+-- null_ls.setup(
+--     sources = {
+--         -- all sources go here.
+--     }
+-- )
+mason_null_ls.setup({
     ensure_installed = nil,
     automatic_installation = true,
     automatic_setup = true,

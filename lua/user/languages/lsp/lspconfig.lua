@@ -16,7 +16,7 @@ end
 
 local maintained_hooks_status_ok, maintained_hooks = pcall(require, "user.languages.maintained_hooks")
 if not maintained_hooks_status_ok then
-  return
+  return 
 end
 
 local nvim_cmp_status_ok, nvim_cmp = pcall(require, "user.languages.utils.nvim-cmp")
@@ -24,9 +24,9 @@ if not nvim_cmp_status_ok then
   return
 end
 
-require("mason-lspconfig").setup {
+mason_lspconfig.setup {
   ensure_installed = properties.servers,
-  automatica_installation = true,
+  automatic_installation = true,
 } -- automatically install specified servers
 
 -- Global capabilities for all language server

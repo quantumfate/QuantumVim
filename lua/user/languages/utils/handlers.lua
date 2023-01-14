@@ -9,6 +9,7 @@ properties = require("user.languages.utils.properties")
 --        developer to interact with the IDE
 -- @field M.capabilities() is a callback function that provides capability configuration
 --        for the respective language
+-- @field M.init_lsp_server_config() 
 --
 local M = {}
 
@@ -158,6 +159,9 @@ end
 -- @field server_opts - options that should be parsed to an lsp server
 --
 -- @return the updated lsp configuration
+--
+-- TODO add functionality to determine whether a server is supported
+--      by mason or should be self maintained
 M.init_lsp_server_config = function(lspconfig, server_opts)
   local supported_lsp_servers = properties.servers
   local self_maintained_lsp_servers = properties.maintained
@@ -179,7 +183,7 @@ M.init_lsp_server_config = function(lspconfig, server_opts)
       opts = apply_server_specific_settings(lsp, server_opts)
     end
 
-    if maintained_set[lsp] then
+    if maintained_set[lsp] then -- TODO add fallback when no hook is present
       -- Server in question adds something to LSP
       local hook = maintained_hooks[lsp]
       return lspconfig[lsp] = hook.hook_server_config(opts)
@@ -188,8 +192,26 @@ M.init_lsp_server_config = function(lspconfig, server_opts)
       return lspconfig[lsp].setup(opts)
     end
     -- error something went wrong
-    print("The Server " .. lsp .. " is not supprted nor maintained.")
+    print("The Server " .. lsp .. " is not supported nor maintained.")
   end
+end
+
+--- Recursively iterates a json table and creates
+-- a one-to-one mapped lua table.
+--
+-- The luatable will be returned so that it can either be parsed to a file
+-- or used as an object for further processing
+-- TODO :call lspsettings server to generate lsp settings
+M.parse_json_to_lua = function()
+
+end
+
+
+--- Takes a table as an argument and creates a unique set of 
+-- the table contents
+-- TODO
+M.table_to_set = function(table) 
+
 end
 
 return M
