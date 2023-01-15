@@ -1,8 +1,22 @@
+--- This module can not be required in a protective
+-- call (e.g. pcall) because it uses the debug module
+-- to retrieve information from the stack trace and
+-- the pcall function alters the stacktrace causing
+-- this module to fail. This module is still safe
+-- to use because it will require any file that it finds
+-- in a protected call.
 local M = {}
 
+--- Scan a directory based on the ls command
+-- and return a list with the filenames.
+-- 
+-- @field directory: The directory to be scanned
+--
+-- @return a list with directory file names
+-- 
 local function scandir(directory)
-  local i, t, popen = 0, {}, io.popen
-  local pfile = popen('ls -a "'..directory..'"')
+  local i, t = 0, {}
+  local pfile = io.popen('ls -a "'..directory..'"')
   for filename in pfile:lines() do
     i = i + 1
     t[i] = filename
@@ -19,6 +33,8 @@ end
 -- the .lua extension to a metatable which is then returned.
 -- This will for example allow you to get a list of files
 -- that are in the directory where this function is called.
+--
+-- Note: Modules will be required in a protected call with pcall
 --
 -- @field module_name: The lua path to the module in which this
 --                     function is called
@@ -44,17 +60,29 @@ function M:require_directory_files(module_name, inject_module_table)
   end, scandir(module_directory))
 
   if inject_module_table then
+    -- modules from directory will be injected into the table
+    -- where this function is being called
     local obj = {}
     for i, filename in ipairs(config_files) do
       local config_module = string.match(filename, "(.+).lua$")
-      obj[config_module] = require(module_name.."."..config_module)
+      -- require the languages in a protected call
+      local status_ok, module = pcall(require, module_name.."."..config_module)
+      if status_ok then
+        obj[config_module] = module
+      else
+        vim.notify("An error occured when trying to require the module:" .. module)
+      end
     end
     setmetatable(obj, { __index = self })
     return obj
   else
     for i, filename in ipairs(config_files) do
       local config_module = string.match(filename, "(.+).lua$")
-      require(module_name.."."..config_module)
+      -- require the languages in a protected call
+      local status_ok, module = pcall(require, module_name.."."..config_module)
+      if not status_ok then
+        vim.notify("An error occured when trying to require the module:" .. module)
+      end
     end
     return true
   end

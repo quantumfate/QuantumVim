@@ -139,18 +139,15 @@ local function apply_server_specific_settings(lsp, server_opts)
   end
 end
 
---- Initialises lsp server configuration for supported 
--- lsp servers by mason. If a server is defined in properties.maintained
--- this method will call a dynamic hook based on the lsp server in
--- question. Addionally this function uses an helper function
--- to inject settings if they exist no server if found it will print and error message.
--- @field lspconfig - a required lspconfig that setup can be called on
--- @field server_opts - options that should be parsed to an lsp server
+--- @function M.init_lsp_server_config
+-- This function is used to initialise the LSP server configuration 
+-- with the provided options and the language table with initialised values.
+-- @field lspconfig: a required lspconfig that setup can be called on
+-- @field server_opts: options that should be parsed to an lsp server
+-- @field configured_languages: the language table with Initialised values 
 --
 -- @return the updated lsp configuration
 --
--- TODO add functionality to determine whether a server is supported
---      by mason or should be self maintained
 M.init_lsp_server_config = function(lspconfig, server_opts, configured_languages)
 
   local lsp_servers = configured_languages:get_unique_lsp_server_list()

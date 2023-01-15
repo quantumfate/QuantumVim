@@ -1,13 +1,16 @@
+
+--[[
+  Requiring the necessary modules
+]]
 local mason_lspconfig_status_ok, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not mason_lspconfig_status_ok then
   return
 end
 
-local status_ok, lspconfig_init = pcall(require, "lspconfig")
-if not status_ok then
+local lsp_status_ok, lspconfig_init = pcall(require, "lspconfig")
+if not lsp_status_ok then
   return
 end
-properties = pcall(require, "user.languages.utils.properties")
 
 local handlers_status_ok, handlers = pcall(require, "user.languages.utils.handlers")
 if not handlers_status_ok then
@@ -20,15 +23,15 @@ if not nvim_cmp_status_ok then
   return
 end
 
---local lang_config_ok, conf_languages = pcall(require, "user.languages.config")
---if not lang_config_ok then
---  return
---end
-
-conf_languages = require"user.languages.config"
+local conf_languages_status_ok, conf_languages = pcall(require, "user.languages.config")
+if not conf_languages_status_ok then
+  return
+end
 
 local configured_languages = conf_languages:new()
 local configured_language_server = configured_languages:get_unique_lsp_server_list()
+
+
 
 mason_lspconfig.setup {
   ensure_installed = configured_language_server,

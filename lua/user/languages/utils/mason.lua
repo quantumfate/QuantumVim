@@ -12,7 +12,3 @@ mason.setup({
     }
   }
 })
-
-for i, lsp_server in pairs(properties.servers) do
-  vim.api.nvim_command("MasonInstall ".. lsp_server)
-end
