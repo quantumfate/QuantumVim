@@ -14,24 +14,30 @@ if not handlers_status_ok then
   return
 end
 
-local maintained_hooks_status_ok, maintained_hooks = pcall(require, "user.languages.maintained_hooks")
-if not maintained_hooks_status_ok then
-  return 
-end
 
 local nvim_cmp_status_ok, nvim_cmp = pcall(require, "user.languages.utils.nvim-cmp")
 if not nvim_cmp_status_ok then
   return
 end
 
+--local lang_config_ok, conf_languages = pcall(require, "user.languages.config")
+--if not lang_config_ok then
+--  return
+--end
+
+conf_languages = require"user.languages.config"
+
+local configured_languages = conf_languages:new()
+local configured_language_server = configured_languages:get_unique_lsp_server_list()
+
 mason_lspconfig.setup {
-  ensure_installed = properties.servers,
+  ensure_installed = configured_language_server,
   automatic_installation = true,
 } -- automatically install specified servers
 
 -- Global capabilities for all language server
 local global_capabilities = vim.lsp.protocol.make_client_capabilities()
-lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
+lspconfig_init.util.default_config = vim.tbl_extend("force", lspconfig_init.util.default_config, {
   capabilities = global_capabilities,
 })
 
@@ -44,4 +50,4 @@ local server_opts = {
   flags = lsp_flags,
 }
 
-local lspconfig = handlers.init_lsp_server_config(lspconfig_init, server_opts)
+local lspconfig = handlers.init_lsp_server_config(lspconfig_init, server_opts, configured_languages)

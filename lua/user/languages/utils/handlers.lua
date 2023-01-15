@@ -1,6 +1,4 @@
-properties = require("user.languages.utils.properties")
-
---- This module initialises the necessary configuration for the developer
+-- This module initialises the necessary configuration for the developer
 -- to interact with the from LSP and CMP provided functionality. 
 --
 -- @field M.setup() method creates initialises the style and other configurations
@@ -132,15 +130,6 @@ M.capabilities = function()
 end
 
 
---- Helper function to inject specific server settings
--- into server options when they exist. The file needs
--- to have the same name as the respective lsp server name.
---
--- @field lsp server
--- @field server_opts the basic server options
---
--- @return the updated map when settings exist otherwise returns the basic server 
---         options field without modifications
 local function apply_server_specific_settings(lsp, server_opts)
   local lsp_settings_status_ok, lsp_opts = pcall(require, "user.languages.lsp.settings." .. lsp)
   if lsp_settings_status_ok then
@@ -162,38 +151,36 @@ end
 --
 -- TODO add functionality to determine whether a server is supported
 --      by mason or should be self maintained
-M.init_lsp_server_config = function(lspconfig, server_opts)
-  local supported_lsp_servers = properties.servers
-  local self_maintained_lsp_servers = properties.maintained
-  local supported_set = {}
-  local maintained_set = {}
+M.init_lsp_server_config = function(lspconfig, server_opts, configured_languages)
 
-  for i, value in ipairs(supported_lsp_servers) do
-    supported_set[value] = true
+  local lsp_servers = configured_languages:get_unique_lsp_server_list()
+
+  -- Tracking already configured servers to avoid overrides
+  local server_flags = {}
+  for i, server in pairs(lsp_servers) do
+    server_flags[server] = true
   end
+  
+  for language, language_attributes in ipairs(configured_languages) do
 
-  for i, value in ipairs(self_maintained_lsp_servers) do
-    maintained_set[value] = true
-  end
+    local opts = vim.tbl_deep_extend(language_attributes:get_lsp_server_settings(), server_opts)
 
-  for _, lsp in ipairs(supported_lsp_servers) do
+    local current_lsp_server = language_attributes:get_lsp_server()
 
-    local opts = server_opts
-    if maintained_set[lsp] or supported_set[lsp] then
-      opts = apply_server_specific_settings(lsp, server_opts)
+    if server_flags[current_lsp_server] and language_attributes:has_server_extension() then
+      local lsp_config = language_attributes:hook_server_extension_config_with_function(server_opts)
+    else
+      local lsp_config = lspconfig[current_lsp_server].setup(opts)
     end
 
-    if maintained_set[lsp] then -- TODO add fallback when no hook is present
-      -- Server in question adds something to LSP
-      local hook = maintained_hooks[lsp]
-      return lspconfig[lsp] = hook.hook_server_config(opts)
-    elseif supported_set[lsp] then
-      -- Basic LSP setup
-      return lspconfig[lsp].setup(opts)
+    if not server_flags[current_lsp_server] and language_attributes:hook_server_config() then
+      vim.notify("You configured two languages with server extensions and one overrides the other!", "warning")
     end
-    -- error something went wrong
-    print("The Server " .. lsp .. " is not supported nor maintained.")
+
+    server_flags[current_lsp_server] = false
   end
+
+  return lsp_config
 end
 
 --- Recursively iterates a json table and creates
@@ -202,16 +189,7 @@ end
 -- The luatable will be returned so that it can either be parsed to a file
 -- or used as an object for further processing
 -- TODO :call lspsettings server to generate lsp settings
-M.parse_json_to_lua = function()
+--M.parse_json_to_lua = function()
 
-end
-
-
---- Takes a table as an argument and creates a unique set of 
--- the table contents
--- TODO
-M.table_to_set = function(table) 
-
-end
-
+--end
 return M

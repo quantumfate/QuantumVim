@@ -1,4 +1,3 @@
-
 --- Creates a base table for attributes a language configuration
 -- can implement. A language configuration can implement more then
 -- the provided fields from the lang_base module but this module
@@ -23,6 +22,7 @@ local M = {}
 function M:new(fields)
   fields = fields or {}
   
+
   local obj = {
     lsp_server = fields.lsp_server or "",
     formatter = fields.formatter or {},
@@ -31,18 +31,23 @@ function M:new(fields)
     debugger = fields.debugger or {},
     has_server_extension = fields.has_server_extension or false,
     hook_function = fields.hook_function or {},
-    lsp_server_settings = fields.lsp_server_settings or M:lsp_server_settings()
+    lsp_server_settings = fields.lsp_server_settings or M:lsp_server_settings(fields.lsp_server)
   }
   setmetatable(obj, { __index = self })
-  if obj.fields.has_server_extension then
-    assert(obj.fields.hook_function, "A hook function is required when has_server_extension is set to true.")
+  if obj.has_server_extension then
+    assert(obj.hook_function, "A hook function is required when has_server_extension is set to true.")
   end
   return obj
 end
 
 --- LSP Language server
 function M.get_lsp_server()
-  return self.lsp_server 
+  if type(self.lsp_server) == "string"  then
+    return self.lsp_server 
+  elseif type(self.lsp_server) then
+    return self.lsp_server[1]
+  end
+  return false
 end
 
 
@@ -70,19 +75,29 @@ function M:has_server_extension()
   return self.has_server_extension
 end
 
+function M:get_lsp_server_settings()
+  if self.lsp_server_settings == nil or #self.lsp_server_settings == 0 then 
+    return {}
+  else
+    return self.lsp_server_settings
+  end
+end
+
+
 --- The hook function a specific language can 
 -- implement to be injected into a hook
 function M:hook_function() 
   return self.hook_function
 end
---- This can be used to inject server specific 
--- settings to lsp. It will also be used to parse LSP Settings
--- from json to lua and read vice verca to provide a centralised
--- configuration option for each specific language server.
+
+--- Helper function to inject specific server settings
+-- into server options when they exist. The file needs
+-- to have the same name as the respective lsp server name.
 --
 -- @return the respective settings for a language server or false if not defined
-function M:get_lsp_server_settings()
-  local status_ok, lsp_settings = pcall(require, "user.languages.lsp.settings." .. self.lsp_server)
+function M:lsp_server_settings(lsp_server)
+  lsp_server = lsp_server or self.lsp_server
+  local status_ok, lsp_settings = pcall(require, "user.languages.lsp.settings." .. lsp_server)
   if not status_ok then
     return lsp_settings
   end
@@ -90,7 +105,7 @@ function M:get_lsp_server_settings()
 end
 
 --- Hook to apply extensions to the basic
--- LSP clang configuration. It will pull the
+-- LSP configuration. It will pull the
 -- special configuration for the respective language.
 -- This specific function allows you to parse a method
 -- to integrate the configuration into LSP Config when
@@ -101,7 +116,10 @@ end
 -- will return too. This function will return false when 
 -- the configuration could not be required. This method will
 -- give an error when the injected function call 
--- failes and will then return false
+-- failes and will then return false. If your LSP Server 
+-- extension provides a way to integrate into lsp config
+-- it must ideally return a lsp config or you can wrap 
+-- write you own adapter to parse to this function.
 --
 -- @field language_server the language the configuration should be required from 
 -- @field server_opts the server options that should be injected
@@ -116,9 +134,11 @@ function M:hook_server_extension_config_with_function(server_opts)
     return false, {}
   end
   -- inject server opts
-  local status_ok, conf =  require("user.languages.lang." .. self.lsp_server).server = server_opts
+  local status_ok, conf = pcall(require, "user.languages.lang." .. self.lsp_server)
   if not status_ok then
     return
+  else
+    conf.server = server_opts
   end
   -- The injected function call
   local success, result = pcall(self.hook_function, conf)
