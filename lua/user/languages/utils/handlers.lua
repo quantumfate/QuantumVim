@@ -5,9 +5,7 @@
 --        for diagnostics used for global configuration across the IDE
 -- @field M.on_attach() configures key mappings and other visual utility for the
 --        developer to interact with the IDE
--- @field M.capabilities() is a callback function that provides capability configuration
---        for the respective language
--- @field M.init_lsp_server_config() 
+-- @field M.capabilities() is a callback function that provides capability configuration for the respective language @field M.init_lsp_server_config() 
 --
 local M = {}
 
@@ -144,40 +142,42 @@ end
 -- with the provided options and the language table with initialised values.
 -- @field lspconfig: a required lspconfig that setup can be called on
 -- @field server_opts: options that should be parsed to an lsp server
--- @field configured_languages: the language table with Initialised values 
+-- @field language_configs: the language table with Initialised values 
 --
 -- @return the updated lsp configuration
 --
-M.init_lsp_server_config = function(lspconfig, server_opts, configured_languages)
+M.init_lsp_server_config = function(language_config, language_values, lspconfig_function, server_opts)
 
-  local lsp_servers = configured_languages:get_unique_lsp_server_list()
+  -- Plug on_attach and capabilities to current server
+  server_opts.on_attach = on_attach
+  server_opts.capabilities = capabilities
+    
+  -- Do everything for the current lsp server
+  local current_lsp_server = language_values:get_lsp_server()
 
-  -- Tracking already configured servers to avoid overrides
-  local server_flags = {}
-  for i, server in pairs(lsp_servers) do
-    server_flags[server] = true
-  end
-  
-  for language, language_attributes in ipairs(configured_languages) do
+  local init_conf = {}
 
-    local opts = vim.tbl_deep_extend(language_attributes:get_lsp_server_settings(), server_opts)
-
-    local current_lsp_server = language_attributes:get_lsp_server()
-
-    if server_flags[current_lsp_server] and language_attributes:has_server_extension() then
-      local lsp_config = language_attributes:hook_server_extension_config_with_function(server_opts)
-    else
-      local lsp_config = lspconfig[current_lsp_server].setup(opts)
-    end
-
-    if not server_flags[current_lsp_server] and language_attributes:hook_server_config() then
-      vim.notify("You configured two languages with server extensions and one overrides the other!", "warning")
-    end
-
-    server_flags[current_lsp_server] = false
+  local current_lsp_server_settings = language_values:get_lsp_server_settings()
+  if current_lsp_server_settings ~= nil and #current_lsp_server_settings ~= 0 then
+    local opts = vim.tbl_deep_extend(current_lsp_server_settings, server_opts)
+  else
+    local opts = server_opts
   end
 
-  return lsp_config
+  if language_values:has_server_extension() then
+    vim.notify(current_lsp_server)
+    local lsp_config_item = language_values:hook_server_extension_config_with_function(server_opts)
+  else
+    vim.notify(current_lsp_server)
+    local lsp_config_item = lspconfig_function{opts}
+  end
+
+  table.insert(init_conf, lsp_config_item)
+
+  --or i,x in pairs(init_conf) do
+  --  vim.notify(i)
+  --end
+    return init_conf
 end
 
 --- Recursively iterates a json table and creates

@@ -22,26 +22,24 @@ local M = {}
 function M:new(fields)
   fields = fields or {}
   
-
-  local obj = {
-    lsp_server = fields.lsp_server or "",
+local obj = { lsp_server = fields.lsp_server or "",
     formatter = fields.formatter or {},
     diagnostics = fields.diagnostics or {},
     code_actions = fields.code_actions or {},
     debugger = fields.debugger or {},
-    has_server_extension = fields.has_server_extension or false,
+    server_extension = fields.server_extension or false,
     hook_function = fields.hook_function or {},
-    lsp_server_settings = fields.lsp_server_settings or M:lsp_server_settings(fields.lsp_server)
+    lsp_server_settings = fields.lsp_server_settings or M:lsp_set_server_settings(fields.lsp_server)
   }
   setmetatable(obj, { __index = self })
-  if obj.has_server_extension then
-    assert(obj.hook_function, "A hook function is required when has_server_extension is set to true.")
+  if obj.server_extension then
+    assert(obj.hook_function, "A hook function is required when server_extension is set to true.")
   end
   return obj
 end
 
 --- LSP Language server
-function M.get_lsp_server()
+function M:get_lsp_server()
   if type(self.lsp_server) == "string"  then
     return self.lsp_server 
   elseif type(self.lsp_server) then
@@ -72,36 +70,31 @@ function M:get_debugger()
 end
 
 function M:has_server_extension()
-  return self.has_server_extension
+  return self.server_extension
 end
 
 function M:get_lsp_server_settings()
-  if self.lsp_server_settings == nil or #self.lsp_server_settings == 0 then 
-    return {}
-  else
-    return self.lsp_server_settings
-  end
+  return self.lsp_server_settings
 end
 
-
---- The hook function a specific language can 
--- implement to be injected into a hook
-function M:hook_function() 
-  return self.hook_function
+function M:get_hook_callback()
+  return self.hook_function()
 end
-
 --- Helper function to inject specific server settings
 -- into server options when they exist. The file needs
 -- to have the same name as the respective lsp server name.
 --
+-- @field lsp_server: optionally source a specific lsp_server
+--
 -- @return the respective settings for a language server or false if not defined
-function M:lsp_server_settings(lsp_server)
+function M:lsp_set_server_settings(lsp_server)
   lsp_server = lsp_server or self.lsp_server
   local status_ok, lsp_settings = pcall(require, "user.languages.lsp.settings." .. lsp_server)
   if not status_ok then
-    return lsp_settings
+    return {}
   end
-  return {}
+  print(lsp_settings)
+  return lsp_settings
 end
 
 --- Hook to apply extensions to the basic
@@ -131,7 +124,7 @@ end
 function M:hook_server_extension_config_with_function(server_opts) 
   if self.lsp_server == "" then
     vim.notify("No server specified when hooking server extension", "error")
-    return false, {}
+    return false
   end
   -- inject server opts
   local status_ok, conf = pcall(require, "user.languages.lang." .. self.lsp_server)
@@ -140,6 +133,7 @@ function M:hook_server_extension_config_with_function(server_opts)
   else
     conf.server = server_opts
   end
+
   -- The injected function call
   local success, result = pcall(self.hook_function, conf)
   if success then

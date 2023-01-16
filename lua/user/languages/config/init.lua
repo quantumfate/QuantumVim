@@ -26,7 +26,8 @@ end
 function M:new(languages)
 
   local languages = languages or require("user.languages.config.setup")
-
+  
+  require"user.languages.config.lang_base"
   local m_status_ok, lang_base = pcall(require, "user.languages.config.lang_base")
   if not m_status_ok then 
     vim.notify("Something went wrong when requiring the lang_base for languages.", "warning")

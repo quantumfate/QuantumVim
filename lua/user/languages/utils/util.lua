@@ -32,7 +32,6 @@ function M:split_str(inputstr, sep, pos)
   else 
     return t
   end
-  return false
 end
 
 return M
