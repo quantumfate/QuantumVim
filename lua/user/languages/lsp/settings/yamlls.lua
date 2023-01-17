@@ -1,7 +1,9 @@
-return {
+local yamlls = {
   redhat = {
     telemetry = {
       enabled = true
     }
   }
 }
+
+return yamlls

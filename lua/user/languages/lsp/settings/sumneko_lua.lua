@@ -1,4 +1,4 @@
-return {
+local sumneko_lua = {
 	settings = {
 
 		Lua = {
@@ -14,3 +14,5 @@ return {
 		},
 	},
 }
+
+return sumneko_lua

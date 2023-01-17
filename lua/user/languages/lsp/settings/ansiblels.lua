@@ -1,4 +1,4 @@
-return {
+local ansiblels =  {
   ansible = {
     ansible = {
       path = "ansible"
@@ -18,3 +18,5 @@ return {
     }
   }
 }
+
+return ansiblels

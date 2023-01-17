@@ -1,10 +1,4 @@
---- This module can not be required in a protective
--- call (e.g. pcall) because it uses the debug module
--- to retrieve information from the stack trace and
--- the pcall function alters the stacktrace causing
--- this module to fail. This module is still safe
--- to use because it will require any file that it finds
--- in a protected call.
+--- Require this module in a protected call.
 local M = {}
 
 --- Scan a directory based on the ls command

@@ -1,5 +1,20 @@
 local M = {}
 
+local use_pcall = true
+
+--- Wrapper function to easily switch between pcall and require
+function M:require_module(path)
+  if use_pcall then
+    local status, module = pcall(require, path)
+    if status then
+      return module
+    else
+      return nil
+    end
+  else
+    return require(path)
+  end
+end
 --- The function split_str takes in three parameters: 
 -- 
 -- @field inputstr: The inputstr parameter is the string that will be split

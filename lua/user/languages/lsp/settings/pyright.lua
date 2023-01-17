@@ -1,4 +1,4 @@
-return {
+local python =  {
   settings = {
     python = {
       analysis = {
@@ -10,3 +10,5 @@ return {
     },
   },
 }
+
+return python
