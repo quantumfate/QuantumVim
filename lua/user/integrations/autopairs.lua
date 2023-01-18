@@ -1,8 +1,6 @@
 -- Setup nvim-cmp.
-local status_ok, npairs = pcall(require, "nvim-autopairs")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local npairs = utils:require_module("nvim-autopairs")
 
 npairs.setup {
   check_ts = true,

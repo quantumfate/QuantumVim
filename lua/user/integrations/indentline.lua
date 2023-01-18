@@ -1,7 +1,5 @@
-local status_ok, indent_blankline = pcall(require, "indent_blankline")
-if not status_ok then
-	return
-end
+local utils = require("user.utils.util")
+local indent_blankline = utils:require_module("indent_blankline")
 
 vim.g.indent_blankline_buftype_exclude = { "terminal", "nofile" }
 vim.g.indent_blankline_filetype_exclude = {

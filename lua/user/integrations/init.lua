@@ -1,16 +1,23 @@
-require "user.integrations.vimnotify"
-require "user.integrations.autopairs"
-require "user.integrations.bufferline"
-require "user.integrations.colorscheme"
-require "user.integrations.comment"
-require "user.integrations.gitsigns"
-require "user.integrations.hop"
-require "user.integrations.illuminate"
-require "user.integrations.indentline"
-require "user.integrations.lualine"
-require "user.integrations.nvim-tree"
-require "user.integrations.toggleterm"
-require "user.integrations.treesitter"
-require "user.integrations.vimtex"
-require "user.integrations.whichkey"
+local utils = require("user.utils.util")
+local integrations = {
+  "user.integrations.vimnotify",
+  "user.integrations.autopairs",
+  "user.integrations.bufferline",
+  "user.integrations.colorscheme",
+  "user.integrations.comment",
+  "user.integrations.gitsigns",
+  "user.integrations.hop",
+  "user.integrations.illuminate",
+  "user.integrations.indentline",
+  "user.integrations.lualine",
+  "user.integrations.nvim-tree",
+  "user.integrations.toggleterm",
+  "user.integrations.treesitter",
+  --"user.integrations.vimtex",
+  "user.integrations.whichkey",
+}
 
+local M = {}
+for i, module in ipairs(integrations) do
+  utils:require_module(module)
+end

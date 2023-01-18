@@ -1,7 +1,5 @@
-local status_ok, notify = pcall(require, "notify")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local notify = utils:require_module("notify")
 
 notify.setup({
   icons = {

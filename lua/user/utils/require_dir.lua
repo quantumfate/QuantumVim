@@ -1,24 +1,7 @@
 --- Require this module in a protected call.
 local M = {}
 
---- Scan a directory based on the ls command
--- and return a list with the filenames.
--- 
--- @field directory: The directory to be scanned
---
--- @return a list with directory file names
--- 
-local function scandir(directory)
-  local i, t = 0, {}
-  local pfile = io.popen('ls -a "'..directory..'"')
-  for filename in pfile:lines() do
-    i = i + 1
-    t[i] = filename
-  end
-  pfile:close()
-  return t
-end
-
+ 
 --- Require all the lua files from a directory in the 
 -- file where this function is called. The function 
 -- will exclude the file where this function is called meaning
@@ -39,6 +22,25 @@ end
 --         containing the file names of the module except for the
 --         file in which this function was called
 function M:require_directory_files(module_name, inject_module_table)
+
+  --- Scan a directory based on the ls command
+  -- and return a list with the filenames.
+  -- 
+  -- @field directory: The directory to be scanned
+  --
+  -- @return a list with directory file names
+  --
+  local function scandir(directory)
+    local i, t = 0, {}
+    local pfile = io.popen('ls -a "'..directory..'"')
+    for filename in pfile:lines() do
+      i = i + 1
+      t[i] = filename
+    end
+    pfile:close()
+    return t
+  end
+
 
   inject_module_table = inject_module_table or false
 

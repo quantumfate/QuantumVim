@@ -1,7 +1,3 @@
---
-local status_ok, _ = pcall(require, "dap")
-if not status_ok then
-  return
-end
-
-require "user.languages.dap.codelldb"
+local utils = require("user.utils.util")
+utils:require_module("dap")
+--utils:require_module("user.languages.dap.codelldb")

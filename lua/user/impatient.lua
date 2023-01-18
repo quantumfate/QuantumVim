@@ -1,6 +1,4 @@
-local status_ok, impatient = pcall(require, "impatient")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local impatient = utils:require_module("impatient")
 
 impatient.enable_profile()

@@ -1,7 +1,5 @@
-local status_ok, alpha = pcall(require, "alpha")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local alpha = utils:require_module("alpha")
 
 local dashboard = require("alpha.themes.dashboard")
 dashboard.section.header.val = {

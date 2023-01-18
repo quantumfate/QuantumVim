@@ -1,9 +1,5 @@
-
-local status_ok, codelldb = pcall(require, "codelldb")
-if not status_ok then
-  return
-end
-
+local utils = require("user.languages.utils.util")
+local codelldb = utils:require_module("codelldb")
 
 codelldb.adapters.codelldb = {
   type = 'server',

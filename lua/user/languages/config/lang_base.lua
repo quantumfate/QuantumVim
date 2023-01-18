@@ -1,3 +1,8 @@
+local utils = require("user.utils.util")
+utils:set_use_xpcall(true)
+utils:show_variables_in_trace(true)
+local debugger = utils:require_module("user.utils.debugger")
+
 --- Creates a base table for attributes a language configuration
 -- can implement. A language configuration can implement more then
 -- the provided fields from the lang_base module but this module
@@ -30,12 +35,13 @@ function M:new(fields)
 		debugger = fields.debugger or {},
 		server_extension = fields.server_extension or false,
 		hook_function = fields.hook_function or {},
-		lsp_server_settings = M:lsp_set_server_settings(fields.lsp_server) or {} or fields.lsp_server_settings,
+		lsp_server_settings = M:lsp_set_server_settings(fields.lsp_server) or fields.lsp_server_settings or {},
 	}
 	setmetatable(obj, { __index = self })
 	if obj.server_extension then
 		assert(obj.hook_function, "A hook function is required when server_extension is set to true.")
 	end
+  
 	return obj
 end
 
@@ -78,7 +84,7 @@ function M:get_lsp_server_settings()
 end
 
 function M:get_hook_callback()
-	return self.hook_function()
+	return self.hook_function
 end
 
 --- Helper function to inject specific server settings
@@ -90,12 +96,12 @@ end
 -- @return the respective settings for a language server or false if not defined
 function M:lsp_set_server_settings(lsp_server)
 	lsp_server = lsp_server or self.lsp_server
-	local status_ok, lsp_settings = pcall(require, "user.languages.lsp.settings")
+  local status_ok, lsp_settings = utils:require_module("user.languages.lsp.settings.", true)
 	if not status_ok then
 		return {}
 	end
-	local settings = lsp_settings[lsp_server]
-  return settings
+  vim.notify(lsp_server)
+  return lsp_settings[lsp_server]
 end
 
 --- Hook to apply extensions to the basic

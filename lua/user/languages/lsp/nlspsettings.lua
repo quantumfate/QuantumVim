@@ -1,5 +1,5 @@
-local nlspsettings = require("nlspsettings")
-
+local utils = require("user.utils.util")
+local nlspsettings = utils:require_module("nlspsettings")
 nlspsettings.setup({
 	config_home = vim.fn.stdpath("config") .. "/lua/languages/lsp/settings",
 	append_default_schemas = true,
@@ -7,4 +7,3 @@ nlspsettings.setup({
 	loader = "json",
 	local_settings_dir = ".nlsp-settings",
 })
-

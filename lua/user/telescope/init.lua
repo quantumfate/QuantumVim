@@ -1,2 +1,3 @@
-require "user.telescope.telescope"
-require "user.telescope.project"
+local utils = require("user.utils.util")
+utils:require_module("user.telescope.telescope")
+utils:require_module("user.telescope.project")

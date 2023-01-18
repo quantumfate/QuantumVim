@@ -1,7 +1,5 @@
-local status_mason_ok, mason = pcall(require, "mason")
-if not status_mason_ok then
-  return
-end
+local utils = require("user.utils.util")
+local mason = utils:require_module("mason")
 
 mason.setup({
   ui = {

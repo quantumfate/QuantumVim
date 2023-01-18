@@ -1,7 +1,5 @@
-local status_ok, hop = pcall(require, "hop")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local hop = utils:require_module("hop")
 --[[
 --  
 --  Author: Leon Connor Holm

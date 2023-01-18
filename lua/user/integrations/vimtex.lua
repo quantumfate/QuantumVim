@@ -1,7 +1,5 @@
-local status_ok, vimtex = pcall(require, "vimtex")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local vimtex = utils:require_module("vimtex")
 
 vim.cmd[[
   " This is necessary for VimTeX to load properly. The "indent" is optional.

@@ -1,3 +1,5 @@
+local utils = require("user.utils.util")
+local debugger = utils:require_module("user.utils.debugger")
 -- This module initialises the necessary configuration for the developer
 -- to interact with the from LSP and CMP provided functionality.
 --
@@ -25,7 +27,7 @@ M.setup = function()
 
 	local config = {
 		-- disable virtual text
-		virtual_text = false,
+		virtual_text = true,
 		-- show signs
 		signs = {
 			active = signs,
@@ -71,6 +73,7 @@ local function lsp_highlight_document(client)
 end
 
 local function lsp_keymaps(bufnr)
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
 	local opts = { noremap = true, silent = true }
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
@@ -93,6 +96,7 @@ local function lsp_keymaps(bufnr)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 	vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition)
 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
 --- This function makes sure that the internal formatting capability
@@ -114,16 +118,16 @@ end
 --
 -- @return modified capabilities to integrate a server into cmp
 M.capabilities = function()
-	local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-	if not status_ok then
-		return
+  local status_ok, cmp_nvim_lsp = utils:require_module("cmp_nvim_lsp", true)
+  if status_ok then
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    -- Initialise cmp specific capabilities to be hooked into CMP
+    return cmp_nvim_lsp.default_capabilities(capabilities)
+  else
+	  vim.notify("Making capabilities failed for lsp", "error")
+    return nil
 	end
-
-	local capabilities = vim.lsp.protocol.make_client_capabilities()
-	capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-	-- Initialise cmp specific capabilities to be hooked into CMP
-	return cmp_nvim_lsp.default_capabilities(capabilities)
 end
 
 --- @function M.init_lsp_server_config
@@ -135,31 +139,6 @@ end
 --
 -- @return the updated lsp configuration
 --
-M.init_lsp_server_config = function(language_value, server_opts)
-	-- Plug on_attach and capabilities to current server
-	server_opts.on_attach = M.on_attach
-	server_opts.capabilities = M.capabilities
-
-	-- Do everything for the current lsp server
-	local current_lsp_server = language_value:get_lsp_server()
-
-  print()
-  vim.notify(current_lsp_server)
-	local current_lsp_server_settings = language_value:get_lsp_server_settings()
-
-  opts = vim.tbl_deep_extend("force", current_lsp_server_settings, server_opts)
-
-  local lspconfig = nil
-	if language_value:has_server_extension() then
-	  lspconfig = language_value:hook_server_extension_config_with_function(opts)
-	else
-    vim.notify("hello")
-		lspconfig = require("lspconfig")[current_lsp_server]:setup(opts)
-	end
-
-  return lspconfig
-end
-
 --- Recursively iterates a json table and creates
 -- a one-to-one mapped lua table.
 --

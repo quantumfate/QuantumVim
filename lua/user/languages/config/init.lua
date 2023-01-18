@@ -1,9 +1,6 @@
 local M = {}
 
-local util_ok, my_util = pcall(require, "user.languages.utils.util")
-if not util_ok then
-	return
-end
+local utils = require("user.utils.util")
 
 local function require_table(path)
 	local status_ok, setup = pcall(require, path)
@@ -33,10 +30,9 @@ end
 --         If something goes wrong, the function will return false.
 function M:new(languages)
 
-  languages = languages or require("user.languages.config.setup")
+  local languages = languages or utils:require_module("user.languages.config.setup")
   
-  require"user.languages.config.lang_base"
-  local m_status_ok, lang_base = pcall(require, "user.languages.config.lang_base")
+  local m_status_ok, lang_base = utils:require_module("user.languages.config.lang_base", true)
   if not m_status_ok then 
     vim.notify("Something went wrong when requiring the lang_base for languages.", "warning")
     return false

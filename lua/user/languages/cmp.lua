@@ -1,14 +1,8 @@
-local cmp_status_ok, cmp = pcall(require, "cmp")
-if not cmp_status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local cmp = utils:require_module("cmp")
+local luasnip = utils:require_module("luasnip")
 
-local snip_status_ok, luasnip = pcall(require, "luasnip")
-if not snip_status_ok then
-  return
-end
 -- luasnip setup
-local luasnip = require 'luasnip'
 require("luasnip/loaders/from_vscode").lazy_load()
 
 local check_backspace = function()

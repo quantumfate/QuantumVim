@@ -1,8 +1,5 @@
-
-local status_ok, bufferline = pcall(require, "bufferline")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local bufferline = utils:require_module("bufferline")
 
 local highlights = require("nord").bufferline.highlights({
     italic = true,
@@ -29,8 +26,7 @@ bufferline.setup {
     right_trunc_marker = "",
     --- name_formatter can be used to change the buffer's label in the bufferline.
     --- Please note some names can/will break the
-    --- bufferline so use this at your discretion knowing that it has
-    --- some limitations that will *NOT* be fixed.
+    --- bufferline so use this at your discretion knowing that it has)    --- some limitations that will *NOT* be fixed.
     -- name_formatter = function(buf)  -- buf contains a "name", "path" and "bufnr"
     --   -- remove extension from markdown files for example
     --   if buf.name:match('%.md') then

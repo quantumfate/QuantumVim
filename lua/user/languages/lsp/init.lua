@@ -1,4 +1,5 @@
-require("user.languages.lsp.nlspsettings")
-require("user.languages.utils.handlers").setup()
-require("user.languages.lsp.lspconfig")
-require("user.languages.lsp.null-ls")
+local utils = require("user.utils.util")
+utils:require_module("user.languages.lsp.lspconfig")
+utils:require_module("user.languages.lsp.nlspsettings")
+utils:require_module("user.languages.lsp.null-ls")
+

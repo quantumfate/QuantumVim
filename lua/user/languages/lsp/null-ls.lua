@@ -1,12 +1,7 @@
-local null_ls_status_ok, null_ls = pcall(require, "null-ls")
-if not null_ls_status_ok then
-  return
-end
+local utils = require("user.utils.util")
 
-local mason_null_ls_status_ok, mason_null_ls = pcall(require, "mason-null-ls")
-if not mason_null_ls_status_ok then
-  return
-end
+local null_ls = utils:require_module("null-ls")
+local mason_null_ls = utils:require_module("mason-null-ls")
 
 
 -- TODO apply proper diagnostics and formatting engines

@@ -1,7 +1,5 @@
-local status_ok, toggleterm = pcall(require, "toggleterm")
-if not status_ok then
-	return
-end
+local utils = require("user.utils.util")
+local toggleterm = utils:require_module("toggleterm")
 
 toggleterm.setup({
 	size = 20,

@@ -1,7 +1,5 @@
-local status_ok, gitsigns = pcall(require, "gitsigns")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local gitsigns = utils:require_module ("gitsigns")
 
 gitsigns.setup({
   signs = {

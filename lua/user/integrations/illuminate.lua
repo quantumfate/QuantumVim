@@ -1,8 +1,5 @@
-
-local status_ok, illuminate = pcall(require, "illuminate")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local illuminate = utils:require_module("illuminate")
 -- default configuration
 illuminate.configure({
     -- providers: provider used to get references in the buffer, ordered by priority

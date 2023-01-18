@@ -1,7 +1,5 @@
-local status_ok, which_key = pcall(require, "which-key")
-if not status_ok then
-  return
-end
+local utils = require("user.utils.util")
+local which_key = utils:require_module("which-key")
 
 local setup = {
   plugins = {
