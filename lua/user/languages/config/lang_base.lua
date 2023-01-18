@@ -45,34 +45,38 @@ function M:new(fields)
 	return obj
 end
 
+local function strip_table_to_string(value)
+  if type(value) == "string" then
+		return value
+	elseif type(value) == "table" and #value ~= 0 then
+		return value[1]
+  else
+    return nil
+  end
+end
 --- LSP Language server
 function M:get_lsp_server()
-	if type(self.lsp_server) == "string" then
-		return self.lsp_server
-	elseif type(self.lsp_server) then
-		return self.lsp_server[1]
-	end
-	return false
+  return strip_table_to_string(self.lsp_server)
 end
 
 --- Null-ls builtin formatter
 function M:get_formatter()
-	return self.formatter
+	return strip_table_to_string(self.formatter)
 end
 
 --- Null-ls builtin diagnostics
 function M:get_diagnostics()
-	return self.diagnostics
+  return strip_table_to_string(self.diagnostics)
 end
 
 --- Null-ls builtin code actions
 function M:get_code_actions()
-	return self.code_actions
+  return strip_table_to_string(self.code_actions)
 end
 
 --- DAP or any other debugger
 function M:get_debugger()
-	return self.debugger
+  return strip_table_to_string(self.debugger)
 end
 
 function M:has_server_extension()

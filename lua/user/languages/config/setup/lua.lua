@@ -1,7 +1,7 @@
 local lua = {
   lsp_server = "sumneko_lua",
   formatter = "stylua",
-  diagnostics = "selene",
+  diagnostics = "luacheck",
 }
 
 return lua

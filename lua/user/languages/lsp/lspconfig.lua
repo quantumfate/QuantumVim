@@ -11,12 +11,11 @@ local mason_lspconfig = utils:require_module("mason-lspconfig")
 local handlers = utils:require_module("user.languages.lsp.handlers")
 local conf_languages = utils:require_module("user.languages.config")
 
-local conf_languages = require("user.languages.config")
 M.configured_languages = conf_languages:new()
-M.configured_language_servers = M.configured_languages:get_unique_lsp_server_list()
+configured_language_servers = M.configured_languages:get_unique_lsp_server_list()
 
 mason_lspconfig.setup({
-	ensure_installed = M.configured_language_servers,
+	ensure_installed = configured_language_servers,
 	automatic_installation = true,
 }) -- automatically install specified servers
 

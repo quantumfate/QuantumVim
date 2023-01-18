@@ -2,9 +2,12 @@ local utils = require("user.utils.util")
 
 local null_ls = utils:require_module("null-ls")
 local mason_null_ls = utils:require_module("mason-null-ls")
-  
---:wlocal mason_available_sources = mason_null_ls:get_available_sources()
+local lsp_config = utils:require_cached_module("user.languages.lsp.lspconfig")
 
+local configured_language_diagnostics = lsp_config.configured_languages:get_unique_diagnostic_list()
+local configured_language_formatters = lsp_config.configured_languages:get_unique_formatter_list()
+local mason_available_sources = mason_null_ls:get_available_sources()
+local ensure_installed = {unpack(configured_language_diagnostics), unpack(configured_language_formatters)}
 -- TODO apply proper diagnostics and formatting engines
 -- null_ls.setup(
 --     sources = {
@@ -12,7 +15,7 @@ local mason_null_ls = utils:require_module("mason-null-ls")
 --     }
 -- )
 mason_null_ls.setup({
-    ensure_installed = nil,
+    ensure_installed = ensure_installed,
     automatic_installation = true,
     automatic_setup = true,
 })
@@ -29,5 +32,7 @@ null_ls.setup({
     formatting.stylua,
     formatting.clang_format.with({ extra_args = { "--style=GNU" } }),
     diagnostics.flake8,
+    diagnostics.selene,
   },
 })
+require 'mason-null-ls'.setup_handlers() -- If `automatic_setup` is true.

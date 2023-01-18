@@ -64,7 +64,7 @@ end
 
 --- Wraps the get_unique_attr_server_list to
 -- call get_unique_attr_list with diagnostics as an attribute
-function M:get_unique_diagnostics_list()
+function M:get_unique_diagnostic_list()
 	return self:get_unique_attr_list("diagnostics")
 end
 
