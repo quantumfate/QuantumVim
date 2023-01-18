@@ -1,16 +1,16 @@
-local utils = require("user.utils.util")
+local utils = require("quantum.utils.util")
 utils:set_use_xpcall(true)
-require "user.packer"
---require "user.impatient"
-require "user.keymap"
-require "user.options"
+require "quantum.packer"
+--require "quantum.impatient"
+require "quantum.keymap"
+require "quantum.options"
 if vim.g.vscode then
   -- VSCode extension
-  require "user.vscode"
+  require "quantum.vscode"
 else
-  require "user.alpha"
-  require "user.integrations"
-  require "user.languages"
+  require "quantum.alpha"
+  require "quantum.integrations"
+  require "quantum.languages"
 end
 
 
