@@ -1,5 +1,5 @@
 require "user.packer"
---require "user.impatient"
+require "user.impatient"
 require "user.keymap"
 require "user.options"
 if vim.g.vscode then
