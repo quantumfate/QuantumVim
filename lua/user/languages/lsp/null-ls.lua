@@ -2,7 +2,8 @@ local utils = require("user.utils.util")
 
 local null_ls = utils:require_module("null-ls")
 local mason_null_ls = utils:require_module("mason-null-ls")
-
+  
+--:wlocal mason_available_sources = mason_null_ls:get_available_sources()
 
 -- TODO apply proper diagnostics and formatting engines
 -- null_ls.setup(
