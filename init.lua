@@ -1,14 +1,14 @@
-require "quantum.packer"
-require "quantum.impatient"
-require "quantum.keymap"
-require "quantum.options"
+require "lua.qvim.core.packer"
+require "lua.qvim.core.impatient"
+require "lua.qvim.core.keymap"
+require "lua.qvim.core.options"
 if vim.g.vscode then
   -- VSCode extension
-  require "quantum.vscode"
+  require "qvim.vscode"
 else
-  require "quantum.alpha"
-  require "quantum.integrations"
-  require "quantum.languages"
+  require "lua.qvim.core.alpha"
+  require "qvim.integrations"
+  require "qvim.languages"
 end
 
 
