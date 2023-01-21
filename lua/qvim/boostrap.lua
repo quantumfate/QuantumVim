@@ -111,7 +111,7 @@ end
 ---Update qvimVim
 ---pulls the latest changes from github and, resets the startup cache
 function M:update()
-  require("qvim.utils.log"):info "Trying to update qvimVim..."
+  require("qvim.utils.log"):info "Trying to update QuantumVim..."
   vim.schedule(function()
     reload("qvim.utils.hooks").run_pre_update()
     local ret = reload("qvim.utils.git").update_base_qvim()

@@ -1,4 +1,4 @@
-jlocal base_dir = vim.env.QUANTUMVIM_BASE_DIR
+local base_dir = vim.env.QUANTUMVIM_BASE_DIR
   or (function()
     local init_path = debug.getinfo(1, "S").source
     return init_path:sub(2):match("(.*[/\\])"):sub(1, -2)
@@ -10,16 +10,16 @@ end
 
 require("qvim.bootstrap"):init(base_dir)
 
-require("qvim.config"):load()
+require("qvim.config"):init()
 
-local plugins = require "qvim.plugins"
+local plugins = require "qvim.integrations"
 
-require("qvim.plugin-loader").load { plugins, qvim.plugins }
+require("qvim.plugin-loader").load { plugins }
 
 require("qvim.core.theme").setup()
 
 local Log = require "qvim.utils.log"
-Log:debug "Starting LunarVim"
+Log:debug "Starting QuantumVim"
 
 local commands = require "qvim.core.commands"
 commands.load(commands.defaults)

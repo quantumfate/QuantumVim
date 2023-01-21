@@ -23,7 +23,7 @@ function M.run_post_reload()
   Log:debug "Starting post-reload hook"
 end
 
----Reset any startup cache files used by lazy.nvim
+---Uses cache invalidation to reset any startup cache files used by lazy.nvim.
 ---It also forces regenerating any template ftplugin files
 ---Tip: Useful for clearing any outdated settings
 function M.reset_cache()

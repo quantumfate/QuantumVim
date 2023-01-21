@@ -81,10 +81,10 @@ end
 --
 --    reload("qvim.core.autocmds").configure_format_on_save()
 --
---    local plugins = reload "qvim.plugins"
+--    local plugins = reload "qvim.integrations"
 --    local plugin_loader = reload "qvim.plugin-loader"
 --
---    plugin_loader.reload { plugins, qvim.plugins }
+--    plugin_loader.reload { plugins }
 --    reload("qvim.core.theme").setup()
 --    reload("qvim.utils.hooks").run_post_reload()
 --  end)
