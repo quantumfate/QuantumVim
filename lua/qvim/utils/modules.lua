@@ -87,6 +87,15 @@ local function _replace(old, new, repeat_tbl)
     end
   end
 end
+---Unloads a module and returns it's state before it was unloaded.
+---@param m table the module that should be unloaded
+---@return table old the module before it was unloaded
+M.unload = function (m)
+  local old = package.loaded[m]
+  package.loaded[m] = nil
+  _G[m] = nil
+  return old
+end
 
 --- Requires a module and clears any chached state of the module.
 --- If the require of the module failed the cached state of the
@@ -95,10 +104,7 @@ end
 ---@return table module the clean required module on success else the old module before require
 M.require_clean = function(m)
 
-  local old = package.loaded[m]
-  package.loaded[m] = nil
-  _G[m] = nil
-
+  local old = M.unload(m)
   local status_ok, module = pcall(require, m)
   if not status_ok then
     local trace = debug.getinfo(2, "SL")

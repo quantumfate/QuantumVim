@@ -12,4 +12,3 @@ vim.g.nord_disable_background = false
 vim.g.nord_italic = false
 vim.g.nord_uniform_diff_background = true
 vim.g.nord_bold = false
-vim.g.tokyonight_dark_float = true

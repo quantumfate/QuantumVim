@@ -12,9 +12,9 @@ require("qvim.bootstrap"):init(base_dir)
 
 require("qvim.config"):init()
 
-local plugins = require "qvim.integrations"
+local integrations = require "qvim.integrations"
 
-require("qvim.plugin-loader").load { plugins }
+require("qvim.plugin-loader").load { integrations }
 
 require("qvim.core.theme").setup()
 

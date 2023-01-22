@@ -17,9 +17,6 @@ local integrations = {
   "qvim.integrations.whichkey",
 }
 
-for i, module in ipairs(integrations) do
-  utils:require_module(module)
-end
 function M.init()
     for _, integration_path in ipairs(integrations) do
       local integration = reload(integration_path)
