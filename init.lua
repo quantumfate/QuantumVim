@@ -1,18 +1,25 @@
-require "qvim.packer"
-require "qvim.impatient"
-require "qvim.keymap"
-require "qvim.options"
-if vim.g.vscode then
-  -- VSCode extension
-  require "qvim.vscode"
-else
-  require "qvim.alpha"
-  require "qvim.integrations"
-  require "qvim.languages"
+local base_dir = vim.env.QUANTUMVIM_BASE_DIR
+    or (function()
+      local init_path = debug.getinfo(1, "S").source
+      return init_path:sub(2):match("(.*[/\\])"):sub(1, -2)
+    end)()
+
+if not vim.tbl_contains(vim.opt.rtp:get(), base_dir) then
+  vim.opt.rtp:append(base_dir)
 end
+print(base_dir)
+require("qvim.bootstrap"):init(base_dir)
 
+require("qvim.config"):init()
 
+require("qvim.integrations.loader"):load()
 
+--require("qvim.integrations.theme").setup()
 
+local Log = require "qvim.utils.log"
+Log:debug "Starting QuantumVim"
 
+--local commands = require "qvim.core.commands"
+--commands.load(commands.defaults)
 
+--require("qvim.lsp").setup()

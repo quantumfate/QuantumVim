@@ -22,7 +22,6 @@ local Log = require "qvim.utils.log"
 local function _assign(old, new, k)
   local otype = type(old[k])
   local ntype = type(new[k])
-  -- print("hi")
   if (otype == "thread" or otype == "userdata") or (ntype == "thread" or ntype == "userdata") then
     vim.notify(string.format("warning: old or new attr %s type be thread or userdata", k))
   end
@@ -37,7 +36,7 @@ end
 ---function instead to to overwrite the old entries with the
 ---new ones
 ---
---- TODO optionally keep old data 
+--- TODO: optionally keep old data
 ---
 ---If there is a type mismatch between the keys it will overwrite
 ---the old type with the new type.
@@ -87,10 +86,11 @@ local function _replace(old, new, repeat_tbl)
     end
   end
 end
+
 ---Unloads a module and returns it's state before it was unloaded.
 ---@param m table the module that should be unloaded
 ---@return table old the module before it was unloaded
-M.unload = function (m)
+M.unload = function(m)
   local old = package.loaded[m]
   package.loaded[m] = nil
   _G[m] = nil

@@ -1,1 +1,12 @@
 /plugin/**
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+lua-language-server/
+eclipse.jdt.ls/
+.language-servers/
+.debuggers/
+store
+plugin

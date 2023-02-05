@@ -1,7 +1,11 @@
 local M = {}
 local uv = vim.loop
 
--- recursive Print (structure, limit, separator)
+---Recursively print a structure pretty formatted with a separator
+---@param structure any the structure to be recursed
+---@param limit any the maximum depth for the recursion
+---@param separator any the string to pretty format the structure
+---@return integer|unknown limit limit - 1
 local function r_inspect_settings(structure, limit, separator)
   limit = limit or 100 -- default item limit
   separator = separator or "." -- indent string

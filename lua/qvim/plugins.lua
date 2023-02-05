@@ -1,2 +1,0 @@
---- Plugins table where plugin config will be mapped to their setup function
----https://github.com/folke/lazy.nvim#-plugin-spec

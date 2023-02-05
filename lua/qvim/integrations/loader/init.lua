@@ -6,17 +6,17 @@ local join_paths = utils.join_paths
 
 local plugins_dir = join_paths(get_runtime_dir(), "site", "pack", "lazy", "opt")
 
----Initzialize lazy vim as the plugin loader. This function will 
----make sure to only bootstrap lazy vim when it has not been 
+---Initzialize lazy vim as the plugin loader. This function will
+---make sure to only bootstrap lazy vim when it has not been
 ---installed yet. On subsequent runs this function will only
 ---setup the cache for plugins and it will additionally prevent
----lazy vims setup function to be called twice. 
+---lazy vims setup function to be called twice.
 ---@param opts table optionally parse supported options by lazy vim
-function plugin_loader.init(opts)
+function plugin_loader:init(opts)
   opts = opts or {}
 
   local lazy_install_dir = opts.install_path
-    or join_paths(vim.fn.stdpath "data", "site", "pack", "lazy", "opt", "lazy.nvim")
+      or join_paths(vim.fn.stdpath "data", "site", "pack", "lazy", "opt", "lazy.nvim")
 
   if not utils.is_directory(lazy_install_dir) then
     print "Initializing first time setup"
@@ -64,7 +64,7 @@ function plugin_loader.init(opts)
   lazy_cache.setup = function() end
 end
 
-function plugin_loader.reset_cache()
+function plugin_loader:reset_cache()
   os.remove(require("lazy.core.cache").config.path)
 end
 
@@ -73,19 +73,19 @@ end
 ---old plugins to ensure everything will be clean loaded.
 ---Plugins will be unloaded at the beginning of the function
 ---call and when something goes wrong in the critical
----section, the unloaded plugins will be loaded again 
+---section, the unloaded plugins will be loaded again
 ---with their preserved state before they were unloaded.
 ---
----The plugin_loader.load(spec) function will be called 
+---The plugin_loader.load(spec) function will be called
 ---at the end when everything went right.
 ---
 ---@param spec table the spec table https://github.com/folke/lazy.nvim#-plugin-spec
-function plugin_loader.reload(spec)
+function plugin_loader:reload(spec)
   local modules = require "qvim.utils.modules"
   local old_modules = {}
   for m, _ in pairs(package.loaded) do
     local old = modules.unload(m)
-    old_modules[#old_modules+1] = old
+    old_modules[#old_modules + 1] = old
   end
 
   ---Critical section when reloading plugins.
@@ -116,25 +116,27 @@ function plugin_loader.reload(spec)
     end
   end
 
-  local success, _ pcall(relaod)
+  local success, _ = pcall(relaod)
   if not success then
     local trace = debug.getinfo(2, "SL")
     local shorter_src = trace.short_src
     local lineinfo = shorter_src .. ":" .. (trace.currentline or trace.linedefined)
-    local msg = string.format("%s : something went wrong when trying to reload the lazy plugin config spec [%s]", lineinfo, m)
+    local msg = string.format("%s : something went wrong when trying to reload the lazy plugin config spec [%s]",
+      lineinfo)
     Log:error(msg)
     for m, _ in pairs(old_modules) do
       modules.require_safe(m)
     end
     return
   else
-    plugin_loader.load(spec)
+    plugin_loader:load(spec)
   end
 end
 
 ---Loads all plugins and calls their setup function
----@param configurations table the plugin configuration table
-function plugin_loader.load(configurations)
+---@param spec table|nil the plugin configuration table
+function plugin_loader:load(spec)
+  spec = spec or require("qvim.integrations.loader.spec")
   Log:debug "loading plugins configuration"
   local lazy_available, lazy = pcall(require, "lazy")
   if not lazy_available then
@@ -149,7 +151,7 @@ function plugin_loader.load(configurations)
     local opts = {
       install = {
         missing = true,
-        colorscheme = { lvim.colorscheme, "lunar", "habamax" },
+        colorscheme = { qvim.colorscheme, "lunar", "habamax" },
       },
       ui = {
         border = "rounded",
@@ -169,7 +171,7 @@ function plugin_loader.load(configurations)
       },
     }
 
-    lazy.setup(configurations, opts)
+    lazy.setup(spec, opts)
   end, debug.traceback)
 
   if not status_ok then
@@ -178,9 +180,11 @@ function plugin_loader.load(configurations)
   end
 end
 
-function plugin_loader.get_core_plugins()
+---Requires the plugin spec and filter
+---@return table
+function plugin_loader:get_core_plugins()
   local names = {}
-  local plugins = require "lvim.plugins"
+  local plugins = require "qvim.integrations.loader.plugins_spec"
   local get_name = require("lazy.core.plugin").Spec.get_name
   for _, spec in pairs(plugins) do
     if spec.enabled == true or spec.enabled == nil then
@@ -190,8 +194,8 @@ function plugin_loader.get_core_plugins()
   return names
 end
 
-function plugin_loader.sync_core_plugins()
-  local core_plugins = plugin_loader.get_core_plugins()
+function plugin_loader:sync_core_plugins()
+  local core_plugins = plugin_loader:get_core_plugins()
   Log:trace(string.format("Syncing core plugins: [%q]", table.concat(core_plugins, ", ")))
   require("lazy").update { wait = true, plugins = core_plugins }
 end
