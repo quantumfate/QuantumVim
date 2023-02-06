@@ -151,7 +151,7 @@ function plugin_loader:load(spec)
     local opts = {
       install = {
         missing = true,
-        colorscheme = { qvim.colorscheme, "lunar", "habamax" },
+        colorscheme = { qvim.colorscheme, "habamax" },
       },
       ui = {
         border = "rounded",
@@ -167,7 +167,7 @@ function plugin_loader:load(spec)
         },
       },
       readme = {
-        root = join_paths(get_runtime_dir(), "lazy", "readme"),
+        root = join_paths(get_config_dir(), "lazy", "readme"),
       },
     }
 

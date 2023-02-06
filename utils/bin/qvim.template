@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+export QUANTUMVIM_DIR="${QUANTUMVIM_CONFIG_DIR:-DIR_VAR}"
+export QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-CACHE_DIR_VAR}"
+
+
+exec -a qvim nvim -u "$QUANTUMVIM_DIR/init.lua" "$@"

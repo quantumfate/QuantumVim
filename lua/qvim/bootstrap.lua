@@ -25,17 +25,6 @@ _G.require_clean = require("qvim.utils.modules").require_clean
 _G.require_safe = require("qvim.utils.modules").require_safe
 _G.reload = require("qvim.utils.modules").reload
 
----Get the full path to `$QUANTUMVIM_RUNTIME_DIR`
----@return string|nil
-function _G.get_runtime_dir()
-  local qvim_runtime_dir = os.getenv "QUANTUMVIM_RUNTIME_DIR"
-  if not qvim_runtime_dir then
-    -- when nvim is used directly
-    return vim.call("stdpath", "data")
-  end
-  return qvim_runtime_dir
-end
-
 ---Get the full path to `$QUANTUMVIM_CONFIG_DIR`
 ---@return string|nil
 function _G.get_config_dir()
@@ -59,7 +48,6 @@ end
 ---Initialize the `&runtimepath` variables and prepare for startup
 ---@return table
 function M:init(base_dir)
-  self.runtime_dir = get_runtime_dir()
   self.config_dir = get_config_dir()
   self.cache_dir = get_cache_dir()
   self.pack_dir = join_paths(self.runtime_dir, "site", "pack")
@@ -79,21 +67,6 @@ function M:init(base_dir)
   ---@return string
   function _G.get_qvim_base_dir()
     return base_dir
-  end
-
-  if os.getenv "QUANTUMVIM_RUNTIME_DIR" then
-    vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site"))
-    vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site", "after"))
-    -- vim.opt.rtp:prepend(join_paths(self.runtime_dir, "site"))
-    vim.opt.rtp:append(join_paths(self.runtime_dir, "qvim", "after"))
-    vim.opt.rtp:append(join_paths(self.runtime_dir, "site", "after"))
-
-    vim.opt.rtp:remove(vim.call("stdpath", "config"))
-    vim.opt.rtp:remove(join_paths(vim.call("stdpath", "config"), "after"))
-    vim.opt.rtp:prepend(self.config_dir)
-    vim.opt.rtp:append(join_paths(self.config_dir, "after"))
-
-    vim.opt.packpath = vim.opt.rtp:get()
   end
 
   print("Runtime dir: " .. self.runtime_dir)
