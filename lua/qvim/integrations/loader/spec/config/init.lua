@@ -38,13 +38,14 @@ end
 ---@return boolean valid whether the provided plugin name is valid or not
 ---@return string|nil plugin_name the plugins basename
 local function is_valid_plugin_name(plugin)
-    if plugin:match("^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+\\.(vim\\lua)?$") ~= nil then
-        local plugin_name = plugin:match("^[a-zA-Z0-9-_]+/([a-zA-Z0-9-_]+)%(.vim\\.lua)?$")
-        if plugin_name ~= nil then
-            return true, plugin_name
-        else
-            return false
-        end
+    local nvim_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.nvim$"
+    local lua_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.lua$"
+    local normal_pattern = "^[%a%d%-_]+/([%a%d%-_]+)$"
+
+    local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern)
+    Log:debug("Recognized the plugin: %s", plugin_name)
+    if plugin_name ~= nil then
+        return true, plugin_name
     else
         Log:warn("The plugin '%s' is not a valid plugin name.", plugin)
         return false
@@ -74,7 +75,7 @@ end
 
 ---The plugins that should be configured
 M.qvim_integrations = {
-    { "folke/lazy.nvim", tag = "stable" },
+    "folke/lazy.nvim",
     "Tastyep/structlog.nvim",
     "nvim-telescope/telescope.nvim",
     "windwp/nvim-autopairs",

@@ -47,20 +47,6 @@ local function r_inspect_settings(structure, limit, separator)
   return limit - 1
 end
 
-function M.generate_settings()
-  -- Opens a file in append mode
-  local file = io.open("lv-settings.lua", "w")
-
-  -- sets the default output file as test.lua
-  io.output(file)
-
-  -- write all `qvim` related settings to `lv-settings.lua` file
-  r_inspect_settings(qvim, 10000, ".")
-
-  -- closes the open file
-  io.close(file)
-end
-
 --- Returns a table with the default values that are missing.
 --- either parameter can be empty.
 --@param config (table) table containing entries that take priority over defaults

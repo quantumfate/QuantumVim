@@ -1,4 +1,5 @@
-local utils = require("qvim.utils.util")
+local M = {}
+
 local integrations = {
   "qvim.integrations.vimnotify",
   "qvim.integrations.autopairs",
@@ -17,10 +18,11 @@ local integrations = {
   "qvim.integrations.whichkey",
 }
 
-function M.init()
-    for _, integration_path in ipairs(integrations) do
-      local integration = reload(integration_path)
-      integration.config()
-    end
+function M:init()
+  for _, integration_path in ipairs(integrations) do
+    local integration = reload(integration_path)
+    integration.config()
   end
+end
+
 return M

@@ -1,5 +1,5 @@
 local utils = require "qvim.utils"
-local Log = require "qvim.core.log"
+local Log = require "qvim.utils.log"
 
 local M = {}
 
@@ -10,16 +10,17 @@ function M:init()
 
   qvim.keys = require("qvim.config.keymappings").load_defaults()
 
-  local integrations = reload("qvim.integrations")
-  integrations.init()
+  -- TODO: init configuration table for plugins
+  --local integrations = require("qvim.integrations")
+  --integrations:init()
   local settings = require "qvim.config.settings"
   settings.load_defaults()
-  local autocmds = require "qvim.core.autocmds"
+  local autocmds = require "qvim.integrations.autocmds"
   autocmds.load_defaults()
 
-  local qvim_lsp_config = require "qvim.lsp.config"
+  --local qvim_lsp_config = require "qvim.lsp.config"
   -- TODO: add lsp language configs to global qvim variable
-  qvim.lsp = vim.deepcopy(qvim_lsp_config)
+  --qvim.lsp = vim.deepcopy(qvim_lsp_config)
 
 end
 

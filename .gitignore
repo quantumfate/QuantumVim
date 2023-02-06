@@ -10,3 +10,5 @@ eclipse.jdt.ls/
 .debuggers/
 store
 plugin
+lazy
+site

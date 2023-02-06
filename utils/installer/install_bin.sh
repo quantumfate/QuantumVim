@@ -21,7 +21,7 @@ function setup_qvim() {
 
   cp "$src" "$dst"
 
-  sed -e s"#DIR_VAR#\"${QUANTUMVIM_DIR}\"#"g \
+  sed -e s"#QVIM_DIR_VAR#\"${QUANTUMVIM_DIR}\"#"g \
     -e s"#CACHE_DIR_VAR#\"${QUANTUMVIM_CACHE_DIR}\"#"g "$src" \
     | tee "$dst" >/dev/null
 

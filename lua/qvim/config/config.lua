@@ -12,12 +12,12 @@ return {
     timeout = 1000,
     ---@usage filter func to select client
     --filter = require("lvim.lsp.utils").format_filter,
-    -- TODO add mason-lspconfig 
+    -- TODO add mason-lspconfig
   },
   keys = {},
 
   use_icons = true,
-  icons = require "lvim.icons",
+  icons = require "qvim.icons",
 
   autocommands = {},
   lang = {},
@@ -26,7 +26,7 @@ return {
     level = "info",
     viewer = {
       ---@usage this will fallback on "less +F" if not found
-      cmd = "lnav",
+      cmd = "qnav",
       layout_config = {
         ---@usage direction = 'vertical' | 'horizontal' | 'window' | 'float',
         direction = "horizontal",
