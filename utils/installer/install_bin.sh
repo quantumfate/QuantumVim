@@ -11,7 +11,7 @@ QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/qvim"}"
 
 
 function setup_qvim() {
-  local src="$QUANTUMVIM_BASE_DIR/utils/bin/qvim.template"
+  local src="$QUANTUMVIM_DIR/utils/bin/qvim.template"
   local dst="$INSTALL_PREFIX/bin/qvim"
 
   [ ! -d "$INSTALL_PREFIX/bin" ] && mkdir -p "$INSTALL_PREFIX/bin"
