@@ -25,14 +25,14 @@ _G.require_clean = require("qvim.utils.modules").require_clean
 _G.require_safe = require("qvim.utils.modules").require_safe
 _G.reload = require("qvim.utils.modules").reload
 
----Get the full path to `$QUANTUMVIM_CONFIG_DIR`
+---Get the full path to `$QUANTUMVIM_DIR`
 ---@return string|nil
-function _G.get_config_dir()
-  local qvim_config_dir = os.getenv "QUANTUMVIM_CONFIG_DIR"
-  if not qvim_config_dir then
+function _G.get_qvim_dir()
+  local qvim_dir = os.getenv "QUANTUMVIM_DIR"
+  if not qvim_dir then
     return vim.call("stdpath", "config")
   end
-  return qvim_config_dir
+  return qvim_dir
 end
 
 ---Get the full path to `$QUANTUMVIM_CACHE_DIR`
@@ -47,10 +47,10 @@ end
 
 ---Initialize the `&runtimepath` variables and prepare for startup
 ---@return table
-function M:init(base_dir)
-  self.config_dir = get_config_dir()
+function M:init()
+  self.qvim_dir = get_qvim_dir()
   self.cache_dir = get_cache_dir()
-  self.pack_dir = join_paths(self.runtime_dir, "site", "pack")
+  self.pack_dir = join_paths(self.qvim_dir, "site", "pack")
   self.lazy_install_dir = join_paths(self.pack_dir, "lazy", "opt", "lazy.nvim")
 
   ---@meta overridden to use QUANTUMVIM_CACHE_DIR instead, since a lot of plugins call this function internally
@@ -63,14 +63,8 @@ function M:init(base_dir)
     return vim.call("stdpath", what)
   end
 
-  ---Get the full path to QUANTUMVim's base directory
-  ---@return string
-  function _G.get_qvim_base_dir()
-    return base_dir
-  end
-
-  print("Runtime dir: " .. self.runtime_dir)
-  print("Config dir: " .. self.config_dir)
+  print("Qvim dir: " .. self.qvim_dir)
+  print("cache dir: " .. self.cache_dir)
   require("qvim.integrations.loader"):init {
     package_root = self.pack_dir,
     install_path = self.lazy_install_dir,
@@ -78,7 +72,7 @@ function M:init(base_dir)
 
   require("qvim.config"):init()
 
-  require("qvim.core.mason").bootstrap()
+  --require("qvim.core.mason").bootstrap()
 
   return self
 end

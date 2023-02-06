@@ -4,7 +4,7 @@ local utils = require "qvim.utils"
 local Log = require "qvim.utils.log"
 local join_paths = utils.join_paths
 
-local plugins_dir = join_paths(get_runtime_dir(), "site", "pack", "lazy", "opt")
+local plugins_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -160,14 +160,14 @@ function plugin_loader:load(spec)
       git = {
         timeout = 120,
       },
-      lockfile = join_paths(get_config_dir(), "lazy-lock.json"),
+      lockfile = join_paths(get_qvim_dir(), "lazy-lock.json"),
       performance = {
         rtp = {
           reset = false,
         },
       },
       readme = {
-        root = join_paths(get_config_dir(), "lazy", "readme"),
+        root = join_paths(get_qvim_dir(), "lazy", "readme"),
       },
     }
 
