@@ -23,7 +23,6 @@ function M:init()
 
 end
 
-
 --[[
   For now I have absolutely no intentions to implement the functions
   below as my configuration is not meant to be scalable by desing.
@@ -49,7 +48,7 @@ end
 --        string.format("User-configuration not found. Creating an example configuration in %s", config_path)
 --      )
 --      local config_name = vim.loop.os_uname().version:match "Windows" and "config_win" or "config"
---      local example_config = join_paths(get_qvim_base_dir(), "utils", "installer", config_name .. ".example.lua")
+--      local example_config = join_paths(get_qvim_dir(), "utils", "installer", config_name .. ".example.lua")
 --      vim.fn.mkdir(user_config_dir, "p")
 --      vim.loop.fs_copyfile(example_config, config_path)
 --    end
