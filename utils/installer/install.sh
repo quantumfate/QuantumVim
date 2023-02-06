@@ -4,7 +4,7 @@ set -eo pipefail
 OS="$(uname -s)"
 
 #Set branch to master unless specified by the user
-declare -x QV_BRANCH="${QV_BRANCH:-"master"}"
+declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
 declare -xr QV_REMOTE="${QV_REMOTE:-quantumfate/quantumvim.git}"
 declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
