@@ -6,18 +6,20 @@ local Log = require "qvim.utils.log"
 ---
 ---Refer to: https://github.com/folke/lazy.nvim#-plugin-spec
 ---
----@param fields table the plugin spec options
+---@param name string the plugin name
 ---@return table obj a plugin spec to be used by lazy
-function M:new(fields)
+function M:new(name)
+    local fields = M:load_options_for_plugin(name)
 
     local obj = {
+        name or "",
         lazy = fields.lazy or false,
         enabled = fields.enabled or true,
         cond = fields.cond or true,
         dependencies = fields.dependencies or {},
-        init = fields.init or {},
+        init = fields.init or nil,
         opts = fields.opts or {},
-        config = fields.config or nil,
+        config = fields.config or true,
         build = fields.build or nil,
         branch = fields.branch or nil,
         tag = fields.tag or nil,
@@ -27,9 +29,7 @@ function M:new(fields)
         cmd = fields.cmd or nil,
         ft = fields.ft or nil,
         priority = fields.priority or 50,
-
     }
-    setmetatable(obj, { __index = self })
     return obj
 end
 
