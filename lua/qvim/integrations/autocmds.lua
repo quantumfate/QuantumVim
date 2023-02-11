@@ -1,153 +1,153 @@
 local M = {}
 local Log = require "qvim.utils.log"
-
+-- TODO: adapt
 --- Load the default set of autogroups and autocommands.
 function M.load_defaults()
   local definitions = {
-    {
-      "TextYankPost",
       {
-        group = "_general_settings",
-        pattern = "*",
-        desc = "Highlight text on yank",
-        callback = function()
-          vim.highlight.on_yank { higroup = "Search", timeout = 100 }
-        end,
+          "TextYankPost",
+          {
+              group = "_general_settings",
+              pattern = "*",
+              desc = "Highlight text on yank",
+              callback = function()
+                vim.highlight.on_yank { higroup = "Search", timeout = 100 }
+              end,
+          },
       },
-    },
-    {
-      "FileType",
       {
-        group = "_hide_dap_repl",
-        pattern = "dap-repl",
-        command = "set nobuflisted",
+          "FileType",
+          {
+              group = "_hide_dap_repl",
+              pattern = "dap-repl",
+              command = "set nobuflisted",
+          },
       },
-    },
-    {
-      "FileType",
       {
-        group = "_filetype_settings",
-        pattern = { "lua" },
-        desc = "fix gf functionality inside .lua files",
-        callback = function()
-          ---@diagnostic disable: assign-type-mismatch
-          -- credit: https://github.com/sam4llis/nvim-lua-gf
-          vim.opt_local.include = [[\v<((do|load)file|require|reload)[^''"]*[''"]\zs[^''"]+]]
-          vim.opt_local.includeexpr = "substitute(v:fname,'\\.','/','g')"
-          vim.opt_local.suffixesadd:prepend ".lua"
-          vim.opt_local.suffixesadd:prepend "init.lua"
+          "FileType",
+          {
+              group = "_filetype_settings",
+              pattern = { "lua" },
+              desc = "fix gf functionality inside .lua files",
+              callback = function()
+                ---@diagnostic disable: assign-type-mismatch
+                -- credit: https://github.com/sam4llis/nvim-lua-gf
+                vim.opt_local.include = [[\v<((do|load)file|require|reload)[^''"]*[''"]\zs[^''"]+]]
+                vim.opt_local.includeexpr = "substitute(v:fname,'\\.','/','g')"
+                vim.opt_local.suffixesadd:prepend ".lua"
+                vim.opt_local.suffixesadd:prepend "init.lua"
 
-          for _, path in pairs(vim.api.nvim_list_runtime_paths()) do
-            vim.opt_local.path:append(path .. "/lua")
-          end
-        end,
+                for _, path in pairs(vim.api.nvim_list_runtime_paths()) do
+                  vim.opt_local.path:append(path .. "/lua")
+                end
+              end,
+          },
       },
-    },
-    {
-      "FileType",
       {
-        group = "_buffer_mappings",
-        pattern = {
-          "qf",
-          "help",
-          "man",
-          "floaterm",
-          "lspinfo",
-          "lir",
-          "lsp-installer",
-          "null-ls-info",
-          "tsplayground",
-          "DressingSelect",
-          "Jaq",
-        },
-        callback = function()
-          vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
-          vim.opt_local.buflisted = false
-        end,
+          "FileType",
+          {
+              group = "_buffer_mappings",
+              pattern = {
+                  "qf",
+                  "help",
+                  "man",
+                  "floaterm",
+                  "lspinfo",
+                  "lir",
+                  "lsp-installer",
+                  "null-ls-info",
+                  "tsplayground",
+                  "DressingSelect",
+                  "Jaq",
+              },
+              callback = function()
+                vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = true })
+                vim.opt_local.buflisted = false
+              end,
+          },
       },
-    },
-    {
-      "VimResized",
       {
-        group = "_auto_resize",
-        pattern = "*",
-        command = "tabdo wincmd =",
+          "VimResized",
+          {
+              group = "_auto_resize",
+              pattern = "*",
+              command = "tabdo wincmd =",
+          },
       },
-    },
-    {
-      "FileType",
       {
-        group = "_filetype_settings",
-        pattern = "alpha",
-        callback = function()
-          vim.cmd [[
+          "FileType",
+          {
+              group = "_filetype_settings",
+              pattern = "alpha",
+              callback = function()
+                vim.cmd [[
             set nobuflisted
           ]]
-        end,
+              end,
+          },
       },
-    },
-    {
-      "FileType",
       {
-        group = "_filetype_settings",
-        pattern = "lir",
-        callback = function()
-          vim.opt_local.number = false
-          vim.opt_local.relativenumber = false
-        end,
+          "FileType",
+          {
+              group = "_filetype_settings",
+              pattern = "lir",
+              callback = function()
+                vim.opt_local.number = false
+                vim.opt_local.relativenumber = false
+              end,
+          },
       },
-    },
-    {
-      "ColorScheme",
       {
-        group = "_qvim_colorscheme",
-        callback = function()
-          if qvim.builtin.breadcrumbs.active then
-            require("qvim.core.breadcrumbs").get_winbar()
-          end
-          local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
-          local cursorline_hl = vim.api.nvim_get_hl_by_name("CursorLine", true)
-          local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
-          vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
-          vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = "#CA42F0" })
-          vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = "#F64D00" })
-          vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
-          vim.api.nvim_set_hl(0, "SLCopilot", { fg = "#6CC644", bg = statusline_hl.background })
-          vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = cursorline_hl.background })
-          vim.api.nvim_set_hl(0, "SLBranchName", { fg = normal_hl.foreground, bg = cursorline_hl.background })
-          vim.api.nvim_set_hl(0, "SLSeparator", { fg = cursorline_hl.background, bg = statusline_hl.background })
-        end,
+          "ColorScheme",
+          {
+              group = "_qvim_colorscheme",
+              callback = function()
+                if qvim.builtin.breadcrumbs.active then
+                  require("qvim.core.breadcrumbs").get_winbar()
+                end
+                local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
+                local cursorline_hl = vim.api.nvim_get_hl_by_name("CursorLine", true)
+                local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
+                vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+                vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = "#CA42F0" })
+                vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = "#F64D00" })
+                vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
+                vim.api.nvim_set_hl(0, "SLCopilot", { fg = "#6CC644", bg = statusline_hl.background })
+                vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = cursorline_hl.background })
+                vim.api.nvim_set_hl(0, "SLBranchName", { fg = normal_hl.foreground, bg = cursorline_hl.background })
+                vim.api.nvim_set_hl(0, "SLSeparator", { fg = cursorline_hl.background, bg = statusline_hl.background })
+              end,
+          },
       },
-    },
-    { -- taken from AstroNvim
-      "BufEnter",
-      {
-        group = "_dir_opened",
-        once = true,
-        callback = function(args)
-          local bufname = vim.api.nvim_buf_get_name(args.buf)
-          if require("qvim.utils").is_directory(bufname) then
-            vim.api.nvim_del_augroup_by_name "_dir_opened"
-            vim.cmd "do User DirOpened"
-            vim.api.nvim_exec_autocmds("BufEnter", {})
-          end
-        end,
+      { -- taken from AstroNvim
+          "BufEnter",
+          {
+              group = "_dir_opened",
+              once = true,
+              callback = function(args)
+                local bufname = vim.api.nvim_buf_get_name(args.buf)
+                if require("qvim.utils").is_directory(bufname) then
+                  vim.api.nvim_del_augroup_by_name "_dir_opened"
+                  vim.cmd "do User DirOpened"
+                  vim.api.nvim_exec_autocmds("BufEnter", {})
+                end
+              end,
+          },
       },
-    },
-    { -- taken from AstroNvim
-      { "BufRead", "BufWinEnter", "BufNewFile" },
-      {
-        group = "_file_opened",
-        once = true,
-        callback = function(args)
-          local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
-          if not (vim.fn.expand "%" == "" or buftype == "nofile") then
-            vim.cmd "do User FileOpened"
-            require("qvim.lsp").setup()
-          end
-        end,
+      { -- taken from AstroNvim
+          { "BufRead", "BufWinEnter", "BufNewFile" },
+          {
+              group = "_file_opened",
+              once = true,
+              callback = function(args)
+                local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
+                if not (vim.fn.expand "%" == "" or buftype == "nofile") then
+                  vim.cmd "do User FileOpened"
+                  require("qvim.lsp").setup()
+                end
+              end,
+          },
       },
-    },
   }
 
   M.define_autocmds(definitions)
@@ -161,8 +161,8 @@ local get_format_on_save_opts = function()
   end
 
   return {
-    pattern = qvim.format_on_save.pattern or defaults.pattern,
-    timeout = qvim.format_on_save.timeout or defaults.timeout,
+      pattern = qvim.format_on_save.pattern or defaults.pattern,
+      timeout = qvim.format_on_save.timeout or defaults.timeout,
   }
 end
 
@@ -170,11 +170,11 @@ function M.enable_format_on_save()
   local opts = get_format_on_save_opts()
   vim.api.nvim_create_augroup("lsp_format_on_save", {})
   vim.api.nvim_create_autocmd("BufWritePre", {
-    group = "lsp_format_on_save",
-    pattern = opts.pattern,
-    callback = function()
-      require("qvim.lsp.utils").format { timeout_ms = opts.timeout, filter = opts.filter }
-    end,
+      group = "lsp_format_on_save",
+      pattern = opts.pattern,
+      callback = function()
+        require("qvim.lsp.utils").format { timeout_ms = opts.timeout, filter = opts.filter }
+      end,
   })
   Log:debug "enabled format-on-save"
 end
@@ -196,9 +196,9 @@ end
 
 function M.toggle_format_on_save()
   local exists, autocmds = pcall(vim.api.nvim_get_autocmds, {
-    group = "lsp_format_on_save",
-    event = "BufWritePre",
-  })
+          group = "lsp_format_on_save",
+          event = "BufWritePre",
+      })
   if not exists or #autocmds == 0 then
     M.enable_format_on_save()
   else
@@ -212,32 +212,32 @@ function M.enable_reload_config_on_save()
 
   vim.api.nvim_create_augroup("qvim_reload_config_on_save", {})
   vim.api.nvim_create_autocmd("BufWritePost", {
-    group = "qvim_reload_config_on_save",
-    pattern = pattern,
-    desc = "Trigger LvimReload on saving config.lua",
-    callback = function()
-      require("qvim.config"):reload()
-    end,
+      group = "qvim_reload_config_on_save",
+      pattern = pattern,
+      desc = "Trigger LvimReload on saving config.lua",
+      callback = function()
+        require("qvim.config"):reload()
+      end,
   })
 end
 
 function M.enable_transparent_mode()
   vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
-    callback = function()
-      local hl_groups = {
-        "Normal",
-        "SignColumn",
-        "NormalNC",
-        "TelescopeBorder",
-        "NvimTreeNormal",
-        "EndOfBuffer",
-        "MsgArea",
-      }
-      for _, name in ipairs(hl_groups) do
-        vim.cmd(string.format("highlight %s ctermbg=none guibg=none", name))
-      end
-    end,
+      pattern = "*",
+      callback = function()
+        local hl_groups = {
+            "Normal",
+            "SignColumn",
+            "NormalNC",
+            "TelescopeBorder",
+            "NvimTreeNormal",
+            "EndOfBuffer",
+            "MsgArea",
+        }
+        for _, name in ipairs(hl_groups) do
+          vim.cmd(string.format("highlight %s ctermbg=none guibg=none", name))
+        end
+      end,
   })
   vim.opt.fillchars = "eob: "
 end

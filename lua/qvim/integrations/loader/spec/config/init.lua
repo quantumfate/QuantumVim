@@ -19,7 +19,7 @@ function M:new(name)
         dependencies = fields.dependencies or {},
         init = fields.init or nil,
         opts = fields.opts or {},
-        config = fields.config or true,
+        config = fields.config or M:hook_integration_config(name),
         build = fields.build or nil,
         branch = fields.branch or nil,
         tag = fields.tag or nil,
@@ -49,6 +49,25 @@ local function is_valid_plugin_name(plugin)
     else
         Log:warn("The plugin '%s' is not a valid plugin name.", plugin)
         return false
+    end
+end
+---Hook the setup function of a plugin and return it as a callback.
+---If this function returns nil the setup call of the integration will
+---be delegated to the lazy plugin manager.
+---@param plugin string the qualified plugin name
+---@return function|nil callback the function callback or nil on fail
+function M:hook_integration_config(plugin)
+    local callback = nil
+    local isvalid, plugin_name = is_valid_plugin_name(plugin)
+    if isvalid then
+        local plugin_file = "qvim.integrations" .. plugin_name
+        local success, result = pcall(require, plugin_file)
+        if success then
+            callback = result.setup
+        end
+        return callback
+    else
+        return callback
     end
 end
 
