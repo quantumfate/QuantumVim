@@ -1,5 +1,10 @@
+---The QV_STRING_PLUGIN_NAME_VAR configuration file
 local M = {}
 
+local utils = require "qvim.utils"
+local Log = require "qvim.utils.log"
+
+---Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
 M.config = function()
   qvim.integrations.QV_PLUGIN_NAME_VAR = {
     active = true,
@@ -11,8 +16,11 @@ M.config = function()
   }
 end
 
+---The QV_NAME_OF_PLUGIN setup function. The module will be required by 
+---this function and it will call the respective setup function.
+---A on_config_done function will be called if the plugin implements it.
 M.setup = function()
-  local status_ok, QV_PLUGIN_NAME_VAR = pcall(reload, "QV_PLUGIN_NAME_VAR")
+  local status_ok, QV_PLUGIN_NAME_VAR = pcall(reload, "QV_STRING_PLUGIN_NAME_VAR")
   if not status_ok then
     Log:warn("The plugin '%s' could not be loaded.", QV_PLUGIN_NAME_VAR)
     return

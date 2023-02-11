@@ -23,9 +23,11 @@ function generate_plugin_config_file() {
   fi
 
   cp "$src" "$dst"
-  # Replace - with _ 
+
+  PLUGIN_NAME_STRING=$PLUGIN_NAME
   PLUGIN_NAME="${PLUGIN_NAME//-/_}"
-  sed -e s"#QV_PLUGIN_NAME_VAR#${PLUGIN_NAME}#"g "$src" \
+  sed -e s"#QV_STRING_PLUGIN_NAME_VAR#${PLUGIN_NAME_STRING}#"g \
+    -e s"#QV_PLUGIN_NAME_VAR#${PLUGIN_NAME}#"g "$src" \
     | tee "$dst" >/dev/null
 }
 
