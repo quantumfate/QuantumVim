@@ -11,7 +11,7 @@ local integrations = {
     --"qvim.integrations.illuminate",
     --"qvim.integrations.indentline",
     --"qvim.integrations.lualine",
-    --"qvim.integrations.nvim-tree",
+    "qvim.integrations.nvim-tree",
     --"qvim.integrations.toggleterm",
     --"qvim.integrations.treesitter",
     --"qvim.integrations.vimtex",
