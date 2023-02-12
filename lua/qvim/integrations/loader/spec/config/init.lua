@@ -33,6 +33,18 @@ function M:new(name)
     return obj
 end
 
+---Validates if a plugin is configured meaning that its global
+---configuration table is defined.
+---@param plugin_name string|nil the actual plugin name
+local function is_plugin_configured(plugin_name)
+    if type(plugin_name) == "string" and qvim.integrations[plugin_name] then
+        return true
+    else
+        Log:warn("Plugin is defined but not configured: '%s'", plugin_name)
+        return false
+    end
+end
+
 ---Validates the plugin name and returns its basename.
 ---@param plugin string The full plugin path
 ---@return boolean valid whether the provided plugin name is valid or not
@@ -66,7 +78,7 @@ end
 
 ---Enables a plugin and updates the global configuration variable.
 ---By default a plugin will be activated unless its deactivated explicitly.
----@param plugin string The plugin string
+---@param plugin string The qualified plugin name
 function M:activate_plugin(plugin)
     local isvalid, plugin_name = is_valid_plugin_name(plugin)
     if isvalid then
@@ -78,6 +90,8 @@ function M:activate_plugin(plugin)
 end
 
 ---Hook the setup function of a plugin and return it as a callback.
+---If the global configuration table of a plugin is not defined this
+---function will return nil even if a setup function is declared for the plugin.
 ---If this function returns nil the setup call of the integration will
 ---be delegated to the lazy plugin manager.
 ---@param plugin string the qualified plugin name
@@ -88,8 +102,7 @@ function M:hook_integration_config(plugin)
     if isvalid then
         local plugin_file = "qvim.integrations." .. plugin_name
         local success, result = pcall(require, plugin_file)
-        if success then
-            print("this" .. plugin_name)
+        if success and is_plugin_configured(plugin_name) then
             callback = result.setup
         end
         return callback
