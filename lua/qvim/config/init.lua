@@ -11,8 +11,8 @@ function M:init()
   qvim.keys = require("qvim.config.keymappings").load_defaults()
 
   -- TODO: init configuration table for plugins
-  --local integrations = require("qvim.integrations")
-  --integrations:init()
+  local integrations = require("qvim.integrations")
+  integrations:init()
   local settings = require "qvim.config.settings"
   settings.load_defaults()
   -- TODO: autocmds

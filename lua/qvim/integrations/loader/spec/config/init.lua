@@ -60,7 +60,7 @@ function M:hook_integration_config(plugin)
     local callback = nil
     local isvalid, plugin_name = is_valid_plugin_name(plugin)
     if isvalid then
-        local plugin_file = "qvim.integrations" .. plugin_name
+        local plugin_file = "qvim.integrations." .. plugin_name
         local success, result = pcall(require, plugin_file)
         if success then
             print("this" .. plugin_name)

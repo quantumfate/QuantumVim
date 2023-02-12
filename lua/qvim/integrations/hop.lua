@@ -66,17 +66,18 @@ M.setup = function()
     return
   end
   local hop_keys = qvim.integrations.hop.options.keys
-  hop.setup(hop_keys)
 
+  hop.setup { keys = hop_keys }
 
   print("hello hop")
   local keymap = vim.api.nvim_set_keymap
 
   local hop_bindings = qvim.integrations.hop.options.bindings
+  local hop_opts = qvim.integrations.hop.options.opts
 
   for _, value in ipairs(hop_bindings) do
     if value.hint_offset then
-      opts.callback = function()
+      hop_opts.callback = function()
         hop.hint_char1({
             direction = value.direction,
             current_line_only = value.current_line_only,
@@ -84,15 +85,15 @@ M.setup = function()
         })
       end
     else
-      opts.callback = function()
+      hop_opts.callback = function()
         hop.hint_char1({
             direction = value.direction,
             current_line_only = value.current_line_only,
         })
       end
     end
-    opts.desc = value.desc
-    keymap(value.mode, value.mapping, '', opts)
+    hop_opts.desc = value.desc
+    keymap(value.mode, value.mapping, '', hop_opts)
   end
 
   if qvim.integrations.hop.on_config_done then

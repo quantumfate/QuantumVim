@@ -1,8 +1,5 @@
 local M = {}
 
--- Register the global configuration table
-qvim.integrations = {}
-
 local integrations = {
     --"qvim.integrations.vimnotify",
     --"qvim.integrations.autopairs",
