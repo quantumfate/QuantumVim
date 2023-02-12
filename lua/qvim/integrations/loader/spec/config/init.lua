@@ -14,7 +14,7 @@ function M:new(name)
     local obj = {
         name or "",
         lazy = fields.lazy or false,
-        enabled = fields.enabled or true,
+        enabled = fields.enabled or M:activate_plugin(name),
         cond = fields.cond or true,
         dependencies = fields.dependencies or {},
         init = fields.init or nil,
@@ -51,6 +51,32 @@ local function is_valid_plugin_name(plugin)
         return false
     end
 end
+
+---Check if a plugin is activated.
+---@param plugin_name string|nil The plugin name of that is used in the global config table
+---@return boolean
+local function is_plugin_activated(plugin_name)
+    if qvim.integrations[plugin_name] then
+        return qvim.integrations[plugin_name].active
+    else
+        Log:debug("The global configuration table for '%s' is not initialized.", plugin_name)
+        return true
+    end
+end
+
+---Enables a plugin and updates the global configuration variable.
+---By default a plugin will be activated unless its deactivated explicitly.
+---@param plugin string The plugin string
+function M:activate_plugin(plugin)
+    local isvalid, plugin_name = is_valid_plugin_name(plugin)
+    if isvalid then
+        return is_plugin_activated(plugin_name)
+    else
+        Log:debug("Tried to activate an invalid Plugin '%s'", plugin_name)
+        return false
+    end
+end
+
 ---Hook the setup function of a plugin and return it as a callback.
 ---If this function returns nil the setup call of the integration will
 ---be delegated to the lazy plugin manager.
@@ -100,6 +126,7 @@ M.qvim_integrations = {
     "nvim-telescope/telescope.nvim",
     "windwp/nvim-autopairs",
     "kyazdani42/nvim-tree.lua",
-    "phaazon/hop.nvim"
+    "phaazon/hop.nvim",
+    "nvim-lualine/lualine.nvim"
 }
 return M
