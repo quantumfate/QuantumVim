@@ -1,5 +1,5 @@
 local M = {}
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 -- TODO: adapt
 --- Load the default set of autogroups and autocommands.
 function M.load_defaults()

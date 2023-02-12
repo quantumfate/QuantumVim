@@ -1,5 +1,5 @@
 local utils = require "qvim.utils"
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 
 local M = {}
 
@@ -15,13 +15,13 @@ function M:init()
   --integrations:init()
   local settings = require "qvim.config.settings"
   settings.load_defaults()
-  local autocmds = require "qvim.integrations.autocmds"
-  autocmds.load_defaults()
+  -- TODO: autocmds
+  --local autocmds = require "qvim.integrations.autocmds"
+  --autocmds.load_defaults()
 
   --local qvim_lsp_config = require "qvim.lsp.config"
   -- TODO: add lsp language configs to global qvim variable
   --qvim.lsp = vim.deepcopy(qvim_lsp_config)
-
 end
 
 --[[
@@ -30,9 +30,9 @@ end
   I don't have the need for an abstract configuration interface.
   I just need my own configuration.
 
-  The concept was adapted from the following project which 
+  The concept was adapted from the following project which
   implements this.
-  
+
   https://github.com/LunarVim/LunarVim
 ]]
 --- Override the configuration with a user provided one

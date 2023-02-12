@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 local in_headless = #vim.api.nvim_list_uis() == 0
 local plugin_loader = require "lua.qvim.integrations.loader"
 
@@ -45,8 +45,8 @@ function M.run_post_update()
   if vim.fn.has "nvim-0.8" ~= 1 then
     local compat_tag = "1.1.4"
     vim.notify(
-      "Please upgrade your Neovim base installation. Newer version of Lunarvim requires v0.7+",
-      vim.log.levels.WARN
+        "Please upgrade your Neovim base installation. Newer version of Lunarvim requires v0.7+",
+        vim.log.levels.WARN
     )
     vim.wait(1000)
     local ret = reload("qvim.utils.git").switch_qvim_branch(compat_tag)

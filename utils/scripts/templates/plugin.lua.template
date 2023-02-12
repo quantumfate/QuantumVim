@@ -2,7 +2,7 @@
 local M = {}
 
 local utils = require "qvim.utils"
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
 M.config = function()
@@ -16,7 +16,7 @@ M.config = function()
   }
 end
 
----The QV_NAME_OF_PLUGIN setup function. The module will be required by 
+---The QV_STRING_PLUGIN_NAME_VAR setup function. The module will be required by 
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 M.setup = function()

@@ -1,4 +1,5 @@
 {
+  "hop.nvim": { "branch": "master", "commit": "90db1b2c61b820e230599a04fedcd2679e64bd07" },
   "lazy.nvim": { "branch": "main", "commit": "9b208696e139a404d159963b975a5b90af38439b" },
   "nvim-autopairs": { "branch": "master", "commit": "0e065d423f9cf649e1d92443c939a4b5073b6768" },
   "nvim-tree.lua": { "branch": "master", "commit": "02fdc262eba188198a7deb2117b3b996e6763d65" },

@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 local fmt = string.format
 local if_nil = vim.F.if_nil
 
@@ -15,13 +15,13 @@ local function git_cmd(opts)
 
   local stderr = {}
   local stdout, ret = Job:new({
-    command = "git",
-    args = opts.args,
-    cwd = opts.cwd,
-    on_stderr = function(_, data)
-      table.insert(stderr, data)
-    end,
-  }):sync()
+          command = "git",
+          args = opts.args,
+          cwd = opts.cwd,
+          on_stderr = function(_, data)
+            table.insert(stderr, data)
+          end,
+      }):sync()
 
   if not vim.tbl_isempty(stderr) then
     Log:debug(stderr)

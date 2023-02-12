@@ -1,7 +1,7 @@
 local plugin_loader = {}
 
 local utils = require "qvim.utils"
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 local join_paths = utils.join_paths
 
 local plugins_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
@@ -27,23 +27,23 @@ function plugin_loader:init(opts)
       require("qvim.utils").fs_copy(integrations_dir, plugins_dir)
     else
       vim.fn.system {
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "--branch=stable",
-        "https://github.com/folke/lazy.nvim.git",
-        lazy_install_dir,
+          "git",
+          "clone",
+          "--filter=blob:none",
+          "--branch=stable",
+          "https://github.com/folke/lazy.nvim.git",
+          lazy_install_dir,
       }
 
       local default_snapshot_path = join_paths(get_qvim_dir(), "snapshots", "default.json")
       print("Snap path: " .. default_snapshot_path)
       local snapshot = assert(vim.fn.json_decode(vim.fn.readfile(default_snapshot_path)))
       vim.fn.system {
-        "git",
-        "-C",
-        lazy_install_dir,
-        "checkout",
-        snapshot["lazy.nvim"].commit,
+          "git",
+          "-C",
+          lazy_install_dir,
+          "checkout",
+          snapshot["lazy.nvim"].commit,
       }
     end
   end
@@ -54,15 +54,16 @@ function plugin_loader:init(opts)
   local lazy_cache = require "lazy.core.cache"
   ---@diagnostic disable-next-line: redundant-parameter
   lazy_cache.setup {
-    performance = {
-      cache = {
-        enabled = true,
-        path = join_paths(get_cache_dir(), "lazy", "cache"),
+      performance = {
+          cache = {
+              enabled = true,
+              path = join_paths(get_cache_dir(), "lazy", "cache"),
+          },
       },
-    },
   }
   -- HACK: Don't allow lazy to call setup second time
-  lazy_cache.setup = function() end
+  lazy_cache.setup = function()
+  end
 end
 
 function plugin_loader:reset_cache()
@@ -102,8 +103,8 @@ function plugin_loader:reload(spec)
     require("lazy.core.plugin").update_state()
 
     local not_installed_plugins = vim.tbl_filter(function(plugin)
-      return not plugin._.installed
-    end, Config.plugins)
+          return not plugin._.installed
+        end, Config.plugins)
 
     require("lazy.manage").clear()
 
@@ -123,7 +124,7 @@ function plugin_loader:reload(spec)
     local shorter_src = trace.short_src
     local lineinfo = shorter_src .. ":" .. (trace.currentline or trace.linedefined)
     local msg = string.format("%s : something went wrong when trying to reload the lazy plugin config spec [%s]",
-      lineinfo)
+            lineinfo)
     Log:error(msg)
     for m, _ in pairs(old_modules) do
       modules.require_safe(m)
@@ -149,31 +150,31 @@ function plugin_loader:load(spec)
   vim.opt.runtimepath:remove(join_paths(plugins_dir, "*"))
 
   local status_ok = xpcall(function()
-    local opts = {
-      install = {
-        missing = true,
-        colorscheme = { qvim.colorscheme, "habamax" },
-      },
-      ui = {
-        border = "rounded",
-      },
-      root = plugins_dir,
-      git = {
-        timeout = 120,
-      },
-      lockfile = join_paths(get_qvim_dir(), "lazy-lock.json"),
-      performance = {
-        rtp = {
-          reset = false,
-        },
-      },
-      readme = {
-        root = join_paths(get_qvim_dir(), "lazy", "readme"),
-      },
-    }
+        local opts = {
+            install = {
+                missing = true,
+                colorscheme = { qvim.colorscheme, "habamax" },
+            },
+            ui = {
+                border = "rounded",
+            },
+            root = plugins_dir,
+            git = {
+                timeout = 120,
+            },
+            lockfile = join_paths(get_qvim_dir(), "lazy-lock.json"),
+            performance = {
+                rtp = {
+                    reset = false,
+                },
+            },
+            readme = {
+                root = join_paths(get_qvim_dir(), "lazy", "readme"),
+            },
+        }
 
-    lazy.setup(spec, opts)
-  end, debug.traceback)
+        lazy.setup(spec, opts)
+      end, debug.traceback)
 
   if not status_ok then
     Log:warn "problems detected while loading plugins' configurations"

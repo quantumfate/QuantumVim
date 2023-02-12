@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 -- revisit this
 -- function prequire(package)
 --   local status, lib = pcall(require, package)
@@ -71,7 +71,7 @@ local function _replace(old, new, repeat_tbl)
     else
       if type(old[k]) ~= type(new[k]) then
         Log:debug(
-          string.format("Reloader: mismatch between old [%s] and new [%s] type for [%s]", type(old[k]), type(new[k]), k)
+            string.format("Reloader: mismatch between old [%s] and new [%s] type for [%s]", type(old[k]), type(new[k]), k)
         )
         _assign(old, new, k)
       else
@@ -103,7 +103,6 @@ end
 ---@param m table the module that should be clean required
 ---@return table module the clean required module on success else the old module before require
 M.require_clean = function(m)
-
   local old = M.unload(m)
   local status_ok, module = pcall(require, m)
   if not status_ok then

@@ -1,6 +1,6 @@
 ---A base and utility to work with lazy plugin specs
 local M = {}
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 
 ---Set the lazy configuration spec for a plugin.
 ---
@@ -9,7 +9,7 @@ local Log = require "qvim.utils.log"
 ---@param name string the plugin name
 ---@return table obj a plugin spec to be used by lazy
 function M:new(name)
-    local fields = M:load_options_for_plugin(name)
+    local fields = M:load_lazy_config_spec_for_plugin(name)
 
     local obj = {
         name or "",
@@ -63,6 +63,7 @@ function M:hook_integration_config(plugin)
         local plugin_file = "qvim.integrations" .. plugin_name
         local success, result = pcall(require, plugin_file)
         if success then
+            print("this" .. plugin_name)
             callback = result.setup
         end
         return callback
@@ -71,24 +72,24 @@ function M:hook_integration_config(plugin)
     end
 end
 
----Requires a module from the plugin directory and if the file exists it will return
----the table that this module would return as if it was directly required. If the
+---Requires a lazy spec from the config directory and if the file exists it will return
+---the table that it would return as if it was directly required. If the
 ---module doesn't exist this function will just return an empty table so that
 ---this function can be used without any extra run time checks.
 ---@param plugin string the string of the plugin. Valid plugin names are "Developer/plugin.nvim", "Developer/plugin.lua" or "Developer/plugin"
 ---@return table options the options that should override the individual default plugin spec
-function M:load_options_for_plugin(plugin)
-    local options = {}
+function M:load_lazy_config_spec_for_plugin(plugin)
+    local plugin_spec = {}
     local isvalid, plugin_name = is_valid_plugin_name(plugin)
     if isvalid then
-        local options_file = "qvim.integrations.loader.plugins." .. plugin_name .. ".lua"
-        local success, result = pcall(require, options_file)
+        local spec_file = "qvim.integrations.loader.spec.config." .. plugin_name
+        local success, spec = pcall(require, spec_file)
         if success then
-            options = result
+            plugin_spec = spec
         end
-        return options
+        return plugin_spec
     else
-        return {}
+        return plugin_spec
     end
 end
 
@@ -99,5 +100,6 @@ M.qvim_integrations = {
     "nvim-telescope/telescope.nvim",
     "windwp/nvim-autopairs",
     "kyazdani42/nvim-tree.lua",
+    "phaazon/hop.nvim"
 }
 return M

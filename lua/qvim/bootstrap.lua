@@ -66,8 +66,8 @@ function M:init()
   print("Qvim dir: " .. self.qvim_dir)
   print("cache dir: " .. self.cache_dir)
   require("qvim.integrations.loader"):init {
-    package_root = self.pack_dir,
-    install_path = self.lazy_install_dir,
+      package_root = self.pack_dir,
+      install_path = self.lazy_install_dir,
   }
 
   require("qvim.config"):init()
@@ -80,7 +80,7 @@ end
 ---Update qvimVim
 ---pulls the latest changes from github and, resets the startup cache
 function M:update()
-  require("qvim.utils.log"):info "Trying to update QuantumVim..."
+  require("qvim.integrations.log"):info "Trying to update QuantumVim..."
   vim.schedule(function()
     reload("qvim.utils.hooks").run_pre_update()
     local ret = reload("qvim.utils.git").update_base_qvim()

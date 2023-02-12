@@ -16,7 +16,7 @@ require("qvim.integrations.loader"):load()
 
 --require("qvim.integrations.theme").setup()
 
-local Log = require "qvim.utils.log"
+local Log = require "qvim.integrations.log"
 Log:debug "Starting QuantumVim"
 
 --local commands = require "qvim.core.commands"
