@@ -16,6 +16,7 @@ local integrations = {
     --"qvim.integrations.treesitter",
     --"qvim.integrations.vimtex",
     --"qvim.integrations.whichkey",
+    "qvim.integrations.nightfox"
 }
 
 function M:init()

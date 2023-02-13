@@ -143,7 +143,8 @@ M.qvim_integrations = {
     "kyazdani42/nvim-tree.lua",
     "phaazon/hop.nvim",
     "nvim-lualine/lualine.nvim",
-    "RRethy/vim-illuminate",
+    illuminate = "RRethy/vim-illuminate",
     "EdenEast/nightfox.nvim"
 }
+
 return M

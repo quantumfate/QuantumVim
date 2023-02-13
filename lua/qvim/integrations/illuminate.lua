@@ -5,7 +5,7 @@ local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for vim-illuminate
 M.config = function()
-  qvim.integrations.vim_illuminate = {
+  qvim.integrations.illuminate = {
       active = true,
       on_config_done = nil,
       keymaps = {},
@@ -63,16 +63,16 @@ end
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 M.setup = function()
-  local status_ok, vim_illuminate = pcall(reload, "illuminate")
+  local status_ok, illuminate = pcall(reload, "illuminate")
   if not status_ok then
-    Log:warn("The plugin '%s' could not be loaded.", vim_illuminate)
+    Log:warn("The plugin '%s' could not be loaded.", illuminate)
     return
   end
 
-  vim_illuminate.configure(qvim.integrations.vim_illuminate.options)
+  illuminate.configure(qvim.integrations.illuminate.options)
 
-  if qvim.integrations.vim_illuminate.on_config_done then
-    qvim.integrations.vim_illuminate.on_config_done()
+  if qvim.integrations.illuminate.on_config_done then
+    qvim.integrations.illuminate.on_config_done()
   end
 end
 

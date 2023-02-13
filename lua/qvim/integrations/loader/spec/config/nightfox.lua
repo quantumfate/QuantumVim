@@ -1,4 +1,5 @@
 local nightfox = {
+    lazy = true,
 
 }
 
