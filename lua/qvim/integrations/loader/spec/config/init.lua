@@ -104,6 +104,7 @@ function M:hook_integration_config(plugin)
         local plugin_file = "qvim.integrations." .. plugin_name
         local success, result = pcall(require, plugin_file)
         if success and is_plugin_configured(plugin_name) then
+            print(plugin_name)
             callback = result.setup
         end
         return callback
@@ -142,6 +143,7 @@ M.qvim_integrations = {
     "kyazdani42/nvim-tree.lua",
     "phaazon/hop.nvim",
     "nvim-lualine/lualine.nvim",
-    "RRethy/vim-illuminate"
+    "RRethy/vim-illuminate",
+    "EdenEast/nightfox.nvim"
 }
 return M
