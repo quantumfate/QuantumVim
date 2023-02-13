@@ -16,6 +16,9 @@ M.config = function()
   qvim.integrations.nvim_tree = {
       active = true,
       on_config_done = nil,
+      keymaps = {
+
+      },
       glyphs = {
           default = "",
           symlink = "",

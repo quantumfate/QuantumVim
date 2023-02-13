@@ -9,6 +9,9 @@ M.config = function()
   qvim.integrations.hop = {
       active = true,
       on_config_done = nil,
+      keymaps = {
+
+      },
       -- hop option configuration
       options = {
           keys = 'etovxqpdygfblzhckisuran',

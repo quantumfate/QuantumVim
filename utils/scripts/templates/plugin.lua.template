@@ -1,7 +1,6 @@
 ---The QV_STRING_PLUGIN_NAME_VAR configuration file
 local M = {}
 
-local utils = require "qvim.utils"
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
@@ -9,6 +8,7 @@ M.config = function()
   qvim.integrations.QV_PLUGIN_NAME_VAR = {
     active = true,
     on_config_done = nil,
+    keymaps = { },
     options = {
         -- QV_PLUGIN_NAME_VAR option configuration
 

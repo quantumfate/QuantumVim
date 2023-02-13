@@ -1,0 +1,5 @@
+local QV_STRING_PLUGIN_NAME_VAR = {
+
+}
+
+return QV_STRING_PLUGIN_NAME_VAR

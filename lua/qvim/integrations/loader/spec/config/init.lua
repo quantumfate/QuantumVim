@@ -27,6 +27,7 @@ function M:new(name)
         pin = fields.pin or false,
         event = fields.event or nil,
         cmd = fields.cmd or nil,
+        key = fields.key or nil,
         ft = fields.ft or nil,
         priority = fields.priority or 50,
     }
@@ -140,6 +141,7 @@ M.qvim_integrations = {
     "windwp/nvim-autopairs",
     "kyazdani42/nvim-tree.lua",
     "phaazon/hop.nvim",
-    "nvim-lualine/lualine.nvim"
+    "nvim-lualine/lualine.nvim",
+    "RRethy/vim-illuminate"
 }
 return M
