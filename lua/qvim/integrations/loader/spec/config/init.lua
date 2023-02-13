@@ -6,9 +6,13 @@ local Log = require "qvim.integrations.log"
 ---
 ---Refer to: https://github.com/folke/lazy.nvim#-plugin-spec
 ---
+---@param alias integer|string the plugin alias
 ---@param name string the plugin name
 ---@return table obj a plugin spec to be used by lazy
-function M:new(name)
+function M:new(alias, name)
+    if type(alias) == "string" then
+        name = alias
+    end
     local fields = M:load_lazy_config_spec_for_plugin(name)
 
     local obj = {
@@ -46,21 +50,36 @@ local function is_plugin_configured(plugin_name)
     end
 end
 
----Validates the plugin name and returns its basename.
+---Validates the plugin name or an alias that is mapped to a plugin name.
 ---@param plugin string The full plugin path
 ---@return boolean valid whether the provided plugin name is valid or not
 ---@return string|nil plugin_name the plugins basename
-local function is_valid_plugin_name(plugin)
+local function is_valid_plugin_name(plugin, depth)
     local nvim_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.nvim$"
     local lua_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.lua$"
     local normal_pattern = "^[%a%d%-_]+/([%a%d%-_]+)$"
 
-    local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern)
-    Log:debug("Recognized the plugin: %s", plugin_name)
-    if plugin_name ~= nil then
-        return true, plugin_name
+    depth = depth or 0
+    if type(plugin) == "string" then
+        local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern) or
+            nil
+        Log:debug("Recognized the plugin: %s", plugin_name)
+        if plugin_name ~= nil then
+            if depth == 0 then
+                return true, plugin_name
+            else
+                -- the alias to a plugin when the value is a valid plugin
+                return true, tostring(plugin)
+            end
+        else
+            Log:warn("The plugin '%s' is not a valid plugin name.", plugin)
+            return false
+        end
     else
-        Log:warn("The plugin '%s' is not a valid plugin name.", plugin)
+        if depth == 0 then
+            Log:debug("Validating if alias '%s' to plugin is a valid plugin name", plugin)
+            return is_valid_plugin_name(M.qvim_integrations[plugin], depth + 1)
+        end
         return false
     end
 end
@@ -134,7 +153,9 @@ function M:load_lazy_config_spec_for_plugin(plugin)
     end
 end
 
----The plugins that should be configured
+---Plugins that should be installed. The key
+---values represent the accepted plugin name
+---across the qvim project.
 M.qvim_integrations = {
     "folke/lazy.nvim",
     "Tastyep/structlog.nvim",
