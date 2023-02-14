@@ -1,6 +1,6 @@
-local vim_illuminate = {
+local illuminate = {
     lazy = true,
     event = "User FileOpened",
 }
 
-return vim_illuminate
+return illuminate

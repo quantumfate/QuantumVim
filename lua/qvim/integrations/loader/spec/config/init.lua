@@ -50,36 +50,42 @@ local function is_plugin_configured(plugin_name)
     end
 end
 
----Validates the plugin name or an alias that is mapped to a plugin name.
----@param plugin string The full plugin path
+---Validates the plugin name or an alias that is mapped to a plugin name. If an alias is defined this function will return
+---that alias and validates the plugin that is mapped to the alias. By default the calculated origin name of a plugin will
+---be returned.
+---@param plugin string The full plugin path or an alias that is mapped to a plugin path
+---@param alias boolean|nil Whether to return the origin plugin name when set to true or the alias when set to false
+---@param alias_name string|nil
 ---@return boolean valid whether the provided plugin name is valid or not
----@return string|nil plugin_name the plugins basename
-local function is_valid_plugin_name(plugin, depth)
+---@return string|nil plugin_name plugins basename or its alias
+local function is_valid_plugin_name(plugin, alias, alias_name)
     local nvim_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.nvim$"
     local lua_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.lua$"
     local normal_pattern = "^[%a%d%-_]+/([%a%d%-_]+)$"
 
-    depth = depth or 0
-    if type(plugin) == "string" then
-        local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern) or
-            nil
+    local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern) or
+        nil
+
+    alias = alias or false
+    alias_name = alias_name or nil
+    if M.qvim_integrations[plugin] then
+        -- When plugin is an alias
+        Log:debug("Validating if alias '%s' to plugin is a valid plugin name", plugin)
+        return is_valid_plugin_name(M.qvim_integrations[plugin], true, plugin)
+    end
+
+    if plugin_name ~= nil then
+        if alias then
+            -- the alias to a plugin when the value is a valid plugin
+            Log:debug(string.format("Recognized the plugin '%s' with the alias '%s'", plugin_name, alias_name))
+            print("alias: " .. alias_name)
+            return true, alias_name
+        end
         Log:debug("Recognized the plugin: %s", plugin_name)
-        if plugin_name ~= nil then
-            if depth == 0 then
-                return true, plugin_name
-            else
-                -- the alias to a plugin when the value is a valid plugin
-                return true, tostring(plugin)
-            end
-        else
-            Log:warn("The plugin '%s' is not a valid plugin name.", plugin)
-            return false
-        end
+        print("normal: " .. plugin_name)
+        return true, plugin_name
     else
-        if depth == 0 then
-            Log:debug("Validating if alias '%s' to plugin is a valid plugin name", plugin)
-            return is_valid_plugin_name(M.qvim_integrations[plugin], depth + 1)
-        end
+        Log:warn("The plugin '%s' is not a valid plugin name.", plugin)
         return false
     end
 end
@@ -123,7 +129,6 @@ function M:hook_integration_config(plugin)
         local plugin_file = "qvim.integrations." .. plugin_name
         local success, result = pcall(require, plugin_file)
         if success and is_plugin_configured(plugin_name) then
-            print(plugin_name)
             callback = result.setup
         end
         return callback

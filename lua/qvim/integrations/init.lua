@@ -1,22 +1,22 @@
 local M = {}
 
 local integrations = {
-    --"qvim.integrations.vimnotify",
-    --"qvim.integrations.autopairs",
-    --"qvim.integrations.bufferline",
-    --"qvim.integrations.colorscheme",
-    --"qvim.integrations.comment",
-    --"qvim.integrations.gitsigns",
-    "qvim.integrations.hop",
-    --"qvim.integrations.illuminate",
-    --"qvim.integrations.indentline",
-    "qvim.integrations.lualine",
-    "qvim.integrations.nvim-tree",
-    --"qvim.integrations.toggleterm",
-    --"qvim.integrations.treesitter",
-    --"qvim.integrations.vimtex",
-    --"qvim.integrations.whichkey",
-    "qvim.integrations.nightfox"
+  --"qvim.integrations.vimnotify",
+  --"qvim.integrations.autopairs",
+  --"qvim.integrations.bufferline",
+  --"qvim.integrations.colorscheme",
+  --"qvim.integrations.comment",
+  --"qvim.integrations.gitsigns",
+  "qvim.integrations.hop",
+  "qvim.integrations.illuminate",
+  --"qvim.integrations.indentline",
+  "qvim.integrations.lualine",
+  "qvim.integrations.nvim-tree",
+  --"qvim.integrations.toggleterm",
+  --"qvim.integrations.treesitter",
+  --"qvim.integrations.vimtex",
+  --"qvim.integrations.whichkey",
+  "qvim.integrations.nightfox"
 }
 
 function M:init()
