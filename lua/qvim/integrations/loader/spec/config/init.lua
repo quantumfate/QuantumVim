@@ -4,38 +4,67 @@ local Log = require "qvim.integrations.log"
 
 ---Set the lazy configuration spec for a plugin.
 ---
+---- name: Setting the name manually will override every calculated name or alias
+---- enabled: read from the global configuration table from a specific plugin
+---- config: hook the setup function of an integration defined in the global qvim variable
+---
 ---Refer to: https://github.com/folke/lazy.nvim#-plugin-spec
 ---
 ---@param alias integer|string the plugin alias
 ---@param name string the plugin name
----@return table obj a plugin spec to be used by lazy
+---@return table|nil obj a plugin spec to be used by lazy
 function M:new(alias, name)
+    local is_valid, plugin_information = nil, nil
     if type(alias) == "string" then
-        name = alias
+        is_valid, plugin_information = M:get_valid_plugin_info(alias)
+    else
+        is_valid, plugin_information = M:get_valid_plugin_info(name)
     end
-    local fields = M:load_lazy_config_spec_for_plugin(name)
+    if is_valid and plugin_information then
+        local plugin_name = plugin_information.plugin_name
+        local plugin_alias = plugin_information.plugin_alias or plugin_name
+        local fields = M:load_lazy_config_spec_for_plugin(plugin_alias)
 
-    local obj = {
-        name or "",
-        lazy = fields.lazy or false,
-        enabled = fields.enabled or M:activate_plugin(name),
-        cond = fields.cond or true,
-        dependencies = fields.dependencies or {},
-        init = fields.init or nil,
-        opts = fields.opts or {},
-        config = fields.config or M:hook_integration_config(name),
-        build = fields.build or nil,
-        branch = fields.branch or nil,
-        tag = fields.tag or nil,
-        version = fields.version or nil,
-        pin = fields.pin or false,
-        event = fields.event or nil,
-        cmd = fields.cmd or nil,
-        key = fields.key or nil,
-        ft = fields.ft or nil,
-        priority = fields.priority or 50,
-    }
-    return obj
+        if not fields then
+            return nil
+        end
+        if fields.name then
+            plugin_alias = fields.name
+        end
+
+        local enabled = true
+        if qvim.integrations[plugin_alias] then
+            enabled = qvim.integrations[plugin_alias].active
+        end
+        if fields.enabled then
+            enabled = fields.enabled
+        end
+        local obj = {
+            name,
+            name = fields.name or plugin_alias,
+            lazy = fields.lazy or false,
+            enabled = enabled,
+            cond = fields.cond or true,
+            dependencies = fields.dependencies or {},
+            init = fields.init or nil,
+            opts = fields.opts or {},
+            config = fields.config or M:hook_integration_config(plugin_alias),
+            build = fields.build or nil,
+            branch = fields.branch or nil,
+            tag = fields.tag or nil,
+            version = fields.version or nil,
+            pin = fields.pin or false,
+            event = fields.event or nil,
+            cmd = fields.cmd or nil,
+            key = fields.key or nil,
+            ft = fields.ft or nil,
+            priority = fields.priority or 50,
+        }
+        return obj
+    else
+        Log:debug("The plugin '%s' could is not a valid plugin.", name)
+        return nil
+    end
 end
 
 ---Validates if a plugin is configured meaning that its global
@@ -50,69 +79,45 @@ local function is_plugin_configured(plugin_name)
     end
 end
 
----Validates the plugin name or an alias that is mapped to a plugin name. If an alias is defined this function will return
----that alias and validates the plugin that is mapped to the alias. By default the calculated origin name of a plugin will
----be returned.
----@param plugin string The full plugin path or an alias that is mapped to a plugin path
----@param alias boolean|nil Whether to return the origin plugin name when set to true or the alias when set to false
----@param alias_name string|nil
----@return boolean valid whether the provided plugin name is valid or not
----@return string|nil plugin_name plugins basename or its alias
-local function is_valid_plugin_name(plugin, alias, alias_name)
+---Validates the plugin name.
+---@param plugin any
+---@return boolean valid Whether the plugin is a valid plugin or nor
+---@return string|nil plugin_name The valid plugin name or nil
+local function is_valid_plugin_name(plugin)
     local nvim_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.nvim$"
     local lua_pattern = "^[%a%d%-_]+/([%a%d%-_]+)%.lua$"
     local normal_pattern = "^[%a%d%-_]+/([%a%d%-_]+)$"
+    local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern) or nil
 
-    local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern) or
-        nil
-
-    alias = alias or false
-    alias_name = alias_name or nil
-    if M.qvim_integrations[plugin] then
-        -- When plugin is an alias
-        Log:debug("Validating if alias '%s' to plugin is a valid plugin name", plugin)
-        return is_valid_plugin_name(M.qvim_integrations[plugin], true, plugin)
-    end
-
-    if plugin_name ~= nil then
-        if alias then
-            -- the alias to a plugin when the value is a valid plugin
-            Log:debug(string.format("Recognized the plugin '%s' with the alias '%s'", plugin_name, alias_name))
-            print("alias: " .. alias_name)
-            return true, alias_name
-        end
-        Log:debug("Recognized the plugin: %s", plugin_name)
-        print("normal: " .. plugin_name)
+    if plugin_name then
         return true, plugin_name
     else
-        Log:warn("The plugin '%s' is not a valid plugin name.", plugin)
         return false
     end
 end
 
----Check if a plugin is activated.
----@param plugin_name string|nil The plugin name of that is used in the global config table
----@return boolean
-local function is_plugin_activated(plugin_name)
-    if qvim.integrations[plugin_name] then
-        return qvim.integrations[plugin_name].active
+---Validates the plugin name or an alias that is mapped to a plugin name.
+---@param plugin string The full plugin path or an alias that is mapped to a plugin path
+---@param plugin_information table|nil plugin_information about the plugin
+---@return boolean valid whether the provided plugin name is valid or not
+---@return table|nil plugin_information holding a plugin_name and/or an alias_name
+function M:get_valid_plugin_info(plugin, plugin_information)
+    local is_valid, plugin_name = is_valid_plugin_name(plugin)
+    if not plugin_information then
+        plugin_information = {
+            plugin_name = plugin_name,
+            plugin_alias = nil,
+        }
     else
-        Log:debug("The global configuration table for '%s' is not initialized.", plugin_name)
-        return true
+        plugin_information.plugin_name = plugin_name
     end
-end
 
----Enables a plugin and updates the global configuration variable.
----By default a plugin will be activated unless its deactivated explicitly.
----@param plugin string The qualified plugin name
-function M:activate_plugin(plugin)
-    local isvalid, plugin_name = is_valid_plugin_name(plugin)
-    if isvalid then
-        return is_plugin_activated(plugin_name)
-    else
-        Log:debug("Tried to activate an invalid Plugin '%s'", plugin_name)
-        return false
+    if not is_valid and M.qvim_integrations[plugin] then
+        plugin_information.plugin_alias = plugin
+        return M:get_valid_plugin_info(M.qvim_integrations[plugin], plugin_information)
     end
+
+    return is_valid, plugin_information
 end
 
 ---Hook the setup function of a plugin and return it as a callback.
@@ -120,41 +125,44 @@ end
 ---function will return nil even if a setup function is declared for the plugin.
 ---If this function returns nil the setup call of the integration will
 ---be delegated to the lazy plugin manager.
----@param plugin string the qualified plugin name
+---@param plugin_name string the verified plugin name
 ---@return function|nil callback the function callback or nil on fail
-function M:hook_integration_config(plugin)
+function M:hook_integration_config(plugin_name)
     local callback = nil
-    local isvalid, plugin_name = is_valid_plugin_name(plugin)
-    if isvalid then
-        local plugin_file = "qvim.integrations." .. plugin_name
-        local success, result = pcall(require, plugin_file)
-        if success and is_plugin_configured(plugin_name) then
-            callback = result.setup
+    local plugin_file = "qvim.integrations." .. plugin_name
+    local success, result = pcall(require, plugin_file)
+    if success and is_plugin_configured(plugin_name) then
+        if not result.setup then
+            Log:warn(string.format(
+                "The plugin '%s' does not implement a standard setup function.", plugin_name))
+
+            return callback
         end
-        return callback
+        callback = result.setup
     else
-        return callback
+        Log:warn(string.format(
+            "The plugin '%s' could not be associated with a configuration file in the integrations section.", plugin_name))
     end
+    return callback
 end
 
 ---Requires a lazy spec from the config directory and if the file exists it will return
 ---the table that it would return as if it was directly required. If the
 ---module doesn't exist this function will just return an empty table so that
 ---this function can be used without any extra run time checks.
----@param plugin string the string of the plugin. Valid plugin names are "Developer/plugin.nvim", "Developer/plugin.lua" or "Developer/plugin"
----@return table options the options that should override the individual default plugin spec
-function M:load_lazy_config_spec_for_plugin(plugin)
+---@param plugin_name string the verified plugin name
+---@return table|nil options the options that should override the individual default plugin spec
+function M:load_lazy_config_spec_for_plugin(plugin_name)
     local plugin_spec = {}
-    local isvalid, plugin_name = is_valid_plugin_name(plugin)
-    if isvalid then
-        local spec_file = "qvim.integrations.loader.spec.config." .. plugin_name
+    local spec_file = "qvim.integrations.loader.spec.config." .. plugin_name
+    if spec_file then
         local success, spec = pcall(require, spec_file)
         if success then
             plugin_spec = spec
         end
         return plugin_spec
     else
-        return plugin_spec
+        return nil
     end
 end
 

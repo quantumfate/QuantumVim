@@ -149,7 +149,7 @@ function plugin_loader:load(spec)
     local opts = {
       install = {
         missing = true,
-        colorscheme = { qvim.colorscheme, "habamax" },
+        colorscheme = { qvim.colorscheme },
       },
       ui = {
         border = "rounded",
