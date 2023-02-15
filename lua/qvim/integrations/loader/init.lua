@@ -180,11 +180,11 @@ end
 
 ---Requires the plugin spec and filter
 ---@return table
-function plugin_loader:get_core_plugins()
+function plugin_loader:get_integrations()
   local names = {}
-  local plugins = require "qvim.integrations.loader.plugins_spec"
+  local integrations = require "qvim.integrations.loader.spec"
   local get_name = require("lazy.core.plugin").Spec.get_name
-  for _, spec in pairs(plugins) do
+  for _, spec in pairs(integrations) do
     if spec.enabled == true or spec.enabled == nil then
       table.insert(names, get_name(spec[1]))
     end
@@ -192,10 +192,10 @@ function plugin_loader:get_core_plugins()
   return names
 end
 
-function plugin_loader:sync_core_plugins()
-  local core_plugins = plugin_loader:get_core_plugins()
-  Log:trace(string.format("Syncing core plugins: [%q]", table.concat(core_plugins, ", ")))
-  require("lazy").update { wait = true, plugins = core_plugins }
+function plugin_loader:sync_integrations()
+  local integrations = plugin_loader:get_integrations()
+  Log:trace(string.format("Syncing integrations: [%q]", table.concat(integrations, ", ")))
+  require("lazy").update { wait = true, plugins = integrations }
 end
 
 function plugin_loader.ensure_plugins()

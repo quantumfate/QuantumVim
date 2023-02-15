@@ -10,7 +10,7 @@ end
 
 require("qvim.bootstrap"):init()
 
-require("qvim.config"):init()
+--require("qvim.config"):init()
 
 require("qvim.integrations.loader"):load()
 

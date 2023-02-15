@@ -170,10 +170,9 @@ end
 ---values represent the accepted plugin name
 ---across the qvim project.
 M.qvim_integrations = {
-    "folke/lazy.nvim",
     "Tastyep/structlog.nvim",
     "nvim-telescope/telescope.nvim",
-    "windwp/nvim-autopairs",
+    autopairs = "windwp/nvim-autopairs",
     "kyazdani42/nvim-tree.lua",
     "phaazon/hop.nvim",
     "nvim-lualine/lualine.nvim",

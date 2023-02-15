@@ -10,44 +10,44 @@ M.config = function()
   end
 
   local diagnostics = {
-      "diagnostics",
-      sources = { "nvim_diagnostic" },
-      sections = { "error", "warn" },
-      symbols = { error = " ", warn = " " },
-      colored = false,
-      update_in_insert = false,
-      always_visible = true,
+    "diagnostics",
+    sources = { "nvim_diagnostic" },
+    sections = { "error", "warn" },
+    symbols = { error = " ", warn = " " },
+    colored = false,
+    update_in_insert = false,
+    always_visible = true,
   }
 
   local diff = {
-      "diff",
-      colored = false,
-      symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
-      cond = hide_in_width
+    "diff",
+    colored = false,
+    symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
+    cond = hide_in_width
   }
 
   local mode = {
-      "mode",
-      fmt = function(str)
-        return "-- " .. str .. " --"
-      end,
+    "mode",
+    fmt = function(str)
+      return "-- " .. str .. " --"
+    end,
   }
 
   local filetype = {
-      "filetype",
-      icons_enabled = false,
-      icon = nil,
+    "filetype",
+    icons_enabled = false,
+    icon = nil,
   }
 
   local branch = {
-      "branch",
-      icons_enabled = true,
-      icon = "",
+    "branch",
+    icons_enabled = true,
+    icon = "",
   }
 
   local location = {
-      "location",
-      padding = 0,
+    "location",
+    padding = 0,
   }
   local current_path = function()
     local path = vim.fn.expand('%:p')
@@ -70,38 +70,37 @@ M.config = function()
   end
 
   qvim.integrations.lualine = {
-      active = true,
-      on_config_done = nil,
+    active = true,
+    on_config_done = nil,
+    options = {
+      -- lualine option configuration
       options = {
-          -- lualine option configuration
-          options = {
-              icons_enabled = true,
-              theme = "nord",
-              component_separators = { left = "", right = "" },
-              section_separators = { left = "", right = "" },
-              disabled_filetypes = { "dashboard", "NvimTree", "Outline" },
-              always_divide_middle = true,
-          },
-          sections = {
-              lualine_a = { branch, diagnostics },
-              lualine_b = { mode },
-              lualine_c = {},
-              -- lualine_x = { "encoding", "fileformat", "filetype" },
-              lualine_x = { diff, spaces, "encoding", filetype },
-              lualine_y = { location },
-              lualine_z = { progress, current_path }
-          },
-          inactive_sections = {
-              lualine_a = {},
-              lualine_b = {},
-              lualine_c = { "filename" },
-              lualine_x = { "location" },
-              lualine_y = {},
-              lualine_z = {},
-          },
-          tabline = {},
-          extensions = {},
+        icons_enabled = true,
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
+        disabled_filetypes = { "dashboard", "NvimTree", "Outline" },
+        always_divide_middle = true,
       },
+      sections = {
+        lualine_a = { branch, diagnostics },
+        lualine_b = { mode },
+        lualine_c = {},
+        -- lualine_x = { "encoding", "fileformat", "filetype" },
+        lualine_x = { diff, spaces, "encoding", filetype },
+        lualine_y = { location },
+        lualine_z = { progress, current_path }
+      },
+      inactive_sections = {
+        lualine_a = {},
+        lualine_b = {},
+        lualine_c = { "filename" },
+        lualine_x = { "location" },
+        lualine_y = {},
+        lualine_z = {},
+      },
+      tabline = {},
+      extensions = {},
+    },
   }
 end
 

@@ -5,47 +5,12 @@ local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for nightfox
 M.config = function()
+  local supported_modules = require("nightfox.config").module_names
   qvim.integrations.nightfox = {
     active = true,
     on_config_done = nil,
     keymaps = {},
-    supported_modules = {
-      "aerial",
-      "barbar",
-      "cmp",
-      "coc",
-      "dap_ui",
-      "dashboard",
-      "diagnostic",
-      "fern",
-      "fidget",
-      "gitgutter",
-      "gitsigns",
-      "glyph_palette",
-      "hop",
-      "illuminate",
-      "lightspeed",
-      "lsp_saga",
-      "lsp_trouble",
-      "mini",
-      "modes",
-      "native_lsp",
-      "navic",
-      "neogit",
-      "neotest",
-      "neotree",
-      "notify",
-      "nvimtree",
-      "pounce",
-      "signify",
-      "sneak",
-      "symbol_outline",
-      "telescope",
-      "treesitter",
-      "tsrainbow",
-      "tsrainbow2",
-      "whichkey"
-    },
+    supported_modules = supported_modules,
     options = {
       -- nightfox option configuration
       options = {
@@ -73,12 +38,6 @@ M.setup = function()
     end
   end
   nightfox.setup(qvim.integrations.nightfox.options)
-
-  vim.cmd("colorscheme nightfox")
-  qvim.colorscheme = "nightfox"
-
-  local lualine = qvim.integrations.lualine
-  lualine.options.theme = qvim.colorscheme
 
   if qvim.integrations.nightfox.on_config_done then
     qvim.integrations.nightfox.on_config_done()

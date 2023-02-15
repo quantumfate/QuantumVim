@@ -15,6 +15,8 @@ function M:init()
   integrations:init()
   local settings = require "qvim.config.settings"
   settings.load_defaults()
+
+  vim.cmd("colorscheme " .. qvim.colorscheme)
   -- TODO: autocmds
   --local autocmds = require "qvim.integrations.autocmds"
   --autocmds.load_defaults()
