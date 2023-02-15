@@ -1,0 +1,5 @@
+local autopairs = {
+
+}
+
+return autopairs
