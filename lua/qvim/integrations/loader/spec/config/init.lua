@@ -44,7 +44,7 @@ function M:new(alias, name)
             name = fields.name or plugin_alias,
             lazy = fields.lazy or false,
             enabled = enabled,
-            cond = fields.cond or true,
+            cond = fields.cond or nil,
             dependencies = fields.dependencies or {},
             init = fields.init or nil,
             opts = fields.opts or {},
@@ -54,7 +54,7 @@ function M:new(alias, name)
             tag = fields.tag or nil,
             version = fields.version or nil,
             pin = fields.pin or false,
-            event = fields.event or nil,
+            event = fields.event or nil, -- https://neovim.io/doc/user/autocmd.html#autocmd-events
             cmd = fields.cmd or nil,
             key = fields.key or nil,
             ft = fields.ft or nil,

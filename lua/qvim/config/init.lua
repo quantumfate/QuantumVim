@@ -18,8 +18,8 @@ function M:init()
 
   vim.cmd("colorscheme " .. qvim.colorscheme)
   -- TODO: autocmds
-  --local autocmds = require "qvim.integrations.autocmds"
-  --autocmds.load_defaults()
+  local autocmds = require "qvim.integrations.autocmds"
+  autocmds.load_defaults()
 
   --local qvim_lsp_config = require "qvim.lsp.config"
   -- TODO: add lsp language configs to global qvim variable
