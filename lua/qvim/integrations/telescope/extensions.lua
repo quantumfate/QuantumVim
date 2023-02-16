@@ -30,11 +30,11 @@ M.setup = function()
     return
   end
 
-  local extension = qvim.integrations.telescope.extensions
-  extensions.setup(extension.options)
+  local _telescope_extensions = qvim.integrations.telescope.extensions
+  extensions.setup(_telescope_extensions.options)
 
-  if extension.on_config_done then
-    extension.on_config_done()
+  if _telescope_extensions.on_config_done then
+    _telescope_extensions.on_config_done()
   end
 end
 

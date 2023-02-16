@@ -26,10 +26,11 @@ M.setup = function()
     return
   end
 
-  dbsession.setup(qvim.integrations.dbsession.options)
+  local _dbsession = qvim.integrations.dbsession
+  dbsession.setup(_dbsession.options)
 
-  if qvim.integrations.dbsession.on_config_done then
-    qvim.integrations.dbsession.on_config_done()
+  if _dbsession.on_config_done then
+    _dbsession.on_config_done()
   end
 end
 

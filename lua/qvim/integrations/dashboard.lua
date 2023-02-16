@@ -114,10 +114,11 @@ M.setup = function()
     return
   end
 
-  dashboard.setup(qvim.integrations.dashboard.options)
+  local _dashboard = qvim.integrations.dashboard
+  dashboard.setup(_dashboard.options)
 
-  if qvim.integrations.dashboard.on_config_done then
-    qvim.integrations.dashboard.on_config_done()
+  if _dashboard.on_config_done then
+    _dashboard.on_config_done()
   end
 end
 

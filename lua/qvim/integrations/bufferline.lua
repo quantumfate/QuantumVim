@@ -114,10 +114,12 @@ M.setup = function()
     return
   end
 
-  bufferline.setup({ options = qvim.integrations.bufferline.options })
+  local _bufferline = qvim.integrations.bufferline.options
 
-  if qvim.integrations.bufferline.on_config_done then
-    qvim.integrations.bufferline.on_config_done()
+  bufferline.setup({ options = _bufferline.options })
+
+  if _bufferline.on_config_done then
+    _bufferline.bufferline.on_config_done()
   end
 end
 

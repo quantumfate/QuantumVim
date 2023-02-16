@@ -11,12 +11,10 @@ M.config = function()
     on_config_done = nil,
     keymaps = {},
     supported_modules = supported_modules,
+    -- nightfox option configuration
     options = {
-      -- nightfox option configuration
-      options = {
-        transparent = true, -- Disable setting background
-      },
-    }
+      transparent = true, -- Disable setting background
+    },
   }
 end
 
@@ -30,17 +28,18 @@ M.setup = function()
     return
   end
 
-  local supported_modules = qvim.integrations.nightfox.supported_modules
-  local modules = qvim.integrations.nightfox.options.options.modules
+  local _nightfox = qvim.integrations.nightfox
+  local supported_modules = _nightfox.supported_modules
+  local modules = _nightfox.options.options.modules
   for module, _ in pairs(supported_modules) do
     if qvim.integrations[module] and qvim.integrations[module].active then
       modules[modules + 1] = module
     end
   end
-  nightfox.setup(qvim.integrations.nightfox.options)
+  nightfox.setup({ options = _nightfox.options })
 
-  if qvim.integrations.nightfox.on_config_done then
-    qvim.integrations.nightfox.on_config_done()
+  if _nightfox.on_config_done then
+    _nightfox.on_config_done()
   end
 end
 

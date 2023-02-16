@@ -28,15 +28,15 @@ M.setup = function()
     return
   end
 
-  local integration = qvim.integrations.telescope
-  telescope.setup(integration.options)
-  for _, value in ipairs(integration.extensions) do
+  local _telescope = qvim.integrations.telescope
+  telescope.setup(_telescope.options)
+  for _, value in ipairs(_telescope.extensions) do
     telescope.load_extension(value)
   end
 
 
-  if integration.on_config_done then
-    integration.on_config_done()
+  if _telescope.on_config_done then
+    _telescope.on_config_done()
   end
 end
 

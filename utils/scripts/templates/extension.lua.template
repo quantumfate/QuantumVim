@@ -26,10 +26,11 @@ M.setup = function()
     return
   end
 
-  QV_EXT_PLUGIN_VAR.setup(qvim.integrations.QV_PLUGIN_NAME_VAR.QV_EXT_PLUGIN_VAR.options)
+  local _QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR = qvim.integrations.QV_PLUGIN_NAME_VAR.QV_EXT_PLUGIN_VAR
+  QV_EXT_PLUGIN_VAR.setup(_QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR.options)
 
-  if qvim.integrations.QV_PLUGIN_NAME_VAR.QV_EXT_PLUGIN_VAR.on_config_done then
-    qvim.integrations.QV_PLUGIN_NAME_VAR.QV_EXT_PLUGIN_VAR.on_config_done()
+  if _QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR.on_config_done then
+    _QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR.on_config_done()
   end
 end
 

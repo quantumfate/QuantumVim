@@ -43,7 +43,9 @@ M.setup = function()
     return
   end
 
-  autopairs.setup(qvim.integrations.autopairs.options)
+  local _autopairs = qvim.integrations.autopairs
+
+  autopairs.setup(_autopairs.options)
   if qvim.integrations.cmp then
     local cmp_autopairs = autopairs.completion.cmp
     local cmp_status_ok, cmp = pcall(require, "cmp")
@@ -53,8 +55,8 @@ M.setup = function()
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
   end
 
-  if qvim.integrations.autopairs.on_config_done then
-    qvim.integrations.autopairs.on_config_done()
+  if _autopairs.on_config_done then
+    _autopairs.on_config_done()
   end
 end
 
