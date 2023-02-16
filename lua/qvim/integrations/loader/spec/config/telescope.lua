@@ -1,9 +1,5 @@
 local telescope = {
-    branch = "0.1.x",
-    config = function()
-        require("lvim.core.telescope").setup()
-    end,
-    dependencies = { "telescope-fzf-native.nvim" },
+    dependencies = { "telescope-fzf-native.nvim", "nvim-lua/plenary.nvim" },
     lazy = true,
     cmd = "Telescope",
 }

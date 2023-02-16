@@ -10,4 +10,16 @@ install-bin:
 
 plugin:
 	@echo creating plugin configuration file
-	bash ./utils/scripts/genconfig.sh $(PLUGIN)
+	bash ./utils/scripts/genconfig.sh -p $(PLUGIN)
+
+parent:
+	@echo creating parent folder for plugin configuration
+	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -t
+
+ext:
+	@echo creating extension in an existing parent
+	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -e $(EXT)
+
+parent-ext:
+	@echo creating parent folder for plugin with an extension
+	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -e $(EXT) -t

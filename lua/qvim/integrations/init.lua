@@ -1,8 +1,10 @@
 local M = {}
 
+local Log = require "qvim.integrations.log"
 local integrations = {
   "qvim.integrations.dashboard",
   "qvim.integrations.dbsession",
+  "qvim.integrations.telescope",
   --"qvim.integrations.vimnotify",
   --"qvim.integrations.autopairs",
   --"qvim.integrations.bufferline",
@@ -26,7 +28,12 @@ local integrations = {
 function M:init()
   for _, integration_path in ipairs(integrations) do
     local integration = reload(integration_path)
-    integration.config()
+
+    if integration.config then
+      integration.config()
+    else
+      Log:warn(string.format("The integration '%s' does not implement a config function.", integration))
+    end
   end
 end
 
