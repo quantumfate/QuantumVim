@@ -2,6 +2,7 @@ local M = {}
 
 local integrations = {
   "qvim.integrations.dashboard",
+  "qvim.integrations.dbsession",
   --"qvim.integrations.vimnotify",
   --"qvim.integrations.autopairs",
   --"qvim.integrations.bufferline",
