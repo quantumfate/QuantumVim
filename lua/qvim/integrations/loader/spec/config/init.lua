@@ -177,7 +177,10 @@ M.qvim_integrations = {
     "phaazon/hop.nvim",
     "nvim-lualine/lualine.nvim",
     illuminate = "RRethy/vim-illuminate",
-    "EdenEast/nightfox.nvim"
+    "EdenEast/nightfox.nvim",
+    "akinsho/bufferline.nvim",
+    dashboard = "glepnir/dashboard-nvim",
+    "glepnir/dbsession.nvim"
 }
 
 return M

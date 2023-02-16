@@ -1,6 +1,7 @@
 local M = {}
 
 local integrations = {
+  "qvim.integrations.dashboard",
   --"qvim.integrations.vimnotify",
   --"qvim.integrations.autopairs",
   --"qvim.integrations.bufferline",
@@ -8,6 +9,8 @@ local integrations = {
   --"qvim.integrations.comment",
   --"qvim.integrations.gitsigns",
   "qvim.integrations.hop",
+  "qvim.integrations.autopairs",
+  "qvim.integrations.bufferline",
   "qvim.integrations.illuminate",
   --"qvim.integrations.indentline",
   "qvim.integrations.lualine",

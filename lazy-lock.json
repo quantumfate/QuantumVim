@@ -1,8 +1,12 @@
 {
   "autopairs": { "branch": "master", "commit": "45ae3122a4c7744db41298b41f9f5a3f092123e6" },
+  "bufferline": { "branch": "main", "commit": "84b0822b2af478d0b4f7b0f9249ca218855331db" },
+  "dashboard": { "branch": "master", "commit": "2312a5024748e869a355d91170f2e8fbf2bd5a51" },
+  "dbsession": { "branch": "main", "commit": "068cc4a1a4004c9283ff6d7e25d2f7604919d40a" },
+  "dbsession.nvim": { "branch": "main", "commit": "068cc4a1a4004c9283ff6d7e25d2f7604919d40a" },
   "hop": { "branch": "v2", "commit": "90db1b2c61b820e230599a04fedcd2679e64bd07" },
   "illuminate": { "branch": "master", "commit": "49062ab1dd8fec91833a69f0a1344223dd59d643" },
-  "lazy.nvim": { "branch": "main", "commit": "c249ea376bcd3e5d121b79eac595837b7d0c73a4" },
+  "lazy.nvim": { "branch": "main", "commit": "e916f41df26e33b01f1b3ebe28881090da3a7281" },
   "lualine": { "branch": "master", "commit": "e99d733e0213ceb8f548ae6551b04ae32e590c80" },
   "nightfox": { "branch": "main", "commit": "14489dfa8c4241a919845ed9101fae074234f35b" },
   "nvim-tree": { "branch": "master", "commit": "08a0aa1a3b7411ee0a7887c8818528b1558cef96" },

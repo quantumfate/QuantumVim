@@ -119,6 +119,7 @@ function M.load_defaults()
     },
     {
       "ColorScheme",
+      -- TODO: adapt to current theme
       {
         group = "_qvim_colorscheme",
         callback = function()
@@ -139,35 +140,35 @@ function M.load_defaults()
         end,
       },
     },
-    { -- taken from AstroNvim
-      "BufEnter",
-      {
-        group = "_dir_opened",
-        once = true,
-        callback = function(args)
-          local bufname = vim.api.nvim_buf_get_name(args.buf)
-          if require("qvim.utils").is_directory(bufname) then
-            vim.api.nvim_del_augroup_by_name "_dir_opened"
-            vim.cmd "do User DirOpened"
-            vim.api.nvim_exec_autocmds("BufEnter", {})
-          end
-        end,
-      },
-    },
-    { -- taken from AstroNvim
-      { "BufRead", "BufWinEnter", "BufNewFile" },
-      {
-        group = "_file_opened",
-        once = true,
-        callback = function(args)
-          local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
-          if not (vim.fn.expand "%" == "" or buftype == "nofile") then
-            vim.cmd "do User FileOpened"
-            require("qvim.lsp").setup()
-          end
-        end,
-      },
-    },
+    --{ -- taken from AstroNvim
+    --  "BufEnter",
+    --  {
+    --    group = "_dir_opened",
+    --    once = true,
+    --    callback = function(args)
+    --      local bufname = vim.api.nvim_buf_get_name(args.buf)
+    --      if require("qvim.utils").is_directory(bufname) then
+    --        vim.api.nvim_del_augroup_by_name "_dir_opened"
+    --        vim.cmd "do User DirOpened"
+    --        vim.api.nvim_exec_autocmds("BufEnter", {})
+    --      end
+    --    end,
+    --  },
+    --},
+    --{ -- taken from AstroNvim
+    --  { "BufRead", "BufWinEnter", "BufNewFile" },
+    --  {
+    --    group = "_file_opened",
+    --    once = true,
+    --    callback = function(args)
+    --      local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
+    --      if not (vim.fn.expand "%" == "" or buftype == "nofile") then
+    --        vim.cmd "do User FileOpened"
+    --        require("qvim.lsp").setup()
+    --      end
+    --    end,
+    --  },
+    --},
   }
 
   M.define_autocmds(definitions)

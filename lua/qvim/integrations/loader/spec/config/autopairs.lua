@@ -1,6 +1,5 @@
 local autopairs = {
-    lazy = true,
-
+    event = "InsertEnter",
 }
 
 return autopairs
