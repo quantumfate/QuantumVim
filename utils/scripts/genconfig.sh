@@ -47,7 +47,6 @@ function generate_plugin_config_file() {
 
   local ITERATIONS=2
   if [[ -n "$PLUGIN_NAME"  && -n "$EXT" && "$IS_PARENT" == "false" ]]; then
-    echo "eins"
     mkdir -p "${QV_PLUGIN_PARENT_DIR}"
     # Create an extension in an existing parent
     local src_plugin="$QUANTUMVIM_DIR/utils/scripts/templates/extension.lua.template"
@@ -62,14 +61,12 @@ function generate_plugin_config_file() {
     fi
     
   elif [[  -n "$PLUGIN_NAME" && "$IS_PARENT" == "true" && -z "$EXT" ]]; then
-    echo "zwei"
     # Create a parent folder 
     mkdir -p "${QV_PLUGIN_PARENT_DIR}"
     local dst_plugin="${QV_PLUGIN_PARENT_DIR}/init.lua"
     local sources=("$src_plugin" "$src_spec")
     local destinations=("$dst_plugin" "$dst_spec")
   elif [[ -n "$PLUGIN_NAME" && "$IS_PARENT" == "true" && -n "$EXT" ]]; then
-    echo "drei"
     # make parent with extension
     mkdir -p "${QV_PLUGIN_PARENT_DIR}"
     local src_plugin="$QUANTUMVIM_DIR/utils/scripts/templates/plugin.lua.template"
@@ -80,7 +77,6 @@ function generate_plugin_config_file() {
     local destinations=("$dst_plugin" "$dst_ext" "$dst_spec")
     ITERATIONS=3
   else
-    echo "vier"
     # Normal plugin
     local dst_plugin="$QV_PLUGIN_CONFIG_DIR/$PLUGIN_NAME.lua"
     local sources=("$src_plugin" "$src_spec")

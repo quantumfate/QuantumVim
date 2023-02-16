@@ -13,13 +13,9 @@ M.config = function()
       -- telescope option configuration
 
     },
-    -- TODO: https://github.com/nvim-telescope/telescope.nvim/wiki/Extensions
-    extensions = {
-      "fzf-native",
-      "lazy",
-      "dap",
-    }
   }
+
+  require("qvim.integrations.telescope.extensions").config()
 end
 
 ---The telescope setup function. The module will be required by
@@ -28,17 +24,19 @@ end
 M.setup = function()
   local status_ok, telescope = pcall(reload, "telescope")
   if not status_ok then
-    Log:warn("The plugin '%s' could not be loaded.", telescope)
+    Log:warn(string.format("The plugin '%s' could not be loaded.", telescope))
     return
   end
 
-  telescope.setup(qvim.integrations.telescope.options)
-  for _, value in ipairs(qvim.integrations.telescope.extensions) do
+  local integration = qvim.integrations.telescope
+  telescope.setup(integration.options)
+  for _, value in ipairs(integration.extensions) do
     telescope.load_extension(value)
   end
 
-  if qvim.integrations.telescope.on_config_done then
-    qvim.integrations.telescope.on_config_done()
+
+  if integration.on_config_done then
+    integration.on_config_done()
   end
 end
 
