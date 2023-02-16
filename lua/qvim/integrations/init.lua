@@ -16,7 +16,7 @@ local integrations = {
 
 function M:init()
   for _, integration in ipairs(integrations) do
-    local _integration = reload("qvim.integrations" .. integration)
+    local _integration = reload("qvim.integrations." .. integration)
 
     if _integration.config then
       _integration.config()

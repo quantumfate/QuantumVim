@@ -13,7 +13,7 @@ M.config = function()
     supported_modules = supported_modules,
     -- nightfox option configuration
     options = {
-      transparent = true, -- Disable setting background
+      transparent = false, -- Disable setting background
     },
   }
 end

@@ -94,12 +94,12 @@ M.config = function()
         tabline = true, -- hide the tabline
         winbar = true, -- hide winbar
       },
-      preview = {
-        command = "Telescope oldfiles", -- preview command
-        file_path = get_qvim_dir(), -- preview file path
-        file_height = 100, -- preview file height
-        file_width = 100, -- preview file width
-      },
+      --preview = {
+      --  command = "Telescope oldfiles", -- preview command
+      --  file_path = get_qvim_dir(), -- preview file path
+      --  file_height = 100, -- preview file height
+      --  file_width = 100, -- preview file width
+      --},
     },
   }
 end

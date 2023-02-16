@@ -68,7 +68,7 @@ M.setup = function()
     Log:warn("The plugin '%s' could not be loaded.", hop)
     return
   end
-  local _hop
+  local _hop = qvim.integrations.hop
   local hop_keys = _hop.options.keys
 
   hop.setup { keys = hop_keys }
