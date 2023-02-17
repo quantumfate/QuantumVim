@@ -21,7 +21,7 @@ return {
     autocommands = {},
     lang = {
         -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
-        "arduimo",
+        "arduino",
         "bash",
         "comment",
         "c", "cpp", "cmake", "make",

@@ -12,7 +12,8 @@ local integrations = {
   "lualine",
   "nvim-tree",
   "nightfox",
-  "treesitter"
+  "treesitter",
+  "indentline"
 }
 
 function M:init()

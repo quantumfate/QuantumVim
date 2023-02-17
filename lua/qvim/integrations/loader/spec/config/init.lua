@@ -181,7 +181,8 @@ M.qvim_integrations = {
     "akinsho/bufferline.nvim",
     dashboard = "glepnir/dashboard-nvim",
     "glepnir/dbsession.nvim",
-    treesitter = "nvim-treesitter/nvim-treesitter"
+    treesitter = "nvim-treesitter/nvim-treesitter",
+    indentline = "lukas-reineke/indent-blankline.nvim"
 }
 
 return M
