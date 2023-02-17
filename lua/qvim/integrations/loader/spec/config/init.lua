@@ -170,6 +170,7 @@ end
 ---values represent the accepted plugin name
 ---across the qvim project.
 M.qvim_integrations = {
+    "nvim-lua/plenary.nvim",
     "Tastyep/structlog.nvim",
     "nvim-telescope/telescope.nvim",
     autopairs = "windwp/nvim-autopairs",
@@ -182,7 +183,8 @@ M.qvim_integrations = {
     dashboard = "glepnir/dashboard-nvim",
     "glepnir/dbsession.nvim",
     treesitter = "nvim-treesitter/nvim-treesitter",
-    indentline = "lukas-reineke/indent-blankline.nvim"
+    indentline = "lukas-reineke/indent-blankline.nvim",
+    notify = "rcarriga/nvim-notify",
 }
 
 return M

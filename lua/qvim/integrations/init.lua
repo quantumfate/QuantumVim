@@ -13,7 +13,8 @@ local integrations = {
   "nvim-tree",
   "nightfox",
   "treesitter",
-  "indentline"
+  "indentline",
+  "notify",
 }
 
 function M:init()
