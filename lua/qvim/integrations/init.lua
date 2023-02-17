@@ -11,7 +11,8 @@ local integrations = {
   "illuminate",
   "lualine",
   "nvim-tree",
-  "nightfox"
+  "nightfox",
+  "treesitter"
 }
 
 function M:init()

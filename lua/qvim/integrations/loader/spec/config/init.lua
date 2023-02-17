@@ -180,7 +180,8 @@ M.qvim_integrations = {
     "EdenEast/nightfox.nvim",
     "akinsho/bufferline.nvim",
     dashboard = "glepnir/dashboard-nvim",
-    "glepnir/dbsession.nvim"
+    "glepnir/dbsession.nvim",
+    treesitter = "nvim-treesitter/nvim-treesitter"
 }
 
 return M
