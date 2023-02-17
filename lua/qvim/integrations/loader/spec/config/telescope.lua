@@ -1,5 +1,11 @@
 local telescope = {
-    dependencies = { "telescope-fzf-native.nvim", "nvim-lua/plenary.nvim" },
+    dependencies = {
+        "tsakirist/telescope-lazy.nvim",
+        {
+            "nvim-telescope/telescope-fzf-native.nvim",
+            build = "make"
+        },
+        "nvim-lua/plenary.nvim" },
     lazy = true,
     cmd = "Telescope",
 }

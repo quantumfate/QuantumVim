@@ -63,13 +63,14 @@ function generate_plugin_config_file() {
   elif [[  -n "$PLUGIN_NAME" && "$IS_PARENT" == "true" && -z "$EXT" ]]; then
     # Create a parent folder 
     mkdir -p "${QV_PLUGIN_PARENT_DIR}"
+    local src_plugin="$QUANTUMVIM_DIR/utils/scripts/templates/init.lua.template"
     local dst_plugin="${QV_PLUGIN_PARENT_DIR}/init.lua"
     local sources=("$src_plugin" "$src_spec")
     local destinations=("$dst_plugin" "$dst_spec")
   elif [[ -n "$PLUGIN_NAME" && "$IS_PARENT" == "true" && -n "$EXT" ]]; then
     # make parent with extension
     mkdir -p "${QV_PLUGIN_PARENT_DIR}"
-    local src_plugin="$QUANTUMVIM_DIR/utils/scripts/templates/plugin.lua.template"
+    local src_plugin="$QUANTUMVIM_DIR/utils/scripts/templates/init.lua.template"
     local src_ext="$QUANTUMVIM_DIR/utils/scripts/templates/extension.lua.template"
     local dst_plugin="${QV_PLUGIN_PARENT_DIR}/init.lua"
     local dst_ext="${QV_PLUGIN_PARENT_DIR}/${EXT}.lua"

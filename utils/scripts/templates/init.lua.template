@@ -1,0 +1,41 @@
+---The QV_STRING_PLUGIN_NAME_VAR configuration file
+local M = {}
+
+local Log = require "qvim.integrations.log"
+
+---Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
+M.init = function()
+  qvim.integrations.QV_PLUGIN_NAME_VAR = {
+    active = true,
+    on_config_done = nil,
+    keymaps = { },
+    options = {
+        -- QV_PLUGIN_NAME_VAR option configuration
+
+    },
+  }
+end
+
+M.config = function()
+-- QV_PLUGIN_NAME_VAR config function to call additional configs
+end
+
+---The QV_STRING_PLUGIN_NAME_VAR setup function. The module will be required by 
+---this function and it will call the respective setup function.
+---A on_config_done function will be called if the plugin implements it.
+M.setup = function()
+  local status_ok, QV_PLUGIN_NAME_VAR = pcall(reload, "QV_STRING_PLUGIN_NAME_VAR")
+  if not status_ok then
+    Log:warn(string.format("The plugin '%s' could not be loaded.", QV_PLUGIN_NAME_VAR))
+    return
+  end
+
+  local _QV_PLUGIN_NAME_VAR = qvim.integrations.QV_PLUGIN_NAME_VAR
+  QV_PLUGIN_NAME_VAR.setup(_QV_PLUGIN_NAME_VAR.options)
+
+  if _QV_PLUGIN_NAME_VAR.on_config_done then
+    _QV_PLUGIN_NAME_VAR.on_config_done()
+  end
+end
+
+return M

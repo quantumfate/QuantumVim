@@ -18,9 +18,15 @@ function M:init()
   for _, integration in ipairs(integrations) do
     local _integration = reload("qvim.integrations." .. integration)
 
+    if _integration.init then
+      _integration.init()
+    end
+
     if _integration.config then
       _integration.config()
-    else
+    end
+
+    if not _integration.config and not _integration.init then
       Log:warn(string.format("The integration '%s' does not implement a config function.", integration))
     end
   end
