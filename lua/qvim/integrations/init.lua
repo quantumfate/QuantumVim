@@ -16,6 +16,8 @@ local integrations = {
   "indentline",
   "notify",
   "toggleterm",
+  "gitsigns",
+  "comment",
 }
 
 function M:init()

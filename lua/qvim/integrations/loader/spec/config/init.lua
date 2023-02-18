@@ -187,6 +187,7 @@ M.qvim_integrations = {
     notify = "rcarriga/nvim-notify",
     "akinsho/toggleterm.nvim",
     "lewis6991/gitsigns.nvim",
+    comment = "numToStr/Comment.nvim",
 }
 
 return M
