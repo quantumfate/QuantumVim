@@ -186,6 +186,7 @@ M.qvim_integrations = {
     indentline = "lukas-reineke/indent-blankline.nvim",
     notify = "rcarriga/nvim-notify",
     "akinsho/toggleterm.nvim",
+    "lewis6991/gitsigns.nvim",
 }
 
 return M
