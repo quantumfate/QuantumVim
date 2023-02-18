@@ -15,6 +15,7 @@ local integrations = {
   "treesitter",
   "indentline",
   "notify",
+  "toggleterm",
 }
 
 function M:init()

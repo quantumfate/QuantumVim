@@ -185,6 +185,7 @@ M.qvim_integrations = {
     treesitter = "nvim-treesitter/nvim-treesitter",
     indentline = "lukas-reineke/indent-blankline.nvim",
     notify = "rcarriga/nvim-notify",
+    "akinsho/toggleterm.nvim",
 }
 
 return M
