@@ -11,6 +11,43 @@ M.config = function()
     keymaps = {},
     options = {
       -- comment option configuration
+      ---Add a space b/w comment and the line
+      padding = true,
+      ---Whether the cursor should stay at its position
+      sticky = true,
+      ---Lines to be ignored while (un)comment
+      ignore = nil,
+      ---LHS of toggle mappings in NORMAL mode
+      toggler = {
+        ---Line-comment toggle keymap
+        line = 'gcc',
+        ---Block-comment toggle keymap
+        block = 'gbc',
+      },
+      ---LHS of operator-pending mappings in NORMAL and VISUAL mode
+      opleader = {
+        ---Line-comment keymap
+        line = 'gc',
+        ---Block-comment keymap
+        block = 'gb',
+      },
+      ---LHS of extra mappings
+      extra = {
+        ---Add comment on the line above
+        above = 'gcO',
+        ---Add comment on the line below
+        below = 'gco',
+        ---Add comment at the end of line
+        eol = 'gcA',
+      },
+      ---Enable keybindings
+      ---NOTE: If given `false` then the plugin won't create any mappings
+      mappings = {
+        ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+        basic = true,
+        ---Extra mapping; `gco`, `gcO`, `gcA`
+        extra = true,
+      },
       pre_hook = function(ctx)
         local U = require "Comment.utils"
 
@@ -26,22 +63,6 @@ M.config = function()
           location = location,
         }
       end,
-      opleader = {
-        line = "gc",
-        block = "gb",
-      },
-      mappings = {
-        ---Operator-pending mapping
-        ---Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
-        ---NOTE: These mappings can be changed individually by `opleader` and `toggler` config
-        basic = true,
-        ---Extra mapping
-        ---Includes `gco`, `gcO`, `gcA`
-        extra = true,
-        ---Extended mapping
-        ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
-        extended = false,
-      },
     },
   }
 end
@@ -50,7 +71,7 @@ end
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 M.setup = function()
-  local status_ok, comment = pcall(reload, "comment")
+  local status_ok, comment = pcall(reload, "Comment")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", comment))
     return
