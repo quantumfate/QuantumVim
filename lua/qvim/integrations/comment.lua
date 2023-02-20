@@ -6,7 +6,7 @@ local Log = require "qvim.integrations.log"
 ---Registers the global configuration scope for comment
 M.config = function()
   qvim.integrations.comment = {
-    active = true,
+    active = false,
     on_config_done = nil,
     keymaps = {},
     options = {

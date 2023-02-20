@@ -56,7 +56,7 @@ function M:new(alias, name)
             pin = fields.pin or false,
             event = fields.event or nil, -- https://neovim.io/doc/user/autocmd.html#autocmd-events
             cmd = fields.cmd or nil,
-            key = fields.key or nil,
+            keys = fields.keys or nil,
             ft = fields.ft or nil,
             priority = fields.priority or 50,
         }
@@ -180,7 +180,7 @@ M.qvim_integrations = {
     illuminate = "RRethy/vim-illuminate",
     "EdenEast/nightfox.nvim",
     "akinsho/bufferline.nvim",
-    dashboard = "glepnir/dashboard-nvim",
+    alpha = "goolord/alpha-nvim",
     "glepnir/dbsession.nvim",
     treesitter = "nvim-treesitter/nvim-treesitter",
     indentline = "lukas-reineke/indent-blankline.nvim",

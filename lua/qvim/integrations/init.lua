@@ -2,8 +2,7 @@ local M = {}
 
 local Log = require "qvim.integrations.log"
 local integrations = {
-  "dashboard",
-  "dbsession",
+  "alpha",
   "telescope",
   "hop",
   "autopairs",

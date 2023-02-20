@@ -4,6 +4,7 @@ local plenary = {
         "PlenaryBustedDirectory"
     },
     lazy = true,
+    setup = false,
 }
 
 return plenary
