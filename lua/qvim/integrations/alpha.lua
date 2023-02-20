@@ -43,6 +43,7 @@ M.config = function()
     },
   }
 end
+
 ---Create the dashboard buttons.
 ---@param buttons table the buttons configuration
 ---@param button_area table the button block in the dashboard

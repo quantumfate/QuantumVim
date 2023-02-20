@@ -170,6 +170,7 @@ end
 ---values represent the accepted plugin name
 ---across the qvim project.
 M.qvim_integrations = {
+    whichkey = "folke/which-key.nvim",
     "nvim-lua/plenary.nvim",
     "Tastyep/structlog.nvim",
     "nvim-telescope/telescope.nvim",

@@ -17,6 +17,7 @@ local integrations = {
   "toggleterm",
   "gitsigns",
   "comment",
+  "whichkey"
 }
 
 function M:init()
