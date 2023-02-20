@@ -189,6 +189,7 @@ M.qvim_integrations = {
     "akinsho/toggleterm.nvim",
     "lewis6991/gitsigns.nvim",
     comment = "numToStr/Comment.nvim",
+    "lervag/vimtex",
 }
 
 return M

@@ -17,7 +17,8 @@ local integrations = {
   "toggleterm",
   "gitsigns",
   "comment",
-  "whichkey"
+  "whichkey",
+  "vimtex"
 }
 
 function M:init()
