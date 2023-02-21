@@ -33,62 +33,61 @@ M.mode_adapters = {
 local defaults = {
   insert_mode = {
     -- Move current line / block with Alt-j/k ala vscode.
-    ["<A-j>"] = "<Esc>:m .+1<CR>==gi",
+    ["<A-j>"] = { "<Esc>:m .+1<CR>==gi", 'Move current line down' },
     -- Move current line / block with Alt-j/k ala vscode.
-    ["<A-k>"] = "<Esc>:m .-2<CR>==gi",
+    ["<A-k>"] = { "<Esc>:m .-2<CR>==gi", 'Move current line down' },
     -- navigation
-    ["<A-Up>"] = "<C-\\><C-N><C-w>k",
-    ["<A-Down>"] = "<C-\\><C-N><C-w>j",
-    ["<A-Left>"] = "<C-\\><C-N><C-w>h",
-    ["<A-Right>"] = "<C-\\><C-N><C-w>l",
+    ["<A-Up>"] = { "<C-\\><C-N><C-w>k", 'Move up' },
+    ["<A-Down>"] = { "<C-\\><C-N><C-w>j", 'Move down' },
+    ["<A-Left>"] = { "<C-\\><C-N><C-w>h", 'Move left' },
+    ["<A-Right>"] = { "<C-\\><C-N><C-w>l", 'Move right' },
   },
   normal_mode = {
     -- Better window movement
-    ["<C-h>"] = "<C-w>h",
-    ["<C-j>"] = "<C-w>j",
-    ["<C-k>"] = "<C-w>k",
-    ["<C-l>"] = "<C-w>l",
+    ["<C-h>"] = { "<C-w>h", 'Go to left window' },
+    ["<C-j>"] = { "<C-w>j", 'Go to lower window' },
+    ["<C-k>"] = { "<C-w>k", 'Go to upper window' },
+    ["<C-l>"] = { "<C-w>l", 'Go to right window' },
 
     -- Resize with arrows
-    ["<C-Up>"] = ":resize -2<CR>",
-    ["<C-Down>"] = ":resize +2<CR>",
-    ["<C-Left>"] = ":vertical resize -2<CR>",
-    ["<C-Right>"] = ":vertical resize +2<CR>",
+    ["<C-Up>"] = { ":resize -2<CR>", 'Decrease window size horizontally' },
+    ["<C-Down>"] = { ":resize +2<CR>", 'Increase window size horizontally' },
+    ["<C-Left>"] = { ":vertical resize -2<CR>", 'Decrease window size vertically' },
+    ["<C-Right>"] = { ":vertical resize +2<CR>", 'Increase window size vertically' },
 
     -- Move current line / block with Alt-j/k a la vscode.
-    ["<A-j>"] = ":m .+1<CR>==",
-    ["<A-k>"] = ":m .-2<CR>==",
+    ["<A-j>"] = { ":m .+1<CR>==", 'Move current line up' },
+    ["<A-k>"] = { ":m .-2<CR>==", 'Move current line down' },
 
-    -- QuickFix
-    ["]q"] = ":cnext<CR>",
-    ["[q"] = ":cprev<CR>",
-    ["<C-q>"] = ":call QuickFixToggle()<CR>",
+    ["]q"] = { ":cnext<CR>", 'Fix next error' },
+    ["[q"] = { ":cprev<CR>", 'Fix previous error' },
+    ["<C-q>"] = { ":call QuickFixToggle()<CR>", 'Toggle quick fix on/off' },
   },
   term_mode = {
     -- Terminal window navigation
-    ["<C-h>"] = "<C-\\><C-N><C-w>h",
-    ["<C-j>"] = "<C-\\><C-N><C-w>j",
-    ["<C-k>"] = "<C-\\><C-N><C-w>k",
-    ["<C-l>"] = "<C-\\><C-N><C-w>l",
+    ["<C-h>"] = { "<C-\\><C-N><C-w>h", 'Go to left terminal' },
+    ["<C-j>"] = { "<C-\\><C-N><C-w>j", 'Go to lower terminal' },
+    ["<C-k>"] = { "<C-\\><C-N><C-w>k", 'Go to upper terminal' },
+    ["<C-l>"] = { "<C-\\><C-N><C-w>l", 'Go to right terminal' },
   },
   visual_mode = {
     -- Better indenting
-    ["<"] = "<gv",
-    [">"] = ">gv",
+    ["<"] = { "<gv", 'Indent right' },
+    [">"] = { ">gv", 'Indent left' },
 
     -- ["p"] = '"0p',
     -- ["P"] = '"0P',
   },
   visual_block_mode = {
     -- Move current line / block with Alt-j/k ala vscode.
-    ["<A-j>"] = ":m '>+1<CR>gv-gv",
-    ["<A-k>"] = ":m '<-2<CR>gv-gv",
+    ["<A-j>"] = { ":m '>+1<CR>gv-gv", 'Move current line down' },
+    ["<A-k>"] = { ":m '<-2<CR>gv-gv", 'Move current line up' },
   },
   command_mode = {
     -- navigate tab completion with <c-j> and <c-k>
     -- runs conditionally
-    ["<C-j>"] = { 'pumvisible() ? "\\<C-n>" : "\\<C-j>"', { expr = true, noremap = true } },
-    ["<C-k>"] = { 'pumvisible() ? "\\<C-p>" : "\\<C-k>"', { expr = true, noremap = true } },
+    ["<C-j>"] = { 'pumvisible() ? "\\<C-n>" : "\\<C-j>"', 'Navigate tab completion down', expr = true, noremap = true },
+    ["<C-k>"] = { 'pumvisible() ? "\\<C-p>" : "\\<C-k>"', 'Navigate tab completion up', expr = true, noremap = true },
   },
 }
 
