@@ -4,7 +4,7 @@ local utils = require "qvim.utils"
 local Log = require "qvim.integrations.log"
 local join_paths = utils.join_paths
 
-local plugins_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
+local integrtion_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -25,9 +25,9 @@ function plugin_loader:init(opts)
     print "Initializing first time setup"
     local integrations_dir = join_paths(get_qvim_dir(), "plugins")
     if utils.is_directory(integrations_dir) then
-      vim.fn.mkdir(plugins_dir, "p")
-      vim.loop.fs_rmdir(plugins_dir)
-      require("qvim.utils").fs_copy(integrations_dir, plugins_dir)
+      vim.fn.mkdir(integrtion_dir, "p")
+      vim.loop.fs_rmdir(integrtion_dir)
+      require("qvim.utils").fs_copy(integrations_dir, integrtion_dir)
     else
       vim.fn.system {
         "git",
@@ -52,7 +52,7 @@ function plugin_loader:init(opts)
   end
 
   vim.opt.runtimepath:append(lazy_install_dir)
-  vim.opt.runtimepath:append(join_paths(plugins_dir, "*"))
+  vim.opt.runtimepath:append(join_paths(integrtion_dir, "*"))
 
   local lazy_cache = require "lazy.core.cache"
   lazy_cache.path = join_paths(get_cache_dir(), "lazy", "cache")
@@ -143,18 +143,18 @@ function plugin_loader:load(spec)
   end
 
   -- remove plugins from rtp before loading lazy, so that all plugins won't be loaded on startup
-  vim.opt.runtimepath:remove(join_paths(plugins_dir, "*"))
+  vim.opt.runtimepath:remove(join_paths(integrtion_dir, "*"))
 
   local status_ok = xpcall(function()
     local opts = {
       install = {
         missing = true,
-        colorscheme = { qvim.colorscheme },
+        colorscheme = { qvim.colorscheme, "habamax" },
       },
       ui = {
         border = "rounded",
       },
-      root = plugins_dir,
+      root = integrtion_dir,
       git = {
         timeout = 120,
       },

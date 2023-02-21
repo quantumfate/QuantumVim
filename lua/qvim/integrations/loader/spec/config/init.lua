@@ -182,7 +182,6 @@ M.qvim_integrations = {
     "EdenEast/nightfox.nvim",
     "akinsho/bufferline.nvim",
     alpha = "goolord/alpha-nvim",
-    "glepnir/dbsession.nvim",
     treesitter = "nvim-treesitter/nvim-treesitter",
     indentline = "lukas-reineke/indent-blankline.nvim",
     notify = "rcarriga/nvim-notify",

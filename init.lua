@@ -10,11 +10,11 @@ end
 
 require("qvim.bootstrap"):init()
 
---require("qvim.config"):init()
+require("qvim.config"):init()
 
-require("qvim.integrations.loader"):load()
+local integration_loader = require("qvim.integrations.loader")
 
---require("qvim.integrations.theme").setup()
+integration_loader:load()
 
 local Log = require "qvim.integrations.log"
 Log:debug "Starting QuantumVim"

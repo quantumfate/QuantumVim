@@ -1,5 +1,6 @@
 local M = {}
 
+local in_headless = #vim.api.nvim_list_uis() == 0
 
 if vim.fn.has "nvim-0.8" ~= 1 then
   vim.notify("Please upgrade your Neovim base installation. This configuration requires v0.8+", vim.log.levels.WARN)
@@ -66,11 +67,9 @@ function M:init()
   print("Qvim dir: " .. self.qvim_dir)
   print("cache dir: " .. self.cache_dir)
   require("qvim.integrations.loader"):init {
-      package_root = self.pack_dir,
-      install_path = self.lazy_install_dir,
+    package_root = self.pack_dir,
+    install_path = self.lazy_install_dir,
   }
-
-  require("qvim.config"):init()
 
   --require("qvim.core.mason").bootstrap()
 
