@@ -4,8 +4,8 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for telescope
-M.init = function()
-  qvim.integrations.telescope = {
+function M:init()
+  local telescope = {
     active = true,
     on_config_done = nil,
     keymaps = {},
@@ -14,10 +14,12 @@ M.init = function()
 
     },
   }
+
+  return telescope
 end
 
-M.config = function()
-  require("qvim.integrations.telescope.extensions").config()
+function M:config()
+  require("qvim.integrations.telescope.extensions"):config()
 
   local _telescope = qvim.integrations.telescope
   local _telescope_extensions = qvim.integrations.telescope.extensions

@@ -1,7 +1,6 @@
 ---The alpha configuration file
 local M = {}
 
--- TODO: Cleanup - this file is ugly af
 local Log = require "qvim.integrations.log"
 local header = {
   [[                                                              ]],
@@ -13,8 +12,8 @@ local header = {
   [[                                                              ]],
 }
 ---Registers the global configuration scope for alpha
-M.config = function()
-  qvim.integrations.alpha = {
+function M:config()
+  local alpha = {
     activ          = true,
     on_config_done = nil,
     whichkey       = {},
@@ -42,6 +41,7 @@ M.config = function()
       }
     },
   }
+  return alpha
 end
 
 ---Create the dashboard buttons.
