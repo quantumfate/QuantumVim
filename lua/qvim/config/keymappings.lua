@@ -2,7 +2,7 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 local generic_opts_any = { noremap = true, silent = true }
-local generic_opts = {
+M.generic_opts = {
   insert_mode = generic_opts_any,
   normal_mode = generic_opts_any,
   visual_mode = generic_opts_any,
@@ -12,7 +12,7 @@ local generic_opts = {
   term_mode = { silent = true },
 }
 
-local mode_adapters = {
+M.mode_adapters = {
   insert_mode = "i",
   normal_mode = "n",
   term_mode = "t",
@@ -107,7 +107,7 @@ end
 function M.clear(keymaps)
   local default = M.get_defaults()
   for mode, mappings in pairs(keymaps) do
-    local translated_mode = mode_adapters[mode] and mode_adapters[mode] or mode
+    local translated_mode = M.mode_adapters[mode] and M.mode_adapters[mode] or mode
     for key, _ in pairs(mappings) do
       -- some plugins may override default bindings that the user hasn't manually overriden
       if default[mode][key] ~= nil or (default[translated_mode] ~= nil and default[translated_mode][key] ~= nil) then
@@ -123,7 +123,7 @@ end
 --- @param key string key of keymap
 --- @param val table|string Can be form as a mapping or tuple of mapping and user defined opt
 function M.set_keymaps(mode, key, val)
-  local opt = generic_opts[mode] or generic_opts_any
+  local opt = M.generic_opts[mode] or generic_opts_any
   if type(val) == "table" then
     opt = val[2]
     val = val[1]
@@ -141,7 +141,7 @@ end
 --- @param mode string keymap mode, can be one of the keys of mode_adapters
 --- @param keymaps table list of key mappings
 function M.load_mode(mode, keymaps)
-  mode = mode_adapters[mode] or mode
+  mode = M.mode_adapters[mode] or mode
   for k, v in pairs(keymaps) do
     M.set_keymaps(mode, k, v)
   end

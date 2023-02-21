@@ -32,7 +32,8 @@ end
 ---Create a new integration table with defaults and whatever
 ---an integration might implement.
 ---@param config_file string
----@return table|nil
+---@return table? obj
+---@return table? integration instance to the integration
 function M:new(config_file)
     local status_ok, integration = pcall(require, "qvim.integrations." .. config_file)
     if not status_ok then
@@ -48,7 +49,7 @@ function M:new(config_file)
         obj[key] = value
     end
 
-    return obj
+    return obj, integration
 end
 
 return M

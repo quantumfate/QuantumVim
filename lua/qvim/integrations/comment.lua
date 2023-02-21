@@ -15,7 +15,11 @@ function M:init()
 
       },
     },
-    keymaps = {},
+    keymaps = {
+      visual_mode = {
+        ["/"] = { "<ESC><CMD>lua require(\"Comment.api\").toggle_linewise_op(vim.fn.visualmode())<CR>", "Comment" },
+      }
+    },
     options = {
       -- comment option configuration
       ---Add a space b/w comment and the line
