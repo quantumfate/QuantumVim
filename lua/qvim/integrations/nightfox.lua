@@ -1,6 +1,7 @@
 ---The nightfox configuration file
 local M = {}
 
+local in_headless = #vim.api.nvim_list_uis() == 0
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for nightfox
@@ -16,7 +17,9 @@ M.config = function()
     },
   }
 
-  qvim.integrations.nightfox = require("nightfox.config").module_names
+  if not in_headless then
+    qvim.integrations.nightfox = require("nightfox.config").module_names
+  end
 end
 
 ---The nightfox setup function. The module will be required by
