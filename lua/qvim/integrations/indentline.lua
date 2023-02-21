@@ -26,7 +26,7 @@ M.config = function()
         "Error",
         "Function"
       },
-      buftype_exclude = { "nofile", "prompt", "quickfix" },
+      buftype_exclude = { "nofile", "prompt", "quickfix, :terminal" },
       context_patterns = {
         "class",
         "return",

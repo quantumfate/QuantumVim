@@ -8,7 +8,13 @@ M.config = function()
   qvim.integrations.QV_PLUGIN_NAME_VAR = {
     active = true,
     on_config_done = nil,
-    keymaps = { },
+    keymaps = { 
+      leader = nil,
+      name = nil,
+      bindings = {
+        
+      }
+    },
     options = {
         -- QV_PLUGIN_NAME_VAR option configuration
 

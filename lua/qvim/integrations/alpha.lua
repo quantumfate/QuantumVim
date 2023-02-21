@@ -3,23 +3,23 @@ local M = {}
 
 -- TODO: Cleanup - this file is ugly af
 local Log = require "qvim.integrations.log"
-
+local header = {
+  [[                                                              ]],
+  [[   ____                    __                _    ___         ]],
+  [[  / __ \__  ______ _____  / /___  ______ ___| |  / (_)___ ___ ]],
+  [[ / / / / / / / __ `/ __ \/ __/ / / / __ `__ \ | / / / __ `__ \]],
+  [[/ /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / / |/ / / / / / / /]],
+  [[\___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_/|___/_/_/ /_/ /_/ ]],
+  [[                                                              ]],
+}
 ---Registers the global configuration scope for alpha
 M.config = function()
   qvim.integrations.alpha = {
-    active         = true,
+    activ          = true,
     on_config_done = nil,
-    keymaps        = {},
+    whichkey       = {},
     options        = {
-      header      = {
-        [[                                                              ]],
-        [[   ____                    __                _    ___         ]],
-        [[  / __ \__  ______ _____  / /___  ______ ___| |  / (_)___ ___ ]],
-        [[ / / / / / / / __ `/ __ \/ __/ / / / __ `__ \ | / / / __ `__ \]],
-        [[/ /_/ / /_/ / /_/ / / / / /_/ /_/ / / / / / / |/ / / / / / / /]],
-        [[\___\_\__,_/\__,_/_/ /_/\__/\__,_/_/ /_/ /_/|___/_/_/ /_/ /_/ ]],
-        [[                                                              ]],
-      },
+      header      = header,
       noautocmd   = true,
       header_hl   = "Include",
       -- alpha option configuration

@@ -39,7 +39,19 @@ M.config = function()
         python:toggle()
       end
     end,
-    keymaps = {},
+    whichkey = {
+      leader = "t",
+      name = "Toggleterm",
+      bindings = {
+        n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
+        u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
+        t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
+        p = { "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
+        f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
+        h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
+        v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
+      }
+    },
     options = {
       -- toggleterm option configuration
       size = 20,
@@ -51,7 +63,7 @@ M.config = function()
       start_in_insert = true,
       insert_mappings = true,
       persist_size = true,
-      direction = "float",
+      direction = "tab",
       close_on_exit = true,
       shell = vim.o.shell,
       float_opts = {
@@ -68,6 +80,7 @@ M.config = function()
   -- TODO: adapt keymaps to global whichkey keymaps
   function _G.set_terminal_keymaps()
     local opts = { noremap = true }
+
     vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
     vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
     vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
