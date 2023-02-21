@@ -17,6 +17,7 @@ function M:init()
     activ          = true,
     on_config_done = nil,
     whichkey       = {},
+    keymaps        = {},
     options        = {
       header      = header,
       noautocmd   = true,

@@ -22,20 +22,10 @@ local integrations = {
 }
 
 function M:init()
+  local base = require("qvim.integrations.base")
   for _, integration in ipairs(integrations) do
-    local _integration = reload("qvim.integrations." .. integration)
-
-    if _integration.init then
-      _integration.init()
-    end
-
-    if _integration.config then
-      _integration.config()
-    end
-
-    if not _integration.config and not _integration.init then
-      Log:warn(string.format("The integration '%s' does not implement a config function.", integration))
-    end
+    local _integration = base:new(integration)
+    qvim[integration] = _integration
   end
 end
 

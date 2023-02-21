@@ -4,7 +4,7 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
-M.config = function()
+function M:config()
   qvim.integrations.QV_PLUGIN_NAME_VAR.QV_EXT_PLUGIN_VAR = {
     active = true,
     on_config_done = nil,
@@ -12,7 +12,7 @@ M.config = function()
       leader = nil,
       name = nil,
       bindings = {
-        
+
       }
     },
     options = {
@@ -25,7 +25,7 @@ end
 ---The QV_STRING_EXT_PLUGIN_NAME_VAR setup function. The module will be required by 
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, QV_EXT_PLUGIN_VAR = pcall(reload, "QV_STRING_EXT_PLUGIN_NAME_VAR")
   if not status_ok then
     Log:warn(string.format("The extension '%s' could not be loaded.", QV_EXT_PLUGIN_VAR))
