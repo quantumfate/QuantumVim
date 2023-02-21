@@ -9,9 +9,14 @@ function M:init()
   local hop = {
     active = true,
     on_config_done = nil,
-    keymaps = {
+    whichkey = {
+      leader = nil,
+      name = nil,
+      bindings = {
 
+      },
     },
+    keymaps = {},
     -- hop option configuration
     options = {
       keys = 'etovxqpdygfblzhckisuran',

@@ -10,6 +10,13 @@ function M:init()
     on_config_done = function(notify)
       vim.notify = notify
     end,
+    whichkey = {
+      leader = nil,
+      name = nil,
+      bindings = {
+
+      },
+    },
     keymaps = {},
     options = {
       -- notify option configuration

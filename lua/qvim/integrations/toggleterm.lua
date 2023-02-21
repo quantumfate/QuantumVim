@@ -52,6 +52,7 @@ function M:init()
         v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
       }
     },
+    keymaps = {},
     options = {
       -- toggleterm option configuration
       size = 20,

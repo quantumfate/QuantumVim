@@ -9,6 +9,13 @@ function M:init()
   local nightfox = {
     active = true,
     on_config_done = nil,
+    whichkey = {
+      leader = nil,
+      name = nil,
+      bindings = {
+
+      },
+    },
     keymaps = {},
     supported_modules = nil,
     -- nightfox option configuration

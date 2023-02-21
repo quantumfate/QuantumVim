@@ -8,6 +8,13 @@ function M:init()
   local comment = {
     active = false,
     on_config_done = nil,
+    whichkey = {
+      leader = nil,
+      name = nil,
+      bindings = {
+
+      },
+    },
     keymaps = {},
     options = {
       -- comment option configuration

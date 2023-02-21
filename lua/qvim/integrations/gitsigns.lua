@@ -8,7 +8,7 @@ function M:init()
   local gitsigns = {
     active = true,
     on_config_done = nil,
-    keymaps = {
+    whichkey = {
       leader = "g",
       name = "Git",
       bindings = {
@@ -33,6 +33,7 @@ function M:init()
         },
       },
     },
+    keymaps = {},
     options = {
       -- gitsigns option configuration
       signs = {

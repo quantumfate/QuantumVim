@@ -8,6 +8,13 @@ function M:init()
   local illuminate = {
     active = true,
     on_config_done = nil,
+    whichkey = {
+      leader = nil,
+      name = nil,
+      bindings = {
+
+      },
+    },
     keymaps = {},
     options = {
       -- vim-illuminate option configuration

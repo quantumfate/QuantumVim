@@ -8,6 +8,13 @@ function M:init()
   local vimtex = {
     active = true,
     on_config_done = nil,
+    whichkey = {
+      leader = nil,
+      name = nil,
+      bindings = {
+
+      },
+    },
     keymaps = {},
     options = {
       -- vimtex option configuration

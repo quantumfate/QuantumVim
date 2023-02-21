@@ -16,9 +16,14 @@ function M:init()
     local nvim_tree = {
         active = true,
         on_config_done = nil,
-        keymaps = {
+        whichkey = {
+            leader = nil,
+            name = nil,
+            bindings = {
 
+            },
         },
+        keymaps = {},
         glyphs = {
             default = "",
             symlink = "",
