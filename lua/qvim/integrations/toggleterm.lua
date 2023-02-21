@@ -4,8 +4,8 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for toggleterm
-M.config = function()
-  qvim.integrations.toggleterm = {
+function M:init()
+  local toggleterm = {
     active = true,
     on_config_done = function()
       local Terminal = require("toggleterm.terminal").Terminal
@@ -90,12 +90,14 @@ M.config = function()
   end
 
   vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+  return toggleterm
 end
 
 ---The toggleterm setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, toggleterm = pcall(reload, "toggleterm")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", toggleterm))

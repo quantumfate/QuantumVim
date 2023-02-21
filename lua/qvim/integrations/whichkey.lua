@@ -4,8 +4,8 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for whichkey
-M.config = function()
-  qvim.integrations.whichkey = {
+function M:init()
+  local whichkey = {
     active = true,
     on_config_done = nil,
     whichkey = {
@@ -94,7 +94,9 @@ M.config = function()
       },
     },
   }
+  return whichkey
 end
+
 --local opts = {
 --  mode = "n", -- NORMAL mode
 --  prefix = "<leader>",
@@ -164,7 +166,7 @@ end
 ---The whichkey setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, whichkey = pcall(reload, "which-key")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", whichkey))

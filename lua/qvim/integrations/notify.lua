@@ -4,8 +4,8 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for notify
-M.config = function()
-  qvim.integrations.notify = {
+function M:init()
+  local notify = {
     active = true,
     on_config_done = function(notify)
       vim.notify = notify
@@ -23,12 +23,13 @@ M.config = function()
       }
     },
   }
+  return notify
 end
 
 ---The notify setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, notify = pcall(reload, "notify")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", notify))

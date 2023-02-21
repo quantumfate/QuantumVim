@@ -4,7 +4,7 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for lualine
-M.config = function()
+function M:init()
   local hide_in_width = function()
     return vim.fn.winwidth(0) > 80
   end
@@ -69,7 +69,7 @@ M.config = function()
     return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
   end
 
-  qvim.integrations.lualine = {
+  local lualine = {
     active = true,
     on_config_done = nil,
     options = {
@@ -102,12 +102,13 @@ M.config = function()
       extensions = {},
     },
   }
+  return lualine
 end
 
 ---The lualine setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, lualine = pcall(reload, "lualine")
   if not status_ok then
     Log:warn("The plugin '%s' could not be loaded.", lualine)

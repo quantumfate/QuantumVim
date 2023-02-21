@@ -4,7 +4,7 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for nvim-tree
-M.config = function()
+function M:init()
     local status_ok, nvim_tree_config = pcall(reload, "nvim-tree.config")
     if not status_ok then
         Log:warn("The plugin '%s' could not be loaded for configuration.", nvim_tree_config)
@@ -13,7 +13,7 @@ M.config = function()
 
     local tree_cb = nvim_tree_config.nvim_tree_callback
 
-    qvim.integrations.nvim_tree = {
+    local nvim_tree = {
         active = true,
         on_config_done = nil,
         keymaps = {
@@ -94,12 +94,13 @@ M.config = function()
             },
         },
     }
+    return nvim_tree
 end
 
 ---The nvim-tree setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
     local status_ok, nvim_tree = pcall(reload, "nvim-tree")
     if not status_ok then
         Log:warn("The plugin '%s' could not be loaded.", nvim_tree)

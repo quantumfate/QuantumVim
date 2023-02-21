@@ -12,7 +12,7 @@ local header = {
   [[                                                              ]],
 }
 ---Registers the global configuration scope for alpha
-function M:config()
+function M:init()
   local alpha = {
     activ          = true,
     on_config_done = nil,
@@ -60,7 +60,7 @@ end
 ---The alpha setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, alpha = pcall(reload, "alpha")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", "alpha"))

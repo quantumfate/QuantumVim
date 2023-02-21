@@ -4,8 +4,8 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for bufferline
-M.config = function()
-  qvim.integrations.bufferline = {
+function M:init()
+  local bufferline = {
     active = true,
     on_config_done = nil,
     keymaps = {},
@@ -102,12 +102,13 @@ M.config = function()
 
     },
   }
+  return bufferline
 end
 
 ---The bufferline setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, bufferline = pcall(reload, "bufferline")
   if not status_ok then
     Log:warn("The plugin '%s' could not be loaded.", bufferline)
@@ -122,6 +123,7 @@ M.setup = function()
     _bufferline.bufferline.on_config_done()
   end
 end
+
 -- Common kill function for bdelete and bwipeout
 -- credits: based on bbye and nvim-bufdel
 ---@param kill_command? string defaults to "bd"

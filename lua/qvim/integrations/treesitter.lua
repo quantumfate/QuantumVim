@@ -6,8 +6,8 @@ local utils = require "qvim.utils"
 
 -- TODO: fix treesitter updating everytime qvim starts
 ---Registers the global configuration scope for treesitter
-M.config = function()
-  qvim.integrations.treesitter = {
+function M:init()
+  local treesitter = {
     active = true,
     on_config_done = nil,
     keymaps = {},
@@ -31,12 +31,13 @@ M.config = function()
       },
     },
   }
+  return treesitter
 end
 
 ---The treesitter setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, treesitter = pcall(reload, "nvim-treesitter.configs")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", treesitter))

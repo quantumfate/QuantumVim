@@ -4,11 +4,11 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Registers the global configuration scope for indentline
-M.config = function()
+function M:init()
   -- HACK: work-around for https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
   vim.wo.colorcolumn = "99999"
 
-  qvim.integrations.indentline = {
+  local indentline = {
     active = true,
     on_config_done = nil,
     keymaps = {},
@@ -61,12 +61,13 @@ M.config = function()
       }
     },
   }
+  return indentline
 end
 
 ---The indentline setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, indentline = pcall(reload, "indent_blankline")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", indentline))

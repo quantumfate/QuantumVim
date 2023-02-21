@@ -5,8 +5,8 @@ local utils = require "qvim.utils"
 local Log = require "qvim.integrations.log"
 local directions = require('hop.hint').HintDirection
 ---Registers the global configuration scope for hop
-M.config = function()
-  qvim.integrations.hop = {
+function M:init()
+  local hop = {
     active = true,
     on_config_done = nil,
     keymaps = {
@@ -57,12 +57,13 @@ M.config = function()
       }
     },
   }
+  return hop
 end
 
 ---The hop setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
-M.setup = function()
+function M:setup()
   local status_ok, hop = pcall(reload, "hop")
   if not status_ok then
     Log:warn("The plugin '%s' could not be loaded.", hop)
