@@ -10,17 +10,10 @@ local default_whichkey = {
 
 local Log = require "qvim.integrations.log"
 
----Create a new integration table with defaults and whatever
----an integration might implement.
----@param integration string
----@return table|nil
-function M:new(integration)
-    local status_ok, config = pcall(require, "qvim.integrations." .. integration)
-    if not status_ok then
-        Log:debug(string.format("No configuration file for plugin '%s'", integration))
-        return
-    end
-
+---Create the base table for an integration
+---@param config table
+---@return table base_table
+local function create_base_table(config)
     local enabled = true
     if type(config.active) == "boolean" then
         enabled = config.active
@@ -33,7 +26,22 @@ function M:new(integration)
         keymaps = config.keymaps or {},
         options = config.options or {},
     }
+    return base_table
+end
 
+---Create a new integration table with defaults and whatever
+---an integration might implement.
+---@param config_file string
+---@return table|nil
+function M:new(config_file)
+    local status_ok, integration = pcall(require, "qvim.integrations." .. config_file)
+    if not status_ok then
+        Log:debug(string.format("No configuration file for plugin '%s'", config_file))
+        return
+    end
+
+    local config = integration:init()
+    local base_table = create_base_table(config)
     local obj = setmetatable({}, { __index = base_table })
 
     for key, value in pairs(config) do

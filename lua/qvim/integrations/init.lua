@@ -22,10 +22,13 @@ local integrations = {
 }
 
 function M:init()
+  qvim.integrations = {}
   local base = require("qvim.integrations.base")
   for _, integration in ipairs(integrations) do
-    local _integration = base:new(integration)
-    qvim[integration] = _integration
+    local this = integration
+    local _integration = base:new(this)
+    this = string.gsub(this, "-", "_") -- hyphons are not allowed
+    qvim.integrations[this] = _integration
   end
 end
 

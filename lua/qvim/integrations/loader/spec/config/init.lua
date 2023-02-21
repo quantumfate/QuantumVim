@@ -69,9 +69,10 @@ end
 
 ---Validates if a plugin is configured meaning that its global
 ---configuration table is defined.
----@param plugin_name string|nil the actual plugin name
+---@param plugin_name string the actual plugin name
 local function is_plugin_configured(plugin_name)
-    if type(plugin_name) == "string" and qvim.integrations[plugin_name] then
+    local name = string.gsub(plugin_name, "-", "_")
+    if qvim.integrations[name] then
         return true
     else
         Log:warn("Plugin is defined but not configured: '%s'", plugin_name)
@@ -136,7 +137,7 @@ function M:hook_integration_config(plugin_name)
             Log:warn(string.format(
                 "The plugin '%s' does not implement a standard setup function.", plugin_name))
 
-            return callback
+            return
         end
         callback = result.setup
     else
