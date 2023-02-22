@@ -8,16 +8,20 @@ function M:init()
   local comment = {
     active = false,
     on_config_done = nil,
-    whichkey = {
-      leader = nil,
+    whichkey_group = {
+      group = nil,
       name = nil,
       bindings = {
 
       },
     },
+    whichkey = {
+      normal_mode = {
+        ["/"] = { "<ESC><CMD>lua require(\"Comment.api\").toggle_linewise_op(vim.fn.visualmode())<CR>", "Comment" },
+      }
+    },
     keymaps = {
       visual_mode = {
-        ["/"] = { "<ESC><CMD>lua require(\"Comment.api\").toggle_linewise_op(vim.fn.visualmode())<CR>", "Comment" },
       }
     },
     options = {

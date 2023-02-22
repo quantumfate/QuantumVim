@@ -8,8 +8,8 @@ function M:init()
   local gitsigns = {
     active = true,
     on_config_done = nil,
-    whichkey = {
-      leader = "g",
+    whichkey_group = {
+      group = "g",
       name = "Git",
       bindings = {
         g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
@@ -33,6 +33,7 @@ function M:init()
         },
       },
     },
+    whichkey = {},
     keymaps = {},
     options = {
       -- gitsigns option configuration

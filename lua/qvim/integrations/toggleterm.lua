@@ -39,8 +39,8 @@ function M:init()
         python:toggle()
       end
     end,
-    whichkey = {
-      leader = "t",
+    whichkey_group = {
+      group = "t",
       name = "Toggleterm",
       bindings = {
         n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
@@ -52,6 +52,7 @@ function M:init()
         v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
       }
     },
+    whichkey = {},
     keymaps = {},
     options = {
       -- toggleterm option configuration

@@ -9,6 +9,7 @@ M.supported_options = {
   script = true,
   expr = true,
   unique = true,
+  desc = true,
 }
 
 ---Returns options for kaymaps. The options will cover the default
@@ -24,6 +25,7 @@ function M:mapping_options(mappings)
     script = false,
     expr = false,
     unique = false,
+    desc = "",
   }
   if not mappings then
     return default_options
@@ -61,6 +63,8 @@ M.mode_adapters = {
   term_mode = "t",
 }
 
+---Register keymaps for qvim. If whichkey is available all keymaps
+---will be registered using whichkey.
 function M:init()
   local defaults = self:get_defaults()
   qvim.keymaps = qvim.keymaps or {}
@@ -71,13 +75,13 @@ function M:init()
     end
   end
 
-  --local whichkey_exists, whichkey = pcall(require, "which-key")
-  --if whichkey_exists then
-  -- whichkey setup
-  --else
-  -- normal setup
-  self:load(defaults)
-  --end
+  local whichkey_exists, whichkey = pcall(require, "which-key")
+  if whichkey_exists then
+    -- whichkey setup
+  else
+    -- normal setup
+    self:load(defaults)
+  end
 
   Log:info("The default keymappings were loaded.")
 end
@@ -101,6 +105,8 @@ local defaults = {
     ["<A-Down>"] = { "<C-\\><C-N><C-w>j", 'Move down' },
     ["<A-Left>"] = { "<C-\\><C-N><C-w>h", 'Move left' },
     ["<A-Right>"] = { "<C-\\><C-N><C-w>l", 'Move right' },
+
+    -- TODO: whichkey menu in insert mode
   },
   normal_mode = {
     -- Better window movement
@@ -122,6 +128,10 @@ local defaults = {
     ["]q"] = { ":cnext<CR>", 'Fix next error' },
     ["[q"] = { ":cprev<CR>", 'Fix previous error' },
     ["<C-q>"] = { ":call QuickFixToggle()<CR>", 'Toggle quick fix on/off' },
+
+    -- Navigate buffers
+    ["<S-l>"] = { ":bnext<CR>", "Navigate to right buffer" },
+    ["<S-h>"] = { ":bnext<CR>", "Navigate to left buffer" },
   },
   term_mode = {
     -- Terminal window navigation
@@ -189,6 +199,9 @@ function M:get_declared_options(options, keymap)
     if keymap[key] then
       options[key] = keymap[key]
     end
+    if key == "desc" then
+      options[key] = keymap[2]
+    end
   end
   return options
 end
@@ -196,11 +209,12 @@ end
 --- Set key mappings individually
 --- @param mode string keymap mode, can be one of the keys of mode_adapters
 --- @param key string key of keymap
---- @param val table|string Can be form as a mapping or tuple of mapping and user defined opt
+--- @param val table The keymap table
+--- @return boolean success whether the keymap was set or not
 function M:set_keymaps(mode, key, val)
-  if type(val) ~= "table" then
+  if type(val) ~= "table" and type(val[1]) ~= "string" then
     Log:warn("The keymapping for '" .. key .. "' is not a valid keymap. The value must be a table.")
-    return
+    return false
   end
   local opt = M.generic_opts[M.mode_adapters[mode]]
   opt = self:get_declared_options(opt, val)
@@ -210,10 +224,12 @@ function M:set_keymaps(mode, key, val)
     pcall(vim.api.nvim_del_keymap, mode, key)
   end
   Log:debug(string.format("Key [%s] for mode [%s] with the value [%s] was set.", mode, key, val))
+  return true
 end
 
 --- Load a selection of keymappings based on the modes that
---- where provided.
+--- where provided. Adds a keymap to the global keymap table
+--- when the keymap was set.
 --- @param mode string keymap mode, can be one of the keys of mode_adapters
 --- @param keymaps table list of key mappings
 function M:load_mode(mode, keymaps)
@@ -221,9 +237,11 @@ function M:load_mode(mode, keymaps)
     Log:warn("The mode '" .. mode .. "' is not a supp' mode.")
     return
   end
-  mode = self.mode_adapters[mode]
+  local adapted_mode = self.mode_adapters[mode]
   for k, v in pairs(keymaps) do
-    self:set_keymaps(mode, k, v)
+    if self:set_keymaps(adapted_mode, k, v) then
+      qvim.keymaps[mode][k] = v
+    end
   end
   Log:info(string.format("The mappings for the mode %s where loaded", mode), keymaps)
 end

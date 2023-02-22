@@ -1,7 +1,7 @@
 local M = {}
 
-local default_whichkey = {
-    leader = nil,
+local default_whichkey_group = {
+    group = nil,
     name = nil,
     bindings = {
 
@@ -22,7 +22,8 @@ local function create_base_table(config)
     local base_table = {
         active = enabled,
         on_config_done = config.on_config_done or nil,
-        whichkey = config.whichkey or default_whichkey,
+        whichkey_group = config.whichkey_group or default_whichkey_group,
+        whichkey = config.whichkey or {},
         keymaps = config.keymaps or {},
         options = config.options or {},
     }

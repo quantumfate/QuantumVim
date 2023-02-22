@@ -10,13 +10,14 @@ function M:init()
   local treesitter = {
     active = true,
     on_config_done = nil,
-    whichkey = {
-      leader = nil,
+    whichkey_group = {
+      group = nil,
       name = nil,
       bindings = {
 
       },
     },
+    whichkey = {},
     keymaps = {},
     options = {
       -- treesitter option configuration

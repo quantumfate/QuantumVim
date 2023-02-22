@@ -72,13 +72,14 @@ function M:init()
   local lualine = {
     active = true,
     on_config_done = nil,
-    whichkey = {
-      leader = nil,
+    whichkey_group = {
+      group = nil,
       name = nil,
       bindings = {
 
       },
     },
+    whichkey = {},
     keymaps = {},
     options = {
       -- lualine option configuration

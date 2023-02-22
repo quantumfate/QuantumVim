@@ -6,6 +6,8 @@ local M = {}
 
 --- Initialize qvim default configuration and variables
 function M:init()
+  vim.g.mapleader = " "
+  vim.g.maplocalleader = " "
   qvim = vim.deepcopy(require "qvim.config.config")
 
   qvim.keys = require("qvim.config.keymap"):init()
