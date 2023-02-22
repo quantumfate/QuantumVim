@@ -7,7 +7,6 @@ local base_dir = vim.env.QUANTUMVIM_DIR
 if not vim.tbl_contains(vim.opt.rtp:get(), base_dir) then
   vim.opt.rtp:append(base_dir)
 end
-
 require("qvim.bootstrap"):init()
 
 require("qvim.config"):init()

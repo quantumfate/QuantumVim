@@ -8,7 +8,7 @@ local M = {}
 function M:init()
   qvim = vim.deepcopy(require "qvim.config.config")
 
-  qvim.keys = require("qvim.config.keymappings").load_defaults()
+  qvim.keys = require("qvim.config.keymap"):init()
 
   local integrations = require("qvim.integrations")
   integrations:init()
