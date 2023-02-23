@@ -3,14 +3,12 @@ local Log = require "qvim.integrations.log"
 
 local M = {}
 
-
 --- Initialize qvim default configuration and variables
+--- This must be called at the beginning when qvim is
+--- loaded since everything depends on this.
 function M:init()
-  vim.g.mapleader = " "
-  vim.g.maplocalleader = " "
-  qvim = vim.deepcopy(require "qvim.config.config")
-
-  qvim.keys = require("qvim.config.keymap"):init()
+  qvim = {}
+  setmetatable(qvim, { __index = vim.deepcopy(require("qvim.config.config")) })
 
   local integrations = require("qvim.integrations")
   integrations:init()
@@ -24,6 +22,16 @@ function M:init()
   --local qvim_lsp_config = require "qvim.lsp.config"
   -- TODO: add lsp language configs to global qvim variable
   --qvim.lsp = vim.deepcopy(qvim_lsp_config)
+
+  function _G.qvim_integrations()
+    local qvim_integrations = qvim.config.integrations
+    return qvim_integrations
+  end
+
+  function _G.qvim_languages()
+    local qvim_integrations = qvim.config.languages
+    return qvim_integrations
+  end
 end
 
 --[[

@@ -1,5 +1,9 @@
 local M = {}
 
+function M.in_headless_mode()
+  return #vim.api.nvim_list_uis() == 0
+end
+
 function M.isempty(s)
   return s == nil or s == ""
 end

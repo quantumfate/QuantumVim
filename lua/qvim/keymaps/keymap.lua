@@ -1,16 +1,8 @@
 local M = {}
 local Log = require "qvim.integrations.log"
 
-M.supported_options = {
-  noremap = true,
-  buffer = true,
-  nowait = true,
-  silent = true,
-  script = true,
-  expr = true,
-  unique = true,
-  desc = true,
-}
+local functions = require("qvim.utils.functions")
+
 
 ---Returns options for kaymaps. The options will cover the default
 ---unless a table with options will be parsed as an argument.
@@ -53,19 +45,15 @@ M.generic_opts = {
   term_mode = M:mapping_options({ silent = true }),
 }
 
-M.mode_adapters = {
-  insert_mode = "i",
-  normal_mode = "n",
-  visual_mode = "v",
-  visual_block_mode = "x",
-  command_mode = "c",
-  operator_pending_mode = "o",
-  term_mode = "t",
-}
+
 
 ---Register keymaps for qvim. If whichkey is available all keymaps
 ---will be registered using whichkey.
 function M:init()
+  if functions.in_headless_mode() then
+    Log:info("Headless mode detected. Not loading any keymappings.")
+    return
+  end
   local defaults = self:get_defaults()
   qvim.keymaps = qvim.keymaps or {}
   for mode_adapters, _ in pairs(self.mode_adapters) do
@@ -75,13 +63,13 @@ function M:init()
     end
   end
 
-  local whichkey_exists, whichkey = pcall(require, "which-key")
-  if whichkey_exists then
-    -- whichkey setup
-  else
-    -- normal setup
-    self:load(defaults)
-  end
+  --local whichkey_exists, whichkey = pcall(require, "which-key")
+  --if whichkey_exists then
+  --  -- whichkey setup
+  --else
+  --  -- normal setup
+  self:load(defaults)
+  --end
 
   Log:info("The default keymappings were loaded.")
 end

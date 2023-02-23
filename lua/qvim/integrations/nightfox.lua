@@ -1,8 +1,12 @@
 ---The nightfox configuration file
 local M = {}
 
-local in_headless = #vim.api.nvim_list_uis() == 0
+local functions = require("qvim.utils.functions")
 local Log = require "qvim.integrations.log"
+
+if functions.in_headless_mode() then
+  return
+end
 
 ---Registers the global configuration scope for nightfox
 function M:init()
