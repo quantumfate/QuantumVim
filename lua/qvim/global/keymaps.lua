@@ -33,3 +33,17 @@ _G.supported_whichkey_options = {
     mode = true,
     prefix = true,
 }
+---Translates a mode adapter
+---@param mode string the short written or long written mode
+---@return boolean success success on translation
+---@return string? mode the translated mode
+function _G.translate_mode_adapter(mode)
+    if keymap_mode_adapters[mode] then
+        return true, inverted_keymap_mode_adapters[keymap_mode_adapters[mode]]
+    elseif inverted_keymap_mode_adapters[mode] then
+        return true, keymap_mode_adapters[inverted_keymap_mode_adapters[mode]]
+    else
+        Log:debug("Failed to translate mode! Unsupported mode: '" .. mode)
+        return false
+    end
+end

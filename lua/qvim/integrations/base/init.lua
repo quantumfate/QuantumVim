@@ -34,15 +34,15 @@ end
 ---an integration might implement.
 ---@param config_file string
 ---@return table? obj
----@return table? integration instance to the integration
+---@return table? instance instance to the integration
 function M:new(config_file)
-    local status_ok, integration = pcall(require, "qvim.integrations." .. config_file)
+    local status_ok, instance = pcall(require, "qvim.integrations." .. config_file)
     if not status_ok then
         Log:debug(string.format("No configuration file for plugin '%s'", config_file))
         return
     end
 
-    local config = integration:init()
+    local config = instance:init()
     local base_table = create_base_table(config)
     local obj = setmetatable({}, { __index = base_table })
 
@@ -50,7 +50,7 @@ function M:new(config_file)
         obj[key] = value
     end
 
-    return obj, integration
+    return obj, instance
 end
 
 return M

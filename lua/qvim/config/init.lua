@@ -10,8 +10,6 @@ function M:init()
   qvim = {}
   setmetatable(qvim, { __index = vim.deepcopy(require("qvim.config.config")) })
 
-  local integrations = require("qvim.integrations")
-  integrations:init()
   local settings = require "qvim.config.settings"
   settings.load_defaults()
 

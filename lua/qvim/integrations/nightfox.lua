@@ -1,10 +1,9 @@
 ---The nightfox configuration file
 local M = {}
 
-local functions = require("qvim.utils.functions")
 local Log = require "qvim.integrations.log"
 
-if functions.in_headless_mode() then
+if in_headless_mode() then
   return
 end
 

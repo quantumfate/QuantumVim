@@ -4,11 +4,17 @@ local Log = require "qvim.integrations.log"
 
 ---Populate the qvim.integrations table. Runs a config method if the plugin has one.
 function M:init()
-  qvim.integrations = {}
   local base = require("qvim.integrations.base")
+
+  qvim.integrations = setmetatable({}, {
+    __newindex = function(t, k, v)
+      local integration = k:gsub("-", "_")
+      rawset(t, integration, v)
+    end
+  })
+
   for _, integration in ipairs(qvim_integrations()) do
     local _integration, instance = base:new(integration)
-    integration = string.gsub(integration, "-", "_") -- hyphons are not allowed
     qvim.integrations[integration] = _integration
     if instance ~= nil and instance.config then
       instance:config()

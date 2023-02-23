@@ -66,8 +66,6 @@ return {
         --filter = require("lvim.lsp.utils").format_filter,
         -- TODO add mason-lspconfig
     },
-    keys = {},
-    integrations = {},
     icons = require "qvim.icons",
     autocommands = {},
     log = {

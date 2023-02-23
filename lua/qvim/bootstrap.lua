@@ -54,7 +54,7 @@ function M:init()
   self.pack_dir = join_paths(self.qvim_dir, "site", "pack")
   self.lazy_install_dir = join_paths(self.pack_dir, "lazy", "opt", "lazy.nvim")
 
-  require("qvim.globals")
+  require("qvim.global")
 
   ---@meta overridden to use QUANTUMVIM_CACHE_DIR instead, since a lot of plugins call this function internally
   ---NOTE: changes to "data" are currently unstable, see #2507
@@ -65,6 +65,10 @@ function M:init()
     end
     return vim.call("stdpath", what)
   end
+
+  qvim.integrations = {}
+  local integrations = require("qvim.integrations")
+  integrations:init()
 
   print("Qvim dir: " .. self.qvim_dir)
   print("cache dir: " .. self.cache_dir)
