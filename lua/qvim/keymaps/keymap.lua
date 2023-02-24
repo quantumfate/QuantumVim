@@ -17,6 +17,8 @@ function M:mapping_options(mappings)
     script = false,
     expr = false,
     unique = false,
+    leader = "",
+    group = "",
     desc = "",
   }
   if not mappings then

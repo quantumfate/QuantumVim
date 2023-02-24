@@ -9,6 +9,8 @@ local M = {}
 function M:init()
   qvim = setmetatable({}, { __index = vim.deepcopy(require("qvim.config.config")) })
 
+  vim.g.mapleader = " "
+  vim.g.maplocalleader = " "
   local settings = require "qvim.config.settings"
   settings.load_defaults()
 

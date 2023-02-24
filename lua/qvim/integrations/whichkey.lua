@@ -183,6 +183,22 @@ function M:setup()
   whichkey.setup(_whichkey.options)
   --which_key.register(mappings, opts)
   --which_key.register(vmappings, vopts)
+  --
+  whichkey.register({
+    ["<C-m>"] = {
+      f = {
+        name = "+file",
+        f = { "<cmd>Telescope find_files<cr>", "Find File", mode = "v", callback = function()
+          print("heeelloo")
+        end },
+        n = { "<cmd>enew<cr>", "New File" },
+      },
+    },
+  })
+  whichkey.register({
+
+    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File", leader = "<C-a>" },
+  })
   if _whichkey.on_config_done then
     _whichkey.on_config_done()
   end
