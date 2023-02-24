@@ -27,6 +27,8 @@ function M:init()
     local languages = qvim.config.languages
     return languages
   end
+
+  Log:info("Configs were loaded.")
 end
 
 --[[

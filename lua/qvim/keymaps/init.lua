@@ -17,6 +17,8 @@ function M:init()
     qvim.keymaps = setmetatable({}, {
         __index = meta.keymap_mode_meta
     })
+
+    Log:info("Keymaps were loaded.")
 end
 
 return M

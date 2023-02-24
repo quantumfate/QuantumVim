@@ -1,7 +1,7 @@
 local M = {}
 local Log = require "qvim.integrations.log"
 
-local functions = require("qvim.utils.functions")
+local functions = require("qvim.utils.fn")
 
 
 ---Returns options for kaymaps. The options will cover the default
