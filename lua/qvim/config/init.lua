@@ -7,8 +7,7 @@ local M = {}
 --- This must be called at the beginning when qvim is
 --- loaded since everything depends on this.
 function M:init()
-  qvim = {}
-  setmetatable(qvim, { __index = vim.deepcopy(require("qvim.config.config")) })
+  qvim = setmetatable({}, { __index = vim.deepcopy(require("qvim.config.config")) })
 
   local settings = require "qvim.config.settings"
   settings.load_defaults()

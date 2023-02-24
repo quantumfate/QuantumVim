@@ -1,16 +1,9 @@
 local M = {}
 
-local default_whichkey_group = {
-    group = nil,
-    name = nil,
-    bindings = {
-
-    },
-}
-
+local meta = require("qvim.integrations.base.meta")
 local Log = require "qvim.integrations.log"
 
----Create the base table for an integration
+--- Create the base table for an integration
 ---@param config table
 ---@return table base_table
 local function create_base_table(config)
@@ -22,7 +15,7 @@ local function create_base_table(config)
     local base_table = {
         active = enabled,
         on_config_done = config.on_config_done or nil,
-        whichkey_group = config.whichkey_group or default_whichkey_group,
+        whichkey_group = config.whichkey_group or {},
         whichkey = config.whichkey or {},
         keymaps = config.keymaps or {},
         options = config.options or {},
@@ -30,8 +23,8 @@ local function create_base_table(config)
     return base_table
 end
 
----Create a new integration table with defaults and whatever
----an integration might implement.
+-- Create a new integration table with defaults and whatever
+-- an integration might implement.
 ---@param config_file string
 ---@return table? obj
 ---@return table? instance instance to the integration
@@ -43,8 +36,9 @@ function M:new(config_file)
     end
 
     local config = instance:init()
+    local obj = setmetatable({}, meta.base_meta_table)
     local base_table = create_base_table(config)
-    local obj = setmetatable({}, { __index = base_table })
+    obj = setmetatable(obj, { __index = base_table })
 
     for key, value in pairs(config) do
         obj[key] = value
