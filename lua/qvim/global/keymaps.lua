@@ -1,3 +1,5 @@
+local Log = require "qvim.integrations.log"
+
 _G.keymap_mode_adapters = {
     insert_mode = "i",
     normal_mode = "n",

@@ -9,7 +9,11 @@ if not vim.tbl_contains(vim.opt.rtp:get(), base_dir) then
 end
 require("qvim.bootstrap"):init()
 
+require("qvim.global")
 require("qvim.config"):init()
+require("qvim.integrations"):init()
+require("qvim.keymaps"):init()
+
 
 local integration_loader = require("qvim.integrations.loader")
 

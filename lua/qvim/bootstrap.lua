@@ -66,8 +66,6 @@ function M:init()
     return vim.call("stdpath", what)
   end
 
-  require("qvim.integrations"):init()
-
   print("Qvim dir: " .. self.qvim_dir)
   print("cache dir: " .. self.cache_dir)
   require("qvim.integrations.loader"):init {

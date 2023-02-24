@@ -1,6 +1,17 @@
 local M = {}
 
 local Log = require "qvim.integrations.log"
+---Replaces hyphons with underscores in a string
+---@param val string
+local function normalize(val)
+  if val == "plenary" then
+    return val
+  end
+  if not string.find(val, "-") then
+    return val
+  end
+  return val:gsub("-", "_")
+end
 
 ---Populate the qvim.integrations table and defines how
 ---the table can be interacted with. And the following actions:
@@ -8,6 +19,9 @@ local Log = require "qvim.integrations.log"
 ---- A global function that returns the qvim.integrations table
 ---or a specific value when a key is specified
 function M:init()
+  local autocmds = require "qvim.integrations.autocmds"
+  autocmds.load_defaults()
+
   local base = require("qvim.integrations.base")
 
   qvim.integrations = setmetatable({}, {
@@ -24,13 +38,14 @@ function M:init()
       end
     end,
     __newindex = function(t, k, v)
-      rawset(t, normalize(k), v)
+      local normalized_k = normalize(k)
+      rawset(t, normalized_k, v)
     end
   })
 
-  for _, integration in ipairs(qvim_integrations()) do
-    local _integration, instance = base:new(integration)
-    qvim.integrations[integration] = _integration
+  for _, name in ipairs(qvim_integrations()) do
+    local obj, instance = base:new(name)
+    qvim.integrations[name] = obj
     if instance ~= nil and instance.config then
       instance:config()
     end
