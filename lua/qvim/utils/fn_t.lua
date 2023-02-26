@@ -1,3 +1,4 @@
+---@class Table
 local Table = {}
 
 --- Find the first entry for which the predicate returns true.
