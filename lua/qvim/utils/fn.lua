@@ -14,29 +14,9 @@ function M.normalize(val)
   return val
 end
 
----Calls rawget and prints debug information
----@param t any
----@param k any
----@param s string? the name of the table
----@return any
-function M.rawget_debug(t, k, s)
-  s = s or tostring(t)
-  Log:debug(string.format("The integration '%s' was referenced from the '%s' table.", k, s))
-  return rawget(t, k)
-end
-
----Calls rawset and prints debug integration
----@param t any
----@param k any
----@param v any
----@param s string? the name of the table
----@return table
-function M.rawset_debug(t, k, v, s)
-  s = s or tostring(t)
-  Log:debug(string.format("Added integration '%s' to the '%s' table.", k, s))
-  return rawset(t, k, v)
-end
-
+---Checks if s is empty or nil
+---@param s string
+---@return boolean
 function M.isempty(s)
   return s == nil or s == ""
 end

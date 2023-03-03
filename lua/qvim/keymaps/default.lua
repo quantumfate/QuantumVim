@@ -26,13 +26,22 @@ default.keymap_opts = {
     expr = false,
     unique = false,
     buffer = 0,
-    callback = nil,
+    callback = function()
+
+    end,
+}
+
+default.valid_keymap_group_opts = {
+    name = true,
+    key_group = true,
+    prefix = true,
+    bindings = true
 }
 
 default.keymap_group_opts = {
     name = "",
     key_group = "",
     prefix = "",
-    bindings = {}
+    bindings = nil
 }
 return default

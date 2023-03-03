@@ -1,6 +1,31 @@
 ---@class Table
 local Table = {}
 
+local Log = require("qvim.integrations.log")
+
+---Wraps Lua's builtin rawget. Calls rawget and prints debug information.
+---@param t any
+---@param k any
+---@param s string? the name of the table
+---@return any
+function Table.rawget_debug(t, k, s)
+  s = s or tostring(t)
+  Log:debug(string.format("The key '%s' was referenced from the '%s' table.", k, s))
+  return rawget(t, k)
+end
+
+---Wraps Lua's builtin rawset. Calls rawset and prints debug information.
+---@param t any
+---@param k any
+---@param v any
+---@param s string? the name of the table
+---@return table
+function Table.rawset_debug(t, k, v, s)
+  s = s or tostring(t)
+  Log:debug(string.format("Added the key '%s' to the '%s' table.", k, s))
+  return rawset(t, k, v)
+end
+
 --- Find the first entry for which the predicate returns true.
 ---@param t table
 ---@param predicate function function called for each entry of t
