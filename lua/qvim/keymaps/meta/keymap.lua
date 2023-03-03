@@ -77,29 +77,50 @@ keymap.mt = setmetatable({}, {
         end
     end,
     __newindex = function(t, lhs, other)
-        if type(other) == "table" then
-            local function retrieve_opts_collection_mt(_other)
-                local opts_collection = setmetatable({}, { __index = keymap.opts_collection_mt })
-                for _, binding in pairs(_other) do
-                    table.insert(opts_collection, setmetatable(binding, { __index = keymap.opts_mt }))
+        ---Set user defined options and fill anything thats not defined with default values
+        ---@param _other table
+        ---@return table metatable the keymap.opts_mt metatable
+        local function retrieve_opts_mt(_other)
+            local opts = setmetatable({}, default.keymap_opts)
+            for opt, value in pairs(_other) do
+                if default.valid_keymap_opts[opt] then
+                    opts[opt] = value
                 end
-                return opts_collection
             end
+            return setmetatable(opts, { __index = keymap.opts_mt })
+        end
 
-            local function define_other_table(_lhs, _other)
-                local table = {}
-                if type(next(_other)) == "table" then
-                    table[_lhs] = retrieve_opts_collection_mt(_other)
-                else
-                    table[_lhs] = setmetatable(_other, { __index = keymap.opts_mt })
-                end
-                return table
+        ---Set multiple user defined bindings
+        ---@param _other table
+        ---@return table metatable the keymap.opts_collection_mt metatable
+        local function retrieve_opts_collection_mt(_other)
+            local opts_collection = setmetatable({}, { __index = keymap.opts_collection_mt })
+            for _, binding in pairs(_other) do
+                table.insert(opts_collection, retrieve_opts_mt(binding))
             end
-            local post_t = define_other_table(lhs, other)
+            return opts_collection
+        end
+
+        ---Returns a specific metatable
+        ---@param _other table|any
+        ---@return table|nil metatable keymap.opts_mt or keymap.opts_collection_mt or nil
+        local function define_other_table(_other)
+            if type(_other) == "table" and type(next(_other)) == "table" then
+                return retrieve_opts_collection_mt(_other)
+            elseif type(_other) == "table" then
+                return retrieve_opts_mt(_other)
+            end
+            -- TODO: log eventually
+            return nil
+        end
+
+        if type(other) == "table" then
+            local post_t = define_other_table(other)
             if t[lhs] then
+                -- TODO: merge simple table bindings and complex table bindings and vice verca
                 table.insert(t[lhs], post_t)
             else
-                t = post_t
+                t[lhs] = post_t
             end
         end
     end
