@@ -14,6 +14,21 @@ function M.normalize(val)
   return val
 end
 
+---Recursively creates a shallow copy of a given table
+---@param t table
+---@return table
+function M.shallow_table_copy(t)
+  local copy = {}
+  for k, v in pairs(t) do
+    if type(v) == "table" then
+      copy[k] = M.shallow_table_copy(v)
+    else
+      copy[k] = v
+    end
+  end
+  return copy
+end
+
 ---Checks if s is empty or nil
 ---@param s string
 ---@return boolean
