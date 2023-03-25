@@ -2,7 +2,7 @@ return {
     config = {
         colorscheme = "nightfox",
         reload_config_on_save = true,
-        leader = "space",
+        leader = " ",
         use_icons = true,
         transparent_window = false,
         integrations = {
@@ -53,7 +53,6 @@ return {
             "toml",
             "yaml",
         },
-
     },
     format_on_save = {
         ---@usage boolean: format on save (Default: false)

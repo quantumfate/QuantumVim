@@ -1,6 +1,7 @@
 local M = {}
 local Log = require "qvim.integrations.log"
 local fn = require("qvim.utils.fn")
+local meta = require("qvim.integrations.meta")
 
 ---Populate the qvim.integrations table and defines how
 ---the table can be interacted with. And the following actions:
@@ -13,33 +14,31 @@ function M:init()
 
   local base = require("qvim.integrations.base")
 
-  qvim.integrations = setmetatable({}, {
-    __index = function(t, k)
-      return fn.rawget_debug(t, k, "qvim integrations")
-    end,
-    __newindex = function(t, k, v)
-      return fn.rawset_debug(t, fn.normalize(k), v, "qvim integrations")
-    end
-  })
+  qvim.integrations = setmetatable({}, meta.integration_base_mt)
 
   for _, name in ipairs(qvim_integrations()) do
     local obj, instance = base:new(name)
 
-    qvim.integrations[name] = obj
-    if instance ~= nil and instance.config then
-      instance:config()
+    if obj and instance then
+      qvim.integrations[name] = obj
+      if instance.config then
+        instance:config()
+      end
     end
   end
-
 
   ---Returns a table with configured integrations or
   ---a table of a specific integration when specified.
   ---Integrations with hyphons will automatically
   ---translated to underscores.
-  ---@param integration string?
+  ---@param integration string? the name of an integration corresponding to the key in `qvim.integrations`
   ---@return table integrations
   function _G.qvim_configured_integrations(integration)
-    return qvim.integrations[integration]
+    integration = fn.normalize(integration)
+    if integration then
+      return qvim.integrations[integration]
+    end
+    return qvim.integrations
   end
 
   Log:info("Integrations were loaded.")

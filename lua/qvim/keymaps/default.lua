@@ -1,6 +1,13 @@
 ---@class default
 local default = {}
 
+default.valid_integration_defaults = {
+    active = true,
+    on_config_done = true,
+    keymaps = true,
+    options = true
+}
+
 default.valid_keymap_opts = {
     rhs = true,
     desc = true,

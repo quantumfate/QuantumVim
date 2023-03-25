@@ -1,9 +1,11 @@
 local M = {}
 
-local meta = require("qvim.keymaps.meta")
+local meta = require("qvim.integrations.meta")
+local keymap_meta = require("qvim.keymaps.meta.keymap")
 local Log = require "qvim.integrations.log"
 
---- Create the base table for an integration
+--- Create the base table for an integration with the `keymap_meta.mt` and populates
+--- the table with additionally defined options from a given `config`.
 ---@param config table
 ---@return table base_table
 local function create_base_table(config)
@@ -12,21 +14,25 @@ local function create_base_table(config)
         enabled = config.active
     end
 
-    local base_table = {
-        active = enabled,
-        on_config_done = config.on_config_done or nil,
-        whichkey_group = config.whichkey_group or {},
-        whichkey = config.whichkey or {},
-        keymaps = config.keymaps or {},
-        options = config.options or {},
-    }
-    return base_table
+    local opts = setmetatable(
+        {
+            active = enabled,
+            on_config_done = config.on_config_done,
+            keymaps = setmetatable(config.keymaps, keymap_meta.mt),
+            options = config.options
+        },
+        meta.integration_opts_mt)
+
+    for option, value in pairs(config) do
+        opts[option] = value
+    end
+    return opts
 end
 
 -- Create a new integration table with defaults and whatever
 -- an integration might implement.
 ---@param config_file string
----@return table? obj
+---@return table? base_table the table to be bound to the configuration table
 ---@return table? instance instance to the integration
 function M:new(config_file)
     local status_ok, instance = pcall(require, "qvim.integrations." .. config_file)
@@ -36,15 +42,8 @@ function M:new(config_file)
     end
 
     local config = instance:init()
-    local obj = setmetatable({}, meta.base_meta_table)
-    local base_table = create_base_table(config)
-    obj = setmetatable(obj, { __index = base_table })
 
-    for key, value in pairs(config) do
-        obj[key] = value
-    end
-
-    return obj, instance
+    return create_base_table(config), instance
 end
 
 return M

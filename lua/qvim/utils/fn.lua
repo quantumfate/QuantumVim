@@ -3,7 +3,7 @@ local M = {}
 local Log = require "qvim.integrations.log"
 
 ---Replaces hyphons with underscores in a string
----@param val string
+---@param val string|nil
 function M.normalize(val)
   if val and type(val) == "string" then
     if not string.find(val, "-") then
