@@ -45,21 +45,21 @@ end
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
 util.get_new_binding_mt = function(init)
-    return setmetatable(init or {}, binding.mt)
+    return getmetatable(setmetatable(init or {}, binding.mt))
 end
 
 ---Returns a table with the metatable `group.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
 util.get_new_group_mt = function(init)
-    return setmetatable(init or {}, group.mt)
+    return getmetatable(setmetatable(init or {}, group.mt))
 end
 
 ---Returns a table with the metatable `keymap.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
 util.get_new_keymap_mt = function(init)
-    return setmetatable(init or {}, keymap.mt)
+    return getmetatable(setmetatable(init or {}, keymap.mt))
 end
 
 ---Ensures that a given table has the default options for keymaps as well as valid parsed options.
@@ -113,7 +113,8 @@ end
 ---@param _binding table the binding
 ---@return table table the binding with accepted options with the metatable `binding.mt`
 util.set_binding_mt = function(_lhs, _binding)
-    local table = setmetatable({}, binding.mt)
+    local table = {}
+    setmetatable(table, binding.mt)
     if fn_t.length(_binding) > 0 then
         for key, value in pairs(_binding) do
             table[key] = value

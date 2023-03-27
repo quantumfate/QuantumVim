@@ -25,10 +25,10 @@ keymap.mt = setmetatable({}, {
     ---@param lhs string
     ---@param other table
     __newindex = function(t, lhs, other)
-        print("adding value")
         if type(lhs) == "string" then
             if type(other) == "table" then
-                fn_t.rawset_debug(t, lhs, util.set_binding_mt(lhs, other))
+                local binding = util.set_binding_mt(lhs, other)
+                fn_t.rawset_debug(t, lhs, binding)
             else
                 if t[lhs] then
                     Log:debug(string.format(

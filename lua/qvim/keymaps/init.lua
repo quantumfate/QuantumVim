@@ -25,8 +25,7 @@ function M:init()
         Log:debug(string.format("The plugin '%s' is not available. Using standard method to set keymaps.", whichkey))
     end
 
-    local test = meta.get_new_keymap_mt()
-    local keymaps = getmetatable(test)
+    local keymaps = meta.get_new_keymap_mt()
 
     for _, integration in ipairs(qvim_integrations()) do
         local integration_keymaps = qvim.integrations[integration].keymaps
@@ -37,15 +36,8 @@ function M:init()
                 for lhs, declaration in pairs(integration_keymaps) do
                     if type(lhs) == "string" then
                         -- binding
-                        Log:debug(string.format("Adding keymap '%s' from the integration '%s'.", lhs, integration))
                         keymaps[lhs] = declaration
-                        for index, value in ipairs(keymaps[lhs]) do
-                            print(value)
-                        end
-                        print("lol  " .. type(keymaps[lhs]))
                     elseif type(lhs) == "number" and util.has_simple_group_structure(declaration) then
-                        Log:debug(string.format("Adding keymap group '%s' from the integration '%s'.",
-                            declaration.key_group, integration))
                         -- group
                         keymaps[#keymaps + 1] = declaration
                     else
@@ -54,7 +46,7 @@ function M:init()
                     end
                 end
             else
-                Log:warn(string.format("No keymaps defined for '%s'.", integration))
+                Log:debug(string.format("No keymaps defined for '%s'.", integration))
             end
         else
             Log:debug("For integration '%s' were not keymaps found.", integration)
@@ -69,14 +61,6 @@ function M:init()
     -- register the keymaps or parse them in whichkey
 
     qvim.keymaps = keymaps
-    print("length: " .. #qvim.keymaps)
-    for key, value in pairs(qvim.keymaps) do
-        print(key)
-        for index, v in ipairs(value) do
-            print(index .. " .. " .. v)
-        end
-        print(value)
-    end
 
     Log:info("Keymaps were loaded.")
 end

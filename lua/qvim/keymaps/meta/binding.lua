@@ -3,6 +3,7 @@ local binding = {}
 
 local Log = require("qvim.integrations.log")
 local default = require("qvim.keymaps.default")
+local fn_t = require("qvim.utils.fn_t")
 
 ---@class util
 local util = nil
@@ -37,7 +38,7 @@ binding.mt = {
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
         if default.valid_keymap_opts[opt] and (type(setting) == type(default.keymap_opts[opt]) or setting == nil) then
-            rawset(t, opt, setting)
+            fn_t.rawset_debug(t, opt, setting)
         else
             Log:error(string.format("Invalid option '%s' for keymap.", opt))
             return nil

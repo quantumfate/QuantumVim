@@ -17,7 +17,7 @@ function M:init()
     },
     whichkey = {},
     keymaps = {
-      ["<A-j>"] = { "<Esc>:m .+1<CR>==gi", 'Move current line down' },
+      ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
 
     },
     options = {

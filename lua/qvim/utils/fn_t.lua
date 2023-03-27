@@ -21,7 +21,6 @@ end
 ---@param s string? the name of the table or defaults to metatable type
 ---@return table
 function Table.rawset_debug(t, k, v, s)
-  print("HALLLO")
   s = s or tostring(getmetatable(t))
   Log:debug(string.format("Added the key '%s' to the '%s' table.", k, s))
   return rawset(t, k, v)
