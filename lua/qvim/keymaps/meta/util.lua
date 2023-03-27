@@ -114,12 +114,12 @@ end
 ---@return table table the binding with accepted options with the metatable `binding.mt`
 util.set_binding_mt = function(_lhs, _binding)
     local table = setmetatable({}, binding.mt)
-    if rawlen(_binding) > 0 then
+    if fn_t.length(_binding) > 0 then
         for key, value in pairs(_binding) do
             table[key] = value
         end
     end
-    if rawlen(table) == 0 then
+    if fn_t.length(table) == 0 then
         Log:warn(string.format(
             "The table with the associated left hand side '%s' is empty because no accepted options were parsed as keys.",
             _lhs))

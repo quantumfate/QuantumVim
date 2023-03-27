@@ -21,6 +21,7 @@ end
 ---@param s string? the name of the table or defaults to metatable type
 ---@return table
 function Table.rawset_debug(t, k, v, s)
+  print("HALLLO")
   s = s or tostring(getmetatable(t))
   Log:debug(string.format("Added the key '%s' to the '%s' table.", k, s))
   return rawset(t, k, v)
@@ -100,6 +101,17 @@ function Table.has_any_value(t, find, recurse)
     end
   end
   return false
+end
+
+---Counts the elements in a table regadless of their type
+---@param t table
+---@return integer
+function Table.length(t)
+  local count = 0
+  for _ in pairs(t) do
+    count = count + 1
+  end
+  return count
 end
 
 --- Check if the predicate returns True for at least one entry of the table.

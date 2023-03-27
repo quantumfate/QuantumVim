@@ -16,7 +16,10 @@ function M:init()
       },
     },
     whichkey = {},
-    keymaps = {},
+    keymaps = {
+      ["<A-j>"] = { "<Esc>:m .+1<CR>==gi", 'Move current line down' },
+
+    },
     options = {
       -- vim-illuminate option configuration
       -- providers: provider used to get references in the buffer, ordered by priority

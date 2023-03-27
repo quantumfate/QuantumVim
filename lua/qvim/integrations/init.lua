@@ -21,7 +21,10 @@ function M:init()
 
     if obj and instance then
       qvim.integrations[name] = obj
+      Log:debug(string.format(
+        "The integration '%s' was added to the global qvim.integrations table. Referenced table is '%s'.", name, obj))
       if instance.config then
+        Log:debug(string.format("Config for '%s' was will be called as a function.", name))
         instance:config()
       end
     end

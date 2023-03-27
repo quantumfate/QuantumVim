@@ -72,7 +72,7 @@ group.mt = setmetatable({}, {
             t.prefix
         )
         base = base .. "::bindings={"
-        if rawlen(t.bindings) > 0 then
+        if fn_t.length(t.bindings) > 0 then
             local transformed_keys = fn_t.transform_and_unpack(t.bindings, tostring, true)
             for index, initial_k in ipairs(transformed_keys) do
                 base = base .. initial_k

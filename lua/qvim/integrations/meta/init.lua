@@ -30,6 +30,7 @@ meta.integration_opts_mt = setmetatable({}, {
         end
     end,
     __newindex = function(t, opt, value)
+        Log:debug(string.format("Adding option '%s'."), opt)
         t[opt] = value
     end
 })
@@ -40,14 +41,10 @@ meta.integration_base_mt = setmetatable({}, {
         return t[fn.normalize(name)]
     end,
     __newindex = function(t, name, options)
+        print("is this calsseds")
         local _name = fn.normalize(name)
-        if _name then
-            if getmetatable(options) == meta.integration_opts_mt then
-                t[_name] = options
-                return
-            end
-            t[name] = setmetatable(options, meta.integration_opts_mt)
-        end
+        Log:debug(string.format("Processing configuration for '%s'.", _name))
+        t[name] = options
     end,
 })
 

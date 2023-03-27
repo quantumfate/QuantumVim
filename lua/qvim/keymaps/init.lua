@@ -2,11 +2,12 @@ local M = {}
 local Log = require "qvim.integrations.log"
 local meta = require("qvim.keymaps.meta")
 local default = require("qvim.keymaps.default")
+local fn_t = require("qvim.utils.fn_t")
+local util = require("qvim.keymaps.util")
 if in_headless_mode() then
     Log:info("Headless Mode: Not setting any keymaps.")
     return
 end
-
 
 function M:init()
     if in_headless_mode() then
@@ -24,10 +25,39 @@ function M:init()
         Log:debug(string.format("The plugin '%s' is not available. Using standard method to set keymaps.", whichkey))
     end
 
-    local grouped_keymaps = {}
+    local keymaps = meta.get_new_keymap_mt()
 
-    for _, value in ipairs(qvim_integrations()) do
-        qvim.integrations[value].keymaps
+    for _, integration in ipairs(qvim_integrations()) do
+        local integration_keymaps = qvim.integrations[integration].keymaps
+
+        if integration_keymaps then
+            if fn_t.length(integration_keymaps) > 0 then
+                Log:debug(string.format("Processing keymaps for '%s'.", integration))
+                for lhs, declaration in pairs(integration_keymaps) do
+                    if type(lhs) == "string" then
+                        -- binding
+                        Log:debug(string.format("Adding keymap '%s' from the integration '%s'.", lhs, integration))
+                        keymaps[lhs] = declaration
+                        for index, value in ipairs(keymaps[lhs]) do
+                            print(value)
+                        end
+                        print("lol  " .. type(keymaps[lhs]))
+                    elseif type(lhs) == "number" and util.has_simple_group_structure(declaration) then
+                        Log:debug(string.format("Adding keymap group '%s' from the integration '%s'.",
+                            declaration.key_group, integration))
+                        -- group
+                        keymaps[#keymaps + 1] = declaration
+                    else
+                        Log:error(string.format("Unsupported key '%s' from type '%s' in keymaps init function.",
+                            tostring(lhs), type(lhs)))
+                    end
+                end
+            else
+                Log:warn(string.format("No keymaps defined for '%s'.", integration))
+            end
+        else
+            Log:debug("For integration '%s' were not keymaps found.", integration)
+        end
     end
 
     -- try to require whichkey
@@ -37,8 +67,15 @@ function M:init()
     -- translate the groups into whichkey format or in workaround when whichkey is not available
     -- register the keymaps or parse them in whichkey
 
-    qvim.keymaps = setmetatable({}, {
-    })
+    qvim.keymaps = keymaps
+    print("length: " .. #qvim.keymaps)
+    for key, value in pairs(qvim.keymaps) do
+        print(key)
+        for index, v in ipairs(value) do
+            print(index .. " .. " .. v)
+        end
+        print(value)
+    end
 
     Log:info("Keymaps were loaded.")
 end

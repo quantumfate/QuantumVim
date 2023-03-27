@@ -6,8 +6,8 @@ local uv = vim.loop
 ---@param limit any the maximum depth for the recursion
 ---@param separator any the string to pretty format the structure
 ---@return integer|unknown limit limit - 1
-local function r_inspect_settings(structure, limit, separator)
-  limit = limit or 100 -- default item limit
+function M.r_inspect_settings(structure, limit, separator)
+  limit = limit or 100         -- default item limit
   separator = separator or "." -- indent string
   if limit < 1 then
     print "ERROR: Item limit reached."
@@ -25,7 +25,7 @@ local function r_inspect_settings(structure, limit, separator)
       if tostring(k):match "[^%a_]" then
         k = '["' .. tostring(k) .. '"]'
       end
-      limit = r_inspect_settings(v, limit, separator .. "." .. tostring(k))
+      limit = M.r_inspect_settings(v, limit, separator .. "." .. tostring(k))
       if limit < 0 then
         break
       end
