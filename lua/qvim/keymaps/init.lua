@@ -14,6 +14,10 @@ function M:init()
         return
     end
     local whichkey_loaded, whichkey = pcall(reload, "whichkey")
+
+    --- A global variable to enable or disable whichkey specific features
+    _G.qvim_which_key_is_available = whichkey_loaded
+
     if whichkey_loaded then
         Log:debug(string.format("Using '%s' to set keymaps.", whichkey))
     else

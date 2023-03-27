@@ -6,10 +6,10 @@ local Log = require("qvim.integrations.log")
 ---Wraps Lua's builtin rawget. Calls rawget and prints debug information.
 ---@param t any
 ---@param k any
----@param s string? the name of the table
+---@param s string? the name of the table or defaults to metatable type
 ---@return any
 function Table.rawget_debug(t, k, s)
-  s = s or tostring(t)
+  s = s or tostring(getmetatable(t))
   Log:debug(string.format("The key '%s' was referenced from the '%s' table.", k, s))
   return rawget(t, k)
 end
@@ -18,10 +18,10 @@ end
 ---@param t any
 ---@param k any
 ---@param v any
----@param s string? the name of the table
+---@param s string? the name of the table or defaults to metatable type
 ---@return table
 function Table.rawset_debug(t, k, v, s)
-  s = s or tostring(t)
+  s = s or tostring(getmetatable(t))
   Log:debug(string.format("Added the key '%s' to the '%s' table.", k, s))
   return rawset(t, k, v)
 end
@@ -37,6 +37,25 @@ function Table.find_first(t, predicate)
     end
   end
   return nil
+end
+
+---Unpacks elements of a table and applies a transformation on the values specified by the function `transform_fn`.
+---When `do_keys` is true the transformed value will be mapped to their initial keys otherwise the transformed keys will
+---me mapped to a numerical index.
+---@param tbl table the table to be unpacked
+---@param transform_fn function
+---@param do_keys boolean
+---@return table
+function Table.transform_and_unpack(tbl, transform_fn, do_keys)
+  local transformed = {}
+  for k, v in pairs(tbl) do
+    if do_keys then
+      transformed[#transformed + 1] = transform_fn(k)
+    else
+      transformed[k] = transform_fn(v)
+    end
+  end
+  return table.unpack(transformed)
 end
 
 ---Checks if a table contains a key

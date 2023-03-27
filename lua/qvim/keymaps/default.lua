@@ -45,10 +45,22 @@ default.valid_keymap_group_opts = {
     bindings = true
 }
 
-default.keymap_group_opts = {
+default.keymap_group = {
     name = "",
     key_group = "",
-    prefix = "",
-    bindings = nil
+    prefix = " ",
+    bindings = {},
+    options = {}
 }
+
+default.keymap_group_opts = {
+    mode = "n",
+    noremap = true,
+    nowait = false,
+    silent = true,
+    unique = false,
+    buffer = 0,
+}
+
+
 return default

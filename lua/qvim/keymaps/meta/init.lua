@@ -1,16 +1,23 @@
 ---@class meta
 local meta = {}
 
+local binding = require("qvim.keymaps.meta.binding")
+local group = require("qvim.keymaps.meta.group")
 local keymap = require("qvim.keymaps.meta.keymap")
+local util = require("qvim.keymaps.meta.util")
+    .init(
+        binding,
+        group,
+        keymap
+    )
 
-meta.keymap = keymap
+binding.init(util)
+group.init(util)
+keymap.init(util)
+
 
 local Log = require("qvim.integrations.log")
-local fn = require("qvim.utils.fn")
-local fn_t = require("qvim.utils.fn_t")
-local default = require("qvim.keymaps.default")
 
-local has_key = fn_t.has_any_key
 
 ---The meta table that holds values grouped by keymap mode adapters
 meta.mode_adapter_mt = setmetatable({}, {
@@ -25,7 +32,7 @@ meta.mode_adapter_mt = setmetatable({}, {
                 modes[_mode_adapter] = true
             end
             if modes[mode_adapter] then
-                t[mode_adapter] = setmetatable(other_keymap_t or {}, keymap.mt)
+                t[mode_adapter] = util.get_new_keymap_mt(other_keymap_t)
             else
                 Log:error(string.format("Invalid mode adapter '%s'", other_keymap_t))
             end

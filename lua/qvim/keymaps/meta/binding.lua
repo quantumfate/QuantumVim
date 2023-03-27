@@ -3,7 +3,18 @@ local binding = {}
 
 local Log = require("qvim.integrations.log")
 local default = require("qvim.keymaps.default")
-local util = require("qvim.keymaps.meta.util")
+
+---@class util
+local util = nil
+
+---initializes the binding module with the util factory
+---@param _util util
+---@return binding
+function binding.init(_util)
+    util = _util
+    return binding
+end
+
 --- The meta table that maps an index function to retrieve
 --- the default keymap options. It implements an `__eq` meta method
 --- to allow comparing of right hand side bindings.
@@ -14,10 +25,7 @@ binding.mt = {
     ---@return boolean|string|integer|function|nil
     __index = function(t, opt)
         if default.valid_keymap_opts[opt] then
-            local pre_t = t
-            setmetatable(pre_t, nil)
-            local opts = setmetatable(pre_t, { __index = default.keymap_opts })
-            return opts[opt]
+            return t[opt] or default.keymap_opts[opt]
         else
             Log:error(string.format("Invalid option '%s' for keymap.", opt))
             return nil
@@ -28,12 +36,11 @@ binding.mt = {
     ---@param opt string
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
-        if default.valid_keymap_opts[opt] and type(setting) == type(default.keymap_opts[opt]) or nil then
-            local opts = setmetatable(t, default.keymap_opts)
-            opts[opt] = setting
-            t = opts
+        if default.valid_keymap_opts[opt] and (type(setting) == type(default.keymap_opts[opt]) or setting == nil) then
+            rawset(t, opt, setting)
         else
             Log:error(string.format("Invalid option '%s' for keymap.", opt))
+            return nil
         end
     end,
     ---Checks for equality in keymappings. Two keymaps with a different buffer value are not considered equal.
@@ -63,7 +70,7 @@ binding.mt = {
     ---@param t2 any
     ---@return table|nil
     __add = function(t1, t2)
-        return util.truly_unique_mapping(t1, t2)
+        return util.truly_unique_mapping(t1, t2) or {}
     end,
     __tostring = function(t)
         local success, mode = translate_mode_adapter(t.mode)
