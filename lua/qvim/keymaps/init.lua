@@ -25,7 +25,8 @@ function M:init()
         Log:debug(string.format("The plugin '%s' is not available. Using standard method to set keymaps.", whichkey))
     end
 
-    local keymaps = meta.get_new_keymap_mt()
+    local test = meta.get_new_keymap_mt()
+    local keymaps = getmetatable(test)
 
     for _, integration in ipairs(qvim_integrations()) do
         local integration_keymaps = qvim.integrations[integration].keymaps
