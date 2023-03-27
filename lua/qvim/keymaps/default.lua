@@ -33,9 +33,7 @@ default.keymap_opts = {
     expr = false,
     unique = false,
     buffer = 0,
-    callback = function()
-
-    end,
+    callback = nil
 }
 
 default.valid_keymap_group_opts = {

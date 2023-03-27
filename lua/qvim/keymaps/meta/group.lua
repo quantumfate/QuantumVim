@@ -18,6 +18,22 @@ function group.init(_util)
 end
 
 group.mt = setmetatable({}, {
+    __index = function(t, k)
+        if type(k) == "string" then
+            if k == "bindings" or k == "options" or rawget(t, k) ~= nil then
+                return t[k]
+            else
+                if default.keymap_group[k] then
+                    return default.keymap_group[k]
+                else
+                    Log:error(string.format("Failed to index '%s' with key '%s'. This key is not allowed.",
+                    getmetatable(t), k))
+                end
+            end
+        else
+            Log:error(string.format("The key to a value in '%s' must be a string but was '%s'.", getmetatable(t), type(k)))
+        end
+    end,
     ---Ensures that values in a group have the correct metatable information or at least the defaults
     ---@param t table
     ---@param k string
@@ -26,18 +42,18 @@ group.mt = setmetatable({}, {
         if type(k) == "string" then
             if other then
                 if k == "bindings" then
-                    local bindings = util.get_new_keymap_mt()
+                    local keymaps = util.get_new_keymap_mt()
 
                     if type(other) == "table" then
                         for key, value in pairs(other) do
-                            bindings[key] = value
+                            keymaps[key] = value
                         end
                     else
                         Log:debug(string.format(
                             "The value corresponding to '%s' must be a table but was '%s'. Value is now an empty table with meta information.",
                             k, type(other)))
                     end
-                    fn_t.rawset_debug(t, k, bindings)
+                    fn_t.rawset_debug(t, k, keymaps)
                 elseif k == "options" then
                     local options = setmetatable(other or {}, { __index = default.keymap_group_opts })
                     fn_t.rawset_debug(t, k, options)
@@ -67,9 +83,9 @@ group.mt = setmetatable({}, {
     ---@param t table
     __tostring = function(t)
         local base = string.format(
-            "key_group=%s::prefix=%s",
-            t.key_group,
-            t.prefix
+            "%s::%s",
+            "key_group=" .. t.key_group,
+            "prefix=" .. t.prefix
         )
         base = base .. "::bindings={"
         if fn_t.length(t.bindings) > 0 then
@@ -82,6 +98,20 @@ group.mt = setmetatable({}, {
             end
         end
         base = base .. "}"
+        if t.options then
+            base = base .. "::options={"
+            local count = 0
+            local length = fn_t.length(t.options)
+            if length > 0 then
+                for key, value in pairs(t.options) do
+                    count = count + 1
+                    base = base .. (key .. "=" .. value)
+                    if count < length then
+                        base = base .. ","
+                    end
+                end
+            end
+        end
         return base
     end
 })

@@ -38,10 +38,9 @@ binding.mt = {
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
         if default.valid_keymap_opts[opt] and (type(setting) == type(default.keymap_opts[opt]) or setting == nil) then
-            fn_t.rawset_debug(t, opt, setting)
+            fn_t.rawset_debug(t, opt, setting or default.keymap_opts[opt])
         else
             Log:error(string.format("Invalid option '%s' for keymap.", opt))
-            return nil
         end
     end,
     ---Checks for equality in keymappings. Two keymaps with a different buffer value are not considered equal.
@@ -80,14 +79,14 @@ binding.mt = {
         end
         return string.format(
             "%s::%s::%s::%s::%s::%s::%s::%s",
-            mode,
-            tostring(t.noremap),
-            tostring(t.nowait),
-            tostring(t.silent),
-            tostring(t.script),
-            tostring(t.expr),
-            tostring(t.unique),
-            tostring(t.buffer)
+            "mode=" .. mode,
+            "noremap=" .. tostring(t.noremap),
+            "nowait=" .. tostring(t.nowait),
+            "silent=" .. tostring(t.silent),
+            "script=" .. tostring(t.script),
+            "expr=" .. tostring(t.expr),
+            "unique=" .. tostring(t.unique),
+            "buffer=" .. tostring(t.buffer)
         )
     end
 }

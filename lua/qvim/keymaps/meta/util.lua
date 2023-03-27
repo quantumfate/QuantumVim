@@ -116,8 +116,14 @@ util.set_binding_mt = function(_lhs, _binding)
     local table = {}
     setmetatable(table, binding.mt)
     if fn_t.length(_binding) > 0 then
-        for key, value in pairs(_binding) do
-            table[key] = value
+        for key, value in pairs(default.keymap_opts) do
+            if _binding[key] ~= nil then
+                table[key] = _binding[key]
+            else
+                if value ~= nil then
+                    table[key] = value
+                end
+            end
         end
     end
     if fn_t.length(table) == 0 then
@@ -189,7 +195,7 @@ util.process_group_mt = function(t, idx, other)
     if type(idx) == "number" then
         if type(other) == "table" then
             if other.key_group and type(other.key_group) == "string" then
-                local _group = setmetatable({}, group.mt)
+                local _group = util.get_new_group_mt()
                 for key, value in pairs(other) do
                     _group[key] = value
                 end

@@ -8,17 +8,18 @@ function M:init()
   local illuminate = {
     active = true,
     on_config_done = nil,
-    whichkey_group = {
-      group = nil,
-      name = nil,
-      bindings = {
-
-      },
-    },
-    whichkey = {},
     keymaps = {
       ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
+      {
+        name = "hallo",
+        key_group = "g",
+        prefix = " ",
+        bindings = {
 
+          ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
+        },
+        options = {}
+      }
     },
     options = {
       -- vim-illuminate option configuration
