@@ -27,7 +27,7 @@ group.mt = setmetatable({}, {
                     return default.keymap_group[k]
                 else
                     Log:error(string.format("Failed to index '%s' with key '%s'. This key is not allowed.",
-                    getmetatable(t), k))
+                        getmetatable(t), k))
                 end
             end
         else
@@ -42,17 +42,7 @@ group.mt = setmetatable({}, {
         if type(k) == "string" then
             if other then
                 if k == "bindings" then
-                    local keymaps = util.get_new_keymap_mt()
-
-                    if type(other) == "table" then
-                        for key, value in pairs(other) do
-                            keymaps[key] = value
-                        end
-                    else
-                        Log:debug(string.format(
-                            "The value corresponding to '%s' must be a table but was '%s'. Value is now an empty table with meta information.",
-                            k, type(other)))
-                    end
+                    local keymaps = util.process_keymap_mt(k, other)
                     fn_t.rawset_debug(t, k, keymaps)
                 elseif k == "options" then
                     local options = setmetatable(other or {}, { __index = default.keymap_group_opts })

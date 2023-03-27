@@ -1,6 +1,7 @@
 ---@class mode
 local mode = {}
 
+local fn_t = require("qvim.utils.fn_t")
 local Log = require("qvim.integrations.log")
 ---@class util
 local util = nil
@@ -14,8 +15,7 @@ function mode.init(_util)
 end
 
 ---The meta table that holds values grouped by keymap mode adapters
----TODO: move to file
-mode.mode_adapter_mt = setmetatable({}, {
+mode.mt = setmetatable({}, {
     ---A key added to this table has to be one of the accepted mode adapters
     ---@param t table
     ---@param mode_adapter string
@@ -27,7 +27,8 @@ mode.mode_adapter_mt = setmetatable({}, {
                 modes[_mode_adapter] = true
             end
             if modes[mode_adapter] then
-                t[mode_adapter] = util.get_new_keymap_mt(other_keymap_t)
+                local keymaps = util.process_keymap_mt(mode_adapter, other_keymap_t)
+                fn_t.rawset_debug(t, mode_adapter, keymaps)
             else
                 Log:error(string.format("Invalid mode adapter '%s'", other_keymap_t))
             end

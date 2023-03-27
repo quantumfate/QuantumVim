@@ -18,17 +18,21 @@ group,
 ---@class keymap
 keymap,
 ---@class default
-default = nil, nil, nil, nil
+default,
+---@class mode
+mode = nil, nil, nil, nil
 
 ---Init function to parse modules to avoid circular dependencies.
 ---@param _binding table the required binding module
 ---@param _group table the required group module
 ---@param _keymap table the required keymap module
+---@param _mode table the required mode module
 ---@return util
-function util.init(_binding, _group, _keymap)
+function util.init(_binding, _group, _keymap, _mode)
     binding = _binding
     group = _group
     keymap = _keymap
+    mode = _mode
     default = require("qvim.keymaps.default")
     initialized = true
     return util
@@ -61,6 +65,14 @@ end
 util.get_new_keymap_mt = function(init)
     return getmetatable(setmetatable(init or {}, keymap.mt))
 end
+
+---Returns a table with the metatable `keymap.mt`
+---@param init any|nil the table that should inherit from the metatable
+---@return table
+util.get_new_mode_mt = function(init)
+    return getmetatable(setmetatable(init or {}, mode.mt))
+end
+
 
 ---Ensures that a given table has the default options for keymaps as well as valid parsed options.
 ---@param _other table
@@ -177,6 +189,27 @@ util.add_meta_wrapper = function(t1, t2, idx)
         return result
     end
     return nil
+end
+
+
+---Takes a table where the key and value pairs are `binding.mt` tables.
+---Processes them into a `keymap.mt` calling the necessary `__newindex` methods.
+---@param k string
+---@param other table
+---@return table
+util.process_keymap_mt = function(k, other)
+    local keymaps = util.get_new_keymap_mt()
+
+    if type(other) == "table" then
+        for lhs, _binding in pairs(other) do
+            keymaps[lhs] = util.set_binding_mt(lhs, _binding)
+        end
+    else
+        Log:debug(string.format(
+            "The value corresponding to '%s' must be a table but was '%s'. Value is now an empty table with meta information.",
+            k, type(other)))
+    end
+    return keymaps
 end
 
 ---Adds a group of keymaps with the following attributes:

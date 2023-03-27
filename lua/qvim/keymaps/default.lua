@@ -1,5 +1,9 @@
+---Enables logic across the keymap section and defines some
+---defaults for certain settings.
 ---@class default
 local default = {}
+
+-- Be careful when making changes to this file
 
 default.valid_integration_defaults = {
     active = true,

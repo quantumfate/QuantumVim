@@ -50,6 +50,7 @@ function Table.transform_and_unpack(tbl, transform_fn, do_keys)
   local transformed = {}
   for k, v in pairs(tbl) do
     if do_keys then
+      -- TODO: fix this
       transformed[#transformed + 1] = transform_fn(k)
     else
       transformed[k] = transform_fn(v)

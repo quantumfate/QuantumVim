@@ -15,7 +15,6 @@ function M:init()
         key_group = "g",
         prefix = " ",
         bindings = {
-
           ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
         },
         options = {}

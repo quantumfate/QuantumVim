@@ -26,7 +26,7 @@ binding.mt = {
     ---@return boolean|string|integer|function|nil
     __index = function(t, opt)
         if default.valid_keymap_opts[opt] then
-            return t[opt] or default.keymap_opts[opt]
+            return fn_t.rawget_debug(t, opt) or default.keymap_opts[opt]
         else
             Log:error(string.format("Invalid option '%s' for keymap.", opt))
             return nil
