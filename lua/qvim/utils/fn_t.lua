@@ -39,24 +39,24 @@ function Table.find_first(t, predicate)
   return nil
 end
 
----Unpacks elements of a table and applies a transformation on the values specified by the function `transform_fn`.
+---Takes keys or values from a given table `tbl` and applies a transformation on either the keys or values
+---specified by the function `transform_fn`.
 ---When `do_keys` is true the transformed value will be mapped to their initial keys otherwise the transformed keys will
 ---me mapped to a numerical index.
 ---@param tbl table the table to be unpacked
 ---@param transform_fn function
 ---@param do_keys boolean
 ---@return table
-function Table.transform_and_unpack(tbl, transform_fn, do_keys)
+function Table.transform_to_table(tbl, transform_fn, do_keys)
   local transformed = {}
   for k, v in pairs(tbl) do
     if do_keys then
-      -- TODO: fix this
       transformed[#transformed + 1] = transform_fn(k)
     else
       transformed[k] = transform_fn(v)
     end
   end
-  return table.unpack(transformed)
+  return transformed
 end
 
 ---Checks if a table contains a key
