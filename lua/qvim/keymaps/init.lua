@@ -46,19 +46,16 @@ function M:init()
     -- get the defaults
     for _mode, _keymaps in pairs(keymap_defaults.get_defaults()) do
         for _lhs, _bind in pairs(_keymaps) do
-            Log:warn(string.format("Current mode '%s':: translated mode '%s'", _mode, keymap_mode_adapters[_mode]))
             local current_mode = keymap_mode_adapters[_mode]
             local bind_mt = meta.set_binding_mt(_lhs, _bind, { mode = current_mode })
             local descriptor_key = tostring(bind_mt)
             if not keymap_modes[_mode] then
                 keymap_modes[_mode] = meta.get_new_descriptor_mt()
             end
-
-            if fn_t.length(keymap_modes[_mode][descriptor_key]) == 0 then
-                keymap_modes[_mode][descriptor_key] = { [_lhs] = bind_mt }
-            else
-                keymap_modes[_mode][descriptor_key][_lhs] = bind_mt
+            if not keymap_modes[_mode][descriptor_key] then
+                keymap_modes[_mode][descriptor_key] = {}
             end
+            keymap_modes[_mode][descriptor_key][_lhs] = bind_mt
         end
     end
     -- process keymaps declared by integrations
@@ -96,26 +93,7 @@ function M:init()
     -- translate the groups into whichkey format or in workaround when whichkey is not available
     -- register the keymaps or parse them in whichkey
 
-    --for lhs, binding in pairs(keymaps) do
-    --    local descriptor = tostring(binding)
-    --    if not grouped_keymaps[descriptor] then
-    --        grouped_keymaps[descriptor] = meta.get_new_keymap_mt()
-    --    end
-    --    grouped_keymaps[descriptor][lhs] = binding
-    --end
-
-    for key, descriptor in pairs(keymap_modes) do
-        Log:warn(string.format("Mode: '%s'", key))
-        Log:warn(string.format("Descriptor: '%s'", descriptor))
-        for str, keys in pairs(descriptor) do
-            for lhs, bind in pairs(keys) do
-                Log:warn(string.format("lhs: '%s'", lhs))
-                Log:warn(string.format("bind: '%s'", tostring(bind)))
-            end
-        end
-    end
-
-
+    print("keymap_modes:", vim.inspect(keymap_modes))
     Log:info("Keymaps were fetched.")
 end
 
