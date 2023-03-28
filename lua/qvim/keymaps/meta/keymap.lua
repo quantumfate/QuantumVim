@@ -39,6 +39,7 @@ keymap.mt = setmetatable({ filter = nil }, {
                 local binding = util.set_binding_mt(lhs, other)
                 local add_other = true
                 if rawget(t, "filter") and rawget(t, "condition") then
+                    Log:warn("doing magic")
                     add_other = t.filter(rawget(t, "condition"), other)
                 end
                 if add_other then

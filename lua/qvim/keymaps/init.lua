@@ -50,12 +50,23 @@ function M:init()
             local bind_mt = meta.set_binding_mt(_lhs, _bind, { mode = current_mode })
             local descriptor_key = tostring(bind_mt)
             if not keymap_modes[_mode] then
-                keymap_modes[_mode] = meta.get_new_descriptor_mt()
+                keymap_modes[_mode] = descriptor_key
+            else
+                keymap_modes[_mode] = { descriptor_key }
             end
+            -- TODO: if the expression above is not evaluated new descriptor_keys
+            -- wont be added to the table. Therefore the necessary metatables are not set.
+            -- an the result is garbage
+            -- TODO: the logic doesn't apply because on consecutive calls the newindex method
+            -- wont be called.
+
+            Log:warn(string.format("table: '%s'", keymap_modes[_mode][descriptor_key]))
+            Log:warn(string.format("Metatable: '%s'", getmetatable(keymap_modes[_mode][descriptor_key])))
             if not keymap_modes[_mode][descriptor_key] then
-                keymap_modes[_mode][descriptor_key] = {}
+                keymap_modes[_mode][descriptor_key] = { [_lhs] = bind_mt }
+            else
+                keymap_modes[_mode][descriptor_key][_lhs] = bind_mt
             end
-            keymap_modes[_mode][descriptor_key][_lhs] = bind_mt
         end
     end
     -- process keymaps declared by integrations

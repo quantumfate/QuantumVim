@@ -38,6 +38,7 @@ descriptor.mt = setmetatable({}, {
                     { filter = predicate, condition = _descriptor })
 
                 for lhs, binding in pairs(_keymaps) do
+                    Log:warn("This should do a predicate")
                     keymaps[lhs] = binding
                 end
                 fn_t.rawset_debug(t, _descriptor, keymaps)

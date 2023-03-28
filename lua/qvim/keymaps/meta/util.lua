@@ -223,17 +223,20 @@ util.process_keymap_mt = function(k, other, predicate)
             local use_predicate = type(predicate) == "function"
             if other.filter and other.condition and not use_predicate then
                 -- determine who should handle the predicate condition
-                keymaps.filter = other.filter
-                keymaps.codition = other.condition
+                Log:warn("Keymap uses internal predicate")
+                rawset(keymaps, "filter", other.filter)
+                rawset(keymaps, "condition", other.condition)
             end
 
             for lhs, _binding in pairs(other) do
-                if not lhs == "filter" and not "lhs" == "condition" then
+                if not lhs == "filter" and not lhs == "condition" then
                     if use_predicate then
                         if predicate and predicate(k, _binding) then
+                            Log:warn(string.format("Applying predicate on '%s'", lhs))
                             keymaps[lhs] = util.set_binding_mt(lhs, _binding)
                         end
                     else
+                        Log:warn(string.format("Adding '%s'", lhs))
                         keymaps[lhs] = util.set_binding_mt(lhs, _binding)
                     end
                 end
@@ -286,20 +289,23 @@ util.process_group_mt = function(t, idx, other)
     end
 end
 
----Create a descriptor metatable.
+---Create a descriptor metatable. If a given `_descriptor` is a string the `_descriptor` will
+---be initialized as a first table entry with `nil` as a value. More flexibily can be enabled when
+---`_descriptor` is parsed as a table
 ---@param _key any
 ---@param _descriptor string|table
 ---@return table
 util.process_descriptor_mt = function(_key, _descriptor)
     if type(_descriptor) == "table" and getmetatable(_descriptor) == descriptor.mt then
+        Log:warn(string.format("Returning bullshit '%s'", _descriptor))
         return _descriptor
     end
     local table = nil
     Log:debug(string.format("Processing descriptor metatable for '%s'", _key))
     if type(_descriptor) == "string" then
-        table = setmetatable({ _descriptor }, descriptor.mt)
+        table = util.get_new_descriptor_mt({ [_descriptor] = nil })
     elseif type(_descriptor) == "table" then
-        table = setmetatable(_descriptor, descriptor.mt)
+        table = util.get_new_descriptor_mt(_descriptor)
     else
         Log:error(string.format(
             "Only strings and tables are accepted when processing descriptor metatables. But '%s' was found.",
