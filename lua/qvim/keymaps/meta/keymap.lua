@@ -47,7 +47,7 @@ keymap.mt = setmetatable({ filter = nil }, {
             else
                 if t[lhs] then
                     Log:debug(string.format(
-                        "An existing keymap associated with the lef hand side '%s' was overridden by defaults.", lhs))
+                        "An existing keymap associated with the left hand side '%s' was overridden by defaults.", lhs))
                 end
                 fn_t.rawset_debug(t, lhs, util.set_binding_mt(lhs, {}))
             end

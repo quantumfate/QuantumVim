@@ -37,8 +37,12 @@ binding.mt = {
     ---@param opt string
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
-        if default.valid_keymap_opts[opt] and (type(setting) == type(default.keymap_opts[opt]) or setting == nil) then
-            fn_t.rawset_debug(t, opt, setting or default.keymap_opts[opt])
+        if default.valid_keymap_opts[opt] then
+            if type(setting) == "function" then
+                fn_t.rawset_debug(t, opt, setting)
+            elseif (type(setting) == type(default.keymap_opts[opt])) then
+                fn_t.rawset_debug(t, opt, setting or default.keymap_opts[opt])
+            end
         else
             Log:error(string.format("Invalid option '%s' for keymap.", opt))
         end
@@ -73,13 +77,9 @@ binding.mt = {
         return util.truly_unique_mapping(t1, t2) or {}
     end,
     __tostring = function(t)
-        local success, mode = translate_mode_adapter(t.mode)
-        if not success then
-            mode = "CORRUPTED"
-        end
         return string.format(
             "%s::%s::%s::%s::%s::%s::%s::%s",
-            "mode=" .. mode,
+            "mode=" .. t.mode,
             "noremap=" .. tostring(t.noremap),
             "nowait=" .. tostring(t.nowait),
             "silent=" .. tostring(t.silent),

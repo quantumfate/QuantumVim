@@ -133,30 +133,30 @@ end
 ---meta information.
 ---@param _lhs string the left hand side `_binding` will be associated with
 ---@param _binding table the binding
+---@param _options table|nil manually set options - options in `_binding` have precedence
 ---@return table table the binding with accepted options with the metatable `binding.mt`
-util.set_binding_mt = function(_lhs, _binding)
-    if not getmetatable(_binding) == binding.mt then
-        local table = {}
-        setmetatable(table, binding.mt)
-        if fn_t.length(_binding) > 0 then
-            for key, value in pairs(default.keymap_opts) do
-                if _binding[key] ~= nil then
-                    table[key] = _binding[key]
-                else
-                    if value ~= nil then
-                        table[key] = value
-                    end
-                end
+util.set_binding_mt = function(_lhs, _binding, _options)
+    if getmetatable(_binding) == binding.mt then
+        return _binding
+    end
+    local table = {}
+    _options = setmetatable(_options or {}, { __index = default.keymap_opts })
+    setmetatable(table, binding.mt)
+    if fn_t.length(_binding) > 0 then
+        for key, _ in pairs(default.keymap_opts) do
+            if _binding[key] == nil then
+                table[key] = _options[key]
+            else
+                table[key] = _binding[key]
             end
         end
-        if fn_t.length(table) == 0 then
-            Log:warn(string.format(
-                "The table with the associated left hand side '%s' is empty because no accepted options were parsed as keys.",
-                _lhs))
-        end
-        return table
     end
-    return _binding
+    if fn_t.length(table) == 0 then
+        Log:warn(string.format(
+            "The table with the associated left hand side '%s' is empty because no accepted options were parsed as keys.",
+            _lhs))
+    end
+    return table
 end
 
 
@@ -215,39 +215,38 @@ end
 util.process_keymap_mt = function(k, other, predicate)
     if getmetatable(other) == keymap.mt then
         return other
-    else
-        local keymaps = util.get_new_keymap_mt()
+    end
+    local keymaps = util.get_new_keymap_mt()
 
-        if type(other) == "table" then
-            if fn_t.length(other) > 0 then
-                local use_predicate = type(predicate) == "function"
-                if other.filter and other.condition and not use_predicate then
-                    -- determine who should handle the predicate condition
-                    keymaps.filter = other.filter
-                    keymaps.codition = other.condition
-                end
+    if type(other) == "table" then
+        if fn_t.length(other) > 0 then
+            local use_predicate = type(predicate) == "function"
+            if other.filter and other.condition and not use_predicate then
+                -- determine who should handle the predicate condition
+                keymaps.filter = other.filter
+                keymaps.codition = other.condition
+            end
 
-                for lhs, _binding in pairs(other) do
-                    if not lhs == "filter" and not "lhs" == "condition" then
-                        if use_predicate then
-                            if predicate and predicate(k, _binding) then
-                                keymaps[lhs] = util.set_binding_mt(lhs, _binding)
-                            end
-                        else
+            for lhs, _binding in pairs(other) do
+                if not lhs == "filter" and not "lhs" == "condition" then
+                    if use_predicate then
+                        if predicate and predicate(k, _binding) then
                             keymaps[lhs] = util.set_binding_mt(lhs, _binding)
                         end
+                    else
+                        keymaps[lhs] = util.set_binding_mt(lhs, _binding)
                     end
                 end
-            else
-                return keymaps
             end
         else
-            Log:debug(string.format(
-                "The value corresponding to '%s' must be a table but was '%s'. Value is now an empty table with meta information.",
-                k, type(other)))
+            return keymaps
         end
-        return keymaps
+    else
+        Log:debug(string.format(
+            "The value corresponding to '%s' must be a table but was '%s'. Value is now an empty table with meta information.",
+            k, type(other)))
     end
+    return keymaps
 end
 
 ---Adds a group of keymaps with the following attributes unless `other` already has the necessary meta information:
@@ -263,28 +262,49 @@ end
 ---@param idx integer
 ---@param other table either a keymap.opts_collection_mt or a keymap.opts_mt
 util.process_group_mt = function(t, idx, other)
-    if not getmetatable(other) == group.mt then
-        if type(idx) == "number" then
-            if type(other) == "table" then
-                if other.key_group and type(other.key_group) == "string" then
-                    local _group = util.get_new_group_mt()
-                    for key, value in pairs(other) do
-                        _group[key] = value
-                    end
-                    return _group
-                else
-                    Log:error(string.format(
-                        "A group '%s' must have keygroup indicator. The key to be pressed to activate a group. But was '%s'.",
-                        getmetatable(t), type(other.key_group)))
+    if getmetatable(other) == group.mt then
+        return other
+    end
+    if type(idx) == "number" then
+        if type(other) == "table" then
+            if other.key_group and type(other.key_group) == "string" then
+                local _group = util.get_new_group_mt()
+                for key, value in pairs(other) do
+                    _group[key] = value
                 end
+                return _group
             else
-                Log:debug(string.format("A group '%s' needs to be a table but was '%s'", getmetatable(t), type(other)))
+                Log:error(string.format(
+                    "A group '%s' must have keygroup indicator. The key to be pressed to activate a group. But was '%s'.",
+                    getmetatable(t), type(other.key_group)))
             end
         else
-            Log:error(string.format("A group's '%s' index must be a number but was '%s'", getmetatable(t), type(idx)))
+            Log:debug(string.format("A group '%s' needs to be a table but was '%s'", getmetatable(t), type(other)))
         end
+    else
+        Log:error(string.format("A group's '%s' index must be a number but was '%s'", getmetatable(t), type(idx)))
     end
-    return other
 end
 
+---Create a descriptor metatable.
+---@param _key any
+---@param _descriptor string|table
+---@return table
+util.process_descriptor_mt = function(_key, _descriptor)
+    if type(_descriptor) == "table" and getmetatable(_descriptor) == descriptor.mt then
+        return _descriptor
+    end
+    local table = nil
+    Log:debug(string.format("Processing descriptor metatable for '%s'", _key))
+    if type(_descriptor) == "string" then
+        table = setmetatable({ _descriptor }, descriptor.mt)
+    elseif type(_descriptor) == "table" then
+        table = setmetatable(_descriptor, descriptor.mt)
+    else
+        Log:error(string.format(
+            "Only strings and tables are accepted when processing descriptor metatables. But '%s' was found.",
+            type(_descriptor)))
+    end
+    return table
+end
 return util

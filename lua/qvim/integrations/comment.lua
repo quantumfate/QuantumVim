@@ -21,8 +21,6 @@ function M:init()
       }
     },
     keymaps = {
-      visual_mode = {
-      }
     },
     options = {
       -- comment option configuration

@@ -46,12 +46,21 @@ function M:init()
     -- get the defaults
     for _mode, _keymaps in pairs(keymap_defaults.get_defaults()) do
         for _lhs, _bind in pairs(_keymaps) do
-            keymap_modes[_mode] = tostring(_bind)
-            keymap_modes[_mode][tostring(_bind)] = meta.get_new_descriptor_mt()
-            keymap_modes[_mode][tostring(_bind)] = { _lhs, _bind }
+            Log:warn(string.format("Current mode '%s':: translated mode '%s'", _mode, keymap_mode_adapters[_mode]))
+            local current_mode = keymap_mode_adapters[_mode]
+            local bind_mt = meta.set_binding_mt(_lhs, _bind, { mode = current_mode })
+            local descriptor_key = tostring(bind_mt)
+            if not keymap_modes[_mode] then
+                keymap_modes[_mode] = meta.get_new_descriptor_mt()
+            end
+
+            if fn_t.length(keymap_modes[_mode][descriptor_key]) == 0 then
+                keymap_modes[_mode][descriptor_key] = { [_lhs] = bind_mt }
+            else
+                keymap_modes[_mode][descriptor_key][_lhs] = bind_mt
+            end
         end
     end
-
     -- process keymaps declared by integrations
     for _, integration in ipairs(qvim_integrations()) do
         local integration_keymaps = qvim.integrations[integration].keymaps
@@ -63,6 +72,7 @@ function M:init()
                         -- binding
                         Log:debug(string.format("Adding keymaps for '%s' to '%s'.", integration, getmetatable(keymaps)))
                         keymaps[lhs] = declaration
+                        Log:warn(string.format("LHS = '%s' Binding:: '%s'", lhs, tostring(keymaps[lhs])))
                     elseif type(lhs) == "number" and util.has_simple_group_structure(declaration) then
                         -- group
                         Log:debug(string.format("Adding keymap group indicated by '%s' for '%s' to '%s'.",
@@ -96,8 +106,12 @@ function M:init()
 
     for key, descriptor in pairs(keymap_modes) do
         Log:warn(string.format("Mode: '%s'", key))
+        Log:warn(string.format("Descriptor: '%s'", descriptor))
         for str, keys in pairs(descriptor) do
-            Log:warn(string.format("Descriptor: '%s'", str))
+            for lhs, bind in pairs(keys) do
+                Log:warn(string.format("lhs: '%s'", lhs))
+                Log:warn(string.format("bind: '%s'", tostring(bind)))
+            end
         end
     end
 
