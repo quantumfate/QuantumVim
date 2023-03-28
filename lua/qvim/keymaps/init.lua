@@ -45,7 +45,11 @@ function M:init()
 
     -- get the defaults
     for _mode, _keymaps in pairs(keymap_defaults.get_defaults()) do
-        keymap_modes[_mode] = _keymaps
+        for _lhs, _bind in pairs(_keymaps) do
+            keymap_modes[_mode] = tostring(_bind)
+            keymap_modes[_mode][tostring(_bind)] = meta.get_new_descriptor_mt()
+            keymap_modes[_mode][tostring(_bind)] = { _lhs, _bind }
+        end
     end
 
     -- process keymaps declared by integrations
@@ -82,14 +86,20 @@ function M:init()
     -- translate the groups into whichkey format or in workaround when whichkey is not available
     -- register the keymaps or parse them in whichkey
 
-    for lhs, binding in pairs(keymaps) do
-        local descriptor = tostring(binding)
-        if not grouped_keymaps[descriptor] then
-            grouped_keymaps[descriptor] = meta.get_new_keymap_mt()
-        end
-        grouped_keymaps[descriptor][lhs] = binding
-    end
+    --for lhs, binding in pairs(keymaps) do
+    --    local descriptor = tostring(binding)
+    --    if not grouped_keymaps[descriptor] then
+    --        grouped_keymaps[descriptor] = meta.get_new_keymap_mt()
+    --    end
+    --    grouped_keymaps[descriptor][lhs] = binding
+    --end
 
+    for key, descriptor in pairs(keymap_modes) do
+        Log:warn(string.format("Mode: '%s'", key))
+        for str, keys in pairs(descriptor) do
+            Log:warn(string.format("Descriptor: '%s'", str))
+        end
+    end
 
 
     Log:info("Keymaps were fetched.")

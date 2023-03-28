@@ -30,19 +30,23 @@ descriptor.mt = setmetatable({}, {
     ---A keymap table added to this table will filter the bindings filtered and grouped by the descriptor.
     ---@param t table
     ---@param _descriptor string
-    ---@param _binding table
-    __newindex = function(t, _descriptor, _binding)
+    ---@param _keymaps table
+    __newindex = function(t, _descriptor, _keymaps)
         if type(_descriptor) == "string" then
-            if type(_binding) == "table" then
+            if type(_keymaps) == "table" then
                 local keymaps = util.process_keymap_mt(_descriptor,
-                    { filter = predicate, condition = _descriptor, _binding })
+                    { filter = predicate, condition = _descriptor })
+
+                for lhs, binding in pairs(_keymaps) do
+                    keymaps[lhs] = binding
+                end
                 fn_t.rawset_debug(t, _descriptor, keymaps)
             else
                 Log:error(string.format("The value corresponding to a descriptor '%s' must be a table.", _descriptor))
             end
         else
             Log:error(string.format("The descriptor of the keymap '%s' must be a string but was '%s'",
-                getmetatable(_binding), type(_descriptor)))
+                getmetatable(_keymaps), type(_descriptor)))
         end
     end
 })
