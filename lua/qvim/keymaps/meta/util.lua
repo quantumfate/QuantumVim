@@ -8,7 +8,7 @@ local fn_t = require("qvim.utils.fn_t")
 local initialized = false
 
 --[[
-   Init
+   Modules
 ]]
 local
 ---@class binding
@@ -23,22 +23,51 @@ default,
 mode,
 ---@class descriptor
 descriptor = nil, nil, nil, nil, nil, nil
+
+--[[
+    Require paths
+]]
+local
+---@class string
+path_binding,
+---@class string
+path_group,
+---@class string
+path_keymap,
+---@class string
+path_default,
+---@class string
+path_mode,
+---@class string
+path_descriptor = "", "", "", "", "", ""
+
+local util_require = require
+
 ---Init function to parse modules to avoid circular dependencies.
----@param _binding table the required binding module
----@param _group table the required group module
----@param _keymap table the required keymap module
----@param _mode table the required mode module
----@param _descriptor table the required descriptor module
----@return util
+---@param _binding string the binding module path
+---@param _group string the group module path
+---@param _keymap string the keymap module path
+---@param _mode string the mode module path
+---@param _descriptor string the descriptor module path
+---@return util, binding, group, keymap, mode, descriptor
 function util.init(_binding, _group, _keymap, _mode, _descriptor)
-    binding = _binding
-    group = _group
-    keymap = _keymap
-    mode = _mode
-    descriptor = _descriptor
+    -- initialize the strings
+    path_binding = _binding
+    path_group = _group
+    path_keymap = _keymap
+    path_mode = _mode
+    path_descriptor = _descriptor
+
+    -- require modules once
+    binding = util_require(path_binding)
+    group = util_require(path_group)
+    keymap = util_require(path_keymap)
+    mode = util_require(path_mode)
+    descriptor = util_require(path_descriptor)
+
     default = require("qvim.keymaps.default")
     initialized = true
-    return util
+    return util, binding, group, keymap, mode, descriptor
 end
 
 ---Checks if the module has been initialized
@@ -48,39 +77,61 @@ local function check_initialized()
     end
 end
 
+---Wraps `getmetatable` and `setmetatable` with the `...` operator
+local util_get_metatable = getmetatable(setmetatable(...))
+
+---Determine weather the caller of this function uses the instance `mode` or creates a new instance.
+---@param module binding|group|keymap|mode|descriptor
+---@param path string
+---@param new_instance boolean
+---@return binding|group|keymap|mode|descriptor
+local function set_module_instance(module, path, new_instance)
+    local _module = nil
+    if new_instance then
+        _module = util_require(path)
+    else
+        _module = module
+    end
+    return _module
+end
 ---Returns a table with the metatable `binding.mt`
 ---@param init any|nil the table that should inherit from the metatable
+---@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_binding_mt = function(init)
-    return getmetatable(setmetatable(init or {}, binding.mt))
+util.get_new_binding_mt = function(init, new_instance)
+    return util_get_metatable(init or {}, set_module_instance(binding, path_binding, new_instance).mt)
 end
 
 ---Returns a table with the metatable `group.mt`
 ---@param init any|nil the table that should inherit from the metatable
+---@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_group_mt = function(init)
-    return getmetatable(setmetatable(init or {}, group.mt))
+util.get_new_group_mt = function(init, new_instance)
+    return util_get_metatable(init or {}, set_module_instance(group, path_group, new_instance).mt)
 end
 
 ---Returns a table with the metatable `keymap.mt`
 ---@param init any|nil the table that should inherit from the metatable
+---@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_keymap_mt = function(init)
-    return getmetatable(setmetatable(init or {}, keymap.mt))
+util.get_new_keymap_mt = function(init, new_instance)
+    return getmetatable(setmetatable(init or {}, set_module_instance(keymap, path_keymap, new_instance).mt))
 end
 
 ---Returns a table with the metatable `keymap.mt`
 ---@param init any|nil the table that should inherit from the metatable
+---@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_mode_mt = function(init)
-    return getmetatable(setmetatable(init or {}, mode.mt))
+util.get_new_mode_mt = function(init, new_instance)
+    return getmetatable(setmetatable(init or {}, set_module_instance(mode, path_mode, new_instance).mt))
 end
 
 ---Returns a table with the metatable `descriptor.mt`
 ---@param init any|nil the table that should inherit from the metatable
+---@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_descriptor_mt = function(init)
-    return getmetatable(setmetatable(init or {}, descriptor.mt))
+util.get_new_descriptor_mt = function(init, new_instance)
+    return getmetatable(setmetatable(init or {}, set_module_instance(descriptor, path_descriptor, new_instance).mt))
 end
 
 ---Ensures that a given table has the default options for keymaps as well as valid parsed options.
@@ -212,7 +263,7 @@ end
 ---@param other table
 ---@param predicate function|nil parse a predicate that compares `k` with `_binding`
 ---@return table
-util.process_keymap_mt = function(k, other, predicate)
+util.process_keymap_mt = function(k, other, predicate, create_new_mt)
     if getmetatable(other) == keymap.mt then
         return other
     end

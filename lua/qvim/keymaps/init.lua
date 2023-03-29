@@ -51,8 +51,6 @@ function M:init()
             local descriptor_key = tostring(bind_mt)
             if not keymap_modes[_mode] then
                 keymap_modes[_mode] = descriptor_key
-            else
-                keymap_modes[_mode] = { descriptor_key }
             end
             -- TODO: if the expression above is not evaluated new descriptor_keys
             -- wont be added to the table. Therefore the necessary metatables are not set.
@@ -70,41 +68,43 @@ function M:init()
         end
     end
     -- process keymaps declared by integrations
-    for _, integration in ipairs(qvim_integrations()) do
-        local integration_keymaps = qvim.integrations[integration].keymaps
+    --for _, integration in ipairs(qvim_integrations()) do
+    --    local integration_keymaps = qvim.integrations[integration].keymaps
 
-        if integration_keymaps then
-            if fn_t.length(integration_keymaps) > 0 then
-                for lhs, declaration in pairs(integration_keymaps) do
-                    if type(lhs) == "string" then
-                        -- binding
-                        Log:debug(string.format("Adding keymaps for '%s' to '%s'.", integration, getmetatable(keymaps)))
-                        keymaps[lhs] = declaration
-                        Log:warn(string.format("LHS = '%s' Binding:: '%s'", lhs, tostring(keymaps[lhs])))
-                    elseif type(lhs) == "number" and util.has_simple_group_structure(declaration) then
-                        -- group
-                        Log:debug(string.format("Adding keymap group indicated by '%s' for '%s' to '%s'.",
-                            declaration.key_group, integration,
-                            getmetatable(keymap_groups)))
-                        keymap_groups[#keymaps + 1] = declaration
-                    else
-                        Log:error(string.format("Unsupported key '%s' from type '%s' in keymaps init function.",
-                            tostring(lhs), type(lhs)))
-                    end
-                end
-            else
-                Log:debug(string.format("No keymaps defined for '%s'.", integration))
-            end
-        else
-            Log:debug("For integration '%s' were not keymaps found.", integration)
-        end
-    end
+    --    if integration_keymaps then
+    --        if fn_t.length(integration_keymaps) > 0 then
+    --            for lhs, declaration in pairs(integration_keymaps) do
+    --                if type(lhs) == "string" then
+    --                    -- binding
+    --                    Log:debug(string.format("Adding keymaps for '%s' to '%s'.", integration, getmetatable(keymaps)))
+    --                    keymaps[lhs] = declaration
+    --                    Log:warn(string.format("LHS = '%s' Binding:: '%s'", lhs, tostring(keymaps[lhs])))
+    --                elseif type(lhs) == "number" and util.has_simple_group_structure(declaration) then
+    --                    -- group
+    --                    Log:debug(string.format("Adding keymap group indicated by '%s' for '%s' to '%s'.",
+    --                        declaration.key_group, integration,
+    --                        getmetatable(keymap_groups)))
+    --                    keymap_groups[#keymaps + 1] = declaration
+    --                else
+    --                    Log:error(string.format("Unsupported key '%s' from type '%s' in keymaps init function.",
+    --                        tostring(lhs), type(lhs)))
+    --                end
+    --            end
+    --        else
+    --            Log:debug(string.format("No keymaps defined for '%s'.", integration))
+    --        end
+    --    else
+    --        Log:debug("For integration '%s' were not keymaps found.", integration)
+    --    end
+    --end
 
     -- fetch keymaps for whichkey or normal layout when whichkey is not available
     -- translate the groups into whichkey format or in workaround when whichkey is not available
     -- register the keymaps or parse them in whichkey
 
     print("keymap_modes:", vim.inspect(keymap_modes))
+    --print("keymap_groups:", vim.inspect(keymap_groups))
+
     Log:info("Keymaps were fetched.")
 end
 
