@@ -35,7 +35,7 @@ descriptor.mt = setmetatable({}, {
         if type(_descriptor) == "string" then
             if type(_keymaps) == "table" then
                 local keymaps = util.process_keymap_mt(_descriptor,
-                    { filter = predicate, condition = _descriptor }, true)
+                    { filter = predicate, condition = _descriptor }, nil)
 
                 for lhs, binding in pairs(_keymaps) do
                     Log:warn("This should do a predicate")

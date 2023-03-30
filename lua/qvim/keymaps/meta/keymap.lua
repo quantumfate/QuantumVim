@@ -36,7 +36,7 @@ keymap.mt = setmetatable({ filter = nil }, {
         if type(lhs) == "string" then
             Log:debug(string.format("Processing a single bind '%s'", lhs))
             if type(other) == "table" then
-                local binding = util.set_binding_mt(lhs, other)
+                local binding = util.set_binding_mt(lhs, other, nil)
                 local add_other = true
                 if rawget(t, "filter") and rawget(t, "condition") then
                     Log:warn("doing magic")

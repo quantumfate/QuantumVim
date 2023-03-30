@@ -77,61 +77,52 @@ local function check_initialized()
     end
 end
 
----Wraps `getmetatable` and `setmetatable` with the `...` operator
-local util_get_metatable = getmetatable(setmetatable(...))
-
----Determine weather the caller of this function uses the instance `mode` or creates a new instance.
----@param module binding|group|keymap|mode|descriptor
----@param path string
----@param new_instance boolean
----@return binding|group|keymap|mode|descriptor
-local function set_module_instance(module, path, new_instance)
-    local _module = nil
-    if new_instance then
-        _module = util_require(path)
-    else
-        _module = module
-    end
-    return _module
+local util_get_metatable = function(init, metatable)
+    return getmetatable(setmetatable(init, metatable))
 end
+
+
 ---Returns a table with the metatable `binding.mt`
 ---@param init any|nil the table that should inherit from the metatable
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_binding_mt = function(init, new_instance)
-    return util_get_metatable(init or {}, set_module_instance(binding, path_binding, new_instance).mt)
+util.get_new_binding_mt = function(init)
+    return util_get_metatable(init or {}, binding.mt)
 end
 
 ---Returns a table with the metatable `group.mt`
 ---@param init any|nil the table that should inherit from the metatable
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_group_mt = function(init, new_instance)
-    return util_get_metatable(init or {}, set_module_instance(group, path_group, new_instance).mt)
+util.get_new_group_mt = function(init)
+    return util_get_metatable(init or {}, group.mt)
+end
+
+---Returns a table with the metatable `group.mt`
+---@param init any|nil the table that should inherit from the metatable
+---@return table
+util.get_new_group_member_mt = function(init)
+    return util_get_metatable(init or {}, group.member_mt)
+end
+
+
+---Returns a table with the metatable `keymap.mt`
+---@param init any|nil the table that should inherit from the metatable
+---@return table
+util.get_new_keymap_mt = function(init)
+    return util_get_metatable(init or {}, keymap.mt)
 end
 
 ---Returns a table with the metatable `keymap.mt`
 ---@param init any|nil the table that should inherit from the metatable
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_keymap_mt = function(init, new_instance)
-    return getmetatable(setmetatable(init or {}, set_module_instance(keymap, path_keymap, new_instance).mt))
-end
-
----Returns a table with the metatable `keymap.mt`
----@param init any|nil the table that should inherit from the metatable
----@param new_instance boolean create a new instance to isolate the reference
----@return table
-util.get_new_mode_mt = function(init, new_instance)
-    return getmetatable(setmetatable(init or {}, set_module_instance(mode, path_mode, new_instance).mt))
+util.get_new_mode_mt = function(init)
+    return util_get_metatable(init or {}, mode.mt)
 end
 
 ---Returns a table with the metatable `descriptor.mt`
 ---@param init any|nil the table that should inherit from the metatable
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-util.get_new_descriptor_mt = function(init, new_instance)
-    return getmetatable(setmetatable(init or {}, set_module_instance(descriptor, path_descriptor, new_instance).mt))
+util.get_new_descriptor_mt = function(init)
+    return util_get_metatable(init or {}, descriptor.mt)
 end
 
 ---Ensures that a given table has the default options for keymaps as well as valid parsed options.
@@ -192,7 +183,7 @@ util.set_binding_mt = function(_lhs, _binding, _options)
     end
     local table = {}
     _options = setmetatable(_options or {}, { __index = default.keymap_opts })
-    setmetatable(table, binding.mt)
+    table = util.get_new_binding_mt(table)
     if fn_t.length(_binding) > 0 then
         for key, _ in pairs(default.keymap_opts) do
             if _binding[key] == nil then
@@ -263,7 +254,8 @@ end
 ---@param other table
 ---@param predicate function|nil parse a predicate that compares `k` with `_binding`
 ---@return table
-util.process_keymap_mt = function(k, other, predicate, create_new_mt)
+util.process_keymap_mt = function(k, other, predicate)
+    -- TODO: the keymap
     if getmetatable(other) == keymap.mt then
         return other
     end

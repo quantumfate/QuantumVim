@@ -9,13 +9,13 @@ function M:init()
     active = true,
     on_config_done = nil,
     keymaps = {
-      ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
+      ["<A-y>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
       {
         name = "hallo",
         key_group = "g",
         prefix = " ",
         bindings = {
-          ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
+          ["<X-i>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
         },
         options = {}
       }

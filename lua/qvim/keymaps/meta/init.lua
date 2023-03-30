@@ -1,9 +1,10 @@
 ---Initializes the meta section by requiring the necessary modules.
 ---@class meta
----@field binding function
----@field group function
----@field keymap function
+---@field binding binding
+---@field group group
+---@field keymap keymap
 ---@field mode mode
+---@field descriptor descriptor
 local meta = {}
 
 local util, binding, group, keymap, mode, descriptor = require("qvim.keymaps.meta.util")
@@ -23,42 +24,37 @@ descriptor.init(util)
 
 ---Get a new binding metatable
 ---@param init table|nil
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-meta.get_new_binding_mt = function(init, new_instance)
-    return util.get_new_binding_mt(init, new_instance)
+meta.get_new_binding_mt = function(init)
+    return util.get_new_binding_mt(init)
 end
 
 ---Get a new group metatable
 ---@param init table|nil
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-meta.get_new_group_mt = function(init, new_instance)
-    return util.get_new_group_mt(init, new_instance)
+meta.get_new_group_mt = function(init)
+    return util.get_new_group_mt(init)
 end
 
 ---Get a new keymap metatable
 ---@param init table|nil
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-meta.get_new_keymap_mt = function(init, new_instance)
-    return util.get_new_keymap_mt(init, new_instance)
+meta.get_new_keymap_mt = function(init)
+    return util.get_new_keymap_mt(init)
 end
 
 ---Get a new mode metatable
 ---@param init table|nil
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-meta.get_new_mode_mt = function(init, new_instance)
-    return util.get_new_mode_mt(init, new_instance)
+meta.get_new_mode_mt = function(init)
+    return util.get_new_mode_mt(init)
 end
 
 ---Get a new mode metatable
 ---@param init table|nil
----@param new_instance boolean create a new instance to isolate the reference
 ---@return table
-meta.get_new_descriptor_mt = function(init, new_instance)
-    return util.get_new_descriptor_mt(init, new_instance)
+meta.get_new_descriptor_mt = function(init)
+    return util.get_new_descriptor_mt(init)
 end
 
 ---Ensures that the given table `_binding` is a table of `binding.mt` with accepted options.

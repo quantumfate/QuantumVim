@@ -18,6 +18,27 @@ function group.init(_util)
 end
 
 group.mt = setmetatable({}, {
+    __newindex = function(t, idx, group_member)
+        if type(idx) == "number" then
+            if group_member.key_group == nil or group_member.key_group == "" then
+                Log:error("A group member must have a key group key")
+                return
+            end
+            local _group_member = util.get_new_group_member_mt()
+            _group_member.name = group_member.name or default.keymap_group.name
+            _group_member.key_group = group_member.key_group
+            _group_member.prefix = group_member.prefix or default.keymap_group.prefix
+            _group_member.bindings = group_member.bindings or default.keymap_group.bindings
+            _group_member.options = group_member.options or default.keymap_group.options
+            fn_t.rawset_debug(t, idx, _group_member)
+        else
+            Log:error(string.format("The index of a group member in the group metatable must be a number but was '%s'",
+                type(idx)))
+        end
+    end
+})
+
+group.member_mt = setmetatable({}, {
     __index = function(t, k)
         if type(k) == "string" then
             if k == "bindings" or k == "options" or rawget(t, k) ~= nil then
@@ -42,7 +63,7 @@ group.mt = setmetatable({}, {
         if type(k) == "string" then
             if other then
                 if k == "bindings" then
-                    local keymaps = util.process_keymap_mt(k, other)
+                    local keymaps = util.process_keymap_mt(k, other, nil)
                     fn_t.rawset_debug(t, k, keymaps)
                 elseif k == "options" then
                     local options = setmetatable(other or {}, { __index = default.keymap_group_opts })
@@ -74,12 +95,12 @@ group.mt = setmetatable({}, {
     __tostring = function(t)
         local base = string.format(
             "%s::%s",
-            "key_group=" .. t.key_group,
-            "prefix=" .. t.prefix
+            "key_group=" .. rawget(t, "key_group"),
+            "prefix=" .. rawget(t, "prefix")
         )
         base = base .. "::bindings={"
         if fn_t.length(t.bindings) > 0 then
-            local transformed_keys = fn_t.transform_to_table(t.bindings, tostring, true)
+            local transformed_keys = fn_t.transform_to_table(rawget(t, "bindings"), tostring, true)
             for index, initial_k in ipairs(transformed_keys) do
                 base = base .. initial_k
                 if index < #transformed_keys then
@@ -88,12 +109,13 @@ group.mt = setmetatable({}, {
             end
         end
         base = base .. "}"
-        if t.options then
+        local count = 0
+        local t_options = rawget(t, "options")
+        if t_options then
             base = base .. "::options={"
-            local count = 0
-            local length = fn_t.length(t.options)
+            local length = fn_t.length(t_options)
             if length > 0 then
-                for key, value in pairs(t.options) do
+                for key, value in pairs(t_options) do
                     count = count + 1
                     base = base .. (key .. "=" .. value)
                     if count < length then
@@ -101,6 +123,7 @@ group.mt = setmetatable({}, {
                     end
                 end
             end
+            base = base .. "}"
         end
         return base
     end
