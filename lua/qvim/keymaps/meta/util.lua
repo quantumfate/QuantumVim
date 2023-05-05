@@ -78,9 +78,16 @@ local function check_initialized()
 end
 
 local util_get_metatable = function(init, metatable)
-    return getmetatable(setmetatable(init, metatable))
+    return setmetatable(init, metatable)
 end
 
+local function shallow_copy(t)
+    local new_t = {}
+    for k, v in pairs(t) do
+        new_t[k] = v
+    end
+    return setmetatable(new_t, getmetatable(t))
+end
 
 ---Returns a table with the metatable `binding.mt`
 ---@param init any|nil the table that should inherit from the metatable
@@ -96,7 +103,7 @@ util.get_new_group_mt = function(init)
     return util_get_metatable(init or {}, group.mt)
 end
 
----Returns a table with the metatable `group.mt`
+---Returns a table with the metatable `group.member_mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
 util.get_new_group_member_mt = function(init)
@@ -178,19 +185,14 @@ end
 ---@param _options table|nil manually set options - options in `_binding` have precedence
 ---@return table table the binding with accepted options with the metatable `binding.mt`
 util.set_binding_mt = function(_lhs, _binding, _options)
-    if getmetatable(_binding) == binding.mt then
-        return _binding
-    end
-    local table = {}
+    --if getmetatable(_binding) == binding.mt then
+    --     return _binding
+    --end
     _options = setmetatable(_options or {}, { __index = default.keymap_opts })
-    table = util.get_new_binding_mt(table)
-    if fn_t.length(_binding) > 0 then
-        for key, _ in pairs(default.keymap_opts) do
-            if _binding[key] == nil then
-                table[key] = _options[key]
-            else
-                table[key] = _binding[key]
-            end
+    local new_binding = util.get_new_binding_mt(_binding)
+    for key, value in pairs(default.keymap_opts) do
+        if rawget(new_binding, key) == nil then
+            new_binding[key] = value
         end
     end
     if fn_t.length(table) == 0 then
@@ -198,7 +200,7 @@ util.set_binding_mt = function(_lhs, _binding, _options)
             "The table with the associated left hand side '%s' is empty because no accepted options were parsed as keys.",
             _lhs))
     end
-    return table
+    return new_binding
 end
 
 
@@ -263,30 +265,37 @@ util.process_keymap_mt = function(k, other, predicate)
 
     if type(other) == "table" then
         if fn_t.length(other) > 0 then
-            local use_predicate = type(predicate) == "function"
-            if other.filter and other.condition and not use_predicate then
-                -- determine who should handle the predicate condition
-                Log:warn("Keymap uses internal predicate")
-                rawset(keymaps, "filter", other.filter)
-                rawset(keymaps, "condition", other.condition)
-            end
-
             for lhs, _binding in pairs(other) do
-                if not lhs == "filter" and not lhs == "condition" then
-                    if use_predicate then
-                        if predicate and predicate(k, _binding) then
-                            Log:warn(string.format("Applying predicate on '%s'", lhs))
-                            keymaps[lhs] = util.set_binding_mt(lhs, _binding)
-                        end
-                    else
-                        Log:warn(string.format("Adding '%s'", lhs))
-                        keymaps[lhs] = util.set_binding_mt(lhs, _binding)
-                    end
-                end
+                keymaps[lhs] = _binding
             end
         else
             return keymaps
         end
+        --if fn_t.length(other) > 0 then
+        --    local use_predicate = type(predicate) == "function"
+        --    if other.filter and other.condition and not use_predicate then
+        --        -- determine who should handle the predicate condition
+        --        Log:warn("Keymap uses internal predicate")
+        --        rawset(keymaps, "filter", other.filter)
+        --        rawset(keymaps, "condition", other.condition)
+        --    end
+
+        --    for lhs, _binding in pairs(other) do
+        --        if not lhs == "filter" and not lhs == "condition" then
+        --            if use_predicate then
+        --                if predicate and predicate(k, _binding) then
+        --                    Log:warn(string.format("Applying predicate on '%s'", lhs))
+        --                    keymaps[lhs] = util.set_binding_mt(lhs, _binding)
+        --                end
+        --            else
+        --                Log:warn(string.format("Adding '%s'", lhs))
+        --                keymaps[lhs] = util.set_binding_mt(lhs, _binding)
+        --            end
+        --        end
+        --    end
+        --else
+        --    return keymaps
+        --end
     else
         Log:debug(string.format(
             "The value corresponding to '%s' must be a table but was '%s'. Value is now an empty table with meta information.",

@@ -26,7 +26,7 @@ local function predicate(_descriptor, _binding)
 end
 
 ---The metatable to group keymaps by a descriptor.
-descriptor.mt = setmetatable({}, {
+descriptor.mt = {
     ---A keymap table added to this table will filter the bindings filtered and grouped by the descriptor.
     ---@param t table
     ---@param _descriptor string
@@ -50,6 +50,6 @@ descriptor.mt = setmetatable({}, {
                 getmetatable(_keymaps), type(_descriptor)))
         end
     end
-})
+}
 
 return descriptor

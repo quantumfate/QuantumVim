@@ -16,7 +16,7 @@ function keymap.init(_util)
 end
 
 --- The metatable for keymaps. A left hand side will be bound to a `keymap.opts_mt` table.
-keymap.mt = setmetatable({ filter = nil }, {
+keymap.mt = {
     __index = function(t, lhs)
         if type(lhs) == "string" or type(lhs) == "number" then
             return t[lhs]
@@ -38,13 +38,13 @@ keymap.mt = setmetatable({ filter = nil }, {
             if type(other) == "table" then
                 local binding = util.set_binding_mt(lhs, other, nil)
                 local add_other = true
-                if rawget(t, "filter") and rawget(t, "condition") then
-                    Log:warn("doing magic")
-                    add_other = t.filter(rawget(t, "condition"), other)
-                end
-                if add_other then
-                    fn_t.rawset_debug(t, lhs, binding)
-                end
+                --if rawget(t, "filter") and rawget(t, "condition") then
+                --    Log:warn("doing magic")
+                --    add_other = t.filter(rawget(t, "condition"), other)
+                --end
+                --if add_other then
+                fn_t.rawset_debug(t, lhs, binding)
+                --end
             else
                 if t[lhs] then
                     Log:debug(string.format(
@@ -59,7 +59,7 @@ keymap.mt = setmetatable({ filter = nil }, {
             Log:error(string.format("The left hand side of a binding must be a string but is '%s'", type(lhs)))
         end
     end
-})
+}
 
 
 return keymap

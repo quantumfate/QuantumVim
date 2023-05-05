@@ -37,15 +37,7 @@ binding.mt = {
     ---@param opt string
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
-        if default.valid_keymap_opts[opt] then
-            if type(setting) == "function" then
-                fn_t.rawset_debug(t, opt, setting)
-            elseif (type(setting) == type(default.keymap_opts[opt])) then
-                fn_t.rawset_debug(t, opt, setting or default.keymap_opts[opt])
-            end
-        else
-            Log:error(string.format("Invalid option '%s' for keymap.", opt))
-        end
+        fn_t.rawset_debug(t, opt, setting)
     end,
     ---Checks for equality in keymappings. Two keymaps with a different buffer value are not considered equal.
     ---@param t1 table

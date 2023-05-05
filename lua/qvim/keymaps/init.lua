@@ -22,11 +22,8 @@ else
 end
 
 local keymaps = meta.get_new_keymap_mt()
-local keymap_groups = meta.get_new_group_mt({})
+local keymap_groups = meta.get_new_group_mt()
 
-local keymap_modes = meta.get_new_mode_mt({})
-
-local grouped_keymaps = {}
 local function fetch_whichkey_keymaps()
 
 end
@@ -42,6 +39,7 @@ function M:init()
         Log:info("Headless mode detected. Not loading any keymappings.")
         return
     end
+    -- TODO: DONT USE RAWSET IN META METHODS and use actual tables not the metatables for assignment
 
     -- get the defaults
     --for _mode, _keymaps in pairs(keymap_defaults.get_defaults()) do
