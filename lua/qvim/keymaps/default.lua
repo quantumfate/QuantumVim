@@ -12,7 +12,7 @@ default.valid_integration_defaults = {
     options = true
 }
 
-default.valid_keymap_opts = {
+default.valid_binding_opts = {
     rhs = true,
     desc = true,
     mode = true,
@@ -26,7 +26,7 @@ default.valid_keymap_opts = {
     callback = true,
 }
 
-default.keymap_opts = {
+default.binding_opts = {
     rhs = "",
     desc = "",
     mode = "n",
@@ -44,7 +44,8 @@ default.valid_keymap_group_opts = {
     name = true,
     key_group = true,
     prefix = true,
-    bindings = true
+    bindings = true,
+    options = true
 }
 
 default.keymap_group = {

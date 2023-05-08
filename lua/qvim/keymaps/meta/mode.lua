@@ -28,14 +28,8 @@ mode.mt = setmetatable({}, {
                 modes[_mode_adapter] = true
             end
             if type(descriptor) == "string" or type(descriptor) == "table" then
-                if modes[mode_adapter] then
-                    local _descriptor = util.process_descriptor_mt(mode_adapter, descriptor)
-                    fn_t.rawset_debug(t, mode_adapter, _descriptor)
-                else
-                    Log:error(string.format("Invalid mode adapter '%s'", mode_adapter))
-                end
+
             end
-        else
         end
     end
 })

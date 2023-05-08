@@ -81,14 +81,6 @@ local util_get_metatable = function(init, metatable)
     return setmetatable(init, metatable)
 end
 
-local function shallow_copy(t)
-    local new_t = {}
-    for k, v in pairs(t) do
-        new_t[k] = v
-    end
-    return setmetatable(new_t, getmetatable(t))
-end
-
 ---Returns a table with the metatable `binding.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
@@ -138,7 +130,7 @@ end
 util.retrieve_opts_mt = function(_other)
     local opts = default.keymap_group_opts
     for opt, value in pairs(_other) do
-        if default.valid_keymap_opts[opt] then
+        if default.valid_binding_opts[opt] then
             opts[opt] = value
         end
     end
@@ -185,12 +177,12 @@ end
 ---@param _options table|nil manually set options - options in `_binding` have precedence
 ---@return table table the binding with accepted options with the metatable `binding.mt`
 util.set_binding_mt = function(_lhs, _binding, _options)
-    --if getmetatable(_binding) == binding.mt then
-    --     return _binding
-    --end
-    _options = setmetatable(_options or {}, { __index = default.keymap_opts })
+    if getmetatable(_binding) == binding.mt then
+        return _binding
+    end
+    _options = setmetatable(_options or {}, { __index = default.binding_opts })
     local new_binding = util.get_new_binding_mt(_binding)
-    for key, value in pairs(default.keymap_opts) do
+    for key, value in pairs(default.binding_opts) do
         if rawget(new_binding, key) == nil then
             new_binding[key] = value
         end
@@ -254,10 +246,8 @@ end
 ---The process is skipped when `other` already has the necessary meta information.
 ---@param k string
 ---@param other table
----@param predicate function|nil parse a predicate that compares `k` with `_binding`
 ---@return table
-util.process_keymap_mt = function(k, other, predicate)
-    -- TODO: the keymap
+util.process_keymap_mt = function(k, other)
     if getmetatable(other) == keymap.mt then
         return other
     end
@@ -271,31 +261,6 @@ util.process_keymap_mt = function(k, other, predicate)
         else
             return keymaps
         end
-        --if fn_t.length(other) > 0 then
-        --    local use_predicate = type(predicate) == "function"
-        --    if other.filter and other.condition and not use_predicate then
-        --        -- determine who should handle the predicate condition
-        --        Log:warn("Keymap uses internal predicate")
-        --        rawset(keymaps, "filter", other.filter)
-        --        rawset(keymaps, "condition", other.condition)
-        --    end
-
-        --    for lhs, _binding in pairs(other) do
-        --        if not lhs == "filter" and not lhs == "condition" then
-        --            if use_predicate then
-        --                if predicate and predicate(k, _binding) then
-        --                    Log:warn(string.format("Applying predicate on '%s'", lhs))
-        --                    keymaps[lhs] = util.set_binding_mt(lhs, _binding)
-        --                end
-        --            else
-        --                Log:warn(string.format("Adding '%s'", lhs))
-        --                keymaps[lhs] = util.set_binding_mt(lhs, _binding)
-        --            end
-        --        end
-        --    end
-        --else
-        --    return keymaps
-        --end
     else
         Log:debug(string.format(
             "The value corresponding to '%s' must be a table but was '%s'. Value is now an empty table with meta information.",
@@ -314,16 +279,16 @@ end
 ---When the plugin whichkey is available:
 ---- `options` global options for whichkey bindings
 ---@param t table
----@param idx integer
+---@param idx integer|string
 ---@param other table either a keymap.opts_collection_mt or a keymap.opts_mt
 util.process_group_mt = function(t, idx, other)
     if getmetatable(other) == group.mt then
         return other
     end
-    if type(idx) == "number" then
+    if type(idx) == "number" or type(idx) == "string" then
         if type(other) == "table" then
             if other.key_group and type(other.key_group) == "string" then
-                local _group = util.get_new_group_mt()
+                local _group = util.get_new_group_member_mt()
                 for key, value in pairs(other) do
                     _group[key] = value
                 end
@@ -334,35 +299,11 @@ util.process_group_mt = function(t, idx, other)
                     getmetatable(t), type(other.key_group)))
             end
         else
-            Log:debug(string.format("A group '%s' needs to be a table but was '%s'", getmetatable(t), type(other)))
+            Log:debug(string.format("A group '%s' needs to be a table but was '%s'", t, type(other)))
         end
     else
-        Log:error(string.format("A group's '%s' index must be a number but was '%s'", getmetatable(t), type(idx)))
+        Log:error(string.format("A group's '%s' index must be a number or a string but was '%s'", t, type(idx)))
     end
 end
 
----Create a descriptor metatable. If a given `_descriptor` is a string the `_descriptor` will
----be initialized as a first table entry with `nil` as a value. More flexibily can be enabled when
----`_descriptor` is parsed as a table
----@param _key any
----@param _descriptor string|table
----@return table
-util.process_descriptor_mt = function(_key, _descriptor)
-    if type(_descriptor) == "table" and getmetatable(_descriptor) == descriptor.mt then
-        Log:warn(string.format("Returning bullshit '%s'", _descriptor))
-        return _descriptor
-    end
-    local table = nil
-    Log:debug(string.format("Processing descriptor metatable for '%s'", _key))
-    if type(_descriptor) == "string" then
-        table = util.get_new_descriptor_mt({ [_descriptor] = nil })
-    elseif type(_descriptor) == "table" then
-        table = util.get_new_descriptor_mt(_descriptor)
-    else
-        Log:error(string.format(
-            "Only strings and tables are accepted when processing descriptor metatables. But '%s' was found.",
-            type(_descriptor)))
-    end
-    return table
-end
 return util

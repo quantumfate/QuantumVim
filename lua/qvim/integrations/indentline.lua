@@ -19,7 +19,8 @@ function M:init()
       },
     },
     whichkey = {},
-    keymaps = {},
+    keymaps = {
+    },
     options = {
       -- indentline option configuration
       show_current_context = true,

@@ -19,7 +19,11 @@ end
 keymap.mt = {
     __index = function(t, lhs)
         if type(lhs) == "string" or type(lhs) == "number" then
-            return t[lhs]
+            if lhs == "bindings" then
+                return t[lhs]
+            else
+                return fn_t.rawget_debug(t, lhs)
+            end
         else
             Log:error(string.format(
                 "Failed to index keymap. The left hand side of a binding must be a string but is '%s'", type(lhs)))
@@ -37,14 +41,7 @@ keymap.mt = {
             Log:debug(string.format("Processing a single bind '%s'", lhs))
             if type(other) == "table" then
                 local binding = util.set_binding_mt(lhs, other, nil)
-                local add_other = true
-                --if rawget(t, "filter") and rawget(t, "condition") then
-                --    Log:warn("doing magic")
-                --    add_other = t.filter(rawget(t, "condition"), other)
-                --end
-                --if add_other then
                 fn_t.rawset_debug(t, lhs, binding)
-                --end
             else
                 if t[lhs] then
                     Log:debug(string.format(

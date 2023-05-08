@@ -25,10 +25,10 @@ binding.mt = {
     ---@param opt string
     ---@return boolean|string|integer|function|nil
     __index = function(t, opt)
-        if default.valid_keymap_opts[opt] then
-            return fn_t.rawget_debug(t, opt) or default.keymap_opts[opt]
+        if default.valid_binding_opts[opt] then
+            return fn_t.rawget_debug(t, opt) or default.binding_opts[opt]
         else
-            Log:error(string.format("Invalid option '%s' for keymap.", opt))
+            Log:error(string.format("Invalid option '%s' for binding.", opt))
             return nil
         end
     end,
@@ -37,7 +37,11 @@ binding.mt = {
     ---@param opt string
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
-        fn_t.rawset_debug(t, opt, setting)
+        if default.valid_binding_opts[opt] then
+            fn_t.rawset_debug(t, opt, setting)
+        else
+            Log:error(string.format("Invalid option '%s' for binding.", opt))
+        end
     end,
     ---Checks for equality in keymappings. Two keymaps with a different buffer value are not considered equal.
     ---@param t1 table
@@ -70,7 +74,7 @@ binding.mt = {
     end,
     __tostring = function(t)
         return string.format(
-            "%s::%s::%s::%s::%s::%s::%s::%s",
+            "binding=%s::%s::%s::%s::%s::%s::%s::%s",
             "mode=" .. t.mode,
             "noremap=" .. tostring(t.noremap),
             "nowait=" .. tostring(t.nowait),

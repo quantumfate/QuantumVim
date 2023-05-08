@@ -20,7 +20,8 @@ end
 group.mt = {
     __newindex = function(t, idx, group_member)
         if type(idx) == "number" then
-            if group_member.key_group == nil or group_member.key_group == "" then
+            print("INSPECT", vim.inspect(group_member))
+            if type(idx) == "string" and group_member == "key_group" == group_member.key_group == nil then
                 Log:error("A group member must have a key group key")
                 return
             end
@@ -32,7 +33,8 @@ group.mt = {
             _group_member["options"] = group_member.options or default.keymap_group.options
             fn_t.rawset_debug(t, idx, _group_member)
         else
-            Log:error(string.format("The index of a group member in the group metatable must be a number but was '%s'",
+            Log:error(string.format(
+                "The index of a group member in the group metatable must be a number but was '%s'",
                 type(idx)))
         end
     end
@@ -43,13 +45,6 @@ group.member_mt = {
         if type(k) == "string" then
             if k == "bindings" or k == "options" or rawget(t, k) ~= nil then
                 return t[k]
-            else
-                if default.keymap_group[k] then
-                    return default.keymap_group[k]
-                else
-                    Log:error(string.format("Failed to index '%s' with key '%s'. This key is not allowed.",
-                        getmetatable(t), k))
-                end
             end
         else
             Log:error(string.format("The key to a value in '%s' must be a string but was '%s'.", getmetatable(t), type(k)))
@@ -61,28 +56,18 @@ group.member_mt = {
     ---@param other table
     __newindex = function(t, k, other)
         if type(k) == "string" then
-            if other then
-                if k == "bindings" then
-                    local keymaps = util.process_keymap_mt(k, other, nil)
-                    fn_t.rawset_debug(t, k, keymaps)
-                elseif k == "options" then
-                    local options = setmetatable(other or {}, { __index = default.keymap_group_opts })
-                    fn_t.rawset_debug(t, k, options)
-                else
-                    if type(other) == "string" then
-                        fn_t.rawset_debug(t, k, other)
-                    else
-                        Log:debug(string.format(
-                            "The value of '%s' must be a string but was '%s'. Defaults were applied.", k, type(other)))
-                        fn_t.rawset_debug(t, k, default.keymap_group[k])
-                    end
-                end
+            if k == "bindings" and type(other) == "table" then
+                local keymaps = util.process_keymap_mt(k, other)
+                fn_t.rawset_debug(t, k, keymaps)
+            elseif k == "options" and type(other) == "table" then
+                local options = setmetatable(other or {}, { __index = default.keymap_group_opts })
+                fn_t.rawset_debug(t, k, options)
             else
-                if k == "bindings" then
-                    fn_t.rawset_debug(t, k, util.get_new_keymap_mt())
-                elseif k == "options" then
-                    fn_t.rawset_debug(t, k, setmetatable({}, { __index = default.keymap_group_opts }))
+                if type(other) == "string" then
+                    fn_t.rawset_debug(t, k, other)
                 else
+                    Log:debug(string.format(
+                        "The value of '%s' must be a string but was '%s'. Defaults were applied.", k, type(other)))
                     fn_t.rawset_debug(t, k, default.keymap_group[k])
                 end
             end
@@ -94,39 +79,12 @@ group.member_mt = {
     ---@param t table
     __tostring = function(t)
         local base = string.format(
-            "%s::%s",
-            "key_group=" .. rawget(t, "key_group"),
-            "prefix=" .. rawget(t, "prefix")
+            "%s",
+            "key_group=" .. rawget(t, "key_group")
         )
-        base = base .. "::bindings={"
-        if fn_t.length(t.bindings) > 0 then
-            local transformed_keys = fn_t.transform_to_table(rawget(t, "bindings"), tostring, true)
-            for index, initial_k in ipairs(transformed_keys) do
-                base = base .. initial_k
-                if index < #transformed_keys then
-                    base = base .. ","
-                end
-            end
-        end
-        base = base .. "}"
-        local count = 0
-        local t_options = rawget(t, "options")
-        if t_options then
-            base = base .. "::options={"
-            local length = fn_t.length(t_options)
-            if length > 0 then
-                for key, value in pairs(t_options) do
-                    count = count + 1
-                    base = base .. (key .. "=" .. value)
-                    if count < length then
-                        base = base .. ","
-                    end
-                end
-            end
-            base = base .. "}"
-        end
         return base
     end
+
 }
 
 return group
