@@ -26,6 +26,12 @@ meta.get_new_binding_proxy_mt = function(init)
     return util.get_new_binding_proxy_mt(init)
 end
 
+---Get a new proxy group metatable
+---@param init table|nil
+---@return table
+meta.get_new_group_proxy_mt = function(init)
+    return util.get_new_group_proxy_mt(init)
+end
 
 ---Get a new proxy keymap metatable
 ---@param init table|nil

@@ -28,7 +28,7 @@ descriptor.mt = {
                 if string.match(_descriptor, "^binding=.*$") then
                     fn_t.rawset_debug(t, _descriptor, util.process_keymap_mt(_descriptor, _keymaps))
                 elseif string.match(_descriptor, "^key_group=.*$") then
-                    fn_t.rawset_debug(t, _descriptor, util.process_group_mt(t, _descriptor, _keymaps))
+                    fn_t.rawset_debug(t, _descriptor, util.process_group_memeber_mt(t, _descriptor, _keymaps))
                 else
                     Log:error(string.format("Unsupported  descriptor '%s'.", _descriptor))
                 end

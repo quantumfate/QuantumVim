@@ -17,6 +17,28 @@ function group.init(_util)
     return group
 end
 
+group.mt = {
+    __newindex = function(t, idx, group_member)
+        if type(idx) == "number" then
+            if type(idx) == "string" and group_member == "key_group" == group_member.key_group == nil then
+                Log:error("A group member must have a key group key")
+                return
+            end
+            local _group_member = util.get_new_group_member_proxy_mt()
+            _group_member["name"] = group_member.name or default.keymap_group.name
+            _group_member["key_group"] = group_member.key_group
+            _group_member["prefix"] = group_member.prefix or default.keymap_group.prefix
+            _group_member["bindings"] = group_member.bindings or default.keymap_group.bindings
+            _group_member["options"] = group_member.options or default.keymap_group.options
+            fn_t.rawset_debug(t, idx, _group_member)
+        else
+            Log:error(string.format(
+                "The index of a group member in the group metatable must be a number but was '%s'",
+                type(idx)))
+        end
+    end
+}
+
 group.member_mt = {
     __index = function(t, k)
         if type(k) == "string" then

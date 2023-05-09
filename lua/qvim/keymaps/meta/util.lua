@@ -105,6 +105,14 @@ util.get_new_descriptor_proxy_mt = function(init)
     return util_get_proxy_metatable(init or {}, descriptor.mt)
 end
 
+---Returns a proxy table with the metatable `group.mt`
+---@param init any|nil the table that should inherit from the metatable
+---@return table
+util.get_new_group_proxy_mt = function(init)
+    return util_get_proxy_metatable(init or {}, group.mt)
+end
+
+
 ---Ensures that a given table has the default options for keymaps as well as valid parsed options.
 ---@param _other table
 ---@return table table table with the metatable `binding.mt`.
@@ -265,14 +273,15 @@ end
 ---- `options` global options for whichkey bindings
 ---@param t table
 ---@param idx integer|string
----@param other table either a keymap.opts_collection_mt or a keymap.opts_mt
-util.process_group_mt = function(t, idx, other)
-    if getmetatable(other) == group.mt then
+---@param other table|nil either a keymap.opts_collection_mt or a keymap.opts_mt
+---@return table|nil _group the processed group or nil
+util.process_group_memeber_mt = function(t, idx, other)
+    if getmetatable(other) == group.member_mt then
         return other
     end
     if type(idx) == "number" or type(idx) == "string" then
         if type(other) == "table" then
-            if other.key_group and type(other.key_group) == "string" then
+            if other.key_group and type(other.key_group) == "string" and other.key_group ~= "" then
                 local _group = util.get_new_group_member_proxy_mt()
                 for key, value in pairs(other) do
                     _group[key] = value
