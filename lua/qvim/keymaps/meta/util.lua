@@ -77,51 +77,51 @@ local function check_initialized()
     end
 end
 
-local util_get_metatable = function(init, metatable)
+local util_get_proxy_metatable = function(init, metatable)
     return setmetatable(init, metatable)
 end
 
----Returns a table with the metatable `binding.mt`
+---Returns a proxy table with the metatable `binding.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
-util.get_new_binding_mt = function(init)
-    return util_get_metatable(init or {}, binding.mt)
+util.get_new_binding_proxy_mt = function(init)
+    return util_get_proxy_metatable(init or {}, binding.mt)
 end
 
----Returns a table with the metatable `group.mt`
+---Returns a proxy table with the metatable `group.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
-util.get_new_group_mt = function(init)
-    return util_get_metatable(init or {}, group.mt)
+util.get_new_group_proxy_mt = function(init)
+    return util_get_proxy_metatable(init or {}, group.mt)
 end
 
----Returns a table with the metatable `group.member_mt`
+---Returns a proxy table with the metatable `group.member_mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
-util.get_new_group_member_mt = function(init)
-    return util_get_metatable(init or {}, group.member_mt)
+util.get_new_group_member_proxy_mt = function(init)
+    return util_get_proxy_metatable(init or {}, group.member_mt)
 end
 
 
----Returns a table with the metatable `keymap.mt`
+---Returns a proxy table with the metatable `keymap.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
-util.get_new_keymap_mt = function(init)
-    return util_get_metatable(init or {}, keymap.mt)
+util.get_new_keymap_proxy_mt = function(init)
+    return util_get_proxy_metatable(init or {}, keymap.mt)
 end
 
----Returns a table with the metatable `keymap.mt`
+---Returns a proxy table with the metatable `keymap.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
-util.get_new_mode_mt = function(init)
-    return util_get_metatable(init or {}, mode.mt)
+util.get_new_mode_proxy_mt = function(init)
+    return util_get_proxy_metatable(init or {}, mode.mt)
 end
 
----Returns a table with the metatable `descriptor.mt`
+---Returns a proxy table with the metatable `descriptor.mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table
-util.get_new_descriptor_mt = function(init)
-    return util_get_metatable(init or {}, descriptor.mt)
+util.get_new_descriptor_proxy_mt = function(init)
+    return util_get_proxy_metatable(init or {}, descriptor.mt)
 end
 
 ---Ensures that a given table has the default options for keymaps as well as valid parsed options.
@@ -181,10 +181,12 @@ util.set_binding_mt = function(_lhs, _binding, _options)
         return _binding
     end
     _options = setmetatable(_options or {}, { __index = default.binding_opts })
-    local new_binding = util.get_new_binding_mt(_binding)
-    for key, value in pairs(default.binding_opts) do
-        if rawget(new_binding, key) == nil then
-            new_binding[key] = value
+    local new_binding = util.get_new_binding_proxy_mt(_binding)
+    for opt, set in pairs(default.binding_opts) do
+        if _options[opt] then
+            new_binding[opt] = _options[opt]
+        else
+            new_binding[opt] = set
         end
     end
     if fn_t.length(table) == 0 then
@@ -251,7 +253,7 @@ util.process_keymap_mt = function(k, other)
     if getmetatable(other) == keymap.mt then
         return other
     end
-    local keymaps = util.get_new_keymap_mt()
+    local keymaps = util.get_new_keymap_proxy_mt()
 
     if type(other) == "table" then
         if fn_t.length(other) > 0 then
@@ -288,7 +290,7 @@ util.process_group_mt = function(t, idx, other)
     if type(idx) == "number" or type(idx) == "string" then
         if type(other) == "table" then
             if other.key_group and type(other.key_group) == "string" then
-                local _group = util.get_new_group_member_mt()
+                local _group = util.get_new_group_member_proxy_mt()
                 for key, value in pairs(other) do
                     _group[key] = value
                 end

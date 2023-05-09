@@ -22,39 +22,39 @@ keymap.init(util)
 mode.init(util)
 descriptor.init(util)
 
----Get a new binding metatable
+---Get a new proxy  binding metatable
 ---@param init table|nil
 ---@return table
-meta.get_new_binding_mt = function(init)
-    return util.get_new_binding_mt(init)
+meta.get_new_binding_proxy_mt = function(init)
+    return util.get_new_binding_proxy_mt(init)
 end
 
----Get a new group metatable
+---Get a new proxy group metatable
 ---@param init table|nil
 ---@return table
-meta.get_new_group_mt = function(init)
-    return util.get_new_group_mt(init)
+meta.get_new_group_proxy_mt = function(init)
+    return util.get_new_group_proxy_mt(init)
 end
 
----Get a new keymap metatable
+---Get a new proxy keymap metatable
 ---@param init table|nil
 ---@return table
-meta.get_new_keymap_mt = function(init)
-    return util.get_new_keymap_mt(init)
+meta.get_new_keymap_proxy_mt = function(init)
+    return util.get_new_keymap_proxy_mt(init)
 end
 
----Get a new mode metatable
+---Get a new proxy mode metatable
 ---@param init table|nil
 ---@return table
-meta.get_new_mode_mt = function(init)
-    return util.get_new_mode_mt(init)
+meta.get_new_mode_proxy_mt = function(init)
+    return util.get_new_mode_proxy_mt(init)
 end
 
----Get a new mode metatable
+---Get a new proxy mode metatable
 ---@param init table|nil
 ---@return table
-meta.get_new_descriptor_mt = function(init)
-    return util.get_new_descriptor_mt(init)
+meta.get_new_descriptor_proxy_mt = function(init)
+    return util.get_new_descriptor_proxy_mt(init)
 end
 
 ---Ensures that the given table `_binding` is a table of `binding.mt` with accepted options.

@@ -21,9 +21,27 @@ else
     Log:warn(string.format("The plugin whichkey is not available. Using standard method to set keymaps."))
 end
 
-local descripted_keymaps = meta.get_new_descriptor_mt()
+local descripted_keymaps = meta.get_new_descriptor_proxy_mt()
 
+---Parses a binding to the `descripted_keymaps` table.
+---@param lhs string
+---@param declaration table
+---@param translated_mode any|nil
+local function parse_binding_to_descripted(lhs, declaration, translated_mode)
+    local binding = nil
+    if translated_mode then
+        binding = meta.set_binding_mt(lhs, declaration, { ["mode"] = translated_mode })
+    else
+        binding = meta.set_binding_mt(lhs, declaration)
+    end
 
+    local descriptor = tostring(binding)
+    if descripted_keymaps[descriptor] then
+        descripted_keymaps[descriptor][lhs] = binding
+    else
+        descripted_keymaps[descriptor] = { [lhs] = binding }
+    end
+end
 
 ---Initializes the `qvim.keymaps` variable with from every configured integration.
 ---Additionally a global variable `qvim_which_key_is_available` will be registered that
@@ -34,18 +52,10 @@ function M:init()
         return
     end
 
-    qvim.keymaps = {}
-    qvim.keymaps["keymaps"] = {}
-    qvim.keymaps["keymap_groups"] = {}
-
     for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
         local translated_mode = keymap_mode_adapters[vim_mode]
-        for lhs, opts in pairs(bindings) do
-            opts["mode"] = translated_mode
-            local keymaps = meta.get_new_keymap_mt()
-            keymaps[lhs] = opts
-            -- TODO: add keymap properly
-            descripted_keymaps[tostring(keymaps[lhs])] = keymaps
+        for lhs, declaration in pairs(bindings) do
+            parse_binding_to_descripted(lhs, declaration, translated_mode)
         end
     end
 
@@ -58,17 +68,12 @@ function M:init()
                 for lhs, declaration in pairs(integration_keymaps) do
                     if type(lhs) == "string" then
                         -- binding
-                        local keymaps = meta.get_new_keymap_mt()
-                        keymaps[lhs] = declaration
-                        descripted_keymaps[tostring(keymaps[lhs])] = keymaps
-                        Log:debug(string.format("Keybind '%s' '%s' added.", lhs, tostring(keymaps[lhs])))
+                        parse_binding_to_descripted(lhs, declaration)
                     elseif type(lhs) == "number" and util.has_simple_group_structure(declaration) then
                         -- group
-                        local keymap_groups = meta.get_new_group_mt()
+                        local keymap_groups = meta.get_new_group_proxy_mt()
                         local current_index = #keymap_groups + 1
-                        print("declaration", vim.inspect(dec))
                         keymap_groups[current_index] = declaration
-                        print("current group: ", vim.inspect(keymap_groups[current_index]))
                         descripted_keymaps[tostring(keymap_groups[current_index])] = keymap_groups[current_index]
                         Log:debug(string.format("Group '%s' added.", tostring(keymap_groups[current_index])))
                     else
@@ -80,11 +85,9 @@ function M:init()
                 Log:debug(string.format("No keymaps defined for '%s'.", integration))
             end
         else
-            Log:debug("For integration '%s' were not keymaps found.", integration)
+            Log:debug("Integration '%s' has no keymaps.", integration)
         end
     end
-
-
     print("keymaps: ", vim.inspect(descripted_keymaps))
 
     Log:info("Keymaps were fetched.")

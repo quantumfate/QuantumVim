@@ -25,7 +25,7 @@ group.mt = {
                 Log:error("A group member must have a key group key")
                 return
             end
-            local _group_member = util.get_new_group_member_mt()
+            local _group_member = util.get_new_group_member_proxy_mt()
             _group_member["name"] = group_member.name or default.keymap_group.name
             _group_member["key_group"] = group_member.key_group
             _group_member["prefix"] = group_member.prefix or default.keymap_group.prefix
