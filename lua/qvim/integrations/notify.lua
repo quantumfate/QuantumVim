@@ -11,7 +11,7 @@ function M:init()
       vim.notify = notify
     end,
     keymaps = {
-      ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
+      ["<A-j>"] = { rhs = "asdfafdaf", desc = 'Move current line down', buffer = 0 },
     },
     options = {
       -- notify option configuration

@@ -21,7 +21,9 @@ else
     Log:warn(string.format("The plugin whichkey is not available. Using standard method to set keymaps."))
 end
 
+_G.g_current_bindings = {}
 local descripted_keymaps = meta.get_new_descriptor_proxy_mt()
+
 
 ---Parses a binding to the `descripted_keymaps` table.
 ---@param lhs string
@@ -52,13 +54,12 @@ function M:init()
         return
     end
 
-    for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
+    --[[     for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
         local translated_mode = keymap_mode_adapters[vim_mode]
         for lhs, declaration in pairs(bindings) do
             parse_binding_to_descripted(lhs, declaration, translated_mode)
         end
-    end
-
+    end ]]
     -- process keymaps declared by integrations
     for _, integration in ipairs(qvim_integrations()) do
         local integration_keymaps = qvim.integrations[integration].keymaps

@@ -3,23 +3,20 @@
 ---@field binding binding
 ---@field group group
 ---@field keymap keymap
----@field mode mode
 ---@field descriptor descriptor
 local meta = {}
 
-local util, binding, group, keymap, mode, descriptor = require("qvim.keymaps.meta.util")
+local util, binding, group, keymap, descriptor = require("qvim.keymaps.meta.util")
     .init(
         "qvim.keymaps.meta.binding",
         "qvim.keymaps.meta.group",
         "qvim.keymaps.meta.keymap",
-        "qvim.keymaps.meta.mode",
         "qvim.keymaps.meta.descriptor"
     )
 
 binding.init(util)
 group.init(util)
 keymap.init(util)
-mode.init(util)
 descriptor.init(util)
 
 ---Get a new proxy  binding metatable
@@ -41,13 +38,6 @@ end
 ---@return table
 meta.get_new_keymap_proxy_mt = function(init)
     return util.get_new_keymap_proxy_mt(init)
-end
-
----Get a new proxy mode metatable
----@param init table|nil
----@return table
-meta.get_new_mode_proxy_mt = function(init)
-    return util.get_new_mode_proxy_mt(init)
 end
 
 ---Get a new proxy mode metatable

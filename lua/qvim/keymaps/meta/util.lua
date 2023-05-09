@@ -37,9 +37,7 @@ path_keymap,
 ---@class string
 path_default,
 ---@class string
-path_mode,
----@class string
-path_descriptor = "", "", "", "", "", ""
+path_descriptor = "", "", "", "", ""
 
 local util_require = require
 
@@ -47,27 +45,24 @@ local util_require = require
 ---@param _binding string the binding module path
 ---@param _group string the group module path
 ---@param _keymap string the keymap module path
----@param _mode string the mode module path
 ---@param _descriptor string the descriptor module path
----@return util, binding, group, keymap, mode, descriptor
-function util.init(_binding, _group, _keymap, _mode, _descriptor)
+---@return util, binding, group, keymap, descriptor
+function util.init(_binding, _group, _keymap, _descriptor)
     -- initialize the strings
     path_binding = _binding
     path_group = _group
     path_keymap = _keymap
-    path_mode = _mode
     path_descriptor = _descriptor
 
     -- require modules once
     binding = util_require(path_binding)
     group = util_require(path_group)
     keymap = util_require(path_keymap)
-    mode = util_require(path_mode)
     descriptor = util_require(path_descriptor)
 
     default = require("qvim.keymaps.default")
     initialized = true
-    return util, binding, group, keymap, mode, descriptor
+    return util, binding, group, keymap, descriptor
 end
 
 ---Checks if the module has been initialized
@@ -108,13 +103,6 @@ end
 ---@return table
 util.get_new_keymap_proxy_mt = function(init)
     return util_get_proxy_metatable(init or {}, keymap.mt)
-end
-
----Returns a proxy table with the metatable `keymap.mt`
----@param init any|nil the table that should inherit from the metatable
----@return table
-util.get_new_mode_proxy_mt = function(init)
-    return util_get_proxy_metatable(init or {}, mode.mt)
 end
 
 ---Returns a proxy table with the metatable `descriptor.mt`
@@ -180,13 +168,15 @@ util.set_binding_mt = function(_lhs, _binding, _options)
     if getmetatable(_binding) == binding.mt then
         return _binding
     end
-    _options = setmetatable(_options or {}, { __index = default.binding_opts })
+    local new_options = setmetatable(_options or {}, { __index = default.binding_opts })
     local new_binding = util.get_new_binding_proxy_mt(_binding)
     for opt, set in pairs(default.binding_opts) do
-        if _options[opt] then
-            new_binding[opt] = _options[opt]
-        else
-            new_binding[opt] = set
+        if rawget(new_binding, opt) == nil then
+            if new_options[opt] then
+                new_binding[opt] = new_options[opt]
+            else
+                new_binding[opt] = set
+            end
         end
     end
     if fn_t.length(table) == 0 then

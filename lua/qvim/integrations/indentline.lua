@@ -11,16 +11,7 @@ function M:init()
   local indentline = {
     active = true,
     on_config_done = nil,
-    whichkey_group = {
-      group = nil,
-      name = nil,
-      bindings = {
-
-      },
-    },
-    whichkey = {},
     keymaps = {
-
     },
     options = {
       -- indentline option configuration
