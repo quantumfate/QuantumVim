@@ -38,12 +38,9 @@ keymap.mt = {
     ---@param other table
     __newindex = function(t, lhs, other)
         if type(lhs) == "string" then
-            print(debug.traceback())
-            print("binding context: ", vim.inspect(g_current_bindings))
-            print("lhs: ", lhs)
-            print("other: ", other)
-            if g_current_bindings[lhs] then
-                Log:warn(string.format("An existing keymap with the left hand side '%s' will be overwritten.", lhs))
+            if g_yikes_current_standalone_bindings[lhs] then
+                Log:warn(string.format("An existing standalone keymap with the left hand side '%s' will be overwritten.",
+                    lhs))
             end
             Log:debug(string.format("Processing a single bind '%s'", lhs))
             if type(other) == "table" then
@@ -56,8 +53,6 @@ keymap.mt = {
                 end
                 fn_t.rawset_debug(t, lhs, util.set_binding_mt(lhs, {}))
             end
-            g_current_bindings[lhs] = true
-            print("binding context: ", vim.inspect(g_current_bindings))
         elseif type(lhs) == "number" then
             Log:debug(string.format("Processing a key group '%s' from '%s'.", other.key_group, getmetatable(other)))
             fn_t.rawset_debug(t, lhs, util.process_group_mt(t, lhs, other))

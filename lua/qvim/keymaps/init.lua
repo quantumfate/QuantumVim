@@ -21,7 +21,11 @@ else
     Log:warn(string.format("The plugin whichkey is not available. Using standard method to set keymaps."))
 end
 
-_G.g_current_bindings = {}
+--- A global variable to track standalone keymaps
+_G.g_yikes_current_standalone_bindings = {}
+--- A global variable to track group keymaps
+_G.g_yikes_current_group_bindings = {}
+
 local descripted_keymaps = meta.get_new_descriptor_proxy_mt()
 
 
@@ -39,7 +43,12 @@ local function parse_binding_to_descripted(lhs, declaration, translated_mode)
 
     local descriptor = tostring(binding)
     if descripted_keymaps[descriptor] then
+        if descripted_keymaps[descriptor][lhs] then
+            g_yikes_current_standalone_bindings[lhs] = true
+            descripted_keymaps[descriptor][lhs] = nil
+        end
         descripted_keymaps[descriptor][lhs] = binding
+        g_yikes_current_standalone_bindings[lhs] = nil
     else
         descripted_keymaps[descriptor] = { [lhs] = binding }
     end
