@@ -8,33 +8,35 @@ function M:init()
   local gitsigns = {
     active = true,
     on_config_done = nil,
-    whichkey_group = {
-      group = "g",
-      name = "Git",
-      bindings = {
-        g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
-        j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
-        k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
-        l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
-        p = { "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk" },
-        r = { "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk" },
-        R = { "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer" },
-        s = { "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk" },
-        u = {
-          "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-          "Undo Stage Hunk",
-        },
-        o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
-        b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-        c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
-        d = {
-          "<cmd>Gitsigns diffthis HEAD<cr>",
-          "Diff",
-        },
-      },
-    },
     whichkey = {},
-    keymaps = {},
+    keymaps = {
+      {
+        key_group = "g",
+        name = "Git",
+        bindings = {
+          ["g"] = { rhs = "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Lazygit" },
+          ["j"] = { rhs = "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = "Next Hunk" },
+          ["k"] = { rhs = "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", desc = "Prev Hunk" },
+          ["l"] = { rhs = "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = "Blame" },
+          ["p"] = { rhs = "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", desc = "Preview Hunk" },
+          ["r"] = { rhs = "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = "Reset Hunk" },
+          ["R"] = { rhs = "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", desc = "Reset Buffer" },
+          ["s"] = { rhs = "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = "Stage Hunk" },
+          ["u"] = {
+            rhs = "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
+            desc = "Undo Stage Hunk",
+          },
+          ["o"] = { rhs = "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
+          ["b"] = { rhs = "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+          ["c"] = { rhs = "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
+          ["d"] = {
+            rhs = "<cmd>Gitsigns diffthis HEAD<cr>",
+            desc = "Diff",
+          },
+
+        },
+      }
+    },
     options = {
       -- gitsigns option configuration
       signs = {
@@ -45,8 +47,8 @@ function M:init()
         changedelete = { hl = "GitSignsChange", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
       },
       signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
-      numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
-      linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+      numhl = false,     -- Toggle with `:Gitsigns toggle_numhl`
+      linehl = false,    -- Toggle with `:Gitsigns toggle_linehl`
       word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
       watch_gitdir = {
         interval = 1000,

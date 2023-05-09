@@ -8,14 +8,6 @@ function M:init()
   local autopairs = {
     active = true,
     on_config_done = nil,
-    whichkey_group = {
-      group = nil,
-      name = nil,
-      bindings = {
-
-      },
-    },
-    whichkey = {},
     keymaps = {},
     options = {
       -- autopairs option configuration

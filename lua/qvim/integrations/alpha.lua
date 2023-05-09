@@ -16,14 +16,6 @@ function M:init()
   local alpha = {
     activ          = true,
     on_config_done = nil,
-    whichkey_group = {
-      group = nil,
-      name = nil,
-      bindings = {
-
-      },
-    },
-    whichkey       = {},
     keymaps        = {},
     options        = {
       header      = header,

@@ -55,7 +55,7 @@ keymap.mt = {
             end
         elseif type(lhs) == "number" then
             Log:debug(string.format("Processing a key group '%s' from '%s'.", other.key_group, getmetatable(other)))
-            fn_t.rawset_debug(t, lhs, util.process_group_mt(t, lhs, other))
+            fn_t.rawset_debug(t, lhs, util.process_group_memeber_mt(t, lhs, other))
         else
             Log:error(string.format("The left hand side of a binding must be a string but is '%s'", type(lhs)))
         end

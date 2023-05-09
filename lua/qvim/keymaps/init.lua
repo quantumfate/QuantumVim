@@ -62,11 +62,11 @@ local function parse_group_to_descripted(declaration)
     keymap_groups[current_index] = declaration
     local descriptor = tostring(keymap_groups[current_index])
     if descripted_keymaps[descriptor] then
-        g_yikes_current_group_bindings[descriptor] = true
         descripted_keymaps[descriptor] = nil
+        Log:warn(string.format("An existing group '%s' will be overwritten.",
+            descriptor))
     end
     descripted_keymaps[descriptor] = keymap_groups[current_index]
-    g_yikes_current_group_bindings[descriptor] = nil
 end
 
 ---Initializes the `qvim.keymaps` variable with from every configured integration.
@@ -109,7 +109,6 @@ function M:init()
             Log:debug("Integration '%s' has no keymaps.", integration)
         end
     end
-    print("keymaps: ", vim.inspect(descripted_keymaps))
 
     Log:info("Keymaps were fetched.")
 end

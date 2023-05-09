@@ -8,12 +8,6 @@ function M:init()
   local whichkey = {
     active = true,
     on_config_done = nil,
-    whichkey_group = {
-      group = nil,
-      name = nil,
-      bindings = {
-      },
-    },
     whichkey = {
       ["a"] = { "<cmd>Alpha<cr>", "Alpha" },
       ["b"] = {

@@ -10,15 +10,6 @@ function M:init()
     on_config_done = nil,
     keymaps = {
       ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
-      {
-        name = "hallo",
-        key_group = "g",
-        prefix = " ",
-        bindings = {
-          ["<X-i>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
-        },
-        options = {}
-      }
     },
     options = {
       -- vim-illuminate option configuration

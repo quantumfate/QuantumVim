@@ -8,13 +8,7 @@ function M:init()
   local QV_PLUGIN_NAME_VAR = {
     active = true,
     on_config_done = nil,
-    keymaps = { 
-      leader = nil,
-      name = nil,
-      bindings = {
-        
-      }
-    },
+    keymaps = {},
     options = {
         -- QV_PLUGIN_NAME_VAR option configuration
 
