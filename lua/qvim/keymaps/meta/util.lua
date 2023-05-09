@@ -83,13 +83,6 @@ util.get_new_binding_proxy_mt = function(init)
     return util_get_proxy_metatable(init or {}, binding.mt)
 end
 
----Returns a proxy table with the metatable `group.mt`
----@param init any|nil the table that should inherit from the metatable
----@return table
-util.get_new_group_proxy_mt = function(init)
-    return util_get_proxy_metatable(init or {}, group.mt)
-end
-
 ---Returns a proxy table with the metatable `group.member_mt`
 ---@param init any|nil the table that should inherit from the metatable
 ---@return table

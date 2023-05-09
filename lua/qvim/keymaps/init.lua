@@ -54,6 +54,21 @@ local function parse_binding_to_descripted(lhs, declaration, translated_mode)
     end
 end
 
+---Parses a group binding to the `descripted_keymaps` table.
+---@param declaration table
+local function parse_group_to_descripted(declaration)
+    local keymap_groups = meta.get_new_group_proxy_mt()
+    local current_index = #keymap_groups + 1
+    keymap_groups[current_index] = declaration
+    local descriptor = tostring(keymap_groups[current_index])
+    if descripted_keymaps[descriptor] then
+        g_yikes_current_group_bindings[descriptor] = true
+        descripted_keymaps[descriptor] = nil
+    end
+    descripted_keymaps[descriptor] = keymap_groups[current_index]
+    g_yikes_current_group_bindings[descriptor] = nil
+end
+
 ---Initializes the `qvim.keymaps` variable with from every configured integration.
 ---Additionally a global variable `qvim_which_key_is_available` will be registered that
 ---that will determine the behavior of how keymaps are going to be registered.
@@ -63,12 +78,12 @@ function M:init()
         return
     end
 
-    --[[     for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
+    for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
         local translated_mode = keymap_mode_adapters[vim_mode]
         for lhs, declaration in pairs(bindings) do
             parse_binding_to_descripted(lhs, declaration, translated_mode)
         end
-    end ]]
+    end
     -- process keymaps declared by integrations
     for _, integration in ipairs(qvim_integrations()) do
         local integration_keymaps = qvim.integrations[integration].keymaps
@@ -81,11 +96,7 @@ function M:init()
                         parse_binding_to_descripted(lhs, declaration)
                     elseif type(lhs) == "number" and util.has_simple_group_structure(declaration) then
                         -- group
-                        local keymap_groups = meta.get_new_group_proxy_mt()
-                        local current_index = #keymap_groups + 1
-                        keymap_groups[current_index] = declaration
-                        descripted_keymaps[tostring(keymap_groups[current_index])] = keymap_groups[current_index]
-                        Log:debug(string.format("Group '%s' added.", tostring(keymap_groups[current_index])))
+                        parse_group_to_descripted(declaration)
                     else
                         Log:error(string.format("Unsupported key '%s' from type '%s' in keymaps init function.",
                             tostring(lhs), type(lhs)))
