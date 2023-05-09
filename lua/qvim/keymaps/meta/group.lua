@@ -20,7 +20,6 @@ end
 group.mt = {
     __newindex = function(t, idx, group_member)
         if type(idx) == "number" then
-            print("INSPECT", vim.inspect(group_member))
             if type(idx) == "string" and group_member == "key_group" == group_member.key_group == nil then
                 Log:error("A group member must have a key group key")
                 return

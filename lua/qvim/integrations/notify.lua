@@ -10,15 +10,9 @@ function M:init()
     on_config_done = function(notify)
       vim.notify = notify
     end,
-    whichkey_group = {
-      group = nil,
-      name = nil,
-      bindings = {
-
-      },
+    keymaps = {
+      ["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
     },
-    whichkey = {},
-    keymaps = {},
     options = {
       -- notify option configuration
       icons = {

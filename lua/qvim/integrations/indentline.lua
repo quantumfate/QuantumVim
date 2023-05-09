@@ -20,6 +20,7 @@ function M:init()
     },
     whichkey = {},
     keymaps = {
+
     },
     options = {
       -- indentline option configuration

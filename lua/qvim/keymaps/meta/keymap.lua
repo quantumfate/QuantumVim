@@ -38,6 +38,9 @@ keymap.mt = {
     ---@param other table
     __newindex = function(t, lhs, other)
         if type(lhs) == "string" then
+            if t[lhs] ~= nil then
+                Log:warn(string.format("An existing keymap with the left hand side '%s' will be overwritten.", lhs))
+            end
             Log:debug(string.format("Processing a single bind '%s'", lhs))
             if type(other) == "table" then
                 local binding = util.set_binding_mt(lhs, other, nil)
