@@ -9,7 +9,7 @@ function M:init()
   local hop = {
     active = true,
     on_config_done = nil,
-    whichkey_group = {
+    whichbinding_group = {
       group = nil,
       name = nil,
       bindings = {

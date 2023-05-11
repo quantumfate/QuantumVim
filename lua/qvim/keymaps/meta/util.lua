@@ -122,8 +122,8 @@ end
 
 ---Adds a group of keymaps with the following attributes unless `other` already has the necessary meta information:
 ---- `name` the name representing the group
----- `key_group` the `key` to be pressed to activate the `bindings`
----- `prefix` the `key` to be pressed before a `key_group` can be chosen
+---- `binding_group` the `key` to be pressed to activate the `bindings`
+---- `prefix` the `key` to be pressed before a `binding_group` can be chosen
 ---- `bindings` the table of individual keymaps, individual options have precedence over individual options in `options`
 ---- `options` options that should reflect on `bindings`
 ---
@@ -140,7 +140,7 @@ util.process_group_memeber_mt = function(t, idx, other)
 
     if type(idx) == "number" or type(idx) == "string" then
         if type(other) == "table" then
-            if other.key_group and type(other.key_group) == "string" and other.key_group ~= "" then
+            if other.binding_group and type(other.binding_group) == "string" and other.binding_group ~= "" then
                 local _group = util.get_new_group_member_proxy_mt()
                 for key, value in pairs(other) do
                     _group[key] = value
@@ -149,7 +149,7 @@ util.process_group_memeber_mt = function(t, idx, other)
             else
                 Log:error(string.format(
                     "A group '%s' must have keygroup indicator. The key to be pressed to activate a group. But was '%s'.",
-                    getmetatable(t), type(other.key_group)))
+                    getmetatable(t), type(other.binding_group)))
             end
         else
             Log:debug(string.format("A group '%s' needs to be a table but was '%s'", t, type(other)))

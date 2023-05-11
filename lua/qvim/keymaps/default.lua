@@ -3,6 +3,8 @@
 ---@class default
 local default = {}
 
+local constants = require("qvim.keymaps.constants")
+
 -- Be careful when making changes to this file
 
 default.valid_integration_defaults = {
@@ -13,56 +15,56 @@ default.valid_integration_defaults = {
 }
 
 default.valid_binding_opts = {
-    rhs = true,
-    desc = true,
-    mode = true,
-    noremap = true,
-    nowait = true,
-    silent = true,
-    script = true,
-    expr = true,
-    unique = true,
-    buffer = true,
-    callback = true,
+    [constants.neovim_options_constants.rhs]      = true,
+    [constants.neovim_options_constants.desc]     = true,
+    [constants.neovim_options_constants.mode]     = true,
+    [constants.neovim_options_constants.noremap]  = true,
+    [constants.neovim_options_constants.nowait]   = true,
+    [constants.neovim_options_constants.silent]   = true,
+    [constants.neovim_options_constants.script]   = true,
+    [constants.neovim_options_constants.expr]     = true,
+    [constants.neovim_options_constants.unique]   = true,
+    [constants.neovim_options_constants.buffer]   = true,
+    [constants.neovim_options_constants.callback] = true,
 }
 
 default.binding_opts = {
-    rhs = "",
-    desc = "",
-    mode = "n",
-    noremap = true,
-    nowait = false,
-    silent = true,
-    script = false,
-    expr = false,
-    unique = false,
-    buffer = 0,
-    callback = nil
+    [constants.neovim_options_constants.rhs]      = "",
+    [constants.neovim_options_constants.desc]     = "",
+    [constants.neovim_options_constants.mode]     = "n",
+    [constants.neovim_options_constants.noremap]  = true,
+    [constants.neovim_options_constants.nowait]   = false,
+    [constants.neovim_options_constants.silent]   = true,
+    [constants.neovim_options_constants.script]   = false,
+    [constants.neovim_options_constants.expr]     = false,
+    [constants.neovim_options_constants.unique]   = false,
+    [constants.neovim_options_constants.buffer]   = 0,
+    [constants.neovim_options_constants.callback] = nil
 }
 
 default.valid_keymap_group_opts = {
-    name = true,
-    key_group = true,
-    prefix = true,
-    bindings = true,
-    options = true
+    [constants.binding_group_constants.key_name]          = true,
+    [constants.binding_group_constants.key_binding_group] = true,
+    [constants.binding_group_constants.key_prefix]        = true,
+    [constants.binding_group_constants.key_bindings]      = true,
+    [constants.binding_group_constants.key_options]       = true
 }
 
 default.keymap_group = {
-    name = "",
-    key_group = "",
-    prefix = " ",
-    bindings = {},
-    options = default.keymap_group_opts
+    [constants.binding_group_constants.key_name]          = "",
+    [constants.binding_group_constants.key_binding_group] = "",
+    [constants.binding_group_constants.key_prefix]        = " ",
+    [constants.binding_group_constants.key_bindings]      = {},
+    [constants.binding_group_constants.key_options]       = default.keymap_group_opts
 }
 
 default.keymap_group_opts = {
-    mode = "n",
-    noremap = true,
-    nowait = false,
-    silent = true,
-    unique = false,
-    buffer = 0,
+    [constants.neovim_options_constants.mode]    = "n",
+    [constants.neovim_options_constants.noremap] = true,
+    [constants.neovim_options_constants.nowait]  = false,
+    [constants.neovim_options_constants.silent]  = true,
+    [constants.neovim_options_constants.unique]  = false,
+    [constants.neovim_options_constants.buffer]  = 0,
 }
 
 

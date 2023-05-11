@@ -71,7 +71,9 @@ end
 
 
 function M.adapt()
+    for descriptor, binding in pairs(qvim.keymaps) do
 
+    end
 end
 
 return M

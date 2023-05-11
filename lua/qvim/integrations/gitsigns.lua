@@ -11,7 +11,7 @@ function M:init()
     whichkey = {},
     keymaps = {
       {
-        key_group = "g",
+        binding_group = "",
         name = "Git",
         bindings = {
           ["g"] = { rhs = "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Lazygit" },

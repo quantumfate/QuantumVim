@@ -3,8 +3,7 @@ local binding = {}
 
 local Log = require("qvim.integrations.log")
 local default = require("qvim.keymaps.default")
-local fn_t = require("qvim.utils.fn_t")
-
+local constants = require("qvim.keymaps.constants")
 ---@class util
 local util = nil
 
@@ -26,7 +25,7 @@ binding.mt = {
     ---@return boolean|string|integer|function|nil
     __index = function(t, opt)
         if default.valid_binding_opts[opt] then
-            return fn_t.rawget_debug(t, opt) --or default.binding_opts[opt]
+            return rawget(t, opt) --or default.binding_opts[opt]
         else
             Log:error(string.format("Invalid option '%s' for binding.", opt))
             return nil
@@ -38,7 +37,7 @@ binding.mt = {
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
         if default.valid_binding_opts[opt] then
-            fn_t.rawset_debug(t, opt, setting)
+            rawset(t, opt, setting)
         else
             Log:error(string.format("Invalid option '%s' for binding.", opt))
         end
@@ -66,15 +65,15 @@ binding.mt = {
     end,
     __tostring = function(t)
         return string.format(
-            "binding=%s::%s::%s::%s::%s::%s::%s::%s",
-            "mode=" .. t.mode,
-            "noremap=" .. tostring(t.noremap),
-            "nowait=" .. tostring(t.nowait),
-            "silent=" .. tostring(t.silent),
-            "script=" .. tostring(t.script),
-            "expr=" .. tostring(t.expr),
-            "unique=" .. tostring(t.unique),
-            "buffer=" .. tostring(t.buffer)
+            constants.binding_prefix .. "%s::%s::%s::%s::%s::%s::%s::%s",
+            constants.neovim_options_constants.mode .. "=" .. t.mode,
+            constants.neovim_options_constants.noremap .. "=" .. tostring(t.noremap),
+            constants.neovim_options_constants.nowait .. "=" .. tostring(t.nowait),
+            constants.neovim_options_constants.silent .. "=" .. tostring(t.silent),
+            constants.neovim_options_constants.script .. "=" .. tostring(t.script),
+            constants.neovim_options_constants.expr .. "=" .. tostring(t.expr),
+            constants.neovim_options_constants.unique .. "=" .. tostring(t.unique),
+            constants.neovim_options_constants.buffer .. "=" .. tostring(t.buffer)
         )
     end
 }

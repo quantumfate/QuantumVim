@@ -18,12 +18,8 @@ end
 --- The metatable for keymaps. A left hand side will be bound to a `keymap.opts_mt` table.
 keymap.mt = {
     __index = function(t, lhs)
-        if type(lhs) == "string" or type(lhs) == "number" then
-            if lhs == "bindings" then
-                return t[lhs]
-            else
-                return fn_t.rawget_debug(t, lhs)
-            end
+        if type(lhs) == "string" then
+            return t[lhs]
         else
             Log:error(string.format(
                 "Failed to index keymap. The left hand side of a binding must be a string but is '%s'", type(lhs)))
@@ -42,20 +38,14 @@ keymap.mt = {
                 Log:warn(string.format("An existing standalone keymap with the left hand side '%s' will be overwritten.",
                     lhs))
             end
-            Log:debug(string.format("Processing a single bind '%s'", lhs))
             if type(other) == "table" then
                 local binding = util.set_binding_mt(lhs, other, nil)
                 fn_t.rawset_debug(t, lhs, binding)
             else
-                if t[lhs] then
-                    Log:debug(string.format(
-                        "An existing keymap associated with the left hand side '%s' was overridden by defaults.", lhs))
-                end
-                fn_t.rawset_debug(t, lhs, util.set_binding_mt(lhs, {}))
+                print("val: ", other)
+                error(string.format("Error creating binding '%s'! A binding must have a table value but was '%s'.", lhs,
+                    type(other)))
             end
-        elseif type(lhs) == "number" then
-            Log:debug(string.format("Processing a key group '%s' from '%s'.", other.key_group, getmetatable(other)))
-            fn_t.rawset_debug(t, lhs, util.process_group_memeber_mt(t, lhs, other))
         else
             Log:error(string.format("The left hand side of a binding must be a string but is '%s'", type(lhs)))
         end

@@ -39,7 +39,7 @@ function M:init()
         python:toggle()
       end
     end,
-    whichkey_group = {
+    whichbinding_group = {
       group = "t",
       name = "Toggleterm",
       bindings = {

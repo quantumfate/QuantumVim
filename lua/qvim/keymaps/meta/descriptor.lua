@@ -2,6 +2,7 @@
 local descriptor = {}
 
 local Log = require("qvim.integrations.log")
+local shared_util = require("qvim.keymaps.util")
 local default = require("qvim.keymaps.default")
 local fn_t = require("qvim.utils.fn_t")
 
@@ -25,13 +26,9 @@ descriptor.mt = {
     __newindex = function(t, _descriptor, _keymaps)
         if type(_descriptor) == "string" then
             if type(_keymaps) == "table" then
-                if string.match(_descriptor, "^binding=.*$") then
-                    fn_t.rawset_debug(t, _descriptor, util.process_keymap_mt(_descriptor, _keymaps))
-                elseif string.match(_descriptor, "^key_group=.*$") then
-                    fn_t.rawset_debug(t, _descriptor, util.process_group_memeber_mt(t, _descriptor, _keymaps))
-                else
-                    Log:error(string.format("Unsupported  descriptor '%s'.", _descriptor))
-                end
+                shared_util.action_based_on_descriptor(_descriptor,
+                    function() fn_t.rawset_debug(t, _descriptor, util.process_keymap_mt(_descriptor, _keymaps)) end,
+                    function() fn_t.rawset_debug(t, _descriptor, util.process_group_memeber_mt(t, _descriptor, _keymaps)) end)
             else
                 Log:error(string.format("The value corresponding to a descriptor '%s' must be a table.", _descriptor))
             end
