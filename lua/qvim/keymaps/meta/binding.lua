@@ -26,7 +26,7 @@ binding.mt = {
     ---@return boolean|string|integer|function|nil
     __index = function(t, opt)
         if default.valid_binding_opts[opt] then
-            return fn_t.rawget_debug(t, opt) or default.binding_opts[opt]
+            return fn_t.rawget_debug(t, opt) --or default.binding_opts[opt]
         else
             Log:error(string.format("Invalid option '%s' for binding.", opt))
             return nil
@@ -63,14 +63,6 @@ binding.mt = {
             end
         end
         return true
-    end,
-    ---An add operation on two mappings of opts_mt returns the unique mapping or both mappings when neither of them are unique.
-    ---This may convert the meta table into opts_collection_mt when none of the parsed mappings are unique.
-    ---@param t1 any
-    ---@param t2 any
-    ---@return table|nil
-    __add = function(t1, t2)
-        return util.truly_unique_mapping(t1, t2) or {}
     end,
     __tostring = function(t)
         return string.format(

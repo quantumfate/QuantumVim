@@ -16,7 +16,7 @@ function M:init()
         bindings = {
           ["g"] = { rhs = "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Lazygit" },
           ["j"] = { rhs = "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = "Next Hunk" },
-          ["k"] = { rhs = "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", desc = "Prev Hunk" },
+          ["k"] = { rhs = "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", desc = "Prev Hunk", buffer = 0 },
           ["l"] = { rhs = "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = "Blame" },
           ["p"] = { rhs = "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", desc = "Preview Hunk" },
           ["r"] = { rhs = "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = "Reset Hunk" },
@@ -33,8 +33,10 @@ function M:init()
             rhs = "<cmd>Gitsigns diffthis HEAD<cr>",
             desc = "Diff",
           },
-
         },
+        options = {
+          buffer = 1
+        }
       }
     },
     options = {

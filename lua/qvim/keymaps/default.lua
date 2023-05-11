@@ -53,7 +53,7 @@ default.keymap_group = {
     key_group = "",
     prefix = " ",
     bindings = {},
-    options = {}
+    options = default.keymap_group_opts
 }
 
 default.keymap_group_opts = {

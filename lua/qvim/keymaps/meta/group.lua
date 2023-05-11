@@ -3,7 +3,7 @@ local group = {}
 
 local Log = require("qvim.integrations.log")
 local default = require("qvim.keymaps.default")
-
+local fn = require("qvim.utils.fn")
 local fn_t = require("qvim.utils.fn_t")
 
 ---@class util
@@ -28,8 +28,12 @@ group.mt = {
             _group_member["name"] = group_member.name or default.keymap_group.name
             _group_member["key_group"] = group_member.key_group
             _group_member["prefix"] = group_member.prefix or default.keymap_group.prefix
+
+            -- the following order matters because we want to apply the options to bindings
+            -- where the options for a binding were not explicitly set
+            print("OPTS", vim.inspect(group_member.options))
+            _group_member["options"] = group_member.options or default.keymap_group_opts
             _group_member["bindings"] = group_member.bindings or default.keymap_group.bindings
-            _group_member["options"] = group_member.options or default.keymap_group.options
             fn_t.rawset_debug(t, idx, _group_member)
         else
             Log:error(string.format(
@@ -56,7 +60,8 @@ group.member_mt = {
     __newindex = function(t, k, other)
         if type(k) == "string" then
             if k == "bindings" and type(other) == "table" then
-                local keymaps = util.process_keymap_mt(k, other)
+                fn.shallow_table_copy(rawget(t, "options"))
+                local keymaps = util.process_keymap_mt(k, other, fn.shallow_table_copy(rawget(t, "options")))
                 fn_t.rawset_debug(t, k, keymaps)
             elseif k == "options" and type(other) == "table" then
                 local options = setmetatable(other or {}, { __index = default.keymap_group_opts })

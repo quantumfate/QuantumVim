@@ -173,11 +173,6 @@ function M:setup()
     return
   end
 
-  if not qvim_which_key_is_available then
-    Log:warn(string.format("WhichKey is not available. Falling back to standard keymaps."))
-    return
-  end
-
   local _whichkey = qvim.integrations.whichkey
   whichkey.setup(_whichkey.options)
   --which_key.register(mappings, opts)

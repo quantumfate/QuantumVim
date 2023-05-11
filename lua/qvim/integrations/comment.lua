@@ -9,7 +9,9 @@ function M:init()
     active = false,
     on_config_done = nil,
     keymaps = {
-      ["/"] = { "<ESC><CMD>lua require(\"Comment.api\").toggle_linewise_op(vim.fn.visualmode())<CR>", "Comment" },
+      --["/"] = {
+      --  rhs = "<ESC><CMD>lua require(\"Comment.api\").toggle_linewise_op(vim.fn.visualmode())<CR>",
+      --  desc = "Comment" },
     },
     options = {
       -- comment option configuration
