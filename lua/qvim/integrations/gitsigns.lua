@@ -11,8 +11,8 @@ function M:init()
     whichkey = {},
     keymaps = {
       {
-        binding_group = "",
-        name = "Git",
+        binding_group = "g",
+        name = "+Git",
         bindings = {
           ["g"] = { rhs = "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Lazygit" },
           ["j"] = { rhs = "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = "Next Hunk" },
@@ -35,7 +35,7 @@ function M:init()
           },
         },
         options = {
-          buffer = 1
+          prefix = "<leader>"
         }
       }
     },

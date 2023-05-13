@@ -1,7 +1,6 @@
 ---@class binding
 local binding = {}
 
-local Log = require("qvim.integrations.log")
 local default = require("qvim.keymaps.default")
 local constants = require("qvim.keymaps.constants")
 ---@class util
@@ -27,7 +26,7 @@ binding.mt = {
         if default.valid_binding_opts[opt] then
             return rawget(t, opt) --or default.binding_opts[opt]
         else
-            Log:error(string.format("Invalid option '%s' for binding.", opt))
+            error(string.format("Invalid option '%s' for binding.", opt))
             return nil
         end
     end,
@@ -39,7 +38,7 @@ binding.mt = {
         if default.valid_binding_opts[opt] then
             rawset(t, opt, setting)
         else
-            Log:error(string.format("Invalid option '%s' for binding.", opt))
+            error(string.format("Invalid option '%s' for binding.", opt))
         end
     end,
     ---Checks for equality in keymappings. Two keymaps with a different buffer value are not considered equal.

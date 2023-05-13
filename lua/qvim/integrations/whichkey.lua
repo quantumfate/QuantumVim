@@ -75,22 +75,22 @@ function M:init()
         winblend = 0,
       },
       layout = {
-        height = { min = 4, max = 25 },                                             -- min and max height of the columns
-        width = { min = 20, max = 50 },                                             -- min and max width of the columns
-        spacing = 3,                                                                -- spacing between columns
-        align = "left",                                                             -- align columns left, center or right
+        height = { min = 4, max = 50 }, -- min and max height of the columns
+        width = { min = 20, max = 50 }, -- min and max width of the columns
+        spacing = 3,                    -- spacing between columns
+        align = "left",                 -- align columns left, center or right
       },
-      ignore_missing = true,                                                        -- enable this to hide mappings for which you didn't specify a label
-      hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
-      show_help = true,                                                             -- show help message on the command line when the popup is visible
-      triggers = "auto",                                                            -- automatically setup triggers
+      ignore_missing = false,           -- enable this to hide mappings for which you didn't specify a label
+      --hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
+      show_help = true,                 -- show help message on the command line when the popup is visible
+      triggers = "auto",                -- automatically setup triggers
       -- triggers = {"<leader>"} -- or specify a list manually
       triggers_blacklist = {
         -- list of mode / prefixes that should never be hooked by WhichKey
         -- this is mostly relevant for key maps that start with a native binding
         -- most people should not need to change this
-        i = { "j", "k" },
-        v = { "j", "k" },
+        --i = { "j", "k" },
+        --v = { "j", "k" },
       },
     },
   }
@@ -167,7 +167,7 @@ end
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
-  local status_ok, whichkey = pcall(reload, "which-key")
+  --[[ local status_ok, whichkey = pcall(reload, "which-key")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", whichkey))
     return
@@ -196,11 +196,11 @@ function M:setup()
   })
   whichkey.register({
 
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File", leader = "<C-a>" },
-  }, { noremap = true })
-  if _whichkey.on_config_done then
+    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+  }) ]]
+  --[[   if _whichkey.on_config_done then
     _whichkey.on_config_done()
-  end
+  end ]]
 end
 
 return M

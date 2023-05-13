@@ -71,7 +71,7 @@ local function _replace(old, new, repeat_tbl)
     else
       if type(old[k]) ~= type(new[k]) then
         Log:debug(
-            string.format("Reloader: mismatch between old [%s] and new [%s] type for [%s]", type(old[k]), type(new[k]), k)
+          string.format("Reloader: mismatch between old [%s] and new [%s] type for [%s]", type(old[k]), type(new[k]), k)
         )
         _assign(old, new, k)
       else

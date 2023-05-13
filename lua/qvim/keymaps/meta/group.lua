@@ -1,12 +1,11 @@
 ---@class group
 local group = {}
 
-local Log = require("qvim.integrations.log")
 local default = require("qvim.keymaps.default")
 local constants = require("qvim.keymaps.constants")
 local fn = require("qvim.utils.fn")
 local fn_t = require("qvim.utils.fn_t")
-
+local shared_util = require("qvim.keymaps.util")
 ---@class util
 local util = nil
 
@@ -23,21 +22,22 @@ local const = constants.binding_group_constants
 group.mt = {
     __newindex = function(t, idx, group_member)
         if type(idx) == "number" then
-            if group_member.name == const.key_binding_group == group_member.binding_group == nil then
-                Log:error("A group member must have a key group key")
-                return
+            if group_member[const.key_binding_group] == nil or group_member[const.key_binding_group] == "" then
+                error("A group member must have a key group key")
             end
             local _group_member = util.get_new_group_member_proxy_mt()
-            _group_member[const.key_name] = group_member.name or default.keymap_group.name
-            _group_member[const.key_binding_group] = group_member.binding_group
-            _group_member[const.key_prefix] = group_member.prefix or default.keymap_group.prefix
+            _group_member[const.key_name] = group_member[const.key_name] or default.keymap_group_members[const.key_name]
+            _group_member[const.key_binding_group] = group_member[const.key_binding_group]
+            _group_member[const.key_prefix] = group_member[const.key_prefix] or
+                default.keymap_group_members[const.key_prefix]
             -- the following order matters because we want to apply the options to bindings
             -- where the options for a binding were not explicitly set
-            _group_member[const.key_options] = group_member.options or default.keymap_group_opts
-            _group_member[const.key_bindings] = group_member.bindings or default.keymap_group.bindings
+            _group_member[const.key_options] = group_member[const.key_options] or default.keymap_group_opts
+            _group_member[const.key_bindings] = group_member[const.key_bindings] or
+                default.keymap_group_members[const.key_bindings]
             rawset(t, idx, _group_member)
         else
-            Log:error(string.format(
+            error(string.format(
                 "The index of a group member in the group metatable must be a number but was '%s'",
                 type(idx)))
         end
@@ -53,7 +53,7 @@ group.member_mt = {
                 fn_t.rawget_debug(t, k)
             end
         else
-            Log:error(string.format("The key to a value in '%s' must be a string but was '%s'.", getmetatable(t), type(k)))
+            error(string.format("The key to a value in '%s' must be a string but was '%s'.", t, type(k)))
         end
     end,
     ---Ensures that values in a group have the correct metatable information or at least the defaults
@@ -63,8 +63,7 @@ group.member_mt = {
     __newindex = function(t, k, other)
         if type(k) == "string" then
             if k == const.key_bindings and type(other) == "table" then
-                fn.shallow_table_copy(rawget(t, "options"))
-                local keymaps = util.process_keymap_mt(k, other, fn.shallow_table_copy(rawget(t, "options")))
+                local keymaps = util.process_keymap_mt(k, other, fn.shallow_table_copy(rawget(t, const.key_options)))
                 rawset(t, k, keymaps)
             elseif const.key_options and type(other) == "table" then
                 local options = setmetatable(other or {}, { __index = default.keymap_group_opts })
@@ -73,13 +72,13 @@ group.member_mt = {
                 if type(other) == "string" then
                     rawset(t, k, other)
                 else
-                    Log:debug(string.format(
+                    shared_util.warn(string.format(
                         "The value of '%s' must be a string but was '%s'. Defaults were applied.", k, type(other)))
-                    rawset(t, k, default.keymap_group[k])
+                    rawset(t, k, default.keymap_group_members[k])
                 end
             end
         else
-            Log:error(string.format("The key to a value in '%s' must be a string but was '%s'.", getmetatable(t), type(k)))
+            error(string.format("The key to a group member in '%s' must be a string but was '%s'.", t, type(k)))
         end
     end,
     ---Returns a human readable representation of a group
@@ -87,7 +86,7 @@ group.member_mt = {
     __tostring = function(t)
         local base = string.format(
             "%s",
-            const.key_binding_group .. "=" .. rawget(t, "binding_group")
+            const.key_binding_group .. "=" .. rawget(t, const.key_binding_group)
         )
         return base
     end

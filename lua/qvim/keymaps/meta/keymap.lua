@@ -3,7 +3,7 @@
 local keymap = {}
 local Log = require("qvim.integrations.log")
 local fn_t = require("qvim.utils.fn_t")
-
+local shared_util = require("qvim.keymaps.util")
 ---@class util
 local util = nil
 
@@ -19,9 +19,9 @@ end
 keymap.mt = {
     __index = function(t, lhs)
         if type(lhs) == "string" then
-            return t[lhs]
+            return rawget(t, lhs)
         else
-            Log:error(string.format(
+            error(string.format(
                 "Failed to index keymap. The left hand side of a binding must be a string but is '%s'", type(lhs)))
         end
     end,
@@ -35,19 +35,20 @@ keymap.mt = {
     __newindex = function(t, lhs, other)
         if type(lhs) == "string" then
             if g_yikes_current_standalone_bindings[lhs] then
-                Log:warn(string.format("An existing standalone keymap with the left hand side '%s' will be overwritten.",
-                    lhs))
+                local existing = rawget(t, lhs)
+                shared_util.warn(string.format(
+                    "An existing standalone keymap\n '%s'\n with the left hand side '%s' will be overwritten by\n '%s'.",
+                    vim.inspect(existing), lhs, vim.inspect(other)))
             end
             if type(other) == "table" then
                 local binding = util.set_binding_mt(lhs, other, nil)
                 fn_t.rawset_debug(t, lhs, binding)
             else
-                print("val: ", other)
                 error(string.format("Error creating binding '%s'! A binding must have a table value but was '%s'.", lhs,
                     type(other)))
             end
         else
-            Log:error(string.format("The left hand side of a binding must be a string but is '%s'", type(lhs)))
+            error(string.format("The left hand side of a binding must be a string but is a '%s'", type(lhs)))
         end
     end
 }

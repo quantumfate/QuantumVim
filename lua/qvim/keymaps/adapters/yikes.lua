@@ -1,37 +1,59 @@
 ---@class yikes
 local M = {}
 
-local util = require("keymaps.adapters.util")
+local util = require("qvim.keymaps.adapters.util")
+local shared_util = require("qvim.keymaps.util")
+local constants = require("qvim.keymaps.constants")
 
--- Helper function to set keymaps
+---Helper function to set a kaymap or a buffer local keymap.
+---@param mode string
+---@param lhs string
+---@param rhs string
+---@param opts table
 local function set_keymap(mode, lhs, rhs, opts)
-    vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+    if opts.buffer then
+        local temp_buffer = opts[constants.neovim_options_constants.buffer]
+        opts[constants.neovim_options_constants.buffer] = nil
+        vim.api.nvim_buf_set_keymap(temp_buffer, mode, lhs, rhs, opts)
+        rawset(opts, constants.neovim_options_constants.buffer, temp_buffer) -- this is essential to be able to delete a buffer local mapping
+    else
+        vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+    end
 end
 
--- Helper function to unset keymaps
-local function unset_keymap(mode, lhs)
-    vim.api.nvim_del_keymap(mode, lhs)
+---Helper function to delete a keymap or a buffer local keymap.
+---@param mode string
+---@param lhs string
+---@param buffer number|nil
+local function unset_keymap(mode, lhs, buffer)
+    if buffer then
+        vim.api.nvim_buf_del_keymap(buffer, mode, lhs)
+    else
+        vim.api.nvim_del_keymap(mode, lhs)
+    end
 end
 
--- Function to apply keymaps of a specific group
+---Apply keymaps for a group.
+---@param group table
 local function apply_keymaps_for_group(group)
     local keymaps = qvim.keymaps[group]
     if keymaps then
         for _lhs, _binding in pairs(keymaps) do
             local mode, lhs, rhs, opts = util.keymap_unpack(_lhs, _binding)
-            unset_keymap(mode, lhs)
+            set_keymap(mode, lhs, rhs, opts)
         end
     end
 end
 
--- Function to remove the keymaps of a specific group
+---Remove keymaps of a group.
+---@param group table
 local function remove_keymaps_for_group(group)
     local keymaps = qvim.keymaps[group]
     if keymaps then
         for _lhs, _binding in pairs(keymaps) do
             local mode, lhs, rhs, opts = util.keymap_unpack(_lhs, _binding)
-            opts.buffer = 0                 -- Apply mappings to the current buffer only
-            set_keymap(mode, lhs, "", opts) -- Clear the mapping by setting the rhs to an empty string
+            opts.buffer = 0                      -- Apply mappings to the current buffer only
+            unset_keymap(mode, lhs, opts.buffer) -- Clear the mapping by setting the rhs to an empty string
         end
     end
 end
@@ -72,7 +94,18 @@ end
 
 function M.adapt()
     for descriptor, binding in pairs(qvim.keymaps) do
-
+        shared_util.action_based_on_descriptor(
+            descriptor,
+            function()
+                for _lhs, _opts in pairs(binding) do
+                    local mode, lhs, rhs, opts = util.keymap_unpack(_lhs, _opts)
+                    set_keymap(mode, lhs, rhs, opts)
+                end
+            end,
+            function()
+                -- TODO: implement groups with global variable
+            end
+        )
     end
 end
 

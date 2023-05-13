@@ -2,7 +2,7 @@ return {
     config = {
         colorscheme = "nightfox",
         reload_config_on_save = true,
-        leader = "<space>",
+        leader = " ",
         use_icons = true,
         transparent_window = false,
         integrations = {

@@ -4,7 +4,7 @@ local util = {}
 
 local Log = require("qvim.integrations.log")
 local fn_t = require("qvim.utils.fn_t")
-
+local binding_group_constants = require("qvim.keymaps.constants").binding_group_constants
 local initialized = false
 
 --[[
@@ -140,7 +140,9 @@ util.process_group_memeber_mt = function(t, idx, other)
 
     if type(idx) == "number" or type(idx) == "string" then
         if type(other) == "table" then
-            if other.binding_group and type(other.binding_group) == "string" and other.binding_group ~= "" then
+            if other[binding_group_constants.key_binding_group]
+                and type(other[binding_group_constants.key_binding_group]) == "string"
+                and other[binding_group_constants.key_binding_group] ~= "" then
                 local _group = util.get_new_group_member_proxy_mt()
                 for key, value in pairs(other) do
                     _group[key] = value
@@ -149,7 +151,7 @@ util.process_group_memeber_mt = function(t, idx, other)
             else
                 Log:error(string.format(
                     "A group '%s' must have keygroup indicator. The key to be pressed to activate a group. But was '%s'.",
-                    getmetatable(t), type(other.binding_group)))
+                    getmetatable(t), type(other[binding_group_constants.key_binding_group])))
             end
         else
             Log:debug(string.format("A group '%s' needs to be a table but was '%s'", t, type(other)))
@@ -207,12 +209,12 @@ util.set_binding_mt = function(_lhs, _binding, _options)
 
     local new_options = setmetatable(_options or {}, { __index = default.binding_opts })
     local new_binding = util.get_new_binding_proxy_mt(_binding)
-    for opt, set in pairs(default.binding_opts) do
+    for opt, _ in pairs(default.valid_binding_opts) do
         if rawget(new_binding, opt) == nil then
             if new_options[opt] then
                 new_binding[opt] = new_options[opt]
             else
-                new_binding[opt] = set
+                new_binding[opt] = default.binding_opts[opt]
             end
         end
     end

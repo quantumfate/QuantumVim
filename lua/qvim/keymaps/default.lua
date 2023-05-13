@@ -38,11 +38,11 @@ default.binding_opts = {
     [constants.neovim_options_constants.script]   = false,
     [constants.neovim_options_constants.expr]     = false,
     [constants.neovim_options_constants.unique]   = false,
-    [constants.neovim_options_constants.buffer]   = 0,
+    [constants.neovim_options_constants.buffer]   = nil,
     [constants.neovim_options_constants.callback] = nil
 }
 
-default.valid_keymap_group_opts = {
+default.valid_keymap_group_memebers = {
     [constants.binding_group_constants.key_name]          = true,
     [constants.binding_group_constants.key_binding_group] = true,
     [constants.binding_group_constants.key_prefix]        = true,
@@ -50,12 +50,21 @@ default.valid_keymap_group_opts = {
     [constants.binding_group_constants.key_options]       = true
 }
 
-default.keymap_group = {
+default.keymap_group_members = {
     [constants.binding_group_constants.key_name]          = "",
     [constants.binding_group_constants.key_binding_group] = "",
-    [constants.binding_group_constants.key_prefix]        = " ",
+    [constants.binding_group_constants.key_prefix]        = "<leader>",
     [constants.binding_group_constants.key_bindings]      = {},
     [constants.binding_group_constants.key_options]       = default.keymap_group_opts
+}
+
+default.valid_keymap_group_opts = {
+    [constants.neovim_options_constants.mode]    = true,
+    [constants.neovim_options_constants.noremap] = true,
+    [constants.neovim_options_constants.nowait]  = true,
+    [constants.neovim_options_constants.silent]  = true,
+    [constants.neovim_options_constants.unique]  = true,
+    [constants.neovim_options_constants.buffer]  = true,
 }
 
 default.keymap_group_opts = {
@@ -64,7 +73,7 @@ default.keymap_group_opts = {
     [constants.neovim_options_constants.nowait]  = false,
     [constants.neovim_options_constants.silent]  = true,
     [constants.neovim_options_constants.unique]  = false,
-    [constants.neovim_options_constants.buffer]  = 0,
+    [constants.neovim_options_constants.buffer]  = nil,
 }
 
 

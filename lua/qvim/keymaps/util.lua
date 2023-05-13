@@ -44,10 +44,10 @@ function util.has_simple_group_structure(tbl)
     return true
 end
 
----comment
----@param descriptor string
----@param binding_call function
----@param binding_group_call function
+---Enables logic based on single bindings or group bindings.
+---@param descriptor string The descriptor used to identify the type of binding.
+---@param binding_call function A callable for binding specific actions.
+---@param binding_group_call function A callable for group specific actions.
 function util.action_based_on_descriptor(descriptor, binding_call, binding_group_call)
     if string.match(descriptor, constants.binding_prefix_pt) then
         binding_call()
@@ -56,6 +56,14 @@ function util.action_based_on_descriptor(descriptor, binding_call, binding_group
     else
         Log:error(string.format("Unsupported  descriptor '%s'.", descriptor))
     end
+end
+
+function util.warn(msg)
+    vim.notify(msg, vim.log.levels.WARN, { title = "Yikes" })
+end
+
+function util.error(msg)
+    vim.notify(msg, vim.log.levels.ERROR, { title = "Yikes" })
 end
 
 return util

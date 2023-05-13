@@ -6,7 +6,7 @@ local keymap_defaults = require("qvim.keymaps.keymap")
 local default = require("qvim.keymaps.default")
 local fn_t = require("qvim.utils.fn_t")
 local util = require("qvim.keymaps.util")
-
+local adapt = require("qvim.keymaps.adapters")
 if in_headless_mode() then
     Log:info("Headless Mode: Not setting any keymaps.")
     return
@@ -49,9 +49,7 @@ end
 local function parse_group_to_descripted(declaration)
     local keymap_groups = meta.get_new_group_proxy_mt()
     local current_index = #keymap_groups + 1
-    print("declaration: ", vim.inspect(declaration))
     keymap_groups[current_index] = declaration
-    print("declaration: ", vim.inspect(declaration))
     local descriptor = tostring(keymap_groups[current_index])
     if descripted_keymaps[descriptor] then
         descripted_keymaps[descriptor] = nil
@@ -68,12 +66,13 @@ function M:init()
         return
     end
 
-    --[[     for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
+    for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
         local translated_mode = keymap_mode_adapters[vim_mode]
         for lhs, declaration in pairs(bindings) do
             parse_binding_to_descripted(lhs, declaration, translated_mode)
         end
-    end ]]
+    end
+
     -- process keymaps declared by integrations
     for _, integration in ipairs(qvim_integrations()) do
         local integration_keymaps = qvim.integrations[integration].keymaps
@@ -103,6 +102,7 @@ function M:init()
     qvim.keymaps = vim.deepcopy(descripted_keymaps)
     print("Keymaps: ", vim.inspect(qvim.keymaps))
     Log:info("Keymaps were fetched and stored in qvim.keymaps!")
+    adapt.setup()
 end
 
 return M

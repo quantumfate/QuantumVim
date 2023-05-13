@@ -3,7 +3,6 @@ local descriptor = {}
 
 local Log = require("qvim.integrations.log")
 local shared_util = require("qvim.keymaps.util")
-local default = require("qvim.keymaps.default")
 local fn_t = require("qvim.utils.fn_t")
 
 ---@class util
@@ -19,6 +18,13 @@ end
 
 ---The metatable to group keymaps by a descriptor.
 descriptor.mt = {
+    __index = function(t, _descriptor)
+        if type(_descriptor) == "string" then
+            return rawget(t, _descriptor)
+        else
+            error(string.format("The type of a descriptor must be string but was '%s'.", type(_descriptor)))
+        end
+    end,
     ---A keymap table added to this table will filter the bindings filtered and grouped by the descriptor.
     ---@param t table
     ---@param _descriptor string
@@ -30,11 +36,12 @@ descriptor.mt = {
                     function() fn_t.rawset_debug(t, _descriptor, util.process_keymap_mt(_descriptor, _keymaps)) end,
                     function() fn_t.rawset_debug(t, _descriptor, util.process_group_memeber_mt(t, _descriptor, _keymaps)) end)
             else
-                Log:error(string.format("The value corresponding to a descriptor '%s' must be a table.", _descriptor))
+                Log:error(string.format("The value corresponding to a descriptor '%s' must be a table but was '%s'.",
+                    _descriptor, type(_keymaps)))
             end
         else
-            Log:error(string.format("The descriptor of the keymap '%s' must be a string but was '%s'",
-                getmetatable(_keymaps), type(_descriptor)))
+            error(string.format("The descriptor of the following keymap \n'%s'\n must be a string but was '%s'.",
+                vim.inspect(_keymaps), type(_descriptor)))
         end
     end
 }
