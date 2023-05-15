@@ -5,6 +5,8 @@ local util = {}
 local Log = require("qvim.integrations.log")
 local fn_t = require("qvim.utils.fn_t")
 local binding_group_constants = require("qvim.keymaps.constants").binding_group_constants
+local constants = require("qvim.keymaps.constants")
+local shared_util = require("qvim.keymaps.util")
 local initialized = false
 
 --[[
@@ -120,6 +122,42 @@ local function already_meta_table(table, metatable)
     return getmetatable(table) == metatable
 end
 
+---Takes a binding an mormalizes it.
+---@param bind table
+---@return table|nil
+function util.normalize_keymap(lhs, bind)
+    if getmetatable(bind) ~= nil then
+        shared_util.warn(string.format(
+            "Processing positional arguments for a binding \n'%s'\n corresponding to '%s' may have unexpected results because it's a metatable.",
+            vim.inspect(bind), lhs))
+    end
+    -- If the keymap is already in the normalized format, return it as is
+    if bind[constants.neovim_options_constants.rhs] and bind[constants.neovim_options_constants.desc] then
+        return bind
+    end
+
+    -- If the keymap is in the positional format, convert it to the normalized format
+    if type(bind) == "table" and #bind <= 2 then
+        -- Check if it's a mixed format
+        if bind[constants.neovim_options_constants.rhs] then
+            bind[constants.neovim_options_constants.desc] = bind[1]
+            bind[1] = nil
+        elseif bind[constants.neovim_options_constants.desc] then
+            bind[constants.neovim_options_constants.rhs] = bind[1]
+            bind[1]                                      = nil
+        else
+            -- It's the purely positional format
+            bind[constants.neovim_options_constants.rhs]  = bind[constants.rhs_index]
+            bind[constants.neovim_options_constants.desc] = bind[constants.desc_index]
+            bind[constants.rhs_index]                     = nil
+            bind[constants.desc_index]                    = nil
+        end
+        return bind
+    end
+
+    error(string.format("The bindnig for '%s' is in an invalid format.", lhs))
+end
+
 ---Adds a group of keymaps with the following attributes unless `other` already has the necessary meta information:
 ---- `name` the name representing the group
 ---- `binding_group` the `key` to be pressed to activate the `bindings`
@@ -207,6 +245,9 @@ util.set_binding_mt = function(_lhs, _binding, _options)
         return _binding
     end
 
+    print("Before test: ", vim.inspect(_binding))
+    util.normalize_keymap(_lhs, _binding)
+    print("test: ", vim.inspect(_binding))
     local new_options = setmetatable(_options or {}, { __index = default.binding_opts })
     local new_binding = util.get_new_binding_proxy_mt(_binding)
     for opt, _ in pairs(default.valid_binding_opts) do
@@ -218,7 +259,8 @@ util.set_binding_mt = function(_lhs, _binding, _options)
             end
         end
     end
-    if fn_t.length(table) == 0 then
+    print("binding: ", vim.inspect(new_binding))
+    if fn_t.length(new_binding) == 0 then
         Log:warn(string.format(
             "The table with the associated left hand side '%s' is empty because no accepted options were parsed as keys.",
             _lhs))

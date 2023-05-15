@@ -8,7 +8,25 @@ function M:init()
   local telescope = {
     active = true,
     on_config_done = nil,
-    keymaps = {},
+    keymaps = {
+      {
+        binding_group = "s",
+        name = "Search",
+        bindings = {
+          b = { rhs = "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+          c = { rhs = "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
+          h = { rhs = "<cmd>Telescope help_tags<cr>", desc = "Find Help" },
+          M = { rhs = "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+          r = { rhs = "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File" },
+          R = { rhs = "<cmd>Telescope registers<cr>", desc = "Registers" },
+          k = { rhs = "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
+          C = { rhs = "<cmd>Telescope commands<cr>", desc = "Commands" },
+        },
+        options = {
+          prefix = "<leader>"
+        }
+      }
+    },
     options = {
       -- telescope option configuration
 

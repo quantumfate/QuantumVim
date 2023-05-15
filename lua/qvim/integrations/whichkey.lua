@@ -2,6 +2,7 @@
 local M = {}
 
 local Log = require "qvim.integrations.log"
+local keymaps = require("qvim.keymaps")
 
 ---Registers the global configuration scope for whichkey
 function M:init()
@@ -75,22 +76,22 @@ function M:init()
         winblend = 0,
       },
       layout = {
-        height = { min = 4, max = 50 }, -- min and max height of the columns
-        width = { min = 20, max = 50 }, -- min and max width of the columns
-        spacing = 3,                    -- spacing between columns
-        align = "left",                 -- align columns left, center or right
+        height = { min = 4, max = 50 },                                             -- min and max height of the columns
+        width = { min = 20, max = 50 },                                             -- min and max width of the columns
+        spacing = 3,                                                                -- spacing between columns
+        align = "left",                                                             -- align columns left, center or right
       },
-      ignore_missing = false,           -- enable this to hide mappings for which you didn't specify a label
-      --hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
-      show_help = true,                 -- show help message on the command line when the popup is visible
-      triggers = "auto",                -- automatically setup triggers
+      ignore_missing = false,                                                       -- enable this to hide mappings for which you didn't specify a label
+      hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
+      show_help = true,                                                             -- show help message on the command line when the popup is visible
+      triggers = "auto",                                                            -- automatically setup triggers
       -- triggers = {"<leader>"} -- or specify a list manually
       triggers_blacklist = {
         -- list of mode / prefixes that should never be hooked by WhichKey
         -- this is mostly relevant for key maps that start with a native binding
         -- most people should not need to change this
-        --i = { "j", "k" },
-        --v = { "j", "k" },
+        i = { "j", "k" },
+        v = { "j", "k" },
       },
     },
   }
@@ -138,17 +139,7 @@ end
 --      "Workspace Symbols",
 --    },
 --  },
---  s = {
---    name = "Search",
---    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
---    c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
---    h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
---    M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
---    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
---    R = { "<cmd>Telescope registers<cr>", "Registers" },
---    k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
---    C = { "<cmd>Telescope commands<cr>", "Commands" },
---  },
+
 --}
 --
 --local vopts = {
@@ -160,47 +151,14 @@ end
 --  nowait = true, -- use `nowait` when creating keymaps
 --}
 --local vmappings = {
---  ["/"] = { "<ESC><CMD>lua require(\"Comment.api\").toggle_linewise_op(vim.fn.visualmode())<CR>", "Comment" },
+--
 --}
 
 ---The whichkey setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
-  --[[ local status_ok, whichkey = pcall(reload, "which-key")
-  if not status_ok then
-    Log:warn(string.format("The plugin '%s' could not be loaded.", whichkey))
-    return
-  end
-
-  local _whichkey = qvim.integrations.whichkey
-  whichkey.setup(_whichkey.options)
-  --which_key.register(mappings, opts)
-  --which_key.register(vmappings, vopts)
-  --
-  whichkey.register({
-    ["<C-m>"] = {
-      f = {
-        name = "+file",
-        f = {
-          "<cmd>Telescope find_files<cr>",
-          "Find File",
-          mode = "v",
-          callback = function()
-            print("heeelloo")
-          end
-        },
-        n = { "<cmd>enew<cr>", "New File" },
-      },
-    },
-  })
-  whichkey.register({
-
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-  }) ]]
-  --[[   if _whichkey.on_config_done then
-    _whichkey.on_config_done()
-  end ]]
+  keymaps:setup()
 end
 
 return M

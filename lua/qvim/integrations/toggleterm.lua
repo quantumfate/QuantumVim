@@ -40,19 +40,23 @@ function M:init()
       end
     end,
     whichbinding_group = {
-      group = "t",
-      name = "Toggleterm",
-      bindings = {
-        n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
-        u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
-        t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
-        p = { "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
-        f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
-        h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
-        v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
+
+    },
+    keymaps = {
+      {
+        binding_group = "t",
+        name = "Toggleterm",
+        bindings = {
+          n = { rhs = "<cmd>lua _NODE_TOGGLE()<cr>", desc = "Node" },
+          u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
+          t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
+          p = { rhs = "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
+          f = { "<cmd>ToggleTerm direction=float<cr>", desc = "Float" },
+          h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
+          v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
+        }
       }
     },
-    keymaps = {},
     options = {
       -- toggleterm option configuration
       size = 20,

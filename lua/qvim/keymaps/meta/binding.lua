@@ -24,7 +24,7 @@ binding.mt = {
     ---@return boolean|string|integer|function|nil
     __index = function(t, opt)
         if default.valid_binding_opts[opt] then
-            return rawget(t, opt) --or default.binding_opts[opt]
+            return rawget(t, opt)
         else
             error(string.format("Invalid option '%s' for binding.", opt))
             return nil
@@ -35,7 +35,7 @@ binding.mt = {
     ---@param opt string
     ---@param setting function|boolean|string|integer|nil
     __newindex = function(t, opt, setting)
-        if default.valid_binding_opts[opt] then
+        if (type(opt) == "number" and type(setting) == "string" and #t <= 2) or default.valid_binding_opts[opt] then
             rawset(t, opt, setting)
         else
             error(string.format("Invalid option '%s' for binding.", opt))

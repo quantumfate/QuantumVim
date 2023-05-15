@@ -29,24 +29,22 @@ end
 -- @return the obj table, which contains the languages.
 --         If something goes wrong, the function will return false.
 function M:new(languages)
+	local languages = languages or utils:require_module("qvim.languages.config.setup")
 
-  local languages = languages or utils:require_module("qvim.languages.config.setup")
-  
-  local m_status_ok, lang_base = utils:require_module("qvim.languages.config.lang_base", true)
-  if not m_status_ok then 
-    vim.notify("Something went wrong when requiring the lang_base for languages.", "warning")
-    return false
-  elseif not m_status_ok and #languages == 0 then
+	local m_status_ok, lang_base = utils:require_module("qvim.languages.config.lang_base", true)
+	if not m_status_ok then
+		vim.notify("Something went wrong when requiring the lang_base for languages.", "warning")
+		return false
+	elseif not m_status_ok and #languages == 0 then
 		vim.notify("Error when trying to setup LSP servers: Argument is not a table", "error")
 	else
+		Obj = {}
+		for language, table in pairs(languages) do
+			Obj[language] = lang_base:new(table)
+		end
 
-    Obj = {}
-    for language, table in pairs(languages) do
-      Obj[language] = lang_base:new(table)
-    end
-
-    setmetatable(Obj, { __index = self })
-    return Obj
+		setmetatable(Obj, { __index = self })
+		return Obj
 	end
 end
 
@@ -97,10 +95,10 @@ function M:get_unique_attr_list(attr)
 		if language_fields[attr] == nil or #language_fields[attr] == 0 then
 			vim.notify(
 				"No attribute with the name '"
-					.. attr
-					.. "' configured in the language '"
-					.. configured_language
-					.. "'.",
+				.. attr
+				.. "' configured in the language '"
+				.. configured_language
+				.. "'.",
 				"info"
 			)
 			break

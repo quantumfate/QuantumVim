@@ -3,6 +3,8 @@
 ---@field binding_group_prefix string a prefix to denote key group descriptors
 ---@field binding_prefix_pt string a pattern to match binding descriptors
 ---@field binding_group_prefix_pt string a pattern to match key group descriptors
+---@field rhs_index number the index in a binding for a right hand side
+---@field desc_index number the index in a binding for description
 ---@field binding_group_constants binding_group_constants Constants for a binding group
 ---@field neovim_options_constants neovim_options_constants Constants for neovim specific options
 local M = {}
@@ -66,6 +68,8 @@ local constants = {
     binding_group_prefix = "binding_group=",
     binding_prefix_pt = "^binding=.*$",
     binding_group_prefix_pt = "^binding_group=.*$",
+    rhs_index = 1,
+    desc_index = 2,
     binding_group_constants = binding_group_constants,
     neovim_options_constants = neovim_options_constants,
 }
