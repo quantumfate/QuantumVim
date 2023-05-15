@@ -9,15 +9,40 @@ function M:init()
   local hop = {
     active = true,
     on_config_done = nil,
-    whichbinding_group = {
-      group = nil,
-      name = nil,
-      bindings = {
-
+    keymaps = {
+      f = {
+        "",
+        "Jump anywhere after the selected cursor.",
+        callback = function()
+          local hop = require('hop')
+          hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
+        end
       },
+      F = {
+        "",
+        "Jump anywhere before the selected cursor.",
+        callback = function()
+          local hop = require('hop')
+          hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+        end
+      },
+      t = {
+        "",
+        "Jump after the selected cursor on the current line only.",
+        callback = function()
+          local hop = require('hop')
+          hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
+        end
+      },
+      T = {
+        "",
+        "Jump before the selected cursor on the current line only.",
+        callback = function()
+          local hop = require('hop')
+          hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
+        end
+      }
     },
-    whichkey = {},
-    keymaps = {},
     -- hop option configuration
     options = {
       keys = 'etovxqpdygfblzhckisuran',
@@ -28,39 +53,6 @@ function M:init()
         callback = nil,
         desc = nil,
       },
-      -- Hop bindings
-      bindings = {
-        {
-          mode = 'n',
-          mapping = 'f',
-          desc = 'Jump anywhere after the selected cursor.',
-          direction = directions.AFTER_CURSOR,
-          current_line_only = false
-        },
-        {
-          mode = 'n',
-          mapping = 'F',
-          desc = 'Jump anywhere before the selected cursor.',
-          direction = directions.BEFORE_CURSOR,
-          current_line_only = false
-        },
-        {
-          mode = 'n',
-          mapping = 't',
-          desc = 'Jump after the selected cursor on the current line only.',
-          direction = directions.AFTER_CURSOR,
-          current_line_only = true,
-          hint_offset = -1
-        },
-        {
-          mode = 'n',
-          mapping = 'T',
-          desc = 'Jump before the selected cursor on the current line only.',
-          direction = directions.BEFORE_CURSOR,
-          current_line_only = true,
-          hint_offset = 1
-        }
-      }
     },
   }
   return hop
@@ -80,32 +72,6 @@ function M:setup()
 
   hop.setup { keys = hop_keys }
 
-  print("hello hop")
-  local keymap = vim.api.nvim_set_keymap
-
-  local hop_bindings = _hop.options.bindings
-  local hop_opts = _hop.options.opts
-
-  for _, value in ipairs(hop_bindings) do
-    if value.hint_offset then
-      hop_opts.callback = function()
-        hop.hint_char1({
-          direction = value.direction,
-          current_line_only = value.current_line_only,
-          hint_offset = value.hint_offset
-        })
-      end
-    else
-      hop_opts.callback = function()
-        hop.hint_char1({
-          direction = value.direction,
-          current_line_only = value.current_line_only,
-        })
-      end
-    end
-    hop_opts.desc = value.desc
-    keymap(value.mode, value.mapping, '', hop_opts)
-  end
 
   if _hop.on_config_done then
     _hop.on_config_done()

@@ -100,6 +100,7 @@ function M:init()
     end
 
     qvim.keymaps = vim.deepcopy(descripted_keymaps)
+    print("all: ", vim.inspect(qvim.keymaps))
     Log:info("Keymaps were fetched and stored in qvim.keymaps!")
 end
 

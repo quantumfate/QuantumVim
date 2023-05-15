@@ -26,7 +26,14 @@ local function mutation_for_single_binding(descriptors_t, binding_descriptor)
         if not _opts then
             _opts = fn.shallow_table_copy(opts)
         end
+
         whichkey_mappings[lhs] = { opts[rhs], opts[desc] }
+
+        -- add members that are not included in the descriptors
+        if keymaps[lhs][constants.neovim_options_constants.callback] then
+            whichkey_mappings[lhs][constants.neovim_options_constants.callback] = keymaps[lhs]
+                [constants.neovim_options_constants.callback]
+        end
         opts[rhs] = nil
         opts[desc] = nil
     end
@@ -71,12 +78,11 @@ function M.adapt(whichkey)
                     mutated_keymappings[#mutated_keymappings - 1],
                     mutated_keymappings[#mutated_keymappings]
                 )
+                print("HOp?", vim.inspect(mutated_keymappings))
             end,
             function()
                 local proxy = util.make_proxy_mutation_table(qvim.keymaps, mutation_for_group_binding)
-                --print("dec: ", vim.inspect(qvim.keymaps[descriptor]))
                 local mutaged_group = proxy[descriptor]
-                --print("whichkeyroup: ", vim.inspect(mutaged_group))
                 whichkey.register(
                     mutaged_group[#mutaged_group - 1],
                     mutaged_group[#mutaged_group]

@@ -245,9 +245,8 @@ util.set_binding_mt = function(_lhs, _binding, _options)
         return _binding
     end
 
-    print("Before test: ", vim.inspect(_binding))
+
     util.normalize_keymap(_lhs, _binding)
-    print("test: ", vim.inspect(_binding))
     local new_options = setmetatable(_options or {}, { __index = default.binding_opts })
     local new_binding = util.get_new_binding_proxy_mt(_binding)
     for opt, _ in pairs(default.valid_binding_opts) do
@@ -259,7 +258,6 @@ util.set_binding_mt = function(_lhs, _binding, _options)
             end
         end
     end
-    print("binding: ", vim.inspect(new_binding))
     if fn_t.length(new_binding) == 0 then
         Log:warn(string.format(
             "The table with the associated left hand side '%s' is empty because no accepted options were parsed as keys.",
