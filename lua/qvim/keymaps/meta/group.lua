@@ -1,6 +1,7 @@
 ---@class group
 local group = {}
 
+---@class default
 local default = require("qvim.keymaps.default")
 local constants = require("qvim.keymaps.constants")
 local fn = require("qvim.utils.fn")

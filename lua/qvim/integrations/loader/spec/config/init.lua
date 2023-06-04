@@ -2,6 +2,36 @@
 local M = {}
 local Log = require "qvim.integrations.log"
 
+---Plugins that should be installed. The key
+---values represent the accepted plugin name
+---across the qvim project.
+M.qvim_integrations = {
+    whichkey = "folke/which-key.nvim",
+    "nvim-lua/plenary.nvim",
+    "Tastyep/structlog.nvim",
+    "nvim-telescope/telescope.nvim",
+    autopairs = "windwp/nvim-autopairs",
+    "kyazdani42/nvim-tree.lua",
+    "phaazon/hop.nvim",
+    "nvim-lualine/lualine.nvim",
+    illuminate = "RRethy/vim-illuminate",
+    "EdenEast/nightfox.nvim",
+    "akinsho/bufferline.nvim",
+    alpha = "goolord/alpha-nvim",
+    treesitter = "nvim-treesitter/nvim-treesitter",
+    indentline = "lukas-reineke/indent-blankline.nvim",
+    notify = "rcarriga/nvim-notify",
+    "akinsho/toggleterm.nvim",
+    "lewis6991/gitsigns.nvim",
+    comment = "numToStr/Comment.nvim",
+    "lervag/vimtex",
+    "williamboman/mason.nvim",
+    mason_lspconfig = "williamboman/mason-lspconfig.nvim",
+    null_ls = "jose-elias-alvarez/null-ls.nvim",
+    lspconfig = "neovim/nvim-lspconfig",
+    mason_null_ls = "jay-babu/mason-null-ls.nvim",
+}
+
 ---Set the lazy configuration spec for a plugin.
 ---
 ---- name: Setting the name manually will override every calculated name or alias
@@ -166,30 +196,5 @@ function M:load_lazy_config_spec_for_plugin(plugin_name)
         return nil
     end
 end
-
----Plugins that should be installed. The key
----values represent the accepted plugin name
----across the qvim project.
-M.qvim_integrations = {
-    whichkey = "folke/which-key.nvim",
-    "nvim-lua/plenary.nvim",
-    "Tastyep/structlog.nvim",
-    "nvim-telescope/telescope.nvim",
-    autopairs = "windwp/nvim-autopairs",
-    "kyazdani42/nvim-tree.lua",
-    "phaazon/hop.nvim",
-    "nvim-lualine/lualine.nvim",
-    illuminate = "RRethy/vim-illuminate",
-    "EdenEast/nightfox.nvim",
-    "akinsho/bufferline.nvim",
-    alpha = "goolord/alpha-nvim",
-    treesitter = "nvim-treesitter/nvim-treesitter",
-    indentline = "lukas-reineke/indent-blankline.nvim",
-    notify = "rcarriga/nvim-notify",
-    "akinsho/toggleterm.nvim",
-    "lewis6991/gitsigns.nvim",
-    comment = "numToStr/Comment.nvim",
-    "lervag/vimtex",
-}
 
 return M

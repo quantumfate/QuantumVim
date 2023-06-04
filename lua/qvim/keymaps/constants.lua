@@ -11,6 +11,20 @@ local M = {}
 
 local error_message = "Attempt to modify read-only table"
 
+local function new_index(t, key, value)
+    error(error_message)
+end
+
+local function read_only(t)
+    local proxy = {}
+    local mt = {
+        __index = t,
+        __newindex = new_index
+    }
+    setmetatable(proxy, mt)
+    return proxy
+end
+
 ---@class neovim_options_constants
 ---@field rhs string right hand side
 ---@field desc string keybind description
@@ -23,6 +37,7 @@ local error_message = "Attempt to modify read-only table"
 ---@field unique string unique
 ---@field buffer string buffer
 ---@field callback string callback
+---@field ignore string ignore
 local neovim_options_constants = {
     rhs = "rhs",
     desc = "desc",
@@ -34,14 +49,9 @@ local neovim_options_constants = {
     expr = "expr",
     unique = "unique",
     buffer = "buffer",
-    callback = "callback"
+    callback = "callback",
+    ignore = "ignore"
 }
-
-setmetatable(neovim_options_constants, {
-    __newindex = function(t, key, value)
-        error(error_message)
-    end
-})
 
 ---@class binding_group_constants
 ---@field key_name string Descriptive name for a binding group
@@ -57,12 +67,6 @@ local binding_group_constants = {
     key_options = "options",
 }
 
-setmetatable(binding_group_constants, {
-    __newindex = function(t, key, value)
-        error(error_message)
-    end
-})
-
 local constants = {
     binding_prefix = "binding=",
     binding_group_prefix = "binding_group=",
@@ -70,18 +74,10 @@ local constants = {
     binding_group_prefix_pt = "^binding_group=.*$",
     rhs_index = 1,
     desc_index = 2,
-    binding_group_constants = binding_group_constants,
-    neovim_options_constants = neovim_options_constants,
+    binding_group_constants = read_only(binding_group_constants),
+    neovim_options_constants = read_only(neovim_options_constants),
 }
 
--- Make the constants table read-only by using a metatable
-local mt = {
-    __newindex = function(t, key, value)
-        error(error_message)
-    end,
-    __index = constants
-}
-
-setmetatable(M, mt)
+M = read_only(constants)
 
 return M

@@ -4,6 +4,26 @@ local util = {}
 local constants = require("qvim.keymaps.constants")
 local Log = require("qvim.integrations.log")
 
+---Calls the pairs method on a proxy table.
+---@generic T: table, K, V
+---@param t T
+---@return fun(table: table<K, V>, index?: K):K, V
+---@return T
+function util.pairs_on_proxy(t)
+    local mt = getmetatable(t)
+    if mt then
+        if mt.__pairs then
+            return mt.__pairs(t)
+        end
+        if mt.__index then
+            return pairs(mt.__index)
+        end
+        error(
+            "Proxy table doesn't implement a 'pairs' metamethod or doesn't have an underlying table specified in the 'index' metamethod that can be called by a 'pairs' function.")
+    end
+    error("The given table is not a Proxy table.")
+end
+
 ---Verifies that a given `tbl` is from an accepted structure.
 ---@param tbl table
 ---@return boolean

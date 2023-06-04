@@ -67,7 +67,7 @@ function M:init()
     end
 
     for vim_mode, bindings in pairs(keymap_defaults.get_defaults()) do
-        local translated_mode = keymap_mode_adapters[vim_mode]
+        local translated_mode = default.keymap_mode_adapters[vim_mode]
         for lhs, declaration in pairs(bindings) do
             parse_binding_to_descripted(lhs, declaration, translated_mode)
         end
@@ -98,9 +98,9 @@ function M:init()
             Log:debug("Integration '%s' has no keymaps.", integration)
         end
     end
-
+    vim.inspect("tehu", descripted_keymaps)
     qvim.keymaps = vim.deepcopy(descripted_keymaps)
-    print("all: ", vim.inspect(qvim.keymaps))
+    print(vim.inspect("tehu", qvim.keymaps))
     Log:info("Keymaps were fetched and stored in qvim.keymaps!")
 end
 

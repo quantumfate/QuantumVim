@@ -25,6 +25,8 @@ local function mutation_for_single_binding(descriptors_t, binding_descriptor)
     for lhs, opts in pairs(keymaps) do
         if not _opts then
             _opts = fn.shallow_table_copy(opts)
+            _opts[rhs] = nil
+            _opts[desc] = nil
         end
 
         whichkey_mappings[lhs] = { opts[rhs], opts[desc] }
@@ -78,7 +80,6 @@ function M.adapt(whichkey)
                     mutated_keymappings[#mutated_keymappings - 1],
                     mutated_keymappings[#mutated_keymappings]
                 )
-                print("HOp?", vim.inspect(mutated_keymappings))
             end,
             function()
                 local proxy = util.make_proxy_mutation_table(qvim.keymaps, mutation_for_group_binding)

@@ -3,6 +3,7 @@ local binding = {}
 
 local default = require("qvim.keymaps.default")
 local constants = require("qvim.keymaps.constants")
+local shared_util = require("qvim.keymaps.util")
 ---@class util
 local util = nil
 
