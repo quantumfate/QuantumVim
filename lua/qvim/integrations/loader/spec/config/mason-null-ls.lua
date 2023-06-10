@@ -5,7 +5,7 @@ local mason_null_ls = {
         "jose-elias-alvarez/null-ls.nvim",
     },
     config = function()
-        require("your.null-ls.config") -- require your null-ls config here (example below)
+        require("qvim.lsp.null-ls").setup() -- require your null-ls config here (example below)
     end,
 }
 

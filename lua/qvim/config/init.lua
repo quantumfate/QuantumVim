@@ -14,9 +14,8 @@ function M:init()
   local settings = require "qvim.config.settings"
   settings.load_defaults()
 
-  --local qvim_lsp_config = require "qvim.lsp.config"
-  -- TODO: add lsp language configs to global qvim variable
-  --qvim.lsp = vim.deepcopy(qvim_lsp_config)
+  local qvim_lsp_config = require "qvim.lsp.config"
+  qvim.lsp = vim.deepcopy(qvim_lsp_config)
 
   ---@return table integrations
   function _G.qvim_integrations()

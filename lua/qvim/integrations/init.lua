@@ -17,15 +17,17 @@ function M:init()
   qvim.integrations = setmetatable({}, meta.integration_base_mt)
 
   for _, name in ipairs(qvim_integrations()) do
-    local obj, instance = base:new(name)
+    if integration_provides_config(name) then
+      local obj, instance = base:new(name)
 
-    if obj and instance then
-      qvim.integrations[name] = obj
-      Log:debug(string.format(
-        "The integration '%s' was added to the global qvim.integrations table. Referenced table is '%s'.", name, obj))
-      if instance.config then
-        Log:debug(string.format("Config for '%s' was will be called as a function.", name))
-        instance:config()
+      if obj and instance then
+        qvim.integrations[name] = obj
+        Log:debug(string.format(
+          "The integration '%s' was added to the global qvim.integrations table. Referenced table is '%s'.", name, obj))
+        if instance.config then
+          Log:debug(string.format("Config for '%s' was will be called as a function.", name))
+          instance:config()
+        end
       end
     end
   end

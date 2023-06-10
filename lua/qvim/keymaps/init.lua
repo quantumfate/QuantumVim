@@ -75,6 +75,10 @@ function M:init()
 
     -- process keymaps declared by integrations
     for _, integration in ipairs(qvim_integrations()) do
+        if not integration_provides_config(integration) then
+            goto continue
+        end
+
         local integration_keymaps = qvim.integrations[integration].keymaps
 
         if integration_keymaps then
@@ -97,10 +101,10 @@ function M:init()
         else
             Log:debug("Integration '%s' has no keymaps.", integration)
         end
+        ::continue::
     end
-    vim.inspect("tehu", descripted_keymaps)
+
     qvim.keymaps = vim.deepcopy(descripted_keymaps)
-    print(vim.inspect("tehu", qvim.keymaps))
     Log:info("Keymaps were fetched and stored in qvim.keymaps!")
 end
 

@@ -37,7 +37,7 @@ function _G.get_qvim_dir()
 end
 
 ---Get the full path to `$QUANTUMVIM_CACHE_DIR`
----@return string|nil
+---@return string
 function _G.get_cache_dir()
   local qvim_cache_dir = os.getenv "QUANTUMVIM_CACHE_DIR"
   if not qvim_cache_dir then
@@ -73,8 +73,10 @@ function M:init()
     install_path = self.lazy_install_dir,
   }
 
-  --require("qvim.core.mason").bootstrap()
-
+  require("qvim.global")
+  require("qvim.config"):init()
+  require("qvim.integrations"):init()
+  require("qvim.integrations.mason").bootstrap()
   return self
 end
 

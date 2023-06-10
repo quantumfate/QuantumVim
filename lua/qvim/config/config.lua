@@ -7,8 +7,10 @@ return {
         transparent_window = false,
         integrations = {
             "alpha",
+            "breadcrumbs",
             "telescope",
             "hop",
+            "cmp",
             "autopairs",
             "bufferline",
             "illuminate",
@@ -22,7 +24,13 @@ return {
             "gitsigns",
             "comment",
             "whichkey",
-            "vimtex"
+            "vimtex",
+            "mason",
+            "mason-lspconfig",
+            "mason-null-ls",
+            "lspconfig",
+            "project",
+            "null-ls"
         },
         languages = {
             -- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
@@ -62,9 +70,10 @@ return {
         ---@usage timeout number timeout in ms for the format request (Default: 1000)
         timeout = 1000,
         ---@usage filter func to select client
-        --filter = require("lvim.lsp.utils").format_filter,
+        --filter = require("qvim.lsp.utils").format_filter,
         -- TODO add mason-lspconfig
     },
+    lsp = {},
     icons = require "qvim.icons",
     autocommands = {},
     log = {

@@ -12,7 +12,11 @@
 ---@field valid_keymap_group_opts table logic enabling table for the keymap group member 'options'
 local M = {}
 
+---@class constants
 local constants = require("qvim.keymaps.constants")
+
+---@class keymap.table_util
+local table_util = require("qvim.keymaps.table_util")
 
 -- Be careful when making changes to this file
 
@@ -20,17 +24,6 @@ local error_message = "Attempt to modify read-only table"
 
 local function new_index(t, key, value)
     error(error_message)
-end
-
-local function read_only(t)
-    local proxy = {}
-    local mt = {
-        __index = t,
-        __newindex = new_index,
-        __pairs = function(_) return pairs(t) end
-    }
-    setmetatable(proxy, mt)
-    return proxy
 end
 
 local keymap_mode_adapters = {
@@ -43,7 +36,7 @@ local keymap_mode_adapters = {
     term_mode = "t",
 }
 
-M.keymap_mode_adapters = read_only(keymap_mode_adapters)
+M.keymap_mode_adapters = table_util.read_only(keymap_mode_adapters, new_index)
 
 local inverted_keymap_mode_adapters = {
     i = "insert_mode",
@@ -55,7 +48,7 @@ local inverted_keymap_mode_adapters = {
     t = "term_mode",
 }
 
-M.inverted_keymap_mode_adapters = read_only(inverted_keymap_mode_adapters)
+M.inverted_keymap_mode_adapters = table_util.read_only(inverted_keymap_mode_adapters, new_index)
 
 local valid_integration_defaults = {
     active = true,
@@ -64,7 +57,7 @@ local valid_integration_defaults = {
     options = true
 }
 
-M.valid_integration_defaults = read_only(valid_integration_defaults)
+M.valid_integration_defaults = table_util.read_only(valid_integration_defaults, new_index)
 
 local valid_binding_opts = {
     [constants.neovim_options_constants.rhs]      = true,
@@ -78,9 +71,10 @@ local valid_binding_opts = {
     [constants.neovim_options_constants.unique]   = true,
     [constants.neovim_options_constants.buffer]   = true,
     [constants.neovim_options_constants.callback] = true,
+    [constants.neovim_options_constants.ignore]   = true
 }
 
-M.valid_binding_opts = read_only(valid_binding_opts)
+M.valid_binding_opts = table_util.read_only(valid_binding_opts, new_index)
 
 local binding_opts = {
     [constants.neovim_options_constants.rhs]      = "",
@@ -93,10 +87,11 @@ local binding_opts = {
     [constants.neovim_options_constants.expr]     = false,
     [constants.neovim_options_constants.unique]   = false,
     [constants.neovim_options_constants.buffer]   = nil,
-    [constants.neovim_options_constants.callback] = nil
+    [constants.neovim_options_constants.callback] = nil,
+    [constants.neovim_options_constants.ignore]   = nil
 }
 
-M.binding_opts = read_only(binding_opts)
+M.binding_opts = table_util.read_only(binding_opts, new_index)
 
 local valid_keymap_group_memebers = {
     [constants.binding_group_constants.key_name]          = true,
@@ -106,7 +101,7 @@ local valid_keymap_group_memebers = {
     [constants.binding_group_constants.key_options]       = true
 }
 
-M.valid_keymap_group_memebers = read_only(valid_keymap_group_memebers)
+M.valid_keymap_group_memebers = table_util.read_only(valid_keymap_group_memebers, new_index)
 
 local keymap_group_opts = {
     [constants.neovim_options_constants.mode]    = "n",
@@ -117,7 +112,7 @@ local keymap_group_opts = {
     [constants.neovim_options_constants.buffer]  = nil,
 }
 
-M.keymap_group_opts = read_only(keymap_group_opts)
+M.keymap_group_opts = table_util.read_only(keymap_group_opts, new_index)
 
 local keymap_group_members = {
     [constants.binding_group_constants.key_name]          = "",
@@ -127,7 +122,7 @@ local keymap_group_members = {
     [constants.binding_group_constants.key_options]       = keymap_group_opts
 }
 
-M.keymap_group_members = read_only(keymap_group_members)
+M.keymap_group_members = table_util.read_only(keymap_group_members, new_index)
 
 local valid_keymap_group_opts = {
     [constants.neovim_options_constants.mode]    = true,
@@ -138,6 +133,6 @@ local valid_keymap_group_opts = {
     [constants.neovim_options_constants.buffer]  = true,
 }
 
-M.valid_keymap_group_opts = read_only(valid_keymap_group_opts)
+M.valid_keymap_group_opts = table_util.read_only(valid_keymap_group_opts, new_index)
 
-return read_only(M)
+return table_util.read_only(M, new_index)

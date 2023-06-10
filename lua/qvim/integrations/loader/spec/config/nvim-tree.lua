@@ -1,6 +1,6 @@
 local nvim_tree = {
     --config = function()
-    --    re.quire("lvim.core.nvimtree").setup()
+    --    re.quire("qvim.core.nvimtree").setup()
     --end,
     cmd = {
         "NvimTreeToggle",

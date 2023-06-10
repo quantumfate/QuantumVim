@@ -15,15 +15,8 @@ local function new_index(t, key, value)
     error(error_message)
 end
 
-local function read_only(t)
-    local proxy = {}
-    local mt = {
-        __index = t,
-        __newindex = new_index
-    }
-    setmetatable(proxy, mt)
-    return proxy
-end
+---@class keymap.table_util
+local table_util = require("qvim.keymaps.table_util")
 
 ---@class neovim_options_constants
 ---@field rhs string right hand side
@@ -74,10 +67,10 @@ local constants = {
     binding_group_prefix_pt = "^binding_group=.*$",
     rhs_index = 1,
     desc_index = 2,
-    binding_group_constants = read_only(binding_group_constants),
-    neovim_options_constants = read_only(neovim_options_constants),
+    binding_group_constants = table_util.read_only(binding_group_constants, new_index),
+    neovim_options_constants = table_util.read_only(neovim_options_constants, new_index),
 }
 
-M = read_only(constants)
+M = table_util.read_only(constants, new_index)
 
 return M

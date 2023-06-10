@@ -9,7 +9,7 @@ function M:init()
     active = true,
     on_config_done = nil,
     keymaps = {
-      --["<A-j>"] = { rhs = "<Esc>:m .+1<CR>==gi", desc = 'Move current line down' },
+      ["<A-q>"] = { desc = 'Move down', ignore = true },
     },
     options = {
       -- vim-illuminate option configuration

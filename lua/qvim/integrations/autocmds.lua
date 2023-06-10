@@ -1,29 +1,9 @@
 local M = {}
 local Log = require "qvim.integrations.log"
--- TODO: adapt
+
 --- Load the default set of autogroups and autocommands.
 function M.load_defaults()
   local definitions = {
-    {
-      "VimEnter",
-      {
-        group = "_general_settings",
-        desc = "Disable terminal padding",
-        callback = function()
-          vim.cmd("!kitty @ set-spacing padding=0")
-        end
-      }
-    },
-    {
-      "VimLeave",
-      {
-        group = "_general_settings",
-        desc = "Disable terminal padding",
-        callback = function()
-          vim.cmd("!kitty @ set-spacing padding=5")
-        end
-      }
-    },
     {
       "TextYankPost",
       {
@@ -117,66 +97,66 @@ function M.load_defaults()
         end,
       },
     },
-    --    {
-    --      "ColorScheme",
-    --      -- TODO: adapt to current theme
-    --      {
-    --        group = "_qvim_colorscheme",
-    --        callback = function()
-    --          if qvim.builtin.breadcrumbs.active then
-    --            require("qvim.core.breadcrumbs").get_winbar()
-    --          end
-    --          local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
-    --          local cursorline_hl = vim.api.nvim_get_hl_by_name("CursorLine", true)
-    --          local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
-    --          vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
-    --          vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = "#CA42F0" })
-    --          vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = "#F64D00" })
-    --          vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
-    --          vim.api.nvim_set_hl(0, "SLCopilot", { fg = "#6CC644", bg = statusline_hl.background })
-    --          vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = cursorline_hl.background })
-    --          vim.api.nvim_set_hl(0, "SLBranchName", { fg = normal_hl.foreground, bg = cursorline_hl.background })
-    --          vim.api.nvim_set_hl(0, "SLSeparator", { fg = cursorline_hl.background, bg = statusline_hl.background })
-    --        end,
-    --      },
-    --    },
-    --{ -- taken from AstroNvim
-    --  "BufEnter",
-    --  {
-    --    group = "_dir_opened",
-    --    once = true,
-    --    callback = function(args)
-    --      local bufname = vim.api.nvim_buf_get_name(args.buf)
-    --      if require("qvim.utils").is_directory(bufname) then
-    --        vim.api.nvim_del_augroup_by_name "_dir_opened"
-    --        vim.cmd "do User DirOpened"
-    --        vim.api.nvim_exec_autocmds("BufEnter", {})
-    --      end
-    --    end,
-    --  },
-    --},
-    --{ -- taken from AstroNvim
-    --  { "BufRead", "BufWinEnter", "BufNewFile" },
-    --  {
-    --    group = "_file_opened",
-    --    once = true,
-    --    callback = function(args)
-    --      local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
-    --      if not (vim.fn.expand "%" == "" or buftype == "nofile") then
-    --        vim.cmd "do User FileOpened"
-    --        require("qvim.lsp").setup()
-    --      end
-    --    end,
-    --  },
-    --},
+    {
+      "ColorScheme",
+      {
+        group = "_qvim_colorscheme",
+        callback = function()
+          if qvim.integrations.breadcrumbs.active then
+            require("qvim.integrations.breadcrumbs").get_winbar()
+          end
+          local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
+          local cursorline_hl = vim.api.nvim_get_hl_by_name("CursorLine", true)
+          local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
+          vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+          vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = "#CA42F0" })
+          vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = "#F64D00" })
+          vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
+          vim.api.nvim_set_hl(0, "SLCopilot", { fg = "#6CC644", bg = statusline_hl.background })
+          vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = cursorline_hl.background })
+          vim.api.nvim_set_hl(0, "SLBranchName", { fg = normal_hl.foreground, bg = cursorline_hl.background })
+          vim.api.nvim_set_hl(0, "SLSeparator", { fg = cursorline_hl.background, bg = statusline_hl.background })
+        end,
+      },
+    },
+    { -- taken from AstroNvim
+      "BufEnter",
+      {
+        group = "_dir_opened",
+        nested = true,
+        callback = function(args)
+          local bufname = vim.api.nvim_buf_get_name(args.buf)
+          if require("qvim.utils").is_directory(bufname) then
+            vim.api.nvim_del_augroup_by_name "_dir_opened"
+            vim.cmd "do User DirOpened"
+            vim.api.nvim_exec_autocmds(args.event, { buffer = args.buf, data = args.data })
+          end
+        end,
+      },
+    },
+    { -- taken from AstroNvim
+      { "BufRead", "BufWinEnter", "BufNewFile" },
+      {
+        group = "_file_opened",
+        nested = true,
+        callback = function(args)
+          local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
+          if not (vim.fn.expand "%" == "" or buftype == "nofile") then
+            vim.api.nvim_del_augroup_by_name "_file_opened"
+            vim.cmd "do User FileOpened"
+            require("qvim.lsp").setup()
+          end
+        end,
+      },
+    },
   }
 
   M.define_autocmds(definitions)
 end
 
 local get_format_on_save_opts = function()
-  local defaults = require("qvim.config.defaults").format_on_save
-  -- accept a basic boolean `qvim.format_on_save=true`
+  local defaults = require("qvim.config").format_on_save
+  -- accept a basic boolean `lvim.format_on_save=true`
   if type(qvim.format_on_save) ~= "table" then
     return defaults
   end
@@ -227,21 +207,21 @@ function M.toggle_format_on_save()
   end
 end
 
-function M.enable_reload_config_on_save()
+--[[ function M.enable_reload_config_on_save()
   -- autocmds require forward slashes (even on windows)
-  local pattern = get_qvim_dir:gsub("\\", "/") .. "/*.lua"
+  local pattern = get_qvim_dir():gsub("\\", "/") .. "/*.lua"
 
   vim.api.nvim_create_augroup("qvim_reload_config_on_save", {})
   vim.api.nvim_create_autocmd("BufWritePost", {
     group = "qvim_reload_config_on_save",
     pattern = pattern,
-    desc = "Trigger LvimReload on saving config.lua",
+    desc = "Trigger QvimReload on saving config.lua",
     callback = function()
-      require("qvim.config"):reload()
+      require("lvim.config"):reload()
     end,
   })
 end
-
+ ]]
 function M.enable_transparent_mode()
   vim.api.nvim_create_autocmd("ColorScheme", {
     pattern = "*",
@@ -252,6 +232,7 @@ function M.enable_transparent_mode()
         "NormalNC",
         "TelescopeBorder",
         "NvimTreeNormal",
+        "NvimTreeNormalNC",
         "EndOfBuffer",
         "MsgArea",
       }

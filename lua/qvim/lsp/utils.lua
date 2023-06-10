@@ -1,9 +1,7 @@
 local M = {}
 
--- credits: https://github.com/LunarVim/LunarVim
-
 local tbl = require "qvim.utils.fn_t"
-local Log = require "qvim.core.log"
+local Log = require "qvim.integrations.log"
 
 function M.is_client_active(name)
   local clients = vim.lsp.get_active_clients()
@@ -75,7 +73,7 @@ function M.get_all_supported_filetypes()
 end
 
 function M.setup_document_highlight(client, bufnr)
-  if qvim.integrations.illuminate.active then
+  if qvim.builtin.illuminate.active then
     Log:debug "skipping setup for document_highlight, illuminate already active"
     return
   end
