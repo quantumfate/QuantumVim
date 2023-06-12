@@ -16,8 +16,8 @@ function M:init()
 
   qvim.integrations = setmetatable({}, meta.integration_base_mt)
 
-  for _, name in ipairs(qvim_integrations()) do
-    if integration_provides_config(name) then
+  for _, name in ipairs(_G.qvim_integrations()) do
+    if _G.integration_provides_config(name) then
       local obj, instance = base:new(name)
 
       if obj and instance then
@@ -29,6 +29,8 @@ function M:init()
           instance:config()
         end
       end
+    else
+      Log:debug(string.format("Integration '%s' does not provide a config.", name))
     end
   end
 

@@ -98,6 +98,17 @@ function M.load_defaults()
       },
     },
     {
+      "FileType",
+      {
+        callback = function()
+          -- hide buffer line in alpha
+          vim.cmd [[
+            autocmd User AlphaReady set showtabline=0 | autocmd BufUnload <buffer> set showtabline=2
+          ]]
+        end
+      }
+    },
+    {
       "ColorScheme",
       {
         group = "_qvim_colorscheme",

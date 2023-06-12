@@ -88,7 +88,7 @@ end
 
 function M.setup()
   Log:debug "Setting up LSP support"
-  require("mason").setup()
+
   require("mason-lspconfig").setup()
 
   local lsp_status_ok, _ = pcall(require, "lspconfig")

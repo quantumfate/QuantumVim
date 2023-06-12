@@ -6,11 +6,7 @@ local mason = {
         "MasonUninstallAll",
         "MasonLog"
     },
-    build = function()
-        pcall(function()
-            require("mason-registry").refresh()
-        end)
-    end,
+    build = ":MasonUpdate",
     event = "User FileOpened",
     lazy = true,
 }

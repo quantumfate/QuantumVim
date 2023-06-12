@@ -12,7 +12,7 @@ local default = require("qvim.keymaps.default")
 meta.default_values = {
     active = true,
     on_config_done = nil,
-    keymaps = setmetatable({}, keymap.mt),
+    keymaps = {},
     options = {},
 }
 

@@ -7,7 +7,7 @@ local M = {}
 --- This must be called at the beginning when qvim is
 --- loaded since everything depends on this.
 function M:init()
-  qvim = setmetatable({}, { __index = vim.deepcopy(require("qvim.config.config")) })
+  _G.qvim = setmetatable({}, { __index = vim.deepcopy(require("qvim.config.config")) })
 
   vim.g.mapleader = qvim.config.leader
   vim.g.maplocalleader = qvim.config.leader

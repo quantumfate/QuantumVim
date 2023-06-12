@@ -122,8 +122,8 @@ function M:setup()
   end
 
   local _mason = qvim.integrations.mason
-  add_to_path(_mason.PATH == "append")
-  mason.setup(_mason)
+  add_to_path(_mason.options.PATH == "append")
+  mason.setup(_mason.options)
 
   if _mason.on_config_done then
     _mason.on_config_done()
