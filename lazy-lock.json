@@ -1,4 +1,5 @@
 {
+  "LuaSnip": { "branch": "master", "commit": "a13af80734eb28f744de6c875330c9d3c24b5f3b" },
   "alpha": { "branch": "main", "commit": "9e33db324b8bb7a147bce9ea5496686ee859461d" },
   "autopairs": { "branch": "master", "commit": "59df87a84c80a357ca8d8fe86e451b93ac476ccc" },
   "breadcrumbs": { "branch": "master", "commit": "15704c607569d6c5cfeab486d3ef9459645a70ce" },

@@ -43,7 +43,7 @@ function generate_plugin_config_file() {
 
   local src_plugin="$QUANTUMVIM_DIR/utils/scripts/templates/plugin.lua.template"
   local src_spec="$QUANTUMVIM_DIR/utils/scripts/templates/spec.lua.template"
-  local dst_spec="$QV_LAZY_PLUGIN_SPEC_DIR/$PLUGIN_NAME.lua"
+  local dst_spec="$QV_LAZY_PLUGIN_SPEC_DIR/config_$PLUGIN_NAME.lua"
 
   local ITERATIONS=2
   if [[ -n "$PLUGIN_NAME"  && -n "$EXT" && "$IS_PARENT" == "false" ]]; then

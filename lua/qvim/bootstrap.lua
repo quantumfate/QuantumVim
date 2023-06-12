@@ -77,6 +77,7 @@ function M:init()
   require("qvim.config"):init()
   require("qvim.integrations"):init()
   require("qvim.integrations.mason").bootstrap()
+
   return self
 end
 

@@ -39,7 +39,7 @@ return {
             "comment",
             "c", "cpp", "cmake", "make",
             "lua",
-            "vim", "help",
+            "vim",
             "dockerfile",
             "diff",
             "git_rebase", "gitattributes", "gitcommit", "gitignore",
@@ -72,6 +72,11 @@ return {
         ---@usage filter func to select client
         --filter = require("qvim.lsp.utils").format_filter,
         -- TODO add mason-lspconfig
+    },
+    luasnip = {
+        sources = {
+            friendly_snippets = true,
+        },
     },
     lsp = {},
     icons = require "qvim.icons",

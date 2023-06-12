@@ -108,6 +108,7 @@ function M.setup(server_name, user_config)
     return
   end
 
+  Log:debug(string.format("Processing package: '%s' from '%s'.", pkg_name, server_name))
   local should_auto_install = function(name)
     local installer_settings = qvim.lsp.installer.setup
     return installer_settings.automatic_installation

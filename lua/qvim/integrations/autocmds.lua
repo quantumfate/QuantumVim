@@ -145,7 +145,7 @@ function M.load_defaults()
         end,
       },
     },
-    { -- taken from AstroNvim
+    --[[  { -- taken from AstroNvim
       { "BufRead", "BufWinEnter", "BufNewFile" },
       {
         group = "_file_opened",
@@ -159,7 +159,7 @@ function M.load_defaults()
           end
         end,
       },
-    },
+    }, ]]
   }
 
   M.define_autocmds(definitions)

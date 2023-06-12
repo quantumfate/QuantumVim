@@ -106,8 +106,9 @@ return {
   ---@usage list of settings of nvim-lsp-installer
   installer = {
     setup = {
-      ensure_installed = { "awk_ls" },
+      ensure_installed = { "lua_ls" },
       automatic_installation = {
+        "lua_ls",
         exclude = {},
       },
     },
