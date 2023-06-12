@@ -16,7 +16,5 @@ local integration_loader = require("qvim.integrations.loader")
 
 integration_loader:load()
 
-require("qvim.lsp").setup()
-
 local Log = require "qvim.integrations.log"
 Log:debug "Starting QuantumVim"

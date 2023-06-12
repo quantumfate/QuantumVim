@@ -16,9 +16,7 @@ local luasnip = {
         require("luasnip.loaders.from_snipmate").lazy_load()
     end,
     event = "InsertEnter",
-    dependencies = {
-        "friendly-snippets",
-    },
+    dependencies = { "rafamadriz/friendly-snippets" },
 }
 
 return luasnip

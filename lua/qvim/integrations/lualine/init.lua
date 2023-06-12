@@ -50,7 +50,7 @@ end
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
-  if in_headless_mode() then
+  if _G.in_headless_mode() then
     Log:debug "Headless mode detected. Skipping lualine"
     return
   end

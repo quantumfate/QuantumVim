@@ -38,28 +38,39 @@ function plugin_loader:init(opts)
         lazy_install_dir,
       }
 
-      --local default_snapshot_path = join_paths(get_qvim_dir(), "snapshots", "default.json")
-      --print("Snap path: " .. default_snapshot_path)
-      --local snapshot = assert(vim.fn.json_decode(vim.fn.readfile(default_snapshot_path)))
-      --vim.fn.system {
-      --  "git",
-      --  "-C",
-      --  lazy_install_dir,
-      --  "checkout",
-      --  snapshot["lazy.nvim"].commit,
-      --}
+      local default_snapshot_path = join_paths(get_qvim_dir(), "snapshots", "default.json")
+      print("Snap path: " .. default_snapshot_path)
+      local snapshot = assert(vim.fn.json_decode(vim.fn.readfile(default_snapshot_path)))
+      vim.fn.system {
+        "git",
+        "-C",
+        lazy_install_dir,
+        "checkout",
+        snapshot["lazy.nvim"].commit,
+      }
+    end
+    vim.api.nvim_create_autocmd("User", { pattern = "LazyDone", callback = require("qvim.lsp").setup })
+  end
+
+  local rtp = vim.opt.rtp:get()
+  local base_dir = (get_qvim_dir() .. "/qvim"):gsub("\\", "/")
+  local idx_base = #rtp + 1
+  for i, path in ipairs(rtp) do
+    path = path:gsub("\\", "/")
+    if path == base_dir then
+      idx_base = i + 1
+      break
     end
   end
+  table.insert(rtp, idx_base, lazy_install_dir)
+  table.insert(rtp, idx_base + 1, join_paths(integrtion_dir, "*"))
+  vim.opt.rtp = rtp
 
-  vim.opt.runtimepath:append(lazy_install_dir)
-  vim.opt.runtimepath:append(join_paths(integrtion_dir, "*"))
-
-  local lazy_cache = require "lazy.core.cache"
-  lazy_cache.path = join_paths(get_cache_dir(), "lazy", "cache")
-  lazy_cache.enable()
-  ---HACK: Override lazy's cache disable function
-  lazy_cache.disable = function()
-  end
+  pcall(function()
+    -- set a custom path for lazy's cache
+    local lazy_cache = require "lazy.core.cache"
+    lazy_cache.path = join_paths(get_cache_dir(), "lazy", "luac")
+  end)
 end
 
 function plugin_loader:reset_cache()

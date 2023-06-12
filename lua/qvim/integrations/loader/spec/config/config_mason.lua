@@ -4,7 +4,8 @@ local mason = {
         "MasonInstall",
         "MasonUninstall",
         "MasonUninstallAll",
-        "MasonLog"
+        "MasonLog",
+        "MasonUpdate"
     },
     build = ":MasonUpdate",
     event = "User FileOpened",

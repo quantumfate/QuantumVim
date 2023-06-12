@@ -89,13 +89,10 @@ end
 function M.setup()
   Log:debug "Setting up LSP support"
 
-  ---@diagnostic disable-next-line: missing-parameter
-  require("mason").setup()
-
-
-  Log:debug("Lets see")
-
-
+  local lsp_status_ok, _ = pcall(require, "lspconfig")
+  if not lsp_status_ok then
+    return
+  end
 
   if qvim.use_icons then
     for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}) do
@@ -122,7 +119,7 @@ function M.setup()
   set_handler_opts_if_not_set("textDocument/signatureHelp", vim.lsp.handlers.signature_help, { border = "rounded" })
 
   -- Enable rounded borders in :LspInfo window.
-  --require("lspconfig.ui.windows").default_options.border = "rounded"
+  require("lspconfig.ui.windows").default_options.border = "rounded"
 end
 
 return M

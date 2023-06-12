@@ -384,7 +384,14 @@ function M:setup()
 
   local _cmp = qvim.integrations.cmp
   cmp.setup(_cmp.options)
-
+  if _cmp.options.cmdline.enable then
+    for _, option in ipairs(_cmp.options.cmdline.options) do
+      cmp.setup.cmdline(option.type, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = option.sources,
+      })
+    end
+  end
   if _cmp.on_config_done then
     _cmp.on_config_done()
   end

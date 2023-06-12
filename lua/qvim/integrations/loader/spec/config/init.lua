@@ -16,13 +16,13 @@ M.qvim_integrations = {
     illuminate = "RRethy/vim-illuminate",
     indentline = "lukas-reineke/indent-blankline.nvim",
     "lewis6991/gitsigns.nvim",
-    lspconfig = "neovim/nvim-lspconfig",
+    "neovim/nvim-lspconfig",
     "williamboman/mason.nvim",
     "jay-babu/mason-null-ls.nvim",
     "williamboman/mason-lspconfig.nvim",
     "jose-elias-alvarez/null-ls.nvim",
     "nvim-lualine/lualine.nvim",
-    "L3MON4D3/LuaSnip",
+    luasnip = "L3MON4D3/LuaSnip",
     "nvim-telescope/telescope.nvim",
     "nvim-lua/plenary.nvim",
     "kyazdani42/nvim-tree.lua",
@@ -76,15 +76,15 @@ function M:new(alias, name)
         end
         local obj = {
             name,
-            name = fields.name or plugin_alias,
+            name = fields.name or plugin_name,
             module = fields.module or nil,
             lazy = fields.lazy or false,
             enabled = enabled,
             cond = fields.cond or nil,
-            dependencies = fields.dependencies or {},
+            dependencies = fields.dependencies or nil,
             init = fields.init or nil,
-            opts = fields.opts or {},
-            config = fields.config or M:hook_integration_config(plugin_alias),
+            opts = fields.opts or nil,
+            config = fields.config or M:hook_integration_config(plugin_alias) or nil,
             build = fields.build or nil,
             branch = fields.branch or nil,
             tag = fields.tag or nil,
@@ -94,7 +94,7 @@ function M:new(alias, name)
             cmd = fields.cmd or nil,
             keys = fields.keys or nil,
             ft = fields.ft or nil,
-            priority = fields.priority or 50,
+            priority = fields.priority or nil,
         }
         return obj
     else
@@ -127,7 +127,7 @@ local function is_valid_plugin_name(plugin)
     local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern) or nil
 
     if plugin_name then
-        return true, plugin_name
+        return true, string.lower(plugin_name)
     else
         return false
     end
@@ -165,6 +165,9 @@ end
 ---@param plugin_name string the verified plugin name
 ---@return function|nil callback the function callback or nil on fail
 function M:hook_integration_config(plugin_name)
+    if not _G.integration_provides_config(plugin_name) then
+        return
+    end
     local callback = nil
     local plugin_file = "qvim.integrations." .. plugin_name
     local success, result = pcall(require, plugin_file)
@@ -175,6 +178,8 @@ function M:hook_integration_config(plugin_name)
 
             return
         end
+        Log:debug(string.format("[integrations.loader.spec.config] Setup function for '%s' was successfully hooked.",
+            plugin_name))
         callback = result.setup
     else
         Log:warn(string.format(
@@ -197,6 +202,8 @@ function M:load_lazy_config_spec_for_plugin(plugin_name)
         if success then
             plugin_spec = spec
         end
+        Log:debug(string.format("[integrations.loader.spec.config] lazy config spec for '%s' was obtained.",
+            plugin_name))
         return plugin_spec
     else
         return nil

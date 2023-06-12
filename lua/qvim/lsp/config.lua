@@ -67,6 +67,7 @@ return {
   on_attach_callback = nil,
   on_init_callback = nil,
   automatic_configuration = {
+    "lua_ls",
     ---@usage list of servers that the automatic installer will skip
     skipped_servers = skipped_servers,
     ---@usage list of filetypes that the automatic installer will skip
