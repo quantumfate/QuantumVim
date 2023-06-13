@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require "qvim.core.log"
+local Log = require "qvim.integrations.log"
 local fmt = string.format
 local qvim_lsp_utils = require "qvim.lsp.utils"
 local is_windows = vim.loop.os_uname().version:match "Windows"
@@ -71,20 +71,19 @@ local function client_is_configured(server_name, ft)
 end
 
 local function launch_server(server_name, config)
-  pcall(function()
-    local command = config.cmd
-        or (function()
-          local default_config = require("lspconfig.server_configurations." .. server_name).default_config
-          return default_config.cmd
-        end)()
-    -- some servers have dynamic commands defined with on_new_config
-    if type(command) == "table" and type(command[1]) == "string" and vim.fn.executable(command[1]) ~= 1 then
-      Log:debug(string.format("[%q] is either not installed, missing from PATH, or not executable.", server_name))
-      return
-    end
-    require("lspconfig")[server_name].setup(config)
-    buf_try_add(server_name)
-  end)
+  local command = config.cmd
+      or (function()
+        local default_config = require("lspconfig.server_configurations." .. server_name).default_config
+        return default_config.cmd
+      end)()
+  -- some servers have dynamic commands defined with on_new_config
+  if type(command) == "table" and type(command[1]) == "string" and vim.fn.executable(command[1]) ~= 1 then
+    Log:debug(string.format("[%q] is either not installed, missing from PATH, or not executable.", server_name))
+    return
+  end
+  require("lspconfig")[server_name].setup(config)
+  buf_try_add(server_name)
+  Log:debug(fmt("Server started: %s", server_name))
 end
 
 ---Setup a language server by providing a name

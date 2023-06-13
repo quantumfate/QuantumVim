@@ -28,7 +28,7 @@ _G.reload = require("qvim.utils.modules").reload
 
 ---Get the full path to `$QUANTUMVIM_DIR`
 ---@return string|nil
-function _G.get_qvim_dir()
+function _G.get_qvim_rtp_dir()
   local qvim_dir = os.getenv "QUANTUMVIM_DIR"
   if not qvim_dir then
     return vim.call("stdpath", "config")
@@ -49,9 +49,9 @@ end
 ---Initialize the `&runtimepath` variables, load the globals and prepare for startup
 ---@return table
 function M:init()
-  self.qvim_dir = get_qvim_dir()
+  self.qvim_rtp_dir = get_qvim_rtp_dir()
   self.cache_dir = get_cache_dir()
-  self.pack_dir = join_paths(self.qvim_dir, "site", "pack")
+  self.pack_dir = join_paths(self.qvim_rtp_dir, "site", "pack")
   self.lazy_install_dir = join_paths(self.pack_dir, "lazy", "opt", "lazy.nvim")
 
   require("qvim.global")
@@ -66,8 +66,19 @@ function M:init()
     return vim.call("stdpath", what)
   end
 
-  print("Qvim dir: " .. self.qvim_dir)
-  print("cache dir: " .. self.cache_dir)
+  vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site"))
+  vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site", "after"))
+  -- vim.opt.rtp:prepend(join_paths(self.runtime_dir, "site"))
+  vim.opt.rtp:append(join_paths(self.qvim_rtp_dir, "after"))
+  vim.opt.rtp:append(join_paths(self.qvim_rtp_dir, "site", "after"))
+
+  vim.opt.rtp:remove(vim.call("stdpath", "config"))
+  vim.opt.rtp:remove(join_paths(vim.call("stdpath", "config"), "after"))
+  vim.opt.rtp:prepend(self.qvim_rtp_dir)
+  vim.opt.rtp:append(join_paths(self.qvim_rtp_dir, "after"))
+
+  vim.opt.packpath = vim.opt.rtp:get()
+
   require("qvim.integrations.loader"):init {
     package_root = self.pack_dir,
     install_path = self.lazy_install_dir,
@@ -75,7 +86,6 @@ function M:init()
 
   require("qvim.global")
   require("qvim.config"):init()
-  require("qvim.integrations"):init()
   require("qvim.integrations.mason").bootstrap()
 
   return self

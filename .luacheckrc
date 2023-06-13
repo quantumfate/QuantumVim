@@ -23,7 +23,7 @@ stds.nvim = {
     "vim",
     "join_paths",
     "get_cache_dir",
-    "get_qvim_dir",
+    "get_qvim_rtp_dir",
     "require_clean",
   },
 }

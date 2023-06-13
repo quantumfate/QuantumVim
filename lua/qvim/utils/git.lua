@@ -11,17 +11,17 @@ local function git_cmd(opts)
   end
 
   opts = opts or {}
-  opts.cwd = opts.cwd or get_qvim_dir()
+  opts.cwd = opts.cwd or get_qvim_rtp_dir()
 
   local stderr = {}
   local stdout, ret = Job:new({
-          command = "git",
-          args = opts.args,
-          cwd = opts.cwd,
-          on_stderr = function(_, data)
-            table.insert(stderr, data)
-          end,
-      }):sync()
+    command = "git",
+    args = opts.args,
+    cwd = opts.cwd,
+    on_stderr = function(_, data)
+      table.insert(stderr, data)
+    end,
+  }):sync()
 
   if not vim.tbl_isempty(stderr) then
     Log:debug(stderr)
@@ -44,13 +44,13 @@ local function safe_deep_fetch()
   local fetch_mode = result[1] == "true" and "--unshallow" or "--all"
   ret = git_cmd { args = { "fetch", fetch_mode } }
   if ret ~= 0 then
-    Log:error(fmt "Git fetch %s failed! Please pull the changes manually in %s", fetch_mode, get_qvim_dir())
+    Log:error(fmt "Git fetch %s failed! Please pull the changes manually in %s", fetch_mode, get_qvim_rtp_dir())
     return
   end
   if fetch_mode == "--unshallow" then
     ret = git_cmd { args = { "remote", "set-branches", "origin", "*" } }
     if ret ~= 0 then
-      Log:error(fmt "Git fetch %s failed! Please pull the changes manually in %s", fetch_mode, get_qvim_dir())
+      Log:error(fmt "Git fetch %s failed! Please pull the changes manually in %s", fetch_mode, get_qvim_rtp_dir())
       return
     end
   end
@@ -61,8 +61,8 @@ end
 function M.update_base_qvim()
   Log:info "Checking for updates"
 
-  if not vim.loop.fs_access(get_qvim_dir(), "w") then
-    Log:warn(fmt("QuantumVim update aborted! cannot write to %s", get_qvim_dir()))
+  if not vim.loop.fs_access(get_qvim_rtp_dir(), "w") then
+    Log:warn(fmt("QuantumVim update aborted! cannot write to %s", get_qvim_rtp_dir()))
     return
   end
 
@@ -80,7 +80,7 @@ function M.update_base_qvim()
 
   ret = git_cmd { args = { "merge", "--ff-only", "--progress" } }
   if ret ~= 0 then
-    Log:error("Update failed! Please pull the changes manually in " .. get_qvim_dir())
+    Log:error("Update failed! Please pull the changes manually in " .. get_qvim_rtp_dir())
     return
   end
 

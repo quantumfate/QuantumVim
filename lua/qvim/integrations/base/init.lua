@@ -41,7 +41,7 @@ function M:new(config_file)
     end
     local config = instance:init()
     Log:debug(string.format("Called init function for '%s'. Config is '%s'.", config_file, config))
-    local base_t = create_base_table(config_file, config)
+    local _, base_t = pcall(create_base_table, config_file, config)
     return base_t, instance
 end
 

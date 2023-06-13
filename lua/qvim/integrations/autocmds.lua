@@ -145,7 +145,7 @@ function M.load_defaults()
         end,
       },
     },
-    {  -- taken from AstroNvim
+    { -- taken from AstroNvim
       { "BufRead", "BufWinEnter", "BufNewFile" },
       {
         group = "_file_opened",
@@ -220,7 +220,7 @@ end
 
 --[[ function M.enable_reload_config_on_save()
   -- autocmds require forward slashes (even on windows)
-  local pattern = get_qvim_dir():gsub("\\", "/") .. "/*.lua"
+  local pattern = get_qvim_rtp_dir():gsub("\\", "/") .. "/*.lua"
 
   vim.api.nvim_create_augroup("qvim_reload_config_on_save", {})
   vim.api.nvim_create_autocmd("BufWritePost", {

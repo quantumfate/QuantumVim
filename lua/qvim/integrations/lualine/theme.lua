@@ -150,7 +150,7 @@ end
 function M.update()
     local theme = M.get_theme(qvim.integrations.lualine.theme)
     local Log = require "qvim.integrations.log"
-    print(vim.inspect("SH: ", theme.options))
+
     qvim.integrations.lualine = vim.tbl_deep_extend("keep", qvim.integrations.lualine, theme)
 
     local color_template = vim.g.colors_name or qvim.colorscheme

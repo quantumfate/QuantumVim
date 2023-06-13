@@ -109,6 +109,8 @@ end
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
+  local path = utils.join_paths(get_qvim_rtp_dir(), "site", "pack", "lazy", "opt", "nvim-treesitter")
+  vim.opt.rtp:prepend(path) -- treesitter needs to be before nvim's runtime in rtp
   if _G.in_headless_mode() then
     Log:debug "headless mode detected, skipping running setup for treesitter"
     return

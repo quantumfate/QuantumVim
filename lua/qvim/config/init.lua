@@ -14,8 +14,7 @@ function M:init()
   local settings = require "qvim.config.settings"
   settings.load_defaults()
 
-  local qvim_lsp_config = require "qvim.lsp.config"
-  qvim.lsp = vim.deepcopy(qvim_lsp_config)
+
 
   ---@return table integrations
   function _G.qvim_integrations()
@@ -28,6 +27,10 @@ function M:init()
     return languages
   end
 
+  require("qvim.integrations"):init()
+
+  local qvim_lsp_config = require "qvim.lsp.config"
+  qvim.lsp = vim.deepcopy(qvim_lsp_config)
   Log:info("Configs were loaded.")
 end
 
@@ -56,7 +59,7 @@ end
 --        string.format("User-configuration not found. Creating an example configuration in %s", config_path)
 --      )
 --      local config_name = vim.loop.os_uname().version:match "Windows" and "config_win" or "config"
---      local example_config = join_paths(get_qvim_dir(), "utils", "installer", config_name .. ".example.lua")
+--      local example_config = join_paths(get_qvim_rtp_dir(), "utils", "installer", config_name .. ".example.lua")
 --      vim.fn.mkdir(user_config_dir, "p")
 --      vim.loop.fs_copyfile(example_config, config_path)
 --    end

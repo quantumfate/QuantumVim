@@ -12,7 +12,7 @@ local Log = require "qvim.integrations.log"
 ---Registers the global configuration scope for telescope
 function M:init()
   local actions = require("qvim.utils.modules").require_on_exported_call "telescope.actions"
-  local builtin = require('telescope.builtin')
+  local builtin = require("qvim.utils.modules").require_on_exported_call "telescope.builtin"
   local telescope = {
     active = true,
     on_config_done = nil,
@@ -175,7 +175,6 @@ function M:setup()
     end)
   end
 
-  print(vim.inspect("The, ", qvim.integrations.telescope))
   for _, value in ipairs(_telescope_extensions.options.extensions_to_load) do
     -- important to call after telescope setup
     telescope.load_extension(value)

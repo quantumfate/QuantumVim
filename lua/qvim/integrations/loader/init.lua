@@ -4,7 +4,9 @@ local utils = require "qvim.utils"
 local Log = require "qvim.integrations.log"
 local join_paths = utils.join_paths
 
-local integrtion_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
+local get_qvim_rtp_dir = _G.get_qvim_rtp_dir
+
+local integration_dir = join_paths(get_qvim_rtp_dir(), "site", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -15,19 +17,17 @@ local integrtion_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
 function plugin_loader:init(opts)
   opts = opts or {}
 
-  print(opts.install_path)
-  print(opts.package_root)
+
   local lazy_install_dir = opts.install_path
       or join_paths(vim.fn.stdpath "data", "site", "pack", "lazy", "opt", "lazy.nvim")
-  print(lazy_install_dir)
 
   if not utils.is_directory(lazy_install_dir) then
     print "Initializing first time setup"
-    local integrations_dir = join_paths(get_qvim_dir(), "plugins")
+    local integrations_dir = join_paths(get_qvim_rtp_dir(), "plugins")
     if utils.is_directory(integrations_dir) then
-      vim.fn.mkdir(integrtion_dir, "p")
-      vim.loop.fs_rmdir(integrtion_dir)
-      require("qvim.utils").fs_copy(integrations_dir, integrtion_dir)
+      vim.fn.mkdir(integration_dir, "p")
+      vim.loop.fs_rmdir(integration_dir)
+      require("qvim.utils").fs_copy(integrations_dir, integration_dir)
     else
       vim.fn.system {
         "git",
@@ -38,7 +38,7 @@ function plugin_loader:init(opts)
         lazy_install_dir,
       }
 
-      local default_snapshot_path = join_paths(get_qvim_dir(), "snapshots", "default.json")
+      local default_snapshot_path = join_paths(get_qvim_rtp_dir(), "snapshots", "default.json")
       print("Snap path: " .. default_snapshot_path)
       local snapshot = assert(vim.fn.json_decode(vim.fn.readfile(default_snapshot_path)))
       vim.fn.system {
@@ -53,7 +53,7 @@ function plugin_loader:init(opts)
   end
 
   local rtp = vim.opt.rtp:get()
-  local base_dir = (get_qvim_dir() .. "/qvim"):gsub("\\", "/")
+  local base_dir = (get_qvim_rtp_dir() .. "/qvim"):gsub("\\", "/")
   local idx_base = #rtp + 1
   for i, path in ipairs(rtp) do
     path = path:gsub("\\", "/")
@@ -63,7 +63,7 @@ function plugin_loader:init(opts)
     end
   end
   table.insert(rtp, idx_base, lazy_install_dir)
-  table.insert(rtp, idx_base + 1, join_paths(integrtion_dir, "*"))
+  table.insert(rtp, idx_base + 1, join_paths(integration_dir, "*"))
   vim.opt.rtp = rtp
 
   pcall(function()
@@ -154,7 +154,7 @@ function plugin_loader:load(spec)
   end
 
   -- remove plugins from rtp before loading lazy, so that all plugins won't be loaded on startup
-  vim.opt.runtimepath:remove(join_paths(integrtion_dir, "*"))
+  vim.opt.runtimepath:remove(join_paths(integration_dir, "*"))
 
   local status_ok = xpcall(function()
     local opts = {
@@ -165,18 +165,18 @@ function plugin_loader:load(spec)
       ui = {
         border = "rounded",
       },
-      root = integrtion_dir,
+      root = integration_dir,
       git = {
         timeout = 120,
       },
-      lockfile = join_paths(get_qvim_dir(), "lazy-lock.json"),
+      lockfile = join_paths(get_qvim_rtp_dir(), "lazy-lock.json"),
       performance = {
         rtp = {
           reset = false,
         },
       },
       readme = {
-        root = join_paths(get_qvim_dir(), "lazy", "readme"),
+        root = join_paths(get_qvim_rtp_dir(), "lazy", "readme"),
       },
     }
 
