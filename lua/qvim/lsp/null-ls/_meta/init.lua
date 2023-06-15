@@ -8,7 +8,9 @@ local ft_bridge = {
     ["guile"] = "scheme.guile"
 }
 
----Create a meta table that maps some filetype exception to their corresponding null-ls managed filetype
+---Create a proxy table to to the null-ls builtin filetype map that maps some filetype exception to their corresponding null-ls managed filetype.
+---The proxy table indexes `require("null-ls.builtins._meta.filetype_map")`
+---
 ---See: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/lua/null-ls/builtins/_meta/filetype_map.lua
 ---@return table
 function M.ft_bridge()

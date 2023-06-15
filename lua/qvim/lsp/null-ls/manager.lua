@@ -1,7 +1,10 @@
 local M = {}
-
-local ft_map = require("lsp.null-ls._meta").ft_bridge()
-local null_ls = require("null-ls")
+local _ = require('mason-core.functional')
+---@class EventEmitter
+local EventEmitter = require "mason-core.EventEmitter"
+---@class Package
+local Package = require "mason-core.package"
+local null_ls_client = require("null-ls").client
 local fn_t = require("qvim.utils.fn_t")
 local Log = require "qvim.integrations.log"
 
@@ -23,12 +26,13 @@ local fmt = string.format
 ---@param ft string
 ---@param ft_builtins T<K, V>
 ---@return U<K, V>
-local function select_builtins(ft, ft_builtins)
+local function select_null_ls_sources(ft, ft_builtins)
     local _, provided = pcall(require, "qvim.lsp.null-ls.providers." .. ft .. ".lua", "methods")
     local selection = provided or {}
 
     local optimal_builtins = {}
 
+    -- TODO: Fix
     for method, options in pairs(ft_builtins) do
         if not selection[method] then
             for _, option in ipairs(options) do
@@ -63,33 +67,95 @@ local function select_builtins(ft, ft_builtins)
 end
 
 ---comment
----@param ft string
 ---@param method string
 ---@param source string
-local function register_sources_on_ft(ft, method, source)
-    local _, provided = pcall(require, "qvim.lsp.null-ls.providers." .. ft .. ".lua")
+---@return boolean
+local function register_sources_on_ft(method, source)
+    local _, provided = pcall(require, "qvim.lsp.null-ls.sources." .. source)
+    local source_options = provided or {}
+
+    source_options["name"] = source
+
+    local kind = nil
     if method == "code_actions" then
-        require("qvim.lsp.null-ls.code_actions").setup()
+        kind = require("qvim.lsp.null-ls.code_actions")
     elseif method == "formatters" then
-        require("qvim.lsp.null-ls.formatters").setup()
+        kind = require("qvim.lsp.null-ls.formatters")
     elseif method == "diagnostics" then
-        require("qvim.lsp.null-ls.linters").setup()
+        kind = require("qvim.lsp.null-ls.linters")
     else
         Log:error(fmt("The method '%s' is not a valid null-ls method.", method))
+        return kind
     end
+
+    -- we need to pase this as a table itself to stay compatible with the service.register_sources(configs, method)
+    kind.setup({ source_options })
+    return true
 end
 
----Register all available null-ls builtins for a given filetype.
+---@param null_ls_source_name string
+---@return Package
+local function resolve_null_ls_package_from_mason(null_ls_source_name)
+    -- taken from mason-null-ls
+    -- https://github.com/jay-babu/mason-null-ls.nvim/blob/main/lua/mason-null-ls/automatic_installation.lua
+    local registry = require('mason-registry')
+    local Optional = require('mason-core.optional')
+    local source_mappings = require('mason-null-ls.mappings.source')
+
+    return Optional.of_nilable(source_mappings.getPackageFromNullLs(null_ls_source_name)):map(function(package_name)
+        if not registry.has_package(package_name) then
+            Log:warn(fmt("The null-ls source '%s' is not supported by mason.", null_ls_source_name))
+            return nil
+        end
+        local ok, pkg = pcall(registry.get_package, package_name)
+        if ok then
+            return pkg
+        end
+    end)
+end
+
+
+---Register all available null-ls builtins for a given filetype and install their corresponding mason package.
 ---@param filetype any
 function M.setup(filetype, lsp_server)
     vim.validate { name = { filetype, "string" } }
     vim.validate { name = { lsp_server, "string" } }
 
+    local ft_map = require("qvim.lsp.null-ls._meta").ft_bridge()
     local null_ls_builtins = ft_map[filetype]
+    local selection = select_null_ls_sources(filetype, null_ls_builtins)
 
-    local selection = select_builtins(filetype, null_ls_builtins)
+    ---@class map<String, Package>
+    local sources_to_packages = {}
+    local package_count = 0
     for method, source in pairs(selection) do
-        register_sources_on_ft(filetype, method, source)
+        if register_sources_on_ft(method, source) then
+            local package = resolve_null_ls_package_from_mason(source)
+            sources_to_packages[source] = package
+            if package then
+                package_count = package_count + 1
+            end
+        end
+    end
+
+    for source, package in pairs(sources_to_packages) do
+        if not package:is_installed() then
+            Log:debug(fmt("Automatically installing '%s' by the mason package '%s'.", source, package.name))
+            package:install():once(
+                'closed',
+                vim.schedule_wrap(function()
+                    if package:is_installed() then
+                        Log:info(fmt("Installed '%s' by the mason package '%s'.", source, package.name))
+                        null_ls_client.retry_add()
+                        Log:info(fmt("Null-ls reattatched after installation of '%s' respective mason package '%s'.",
+                            source, package.name))
+                    else
+                        Log:warn(fmt("Installation of '%s' by the mason package '%s' failed. Consult mason logs.", source,
+                            package.name))
+                    end
+                end)
+            )
+        end
     end
 end
 
