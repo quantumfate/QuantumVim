@@ -196,7 +196,7 @@ end
 ---@return table|nil options the options that should override the individual default plugin spec
 function M:load_lazy_config_spec_for_plugin(plugin_name)
     local plugin_spec = {}
-    local spec_file = "qvim.integrations.loader.spec.config." .. "config_" .. plugin_name
+    local spec_file = "qvim.integrations.loader.spec.config." .. plugin_name
     if spec_file then
         local success, spec = pcall(require, spec_file)
         if success then

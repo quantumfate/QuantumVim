@@ -4,7 +4,6 @@ local M = {}
 local Log = require "qvim.integrations.log"
 local utils = require "qvim.utils"
 
--- TODO: fix treesitter updating everytime qvim starts
 ---Registers the global configuration scope for treesitter
 function M:init()
   local treesitter = {

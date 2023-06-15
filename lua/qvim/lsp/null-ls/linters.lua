@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require "qvim.core.log"
+local Log = require "qvim.integrations.log"
 
 local null_ls = require "null-ls"
 local services = require "qvim.lsp.null-ls.services"

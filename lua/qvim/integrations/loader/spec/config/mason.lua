@@ -1,5 +1,5 @@
 local mason = {
-    cmd = {
+    cmd   = {
         "Mason",
         "MasonInstall",
         "MasonUninstall",
@@ -7,9 +7,13 @@ local mason = {
         "MasonLog",
         "MasonUpdate"
     },
-    build = ":MasonUpdate",
+    build = function()
+        pcall(function()
+            require("mason-registry").refresh()
+        end)
+    end,
     event = "User FileOpened",
-    lazy = true,
+    lazy  = true,
 }
 
 return mason

@@ -54,7 +54,7 @@ function util.has_simple_group_structure(tbl)
     if type(tbl['bindings']) ~= 'table' then
         return false
     end
-    if table['options'] then
+    if tbl['options'] then
         -- this is optional
         if type(tbl['options']) ~= 'table' then
             return false

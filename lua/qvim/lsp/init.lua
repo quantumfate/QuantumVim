@@ -101,9 +101,8 @@ function M.setup()
   end
 
 
-  if not utils.is_directory(qvim.lsp.templates_dir) then
-    require("qvim.lsp.templates").generate_templates()
-  end
+  require("qvim.lsp.templates").generate_templates()
+
 
   require("qvim.lsp.null-ls").setup()
 

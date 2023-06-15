@@ -279,14 +279,14 @@ function M:setup()
     end
 
     -- Implicitly update nvim-tree when project module is active
-    if qvim.builtin.project.active then
-        qvim.builtin.nvimtree.setup.respect_buf_cwd = true
-        qvim.builtin.nvimtree.setup.update_cwd = true
-        qvim.builtin.nvimtree.setup.update_focused_file.enable = true
-        qvim.builtin.nvimtree.setup.update_focused_file.update_cwd = true
+    if qvim.integrations.project.active then
+        qvim.integrations.nvimtree.options.respect_buf_cwd = true
+        qvim.integrations.nvimtree.options.update_cwd = true
+        qvim.integrations.nvimtree.options.update_focused_file.enable = true
+        qvim.integrations.nvimtree.options.update_focused_file.update_cwd = true
     end
-    if qvim.builtin.nvimtree.setup.on_attach == "default" then
-        qvim.builtin.nvimtree.setup.on_attach = on_attach
+    if qvim.integrations.nvimtree.options.on_attach == "default" then
+        qvim.integrations.nvimtree.options.on_attach = on_attach
     end
     local _nvim_tree = qvim.integrations.nvim_tree
     nvim_tree.icons = _nvim_tree.glyphs

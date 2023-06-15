@@ -1,6 +1,5 @@
 local skipped_servers = {
   "angularls",
-  "ansiblels",
   "antlersls",
   "azure_pipelines_ls",
   "ccls",
@@ -8,7 +7,6 @@ local skipped_servers = {
   "omnisharp",
   "cssmodules_ls",
   "denols",
-  "docker_compose_language_service",
   "ember",
   "emmet_ls",
   "eslint",
@@ -16,10 +14,7 @@ local skipped_servers = {
   "glint",
   "golangci_lint_ls",
   "gradle_ls",
-  "graphql",
-  "java_language_server",
   "jedi_language_server",
-  "ltex",
   "neocmake",
   "ocamlls",
   "phpactor",
@@ -54,7 +49,7 @@ local skipped_servers = {
   "vuels",
 }
 
-local skipped_filetypes = { "markdown", "rst", "plaintext", "toml", "proto" }
+local skipped_filetypes = { "plaintext", "toml", "proto" }
 
 local join_paths = require("qvim.utils").join_paths
 
@@ -117,8 +112,13 @@ return {
   null_ls = {
     setup = {
       debug = false,
+      update_in_insert = true
     },
-    config = {},
+  },
+  mason_null_ls = {
+    ensure_installed = {},
+    automatic_installation = false,
+    handlers = {}
   },
   ---@deprecated use qvim.lsp.automatic_configuration.skipped_servers instead
   override = {},

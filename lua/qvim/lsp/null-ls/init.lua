@@ -16,6 +16,7 @@ function M.setup()
   end
 
   local default_opts = require("qvim.lsp").get_common_opts()
+  vim.diagnostic.config({ update_in_insert = qvim.lsp.null_ls.setup.update_in_insert })
   null_ls.setup(vim.tbl_deep_extend("force", default_opts, qvim.lsp.null_ls.setup))
 end
 

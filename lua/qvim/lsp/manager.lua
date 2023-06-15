@@ -92,7 +92,7 @@ end
 function M.setup(server_name, user_config)
   vim.validate { name = { server_name, "string" } }
   user_config = user_config or {}
-  Log:warn("daaaa")
+
   if qvim_lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
     return
   end
