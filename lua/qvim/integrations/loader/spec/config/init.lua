@@ -117,7 +117,7 @@ local function is_plugin_configured(plugin_name)
 end
 
 ---Validates the plugin name.
----@param plugin any
+---@param plugin string
 ---@return boolean valid Whether the plugin is a valid plugin or nor
 ---@return string|nil plugin_name The valid plugin name or nil
 local function is_valid_plugin_name(plugin)
