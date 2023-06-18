@@ -69,7 +69,18 @@ local function select_null_ls_sources(ft, ft_builtins)
 
     local sources_to_methods = null_ls_utils.invert_method_to_sources_map(ft_builtins)
 
-    local sorted_combination = null_ls_utils.package_selection_sort(sources_to_methods)
+    local sorted_combinations = null_ls_utils.source_selection_sort(sources_to_methods, ft_builtins)
+
+    for _, combination in pairs(sorted_combinations) do
+        local source, methods = next(combination)
+        for _, method in pairs(methods) do
+            local safe_method = null_ls_methods[method]
+
+            if not selection[safe_method] then
+                selection[safe_method] = source
+            end
+        end
+    end
 
     return selection
 end

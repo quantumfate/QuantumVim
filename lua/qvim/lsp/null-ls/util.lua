@@ -136,34 +136,77 @@ function M.invert_method_to_sources_map(ft_builtins)
     return inverted
 end
 
----Takes a given `sources_to_methods` table and computes a score for each combination of
----package and methods. The output will be a sorted table where the first element is the
----combination with the highest score. A key that's a valid mason package will have a higher
+---Computes a score for a individual combination of a package and its methods.
+---A key that's a valid mason package will have a higher
 ---factor for computing the score than a key that's not a valid mason package. The score
 ---of a key will be multiplied with the score of the table of methods where each method is treated
 ---equally meaning that they only alter the total score in numbers.
----@generic T: table, K:string, V:table<string>, M:Package|string
----@param sources_to_methods T<M,T<K>> a table that maps sources to a table of one or more methods
----@return T<T<M,T<K>>> sorted the sorted table where the first element is the table that wraps the best combination
-function M.package_selection_sort(sources_to_methods)
+---@param source Package|string
+---@param methods table<string>
+---@param methods_to_amounts table<string, integer>
+---@return number score the computed score
+function M.compute_score_of_source(source, methods, methods_to_amounts)
     local scores = {
         package = 25,
         string = 3,
-        method = 11
+        method = 11,
+        method_score_increase = 1.2
     }
+    local score
+    local methods_score = #methods * scores.method
+
+    if _.any(function(method) return methods_to_amounts[method] == 1 end, methods) then
+        -- slightly increase the score of packages that are only available
+        -- for one method to avoid conflicts with trailing packages that
+        -- would rank the same score otherwise
+        methods_score = methods_score * scores.method_score_increase
+    end
+
+    if M.is_package(source) then
+        score = scores.package * methods_score
+    else
+        score = scores.string * methods_score
+    end
+    return score
+end
+
+---Takes a given `sources_to_methods` table and computes a score for each combination of
+---source and methods.
+---@generic T: table, K:string, V:table<string>, M:Package|string
+---@param sources_to_methods T<M,T<K>> a table that maps sources to a table of one or more methods
+---@param ft_builtins T<K,T<K,table<M>>> to determine the amount of appearances from methods
+---@return T<integer>
+---@return T<integer, T<M, T<K>>>
+function M.compute_ft_builtins_score(sources_to_methods, ft_builtins)
+    local methods_to_amounts = {}
     local computed_scores = {}
     local computed_scores_to_combinations = {}
+
+    for method, sources in pairs(ft_builtins) do
+        methods_to_amounts[method] = #sources
+    end
+
     for source, methods in pairs(sources_to_methods) do
-        local score
-        local methods_score = #methods * scores.method
-        if M.is_package(source) then
-            score = scores.package * methods_score
-        else
-            score = scores.string * methods_score
-        end
+        local score = M.compute_score_of_source(source, methods, methods_to_amounts)
+
         table.insert(computed_scores, score)
         computed_scores_to_combinations[score] = { [source] = methods }
     end
+
+    return computed_scores, computed_scores_to_combinations
+end
+
+---Greatest `k` selection sort for sources.
+---@generic T: table, K:string, V:table<string>, M:Package|string
+---@param sources_to_methods T<M,T<K>> a table that maps sources to a table of one or more methods
+---@param ft_builtins T<K,T<K,table<M>>> to determine the amount of appearances from methods
+---@return T<T<M,T<K>>> sorted the sorted table where the first element is the table that wraps the best combination
+function M.source_selection_sort(sources_to_methods, ft_builtins)
+    local computed_scores, computed_scores_to_combinations =
+        M.compute_ft_builtins_score(
+            sources_to_methods,
+            ft_builtins
+        )
 
     for i = #computed_scores, 1, -1 do
         local max_num = computed_scores[i]
