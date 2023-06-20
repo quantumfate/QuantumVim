@@ -22,7 +22,7 @@ end
 ---a provided spec.
 ---
 ---For more information to custom package hangle, see: https://github.com/williamboman/mason.nvim/blob/main/lua/mason-core/package/init.lua
----@param null_ls_source_name string
+---@param null_ls_source_name Package|string
 ---@return Package|nil
 function M.resolve_null_ls_package_from_mason(null_ls_source_name)
     -- taken from mason-null-ls and modified
@@ -37,6 +37,7 @@ function M.resolve_null_ls_package_from_mason(null_ls_source_name)
             Log:warn(fmt("The null-ls source '%s' is not supported by mason.", null_ls_source_name))
         end
 
+        ---@diagnostic disable-next-line: param-type-mismatch
         local custom_is_defined, custom_pkg = M.register_custom_mason_package(null_ls_source_name)
         if custom_is_defined then
             return custom_pkg
@@ -55,12 +56,18 @@ end
 
 ---Based on a given `method` a given `source` will be registered.
 ---@param method string
----@param source string
+---@param source string|Package
 ---@return boolean|nil
 function M.register_sources_on_ft(method, source)
     local null_ls_methods = require("qvim.lsp.null-ls._meta").method_bridge()
-    local _, provided = pcall(require, "qvim.lsp.null-ls.sources." .. source)
-    local source_options = provided.settings or {}
+    local source_options = {}
+    if not M.is_package(source) then
+        local _, provided = pcall(require, "qvim.lsp.null-ls.sources." .. source)
+        source_options = provided.settings or {}
+    else
+        source = source.name
+    end
+
 
     source_options["name"] = source
 
@@ -79,6 +86,55 @@ function M.register_sources_on_ft(method, source)
     -- we need to pase this as a table itself to stay compatible with the service.register_sources(configs, method)
     kind.setup({ source_options })
     return true
+end
+
+---Attempts to install a mason package for a given `source`. If no mason package could be resolved the
+---`source` will be returned. Otherwise returns a mason package.
+---@param method string
+---@param source Package|string
+---@return Package|string
+function M.try_install_mason_package(method, source)
+    local null_ls_client = require("null-ls.client")
+    local registry = require('mason-registry')
+    local mason_null_ls_mapping = require("mason-null-ls.mappings.source")
+    ---@class Package
+    ---@field is_installed function
+    ---@field install function
+    ---@field name string
+    ---@param package Package
+    local function install_package(package)
+        if not package:is_installed() then
+            Log:debug(fmt("Automatically installing '%s' by the mason package '%s'.", source, package.name))
+            package:install():once(
+                'closed',
+                vim.schedule_wrap(function()
+                    if registry.is_installed(package.name) then
+                        Log:info(fmt("Installed '%s' by the mason package '%s'.", source, package.name))
+                        M.register_sources_on_ft(method, mason_null_ls_mapping.getNullLsFromPackage(package.name))
+                        Log:info(fmt("Reattached '%s' to lsp buffer.", package.name))
+                    else
+                        Log:warn(fmt(
+                            "Installation of '%s' by the mason package '%s' failed. Consult mason logs.",
+                            source,
+                            package.name))
+                    end
+                end)
+            )
+        end
+    end
+
+    if M.is_package(source) then
+        ---@diagnostic disable-next-line: param-type-mismatch
+        install_package(source)
+        return mason_null_ls_mapping.getNullLsFromPackage(source.name)
+    end
+
+    return M.resolve_null_ls_package_from_mason(source)
+        :if_present(function(package)
+            install_package(package)
+            return mason_null_ls_mapping.getNullLsFromPackage(source.name)
+        end)
+        :or_else(source)
 end
 
 ---Register a custom mason package with a spec provided by the user.
@@ -115,7 +171,7 @@ function M.disassociate_selection_from_input(selection, ft_builtins)
 end
 
 ---Takes a given `ft_builtins` table and inverts it so that sources are
----mapped to a table of unique methods where they are available.
+---mapped to a set view of unique methods where they are available.
 ---@generic T: table, K:string, V:table<string>, M:Package|string
 ---@param ft_builtins T<K,T<K,table<M>>>
 ---@return T<M,T<K>>
@@ -136,78 +192,60 @@ function M.invert_method_to_sources_map(ft_builtins)
     return inverted
 end
 
----Computes a score for a individual combination of a package and its methods.
----A key that's a valid mason package will have a higher
----factor for computing the score than a key that's not a valid mason package. The score
----of a key will be multiplied with the score of the table of methods where each method is treated
----equally meaning that they only alter the total score in numbers.
----@param source Package|string
----@param methods table<string>
----@param methods_to_amounts table<string, integer>
+---Computes a score for a source of a method. Valid mason packages rank higher than non mason
+---packages. The base score of the `source` will be multiplied with the `source_amount`. The `priority`
+---is added to the overall score.
+---@param source Package|string valid mason package or just a string
+---@param source_amount number the amount of appearances of a source across all methods
+---@param priority number the first `source` has a higher priority than the last
 ---@return number score the computed score
-function M.compute_score_of_source(source, methods, methods_to_amounts)
-    local scores = {
-        package = 25,
-        string = 3,
-        method = 11,
-        method_score_increase = 1.2
-    }
-    local score
-    local methods_score = #methods * scores.method
-
-    if _.any(function(method) return methods_to_amounts[method] == 1 end, methods) then
-        -- slightly increase the score of packages that are only available
-        -- for one method to avoid conflicts with trailing packages that
-        -- would rank the same score otherwise
-        methods_score = methods_score * scores.method_score_increase
-    end
-
-    if M.is_package(source) then
-        score = scores.package * methods_score
-    else
-        score = scores.string * methods_score
-    end
-    return score
+function M.compute_score_of_source(source, source_amount, priority)
+    local scores = { package = 10, string = 2 }
+    local score = M.is_package(source) and scores.package or scores.string
+    return score * source_amount + priority
 end
 
----Takes a given `sources_to_methods` table and computes a score for each combination of
----source and methods.
+---Takes a given `ft_builtins` table and computes a score for each source of a method table.
 ---@generic T: table, K:string, V:table<string>, M:Package|string
----@param sources_to_methods T<M,T<K>> a table that maps sources to a table of one or more methods
 ---@param ft_builtins T<K,T<K,table<M>>> to determine the amount of appearances from methods
----@return T<integer>
----@return T<integer, T<M, T<K>>>
-function M.compute_ft_builtins_score(sources_to_methods, ft_builtins)
-    local methods_to_amounts = {}
-    local computed_scores = {}
-    local computed_scores_to_combinations = {}
+---@return T<string, T<number>>, T<string, T<number, M>>
+function M.compute_ft_builtins_score(ft_builtins)
+    local sources_to_amounts = {} ---@type table<string|Package, number>
+    local method_to_scores = {}
+    local method_to_score_to_source = {}
+
+    for _, sources in pairs(ft_builtins) do
+        for _, source in pairs(sources) do
+            if not sources_to_amounts[source] then
+                sources_to_amounts[source] = 1
+            else
+                sources_to_amounts[source] = sources_to_amounts[source] + 1
+            end
+        end
+    end
 
     for method, sources in pairs(ft_builtins) do
-        methods_to_amounts[method] = #sources
+        local score
+        local computed_scores = {}
+        local score_to_source = {}
+        local source_count = #sources
+        for _, source in pairs(sources) do
+            local source_amount = sources_to_amounts[source] ---@type number
+            score = M.compute_score_of_source(source, source_amount, source_count)
+            table.insert(computed_scores, score)
+            score_to_source[score] = source
+            source_count = source_count - 1
+        end
+        method_to_scores[method] = computed_scores
+        method_to_score_to_source[method] = score_to_source
     end
 
-    for source, methods in pairs(sources_to_methods) do
-        local score = M.compute_score_of_source(source, methods, methods_to_amounts)
-
-        table.insert(computed_scores, score)
-        computed_scores_to_combinations[score] = { [source] = methods }
-    end
-
-    return computed_scores, computed_scores_to_combinations
+    return method_to_scores, method_to_score_to_source
 end
 
----Greatest `k` selection sort for sources.
----@generic T: table, K:string, V:table<string>, M:Package|string
----@param sources_to_methods T<M,T<K>> a table that maps sources to a table of one or more methods
----@param ft_builtins T<K,T<K,table<M>>> to determine the amount of appearances from methods
----@return T<T<M,T<K>>> sorted the sorted table where the first element is the table that wraps the best combination
-function M.source_selection_sort(sources_to_methods, ft_builtins)
-    local computed_scores, computed_scores_to_combinations =
-        M.compute_ft_builtins_score(
-            sources_to_methods,
-            ft_builtins
-        )
-
+---Selection sort that sorts a given list of `computed_scores` from highest to lowest.
+---@param computed_scores table<number>
+local function selection_sort(computed_scores)
     for i = #computed_scores, 1, -1 do
         local max_num = computed_scores[i]
         local max_index = i
@@ -223,13 +261,34 @@ function M.source_selection_sort(sources_to_methods, ft_builtins)
             computed_scores[max_index] = temp
         end
     end
+end
 
-    local res = {}
-    for _, score in pairs(computed_scores) do
-        table.insert(res, computed_scores_to_combinations[score])
+---Greatest `k` selection sort for sources.
+---@generic T: table, K:string, V:table<string>, M:Package|string
+---@param ft_builtins T<K,T<K,table<M>>> to determine the amount of appearances from methods
+---@return T<K, T<M>>
+function M.source_selection_sort(ft_builtins)
+    local sorted_ft_builtins = {}
+
+    local method_to_scores, method_to_score_to_source =
+        M.compute_ft_builtins_score(
+            ft_builtins
+        )
+
+    for method, scores in pairs(method_to_scores) do
+        selection_sort(scores)
+        print("Scores:", method, vim.inspect(scores))
     end
 
-    return res
+    for method, sorted_scores in pairs(method_to_scores) do
+        local sorted_sources = {}
+        for _, score in pairs(sorted_scores) do
+            table.insert(sorted_sources, method_to_score_to_source[method][score])
+        end
+        sorted_ft_builtins[method] = sorted_sources
+    end
+
+    return sorted_ft_builtins
 end
 
 return M

@@ -37,8 +37,6 @@ local skipped_servers = {
   "sourcekit",
   "sourcery",
   "spectral",
-  "sqlls",
-  "sqls",
   "standardrb",
   "stylelint_lsp",
   "svlangserver",

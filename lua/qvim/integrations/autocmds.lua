@@ -155,7 +155,7 @@ function M.load_defaults()
           if not (vim.fn.expand "%" == "" or buftype == "nofile") then
             vim.api.nvim_del_augroup_by_name "_file_opened"
             vim.cmd "do User FileOpened"
-            require("qvim.lsp").setup()
+            -- require("qvim.lsp").setup()
           end
         end,
       },
