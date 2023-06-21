@@ -83,8 +83,11 @@ function M.setup(filetype, lsp_server)
     local selection = select_null_ls_sources(filetype, method_to_package_info)
 
     for method, source in pairs(selection) do
-        Log:debug(fmt("Register "))
-        null_ls_utils.register_sources_on_ft(method, null_ls_utils.try_install_mason_package(method, source))
+        if not null_ls_utils.is_package(source) then
+            null_ls_utils.register_sources_on_ft(method, source)
+        else
+            null_ls_utils.try_install_and_register_mason_package(method, source)
+        end
     end
     Log:debug(fmt(
         "Finished setting up null-ls sources for the filetype '%s'. Sources are attached to the lsp server '%s'.",
