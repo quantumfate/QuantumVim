@@ -67,29 +67,34 @@ return {
     skipped_filetypes = skipped_filetypes,
   },
   buffer_mappings = {
-    normal_mode = {
-      ["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show hover" },
-      ["gd"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Goto definition" },
-      ["gD"] = { "<cmd>lua vim.lsp.buf.declaration()<cr>", "Goto Declaration" },
-      ["gr"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Goto references" },
-      ["gI"] = { "<cmd>lua vim.lsp.buf.implementation()<cr>", "Goto Implementation" },
-      ["gs"] = { "<cmd>lua vim.lsp.buf.signature_help()<cr>", "show signature help" },
-      ["gl"] = {
-        function()
-          local float = vim.diagnostic.config().float
+    ["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show hover" },
+    {
+      binding_group = "l",
+      name = "+LSP",
+      bindings = {
+        ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Goto definition" },
+        ["D"] = { "<cmd>lua vim.lsp.buf.declaration()<cr>", "Goto Declaration" },
+        ["r"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Goto references" },
+        ["I"] = { "<cmd>lua vim.lsp.buf.implementation()<cr>", "Goto Implementation" },
+        ["s"] = { "<cmd>lua vim.lsp.buf.signature_help()<cr>", "show signature help" },
+        ["l"] = {
+          function()
+            local float = vim.diagnostic.config().float
 
-          if float then
-            local config = type(float) == "table" and float or {}
-            config.scope = "line"
+            if float then
+              local config = type(float) == "table" and float or {}
+              config.scope = "line"
 
-            vim.diagnostic.open_float(config)
-          end
-        end,
-        "Show line diagnostics",
+              vim.diagnostic.open_float(config)
+            end
+          end,
+          "Show line diagnostics",
+        },
       },
-    },
-    insert_mode = {},
-    visual_mode = {},
+      options = {
+        prefix = "<leader>"
+      }
+    }
   },
   buffer_options = {
     --- enable completion triggered by <c-x><c-o>

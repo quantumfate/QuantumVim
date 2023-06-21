@@ -9,21 +9,6 @@ local function add_lsp_buffer_options(bufnr)
   end
 end
 
-local function add_lsp_buffer_keybindings(bufnr)
-  local mappings = {
-    normal_mode = "n",
-    insert_mode = "i",
-    visual_mode = "v",
-  }
-
-  for mode_name, mode_char in pairs(mappings) do
-    for key, remap in pairs(qvim.lsp.buffer_mappings[mode_name]) do
-      local opts = { buffer = bufnr, desc = remap[2], noremap = true, silent = true }
-      vim.keymap.set(mode_char, key, remap[1], opts)
-    end
-  end
-end
-
 function M.common_capabilities()
   local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
   if status_ok then
@@ -72,7 +57,7 @@ function M.common_on_attach(client, bufnr)
   if qvim.lsp.code_lens_refresh then
     lu.setup_codelens_refresh(client, bufnr)
   end
-  add_lsp_buffer_keybindings(bufnr)
+  require("qvim.keymaps"):register(bufnr, qvim.lsp.buffer_mappings)
   add_lsp_buffer_options(bufnr)
   lu.setup_document_symbols(client, bufnr)
 end
@@ -100,10 +85,7 @@ function M.setup()
     end
   end
 
-
   require("qvim.lsp.templates").generate_templates()
-
-
   require("qvim.lsp.null-ls").setup()
 
   autocmds.configure_format_on_save()

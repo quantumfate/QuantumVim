@@ -66,15 +66,17 @@ end
 
 ---Adapt keymaps for whichkey
 ---@param whichkey table The whichkey instance
-function M.adapt(whichkey)
+---@param bindings table|nil
+function M.adapt(whichkey, bindings)
     local _whichkey = qvim.integrations.whichkey
     whichkey.setup(_whichkey.options)
 
-    for descriptor, _ in pairs(qvim.keymaps) do
+    bindings = bindings or qvim.keymaps
+    for descriptor, _ in pairs(bindings) do
         shared_util.action_based_on_descriptor(
             descriptor,
             function()
-                local proxy = util.make_proxy_mutation_table(qvim.keymaps, mutation_for_single_binding)
+                local proxy = util.make_proxy_mutation_table(bindings, mutation_for_single_binding)
                 local mutated_keymappings = proxy[descriptor]
                 whichkey.register(
                     mutated_keymappings[#mutated_keymappings - 1],
@@ -82,7 +84,7 @@ function M.adapt(whichkey)
                 )
             end,
             function()
-                local proxy = util.make_proxy_mutation_table(qvim.keymaps, mutation_for_group_binding)
+                local proxy = util.make_proxy_mutation_table(bindings, mutation_for_group_binding)
                 local mutaged_group = proxy[descriptor]
                 whichkey.register(
                     mutaged_group[#mutaged_group - 1],

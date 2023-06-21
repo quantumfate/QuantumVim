@@ -27,7 +27,7 @@ function M:init()
         "Error",
         "Function"
       },
-      buftype_exclude = { "nofile", "prompt", "quickfix, :terminal" },
+      buftype_exclude = { "nofile", "prompt", "quickfix, :terminal", },
       context_patterns = {
         "class",
         "return",
@@ -59,6 +59,7 @@ function M:init()
         "neogitstatus",
         "NvimTree",
         "Trouble",
+        "toggleterm"
       }
     },
   }
