@@ -1,8 +1,9 @@
 local mason_null_ls = {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        "jose-elias-alvarez/null-ls.nvim",
+        "null-ls",
     },
+    lazy = true,
 }
 
 return mason_null_ls

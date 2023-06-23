@@ -9,6 +9,7 @@ local treesitter = {
         "TSInstallFromGrammar",
     },
     event = "User FileOpened",
+    lazy = true,
 }
 
 return treesitter

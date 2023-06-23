@@ -1,4 +1,5 @@
 local neodev = {
+    lazy = true,
     ft = { "lua" }
 }
 

@@ -17,6 +17,7 @@ local luasnip = {
     end,
     event = "InsertEnter",
     dependencies = { "rafamadriz/friendly-snippets" },
+    lazy = true,
 }
 
 return luasnip

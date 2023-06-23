@@ -1,6 +1,6 @@
 local lspconfig = {
     lazy = true,
-    dependencies = { "neodev.nvim" }
+    dependencies = { "neodev" }
 }
 
 return lspconfig

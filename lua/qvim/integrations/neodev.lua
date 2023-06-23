@@ -10,14 +10,14 @@ function M:init()
     on_config_done = nil,
     keymaps = {},
     options = {
-        -- neodev option configuration
-
+      -- neodev option configuration
+      library = { plugins = { "nvim-dap-ui" }, types = true }
     },
   }
   return neodev
 end
 
----The neodev setup function. The module will be required by 
+---The neodev setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()

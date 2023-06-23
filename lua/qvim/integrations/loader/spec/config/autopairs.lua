@@ -1,4 +1,5 @@
 local autopairs = {
+    lazy = true,
     event = "InsertEnter",
     dependencies = {
         "nvim-treesitter/nvim-treesitter",
