@@ -28,6 +28,7 @@ M.qvim_integrations = {
     "kyazdani42/nvim-tree.lua",
     "phaazon/hop.nvim",
     "ahmedkhalf/project.nvim",
+    "folke/neodev.nvim",
     notify = "rcarriga/nvim-notify",
     "akinsho/toggleterm.nvim",
     autopairs = "windwp/nvim-autopairs",

@@ -17,15 +17,24 @@ local function get_mason_packages_or_null_ls_sources(null_ls_builtins)
     local res = {}
 
     for method, sources in pairs(null_ls_builtins) do
-        local collection = {}
-        for _, source in pairs(sources) do
-            null_ls_utils.resolve_null_ls_package_from_mason(source):if_present(function(package)
-                table.insert(collection, package)
+        if type(sources) == "string" then
+            null_ls_utils.resolve_null_ls_package_from_mason(sources):if_present(function(
+                package)
+                res[null_ls_methods[method]] = package
             end):or_else_get(function()
-                table.insert(collection, source)
+                res[null_ls_methods[method]] = sources
             end)
+        else
+            local collection = {}
+            for _, source in pairs(sources) do
+                null_ls_utils.resolve_null_ls_package_from_mason(source):if_present(function(package)
+                    table.insert(collection, package)
+                end):or_else_get(function()
+                    table.insert(collection, source)
+                end)
+            end
+            res[null_ls_methods[method]] = collection
         end
-        res[null_ls_methods[method]] = collection
     end
 
     return res
@@ -54,9 +63,9 @@ local function select_null_ls_sources(ft, ft_builtins)
     local null_ls_methods = require("qvim.lsp.null-ls._meta").method_bridge()
     local selection = {}
 
-    local ok_provided, provided = pcall(require, "qvim.lsp.null-ls.providers." .. ft .. ".lua")
-    if ok_provided and provided.methods then
-        selection = get_mason_packages_or_null_ls_sources(provided.methods)
+    local ok_provided, provided = pcall(require, "qvim.lsp.null-ls.providers." .. ft)
+    if ok_provided and type(provided) == "table" then
+        selection = get_mason_packages_or_null_ls_sources(provided)
     end
 
     null_ls_utils.disassociate_selection_from_input(selection, ft_builtins)
