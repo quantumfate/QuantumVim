@@ -9,6 +9,7 @@ local treesitter = {
         "TSInstallFromGrammar",
     },
     event = "User FileOpened",
+    dependencies = { "nvim-dap-repl-highlights" },
     lazy = true,
 }
 
