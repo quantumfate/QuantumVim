@@ -114,12 +114,12 @@ return {
             end
 
             -- add formatter
-            local formatters = require "qvim.lsp.null-ls.formatters"
+            local formatters = require "qvim.lang.null-ls.formatters"
             local supported_formatters = formatters.list_registered(buf_ft)
             vim.list_extend(buf_client_names, supported_formatters)
 
             -- add linter
-            local linters = require "qvim.lsp.null-ls.linters"
+            local linters = require "qvim.lang.null-ls.linters"
             local supported_linters = linters.list_registered(buf_ft)
             vim.list_extend(buf_client_names, supported_linters)
 

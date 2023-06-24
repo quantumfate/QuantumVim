@@ -29,7 +29,7 @@ function M:init()
 
   require("qvim.integrations"):init()
 
-  local qvim_lsp_config = require "qvim.lsp.config"
+  local qvim_lsp_config = require "qvim.lang.lsp.config"
   qvim.lsp = vim.deepcopy(qvim_lsp_config)
   Log:info("Configs were loaded.")
 end

@@ -120,6 +120,7 @@ function M:setup()
     return
   end
 
+  require("qvim.integrations.dap.repl-highlights"):setup()
 
   local _treesitter = qvim.integrations.treesitter
   treesitter.setup(_treesitter.options)

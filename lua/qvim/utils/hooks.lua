@@ -36,7 +36,7 @@ function M.reset_cache()
     end
   end
   Log:trace(string.format("Cache invalidated for core modules: { %s }", table.concat(qvim_modules, ", ")))
-  require("qvim.lsp.templates").generate_templates()
+  require("qvim.lang.lsp.templates").generate_templates()
 end
 
 function M.run_post_update()
@@ -45,8 +45,8 @@ function M.run_post_update()
   if vim.fn.has "nvim-0.8" ~= 1 then
     local compat_tag = "1.1.4"
     vim.notify(
-        "Please upgrade your Neovim base installation. Newer version of Lunarvim requires v0.7+",
-        vim.log.levels.WARN
+      "Please upgrade your Neovim base installation. Newer version of Lunarvim requires v0.7+",
+      vim.log.levels.WARN
     )
     vim.wait(1000)
     local ret = reload("qvim.utils.git").switch_qvim_branch(compat_tag)

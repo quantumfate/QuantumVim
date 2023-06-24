@@ -155,7 +155,7 @@ function M.load_defaults()
           if not (vim.fn.expand "%" == "" or buftype == "nofile") then
             vim.api.nvim_del_augroup_by_name "_file_opened"
             vim.cmd "do User FileOpened"
-            require("qvim.lsp").setup()
+            require("qvim.lang").setup()
           end
         end,
       },
@@ -185,7 +185,7 @@ function M.enable_format_on_save()
     group = "lsp_format_on_save",
     pattern = opts.pattern,
     callback = function()
-      require("qvim.lsp.utils").format { timeout_ms = opts.timeout, filter = opts.filter }
+      require("qvim.lang.lsp.utils").format { timeout_ms = opts.timeout, filter = opts.filter }
     end,
   })
   Log:debug "enabled format-on-save"

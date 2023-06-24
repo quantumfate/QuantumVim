@@ -1,3 +1,0 @@
-return {
-    formatting = "stylua"
-}

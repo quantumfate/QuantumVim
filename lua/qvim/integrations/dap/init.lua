@@ -7,9 +7,11 @@ local Log = require "qvim.integrations.log"
 function M:init()
   local dap = {
     active = true,
-    on_config_done = nil,
+    on_config_done = function()
+      require("qvim.integrations.dap.virtual-text"):setup()
+    end,
     extensions = {
-      "mason-nvim-dap",
+      "mason-dap",
       "repl-highlights",
       "ui",
       "virtual-text",
@@ -56,27 +58,20 @@ end
 
 function M:config()
   -- dap config function to call additional configs
+  require("qvim.integrations.dap.adapters.python").adapt()
   for _, ext in pairs(qvim.integrations.dap.extensions) do
     require("qvim.integrations.dap." .. ext):config()
   end
+
+  require("qvim.integrations.dap.mason-dap"):setup()
 end
 
 ---The dap setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
-  local status_mason_dap, mason_dap = pcall(require, "mason-nivm-dap")
-  if not status_mason_dap then
-    return
-  end
+  local dap = require("dap")
 
-  mason_dap.setup(qvim.integrations.dap.mason_nvim_dap.options)
-
-  local status_ok, dap = pcall(reload, "dap")
-  if not status_ok then
-    Log:warn(string.format("The plugin '%s' could not be loaded.", dap))
-    return
-  end
 
   if qvim.use_icons then
     vim.fn.sign_define("DapBreakpoint", qvim.integrations.dap.options.breakpoint)
@@ -85,7 +80,26 @@ function M:setup()
   end
 
   local _dap = qvim.integrations.dap
-  dap.setup(_dap.options)
+
+  --dap.setup(_dap.options)
+
+  dap.adapters.python = {
+    type = 'executable',
+    command = os.getenv('HOME') .. '/.virtualenvs/debugpy/bin/python',
+    args = { '-m', 'debugpy.adapter' },
+  }
+
+  dap.configurations.python = {
+    {
+      type = 'python',
+      request = 'launch',
+      name = "Launch file",
+      program = "${file}",
+      pythonPath = function()
+        return '/usr/bin/python'
+      end,
+    },
+  }
 
   dap.set_log_level(qvim.integrations.dap.options.log.level)
   if _dap.on_config_done then

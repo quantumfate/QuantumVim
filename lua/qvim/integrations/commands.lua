@@ -65,7 +65,7 @@ M.defaults = {
   --{
   --  name = "qvimSyncCorePlugins",
   --  fn = function()
-  --    require("lua.qvim.integrations.loader.plugin-loader").sync_core_plugins()
+  --    require("qvim.integrations.loader.plugin-loader").sync_core_plugins()
   --  end,
   --},
   --{

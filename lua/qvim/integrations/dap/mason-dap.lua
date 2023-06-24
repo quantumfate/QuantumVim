@@ -11,7 +11,27 @@ function M:config()
     keymaps = {},
     options = {
       -- mason_nvim_dap option configuration
-      ensure_installed = { 'python', 'mix_task', 'cppdbg', 'codelldb', 'chrome', 'bash', 'node2' }
+      automatic_installation = true,
+      ensure_installed = { 'python', 'mix_task', 'cppdbg', 'codelldb', 'chrome', 'bash', 'node2' },
+      handlers = {
+        function(config)
+          -- all sources with no handler get passed here
+
+          -- Keep original functionality
+          require('mason-nvim-dap').default_setup(config)
+        end,
+        python = function(config)
+          config.adapters = {
+            type = "executable",
+            command = "/usr/bin/python3",
+            args = {
+              "-m",
+              "debugpy.adapter",
+            },
+          }
+          require('mason-nvim-dap').default_setup(config)
+        end,
+      }
     },
   }
 end

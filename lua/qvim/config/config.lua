@@ -72,7 +72,7 @@ return {
         ---@usage timeout number timeout in ms for the format request (Default: 1000)
         timeout = 1000,
         ---@usage filter func to select client
-        --filter = require("qvim.lsp.utils").format_filter,
+        --filter = require("qvim.lang.lsp.utils").format_filter,
         -- TODO add mason-lspconfig
     },
     luasnip = {
