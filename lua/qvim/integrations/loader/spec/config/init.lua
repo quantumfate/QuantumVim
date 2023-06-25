@@ -44,6 +44,9 @@ M.qvim_integrations = {
     "Tastyep/structlog.nvim",
     "lervag/vimtex",
     whichkey = "folke/which-key.nvim",
+    "mfussenegger/nvim-dap-python",
+    "nvim-neotest/neotest",
+    "nvim-neotest/neotest-python",
 }
 
 ---Set the lazy configuration spec for a plugin.

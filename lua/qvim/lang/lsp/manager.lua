@@ -94,13 +94,16 @@ function M.setup(server_name, filetype, user_config)
   vim.validate { name = { server_name, "string" } }
   user_config = user_config or {}
 
-  if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
-    return
+  local status_ok, filetypes = pcall(require, "qvim.lang.lsp.filetypes")
+  if status_ok then
+    if filetypes.setup(filetype) then
+      return
+    end
+
+    Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
   end
 
-  local status_ok, _ = pcall(require, "qvim.lang.lsp.filetypes." .. filetype)
-  if status_ok then
-    Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
+  if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
     return
   end
 
