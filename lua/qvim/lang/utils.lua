@@ -19,8 +19,11 @@ end
 ---@param servers table<string>
 ---@return string
 function M.select_language_server(ft, servers)
-    local _, server = pcall(require, "qvim.lang.lsp.filetypes." .. ft)
-    return server or servers[1]
+    local ok, server = pcall(require, "qvim.lang.lsp.selection." .. ft)
+    if ok then
+        return server
+    end
+    return servers[1]
 end
 
 return M

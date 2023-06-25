@@ -10,6 +10,20 @@ I copied and adapted a lot of the code from the [LunarVim](https://github.com/Lu
 
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 
+## Features
+
+- automatically setup everything needed for a filetype (dap, lsp, linters, formatting, diagnostics)
+- scalable keymap declaration with minimal effort
+
+### Languages
+
+- [ ] java
+  - [ ] jdtls setup with debug adapter
+- [ ] python
+- [ ] lua
+- [ ] c/cpp
+- [ ] rust
+
 ## Install
 
 ```bash

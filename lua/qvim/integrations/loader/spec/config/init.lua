@@ -12,6 +12,7 @@ M.qvim_integrations = {
     "kyazdani42/nvim-web-devicons",
     "b0o/schemastore.nvim",
     comment = "numToStr/Comment.nvim",
+    "mfussenegger/nvim-jdtls",
     dap = "mfussenegger/nvim-dap",
     cmp = "hrsh7th/nvim-cmp",
     "rcarriga/cmp-dap",

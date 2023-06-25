@@ -88,12 +88,19 @@ end
 
 ---Setup a language server by providing a name
 ---@param server_name string name of the language server
+---@param filetype string the filetype where the setup was called
 ---@param user_config table? when available it will take predence over any default configurations
-function M.setup(server_name, user_config)
+function M.setup(server_name, filetype, user_config)
   vim.validate { name = { server_name, "string" } }
   user_config = user_config or {}
 
   if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
+    return
+  end
+
+  local status_ok, _ = pcall(require, "qvim.lang.lsp.filetypes." .. filetype)
+  if status_ok then
+    Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
     return
   end
 

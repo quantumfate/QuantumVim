@@ -38,7 +38,7 @@ function M.generate_ftplugin(filetype, server_name, dir)
 
   filetype = filetype:match "%.([^.]*)$" or filetype
   local filename = join_paths(dir, filetype .. ".lua")
-  local setup_server_cmd = string.format([[require("qvim.lang.lsp.manager").setup(%q)]], server_name)
+  local setup_server_cmd = string.format([[require("qvim.lang.lsp.manager").setup(%q,%q)]], server_name, filetype)
   local setup_null_ls_cmd = string.format([[require("qvim.lang.null-ls.manager").setup(%q,%q)]], filetype, server_name)
   utils.write_file(filename, setup_server_cmd .. "\n" .. setup_null_ls_cmd .. "\n", "a")
 end
