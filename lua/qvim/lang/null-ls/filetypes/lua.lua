@@ -1,3 +1,3 @@
 return {
-    formatting = "stylua"
+	formatting = "stylua",
 }

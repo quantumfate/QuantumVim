@@ -1,7 +1,7 @@
 local gitsigns = {
-    event = "User FileOpened",
-    cmd = "Gitsigns",
-    lazy = true
+	event = "User FileOpened",
+	cmd = "Gitsigns",
+	lazy = true,
 }
 
 return gitsigns

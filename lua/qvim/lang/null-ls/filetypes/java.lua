@@ -1,4 +1,4 @@
 return {
-    formatting = "google-java-format",
-    diagnostics = ""
+	formatting = "google-java-format",
+	diagnostics = "",
 }

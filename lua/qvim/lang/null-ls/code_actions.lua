@@ -1,26 +1,26 @@
 local M = {}
 
-local Log = require "qvim.integrations.log"
+local Log = require("qvim.integrations.log")
 
-local null_ls = require "null-ls"
-local services = require "qvim.lang.null-ls.services"
+local null_ls = require("null-ls")
+local services = require("qvim.lang.null-ls.services")
 local method = null_ls.methods.CODE_ACTION
 
 function M.list_registered(filetype)
-  local registered_providers = services.list_registered_providers_names(filetype)
-  return registered_providers[method] or {}
+	local registered_providers = services.list_registered_providers_names(filetype)
+	return registered_providers[method] or {}
 end
 
 function M.setup(actions_configs)
-  if vim.tbl_isempty(actions_configs) then
-    return
-  end
+	if vim.tbl_isempty(actions_configs) then
+		return
+	end
 
-  local registered = services.register_sources(actions_configs, method)
+	local registered = services.register_sources(actions_configs, method)
 
-  if #registered > 0 then
-    Log:debug("Registered the following action-handlers: " .. unpack(registered))
-  end
+	if #registered > 0 then
+		Log:debug("Registered the following action-handlers: " .. unpack(registered))
+	end
 end
 
 return M

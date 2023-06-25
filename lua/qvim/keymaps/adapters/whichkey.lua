@@ -19,80 +19,70 @@ local group_prefix = constants.binding_group_constants.key_prefix
 ---@param binding_descriptor string
 ---@return table<table, table>
 local function mutation_for_single_binding(descriptors_t, binding_descriptor)
-    local keymaps = descriptors_t[binding_descriptor]
-    local whichkey_mappings = {}
-    local _opts = nil
-    for lhs, opts in pairs(keymaps) do
-        if not _opts then
-            _opts = fn.shallow_table_copy(opts)
-            _opts[rhs] = nil
-            _opts[desc] = nil
-        end
+	local keymaps = descriptors_t[binding_descriptor]
+	local whichkey_mappings = {}
+	local _opts = nil
+	for lhs, opts in pairs(keymaps) do
+		if not _opts then
+			_opts = fn.shallow_table_copy(opts)
+			_opts[rhs] = nil
+			_opts[desc] = nil
+		end
 
-        whichkey_mappings[lhs] = { opts[rhs], opts[desc] }
+		whichkey_mappings[lhs] = { opts[rhs], opts[desc] }
 
-        -- add members that are not included in the descriptors
-        if keymaps[lhs][constants.neovim_options_constants.callback] then
-            whichkey_mappings[lhs][constants.neovim_options_constants.callback] = keymaps[lhs]
-                [constants.neovim_options_constants.callback]
-        end
-        opts[rhs] = nil
-        opts[desc] = nil
-    end
-    return { whichkey_mappings, _opts }
+		-- add members that are not included in the descriptors
+		if keymaps[lhs][constants.neovim_options_constants.callback] then
+			whichkey_mappings[lhs][constants.neovim_options_constants.callback] =
+				keymaps[lhs][constants.neovim_options_constants.callback]
+		end
+		opts[rhs] = nil
+		opts[desc] = nil
+	end
+	return { whichkey_mappings, _opts }
 end
 
 local function mutation_for_group_binding(descriptors_t, group_descriptor)
-    local group = descriptors_t[group_descriptor]
-    local _group = fn.shallow_table_copy(group)
-    local whichkey_group = {}
-    local whichkey_group_opts = _group[group_opts]
-    for _, opts in pairs(_group[group_bindings]) do
-        -- Don't ask me why but for some reason whichkey expects the
-        -- values in the following order (it's counter intuitive but
-        -- it is what it is)
-        opts[constants.desc_index] = opts[rhs]
-        opts[constants.rhs_index] = opts[desc]
-        opts[rhs] = nil
-        opts[desc] = nil
-    end
-    whichkey_group[_group[group_binding_trigger]] = _group[group_bindings]
-    whichkey_group[_group[group_binding_trigger]][group_name] = _group[group_name]
+	local group = descriptors_t[group_descriptor]
+	local _group = fn.shallow_table_copy(group)
+	local whichkey_group = {}
+	local whichkey_group_opts = _group[group_opts]
+	for _, opts in pairs(_group[group_bindings]) do
+		-- Don't ask me why but for some reason whichkey expects the
+		-- values in the following order (it's counter intuitive but
+		-- it is what it is)
+		opts[constants.desc_index] = opts[rhs]
+		opts[constants.rhs_index] = opts[desc]
+		opts[rhs] = nil
+		opts[desc] = nil
+	end
+	whichkey_group[_group[group_binding_trigger]] = _group[group_bindings]
+	whichkey_group[_group[group_binding_trigger]][group_name] = _group[group_name]
 
-    whichkey_group_opts[group_prefix] = group[group_prefix]
+	whichkey_group_opts[group_prefix] = group[group_prefix]
 
-    return { whichkey_group, whichkey_group_opts }
+	return { whichkey_group, whichkey_group_opts }
 end
 
 ---Adapt keymaps for whichkey
 ---@param whichkey table The whichkey instance
 ---@param bindings table|nil
 function M.adapt(whichkey, bindings)
-    local _whichkey = qvim.integrations.whichkey
-    whichkey.setup(_whichkey.options)
+	local _whichkey = qvim.integrations.whichkey
+	whichkey.setup(_whichkey.options)
 
-    bindings = bindings or qvim.keymaps
-    for descriptor, _ in pairs(bindings) do
-        shared_util.action_based_on_descriptor(
-            descriptor,
-            function()
-                local proxy = util.make_proxy_mutation_table(bindings, mutation_for_single_binding)
-                local mutated_keymappings = proxy[descriptor]
-                whichkey.register(
-                    mutated_keymappings[#mutated_keymappings - 1],
-                    mutated_keymappings[#mutated_keymappings]
-                )
-            end,
-            function()
-                local proxy = util.make_proxy_mutation_table(bindings, mutation_for_group_binding)
-                local mutaged_group = proxy[descriptor]
-                whichkey.register(
-                    mutaged_group[#mutaged_group - 1],
-                    mutaged_group[#mutaged_group]
-                )
-            end
-        )
-    end
+	bindings = bindings or qvim.keymaps
+	for descriptor, _ in pairs(bindings) do
+		shared_util.action_based_on_descriptor(descriptor, function()
+			local proxy = util.make_proxy_mutation_table(bindings, mutation_for_single_binding)
+			local mutated_keymappings = proxy[descriptor]
+			whichkey.register(mutated_keymappings[#mutated_keymappings - 1], mutated_keymappings[#mutated_keymappings])
+		end, function()
+			local proxy = util.make_proxy_mutation_table(bindings, mutation_for_group_binding)
+			local mutaged_group = proxy[descriptor]
+			whichkey.register(mutaged_group[#mutaged_group - 1], mutaged_group[#mutaged_group])
+		end)
+	end
 end
 
 return M

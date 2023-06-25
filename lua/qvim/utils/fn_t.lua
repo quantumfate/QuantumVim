@@ -9,9 +9,9 @@ local Log = require("qvim.integrations.log")
 ---@param s string? the name of the table or defaults to metatable type
 ---@return any
 function Table.rawget_debug(t, k, s)
-  s = s or tostring(getmetatable(t))
-  Log:debug(string.format("The key '%s' was referenced from the '%s' table.", k, s))
-  return rawget(t, k)
+	s = s or tostring(getmetatable(t))
+	Log:debug(string.format("The key '%s' was referenced from the '%s' table.", k, s))
+	return rawget(t, k)
 end
 
 ---Wraps Lua's builtin rawset. Calls rawset and prints debug information.
@@ -21,9 +21,9 @@ end
 ---@param s string? the name of the table or defaults to metatable type
 ---@return table
 function Table.rawset_debug(t, k, v, s)
-  s = s or tostring(getmetatable(t))
-  Log:debug(string.format("Added the key '%s' to the '%s' table.", k, s))
-  return rawset(t, k, v)
+	s = s or tostring(getmetatable(t))
+	Log:debug(string.format("Added the key '%s' to the '%s' table.", k, s))
+	return rawset(t, k, v)
 end
 
 --- Find the first entry for which the predicate returns true.
@@ -31,12 +31,12 @@ end
 ---@param predicate function function called for each entry of t
 ---@return any|nil entry for which the predicate returned True or nil
 function Table.find_first(t, predicate)
-  for _, entry in pairs(t) do
-    if predicate(entry) then
-      return entry
-    end
-  end
-  return nil
+	for _, entry in pairs(t) do
+		if predicate(entry) then
+			return entry
+		end
+	end
+	return nil
 end
 
 ---Takes keys or values from a given table `tbl` and applies a transformation on either the keys or values
@@ -48,15 +48,15 @@ end
 ---@param do_keys boolean
 ---@return table
 function Table.transform_to_table(tbl, transform_fn, do_keys)
-  local transformed = {}
-  for k, v in pairs(tbl) do
-    if do_keys then
-      transformed[#transformed + 1] = transform_fn(k)
-    else
-      transformed[k] = transform_fn(v)
-    end
-  end
-  return transformed
+	local transformed = {}
+	for k, v in pairs(tbl) do
+		if do_keys then
+			transformed[#transformed + 1] = transform_fn(k)
+		else
+			transformed[k] = transform_fn(v)
+		end
+	end
+	return transformed
 end
 
 ---Checks if a table contains a key
@@ -65,20 +65,20 @@ end
 ---@param recurse boolean?
 ---@return boolean
 function Table.has_any_key(t, find, recurse)
-  if recurse == nil then
-    recurse = false
-  end
-  for key, _ in pairs(t) do
-    if key == find then
-      return true
-    end
-    if type(t[key]) == "table" and recurse then
-      if Table.has_any_key(t[key], find, recurse) then
-        return true
-      end
-    end
-  end
-  return false
+	if recurse == nil then
+		recurse = false
+	end
+	for key, _ in pairs(t) do
+		if key == find then
+			return true
+		end
+		if type(t[key]) == "table" and recurse then
+			if Table.has_any_key(t[key], find, recurse) then
+				return true
+			end
+		end
+	end
+	return false
 end
 
 ---Checks if a table contains a value
@@ -87,31 +87,31 @@ end
 ---@param recurse boolean?
 ---@return boolean
 function Table.has_any_value(t, find, recurse)
-  if recurse == nil then
-    recurse = false
-  end
-  for _, entry in pairs(t) do
-    if entry == find then
-      return true
-    end
-    if type(entry) == "table" and recurse then
-      if Table.has_any_value(entry, find, recurse) then
-        return true
-      end
-    end
-  end
-  return false
+	if recurse == nil then
+		recurse = false
+	end
+	for _, entry in pairs(t) do
+		if entry == find then
+			return true
+		end
+		if type(entry) == "table" and recurse then
+			if Table.has_any_value(entry, find, recurse) then
+				return true
+			end
+		end
+	end
+	return false
 end
 
 ---Counts the elements in a table regadless of their type
 ---@param t table
 ---@return integer
 function Table.length(t)
-  local count = 0
-  for _ in pairs(t) do
-    count = count + 1
-  end
-  return count
+	local count = 0
+	for _ in pairs(t) do
+		count = count + 1
+	end
+	return count
 end
 
 --- Check if the predicate returns True for at least one entry of the table.
@@ -119,7 +119,7 @@ end
 -- @param predicate The function called for each entry of t
 -- @return True if predicate returned True at least once, false otherwise
 function Table.contains(t, predicate)
-  return Table.find_first(t, predicate) ~= nil
+	return Table.find_first(t, predicate) ~= nil
 end
 
 return Table

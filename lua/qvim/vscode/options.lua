@@ -1,5 +1,5 @@
 -- VSCode specific options
-vim.cmd [[
+vim.cmd([[
   " split the workspace
   function! s:split(...) abort
   let direction = a:1
@@ -83,4 +83,4 @@ nnoremap <silent> <C-w>_ :<C-u> :call VSCodeNotify('workbench.action.toggleEdito
 nnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
 xnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
 
-]]
+]])

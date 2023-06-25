@@ -1,5 +1,5 @@
 local nightfox = {
-    priority = 1000,
+	priority = 1000,
 }
 
 return nightfox

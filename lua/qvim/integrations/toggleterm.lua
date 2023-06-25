@@ -1,120 +1,117 @@
 ---The toggleterm configuration file
 local M = {}
 
-local Log = require "qvim.integrations.log"
+local Log = require("qvim.integrations.log")
 
 ---Registers the global configuration scope for toggleterm
 function M:init()
-  local toggleterm = {
-    active = true,
-    on_config_done = function()
-      local Terminal = require("toggleterm.terminal").Terminal
-      local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+	local toggleterm = {
+		active = true,
+		on_config_done = function()
+			local Terminal = require("toggleterm.terminal").Terminal
+			local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
-      function _LAZYGIT_TOGGLE()
-        lazygit:toggle()
-      end
+			function _LAZYGIT_TOGGLE()
+				lazygit:toggle()
+			end
 
-      local node = Terminal:new({ cmd = "node", hidden = true })
+			local node = Terminal:new({ cmd = "node", hidden = true })
 
-      function _NODE_TOGGLE()
-        node:toggle()
-      end
+			function _NODE_TOGGLE()
+				node:toggle()
+			end
 
-      local ncdu = Terminal:new({ cmd = "ncdu", hidden = true })
+			local ncdu = Terminal:new({ cmd = "ncdu", hidden = true })
 
-      function _NCDU_TOGGLE()
-        ncdu:toggle()
-      end
+			function _NCDU_TOGGLE()
+				ncdu:toggle()
+			end
 
-      local htop = Terminal:new({ cmd = "htop", hidden = true })
+			local htop = Terminal:new({ cmd = "htop", hidden = true })
 
-      function _HTOP_TOGGLE()
-        htop:toggle()
-      end
+			function _HTOP_TOGGLE()
+				htop:toggle()
+			end
 
-      local python = Terminal:new({ cmd = "python", hidden = true })
+			local python = Terminal:new({ cmd = "python", hidden = true })
 
-      function _PYTHON_TOGGLE()
-        python:toggle()
-      end
-    end,
-    whichbinding_group = {
+			function _PYTHON_TOGGLE()
+				python:toggle()
+			end
+		end,
+		whichbinding_group = {},
+		keymaps = {
+			{
+				binding_group = "t",
+				name = "Toggleterm",
+				bindings = {
+					n = { rhs = "<cmd>lua _NODE_TOGGLE()<cr>", desc = "Node" },
+					u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
+					t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
+					p = { rhs = "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
+					f = { "<cmd>ToggleTerm direction=float<cr>", desc = "Float" },
+					h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
+					v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
+				},
+			},
+		},
+		options = {
+			-- toggleterm option configuration
+			size = 20,
+			open_mapping = [[<c-\>]],
+			hide_numbers = true,
+			shade_filetypes = {},
+			shade_terminals = true,
+			shading_factor = 2,
+			start_in_insert = true,
+			insert_mappings = true,
+			persist_size = true,
+			direction = "tab",
+			close_on_exit = true,
+			shell = vim.o.shell,
+			float_opts = {
+				border = "curved",
+				winblend = 0,
+				highlights = {
+					border = "Normal",
+					background = "Normal",
+				},
+			},
+		},
+	}
+	-- TODO: adapt keymaps to global whichkey keymaps
+	function _G.set_terminal_keymaps()
+		local opts = { noremap = true }
 
-    },
-    keymaps = {
-      {
-        binding_group = "t",
-        name = "Toggleterm",
-        bindings = {
-          n = { rhs = "<cmd>lua _NODE_TOGGLE()<cr>", desc = "Node" },
-          u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
-          t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
-          p = { rhs = "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
-          f = { "<cmd>ToggleTerm direction=float<cr>", desc = "Float" },
-          h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
-          v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
-        }
-      }
-    },
-    options = {
-      -- toggleterm option configuration
-      size = 20,
-      open_mapping = [[<c-\>]],
-      hide_numbers = true,
-      shade_filetypes = {},
-      shade_terminals = true,
-      shading_factor = 2,
-      start_in_insert = true,
-      insert_mappings = true,
-      persist_size = true,
-      direction = "tab",
-      close_on_exit = true,
-      shell = vim.o.shell,
-      float_opts = {
-        border = "curved",
-        winblend = 0,
-        highlights = {
-          border = "Normal",
-          background = "Normal",
-        },
-      },
+		vim.api.nvim_buf_set_keymap(0, "t", "<esc>", [[<C-\><C-n>]], opts)
+		vim.api.nvim_buf_set_keymap(0, "t", "jk", [[<C-\><C-n>]], opts)
+		vim.api.nvim_buf_set_keymap(0, "t", "<C-h>", [[<C-\><C-n><C-W>h]], opts)
+		vim.api.nvim_buf_set_keymap(0, "t", "<C-j>", [[<C-\><C-n><C-W>j]], opts)
+		vim.api.nvim_buf_set_keymap(0, "t", "<C-k>", [[<C-\><C-n><C-W>k]], opts)
+		vim.api.nvim_buf_set_keymap(0, "t", "<C-l>", [[<C-\><C-n><C-W>l]], opts)
+	end
 
-    },
-  }
-  -- TODO: adapt keymaps to global whichkey keymaps
-  function _G.set_terminal_keymaps()
-    local opts = { noremap = true }
+	vim.cmd("autocmd! TermOpen term://* lua set_terminal_keymaps()")
 
-    vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', 'jk', [[<C-\><C-n>]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-h>', [[<C-\><C-n><C-W>h]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-j>', [[<C-\><C-n><C-W>j]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-k>', [[<C-\><C-n><C-W>k]], opts)
-    vim.api.nvim_buf_set_keymap(0, 't', '<C-l>', [[<C-\><C-n><C-W>l]], opts)
-  end
-
-  vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
-
-  return toggleterm
+	return toggleterm
 end
 
 ---The toggleterm setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
-  local status_ok, toggleterm = pcall(reload, "toggleterm")
-  if not status_ok then
-    Log:warn(string.format("The plugin '%s' could not be loaded.", toggleterm))
-    return
-  end
+	local status_ok, toggleterm = pcall(reload, "toggleterm")
+	if not status_ok then
+		Log:warn(string.format("The plugin '%s' could not be loaded.", toggleterm))
+		return
+	end
 
-  local _toggleterm = qvim.integrations.toggleterm
-  toggleterm.setup(_toggleterm.options)
+	local _toggleterm = qvim.integrations.toggleterm
+	toggleterm.setup(_toggleterm.options)
 
-  if _toggleterm.on_config_done then
-    _toggleterm.on_config_done()
-  end
+	if _toggleterm.on_config_done then
+		_toggleterm.on_config_done()
+	end
 end
 
 return M

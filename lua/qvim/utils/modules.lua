@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require "qvim.integrations.log"
+local Log = require("qvim.integrations.log")
 -- revisit this
 -- function prequire(package)
 --   local status, lib = pcall(require, package)
@@ -20,12 +20,12 @@ local Log = require "qvim.integrations.log"
 ---@param new table the new table
 ---@param k any the key of the respective table
 local function _assign(old, new, k)
-  local otype = type(old[k])
-  local ntype = type(new[k])
-  if (otype == "thread" or otype == "userdata") or (ntype == "thread" or ntype == "userdata") then
-    vim.notify(string.format("warning: old or new attr %s type be thread or userdata", k))
-  end
-  old[k] = new[k]
+	local otype = type(old[k])
+	local ntype = type(new[k])
+	if (otype == "thread" or otype == "userdata") or (ntype == "thread" or ntype == "userdata") then
+		vim.notify(string.format("warning: old or new attr %s type be thread or userdata", k))
+	end
+	old[k] = new[k]
 end
 
 ---Replaces the the values of the old table with the values
@@ -45,56 +45,61 @@ end
 ---@param new table the entries of the new table
 ---@param repeat_tbl table a flag table to keep track of processed entries where the key maps to booleans
 local function _replace(old, new, repeat_tbl)
-  if repeat_tbl[old] then
-    -- return when an entry was already processed
-    return
-  end
-  repeat_tbl[old] = true
+	if repeat_tbl[old] then
+		-- return when an entry was already processed
+		return
+	end
+	repeat_tbl[old] = true
 
-  -- if a key from the old table does not exist in the new table
-  -- it will be deleted from the old table
-  local dellist = {}
-  for k, _ in pairs(old) do
-    if not new[k] then
-      table.insert(dellist, k)
-    end
-  end
-  -- deleting
-  for _, v in ipairs(dellist) do
-    old[v] = nil
-  end
+	-- if a key from the old table does not exist in the new table
+	-- it will be deleted from the old table
+	local dellist = {}
+	for k, _ in pairs(old) do
+		if not new[k] then
+			table.insert(dellist, k)
+		end
+	end
+	-- deleting
+	for _, v in ipairs(dellist) do
+		old[v] = nil
+	end
 
-  -- iterate the new table
-  for k, _ in pairs(new) do
-    if not old[k] then
-      old[k] = new[k]
-    else
-      if type(old[k]) ~= type(new[k]) then
-        Log:debug(
-          string.format("Reloader: mismatch between old [%s] and new [%s] type for [%s]", type(old[k]), type(new[k]), k)
-        )
-        _assign(old, new, k)
-      else
-        if type(old[k]) == "table" then
-          -- recurse
-          _replace(old[k], new[k], repeat_tbl)
-        else
-          -- overwrite
-          _assign(old, new, k)
-        end
-      end
-    end
-  end
+	-- iterate the new table
+	for k, _ in pairs(new) do
+		if not old[k] then
+			old[k] = new[k]
+		else
+			if type(old[k]) ~= type(new[k]) then
+				Log:debug(
+					string.format(
+						"Reloader: mismatch between old [%s] and new [%s] type for [%s]",
+						type(old[k]),
+						type(new[k]),
+						k
+					)
+				)
+				_assign(old, new, k)
+			else
+				if type(old[k]) == "table" then
+					-- recurse
+					_replace(old[k], new[k], repeat_tbl)
+				else
+					-- overwrite
+					_assign(old, new, k)
+				end
+			end
+		end
+	end
 end
 
 ---Unloads a module and returns it's state before it was unloaded.
 ---@param m table the module that should be unloaded
 ---@return table old the module before it was unloaded
 M.unload = function(m)
-  local old = package.loaded[m]
-  package.loaded[m] = nil
-  _G[m] = nil
-  return old
+	local old = package.loaded[m]
+	package.loaded[m] = nil
+	_G[m] = nil
+	return old
 end
 
 --- Requires a module and clears any chached state of the module.
@@ -103,36 +108,36 @@ end
 ---@param m table the module that should be clean required
 ---@return table module the clean required module on success else the old module before require
 M.require_clean = function(m)
-  local old = M.unload(m)
-  local status_ok, module = pcall(require, m)
-  if not status_ok then
-    local trace = debug.getinfo(2, "SL")
-    local shorter_src = trace.short_src
-    local lineinfo = shorter_src .. ":" .. (trace.currentline or trace.linedefined)
-    local msg = string.format("%s : skipped clean require [%s]", lineinfo, m)
-    Log:debug(msg)
-    package.loaded[m] = old
-    _G[m] = old
-    return old
-  else
-    return module
-  end
+	local old = M.unload(m)
+	local status_ok, module = pcall(require, m)
+	if not status_ok then
+		local trace = debug.getinfo(2, "SL")
+		local shorter_src = trace.short_src
+		local lineinfo = shorter_src .. ":" .. (trace.currentline or trace.linedefined)
+		local msg = string.format("%s : skipped clean require [%s]", lineinfo, m)
+		Log:debug(msg)
+		package.loaded[m] = old
+		_G[m] = old
+		return old
+	else
+		return module
+	end
 end
 
 ---Requires a module using the pcall statement
 ---@param mod string the path to the module
 ---@return table|boolean module the module's table or false on failed pcall
 M.require_safe = function(mod)
-  local status_ok, module = pcall(require, mod)
-  if not status_ok then
-    local trace = debug.getinfo(2, "SL")
-    local shorter_src = trace.short_src
-    local lineinfo = shorter_src .. ":" .. (trace.currentline or trace.linedefined)
-    local msg = string.format("%s : skipped loading [%s]", lineinfo, mod)
-    Log:debug(msg)
-    return status_ok
-  end
-  return module
+	local status_ok, module = pcall(require, mod)
+	if not status_ok then
+		local trace = debug.getinfo(2, "SL")
+		local shorter_src = trace.short_src
+		local lineinfo = shorter_src .. ":" .. (trace.currentline or trace.linedefined)
+		local msg = string.format("%s : skipped loading [%s]", lineinfo, mod)
+		Log:debug(msg)
+		return status_ok
+	end
+	return module
 end
 
 --- Requires a module and clears any chached state of the module.
@@ -142,45 +147,45 @@ end
 ---@param mod string the path to the module
 ---@return table|boolean module the clean required module on success else the old module before require or false
 M.reload = function(mod)
-  if not package.loaded[mod] then
-    return M.require_safe(mod)
-  end
+	if not package.loaded[mod] then
+		return M.require_safe(mod)
+	end
 
-  local old = package.loaded[mod]
-  package.loaded[mod] = nil
-  local new = M.require_safe(mod)
+	local old = package.loaded[mod]
+	package.loaded[mod] = nil
+	local new = M.require_safe(mod)
 
-  if type(old) == "table" and type(new) == "table" then
-    local repeat_tbl = {}
-    _replace(old, new, repeat_tbl)
-  end
+	if type(old) == "table" and type(new) == "table" then
+		local repeat_tbl = {}
+		_replace(old, new, repeat_tbl)
+	end
 
-  package.loaded[mod] = old
-  return old
+	package.loaded[mod] = old
+	return old
 end
 
 -- code from <https://github.com/tjdevries/lazy-require.nvim/blob/bb626818ebc175b8c595846925fd96902b1ce02b/lua/lazy-require.lua#L25>
 function M.require_on_index(require_path)
-  return setmetatable({}, {
-    __index = function(_, key)
-      return require(require_path)[key]
-    end,
+	return setmetatable({}, {
+		__index = function(_, key)
+			return require(require_path)[key]
+		end,
 
-    __newindex = function(_, key, value)
-      require(require_path)[key] = value
-    end,
-  })
+		__newindex = function(_, key, value)
+			require(require_path)[key] = value
+		end,
+	})
 end
 
 -- code from <https://github.com/tjdevries/lazy-require.nvim/blob/bb626818ebc175b8c595846925fd96902b1ce02b/lua/lazy-require.lua#L25>
 function M.require_on_exported_call(require_path)
-  return setmetatable({}, {
-    __index = function(_, k)
-      return function(...)
-        return require(require_path)[k](...)
-      end
-    end,
-  })
+	return setmetatable({}, {
+		__index = function(_, k)
+			return function(...)
+				return require(require_path)[k](...)
+			end
+		end,
+	})
 end
 
 return M

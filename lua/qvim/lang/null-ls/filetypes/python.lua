@@ -1,4 +1,4 @@
 return {
-    formatting = "black",
-    diagnostics = "flake8"
+	formatting = "black",
+	diagnostics = "flake8",
 }
