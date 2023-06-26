@@ -90,6 +90,10 @@ function M.setup(filetype, lsp_server)
 	vim.validate({ name = { filetype, "string" } })
 	vim.validate({ name = { lsp_server, "string" } })
 
+	if #require("null-ls.sources").get({}) ~= 0 then
+		return
+	end
+
 	local ft_map = require("qvim.lang.null-ls._meta").ft_bridge()
 	local null_ls_builtins = ft_map[filetype]
 

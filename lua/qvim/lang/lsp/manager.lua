@@ -96,6 +96,10 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 	vim.validate({ name = { server_name, "string" } })
 	user_config = user_config or {}
 
+	if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
+		return
+	end
+
 	if not skip_ft_ext and filetype then
 		local status_ok, filetypes = pcall(require, "qvim.lang.lsp.filetypes")
 		if status_ok then
@@ -110,11 +114,6 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 
 			Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
 		end
-	end
-
-
-	if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
-		return
 	end
 
 	local package = lsp_utils.get_mason_package(server_name)

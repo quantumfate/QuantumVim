@@ -53,6 +53,9 @@ end
 ---@param source string|Package
 ---@return boolean|nil
 function M.register_sources_on_ft(method, source)
+	if require("null-ls").is_registered(source) then
+		return
+	end
 	local null_ls_methods = require("qvim.lang.null-ls._meta").method_bridge()
 	local mason_null_ls_mapping = require("mason-null-ls.mappings.source")
 	local source_options = {}
