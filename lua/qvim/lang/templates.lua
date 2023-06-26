@@ -42,6 +42,12 @@ function M.generate_ftplugin(filetype, server_name, dir)
 	local setup_server_cmd = string.format([[require("qvim.lang.lsp.manager").setup(%q,%q)]], server_name, filetype)
 	local setup_null_ls_cmd =
 		string.format([[require("qvim.lang.null-ls.manager").setup(%q,%q)]], filetype, server_name)
+	local setup_dap_cmd
+	if not filetype == "java" then
+		setup_dap_cmd = string.format([[require("qvim.lang.dap.manager").setup(%q,%q)]], filetype, server_name)
+		utils.write_file(filename, setup_server_cmd .. "\n" .. setup_null_ls_cmd .. "\n" .. setup_dap_cmd .. "\n", "a")
+		return
+	end
 	utils.write_file(filename, setup_server_cmd .. "\n" .. setup_null_ls_cmd .. "\n", "a")
 end
 

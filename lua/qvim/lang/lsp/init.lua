@@ -1,3 +1,4 @@
+---@class lsp
 local M = {}
 local Log = require("qvim.integrations.log")
 local utils = require("qvim.utils")
