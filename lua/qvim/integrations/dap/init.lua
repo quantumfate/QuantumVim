@@ -57,8 +57,6 @@ function M:init()
 end
 
 function M:config()
-	-- dap config function to call additional configs
-	require("qvim.integrations.dap.adapters.python").adapt()
 	for _, ext in pairs(qvim.integrations.dap.extensions) do
 		require("qvim.integrations.dap." .. ext):config()
 	end

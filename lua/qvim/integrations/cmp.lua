@@ -392,6 +392,7 @@ function M:setup()
 			})
 		end
 	end
+
 	if _cmp.on_config_done then
 		_cmp.on_config_done()
 	end

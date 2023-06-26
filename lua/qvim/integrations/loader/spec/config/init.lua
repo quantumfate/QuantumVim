@@ -47,6 +47,9 @@ M.qvim_integrations = {
 	"mfussenegger/nvim-dap-python",
 	"nvim-neotest/neotest",
 	"nvim-neotest/neotest-python",
+	"stevearc/dressing.nvim",
+	"AckslD/swenv.nvim",
+	"p00f/clangd_extensions.nvim"
 }
 
 ---Set the lazy configuration spec for a plugin.

@@ -9,6 +9,7 @@ I copied and adapted a lot of the code from the [LunarVim](https://github.com/Lu
 ## Dependencies
 
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
+- [sdkman](https://github.com/sdkman/sdkman-cli)
 
 ## Features
 

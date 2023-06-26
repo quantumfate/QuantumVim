@@ -83,25 +83,35 @@ local function launch_server(server_name, config)
 	end
 	require("lspconfig")[server_name].setup(config)
 	buf_try_add(server_name)
+	print("user conf:", vim.inspect(config))
 	Log:debug(fmt("Server started: %s", server_name))
 end
 
 ---Setup a language server by providing a name
 ---@param server_name string name of the language server
----@param filetype string the filetype where the setup was called
+---@param filetype string? the filetype where the setup was called
 ---@param user_config table? when available it will take predence over any default configurations
-function M.setup(server_name, filetype, user_config)
+---@param skip_ft_ext boolean?
+function M.setup(server_name, filetype, user_config, skip_ft_ext)
 	vim.validate({ name = { server_name, "string" } })
 	user_config = user_config or {}
 
-	local status_ok, filetypes = pcall(require, "qvim.lang.lsp.filetypes")
-	if status_ok then
-		if filetypes.setup(filetype) then
-			return
-		end
+	if not skip_ft_ext and filetype then
+		local status_ok, filetypes = pcall(require, "qvim.lang.lsp.filetypes")
+		if status_ok then
+			if filetypes.setup(filetype) then
+				return
+			end
 
-		Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
+			local custom_lsp_settings = filetypes.custom_lsp_settings(filetype)
+			if custom_lsp_settings then
+				user_config = custom_lsp_settings
+			end
+
+			Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
+		end
 	end
+
 
 	if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
 		return
@@ -146,6 +156,8 @@ function M.setup(server_name, filetype, user_config)
 			Log:debug(server_name .. " is not managed by the automatic installer")
 		end
 	end
+
+
 
 	local config = resolve_config(server_name, resolve_mason_config(server_name), user_config)
 	launch_server(server_name, config)
