@@ -201,7 +201,6 @@ function M.source_selection_sort(ft_builtins)
 
 	for method, scores in pairs(method_to_scores) do
 		selection_sort(scores)
-		print("Scores:", method, vim.inspect(scores))
 	end
 
 	for method, sorted_scores in pairs(method_to_scores) do

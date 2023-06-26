@@ -38,8 +38,6 @@ function M.setup(filetype)
             package_name, filetype))
         return
     end
-
-    -- setup the debug adapter
 end
 
 return M

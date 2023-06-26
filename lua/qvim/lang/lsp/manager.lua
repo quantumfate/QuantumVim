@@ -84,7 +84,6 @@ local function launch_server(server_name, config)
 	end
 	require("lspconfig")[server_name].setup(config)
 	buf_try_add(server_name)
-	print("user conf:", vim.inspect(config))
 	Log:debug(fmt("Server started: %s", server_name))
 end
 
@@ -131,6 +130,7 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 			end,
 			{ server_name, user_config })
 	else
+		--TODO: install custom mason spec
 		local config = resolve_config(server_name, user_config)
 		launch_server(server_name, config)
 	end

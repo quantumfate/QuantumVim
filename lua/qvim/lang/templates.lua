@@ -43,12 +43,9 @@ function M.generate_ftplugin(filetype, server_name, dir)
 	local setup_null_ls_cmd =
 		string.format([[require("qvim.lang.null-ls.manager").setup(%q,%q)]], filetype, server_name)
 	local setup_dap_cmd
-	if not filetype == "java" then
-		setup_dap_cmd = string.format([[require("qvim.lang.dap.manager").setup(%q,%q)]], filetype, server_name)
-		utils.write_file(filename, setup_server_cmd .. "\n" .. setup_null_ls_cmd .. "\n" .. setup_dap_cmd .. "\n", "a")
-		return
-	end
-	utils.write_file(filename, setup_server_cmd .. "\n" .. setup_null_ls_cmd .. "\n", "a")
+
+	setup_dap_cmd = string.format([[require("qvim.lang.dap.manager").setup(%q)]], filetype)
+	utils.write_file(filename, setup_server_cmd .. "\n" .. setup_null_ls_cmd .. "\n" .. setup_dap_cmd .. "\n", "a")
 end
 
 ---Generates ftplugin files based on a map where filetypes are mapped to language servers
@@ -56,7 +53,6 @@ end
 ---@param filetype_server_map? table<string, table<string>> list of servers to be enabled. Will add all by default
 function M.generate_templates(filetype_server_map)
 	filetype_server_map = filetype_server_map or lang_utils.get_all_supported_filetypes_to_servers()
-	print("servers", vim.inspect(filetype_server_map))
 	Log:debug("Templates installation in progress")
 
 	M.remove_template_files()
