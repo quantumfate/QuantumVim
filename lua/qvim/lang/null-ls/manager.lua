@@ -2,6 +2,7 @@ local M = {}
 
 local _ = require("mason-core.functional")
 local null_ls_utils = require("qvim.lang.null-ls.util")
+local shared_util = require("qvim.lang.utils")
 local Log = require("qvim.integrations.log")
 local fmt = string.format
 
@@ -96,10 +97,11 @@ function M.setup(filetype, lsp_server)
 	local selection = select_null_ls_sources(filetype, method_to_package_info)
 
 	for method, source in pairs(selection) do
-		if not null_ls_utils.is_package(source) then
+		if not shared_util.is_package(source) then
 			null_ls_utils.register_sources_on_ft(method, source)
 		else
-			null_ls_utils.try_install_and_register_mason_package(method, source)
+			shared_util.try_install_and_setup_mason_package(source, fmt("null-ls source %s", source),
+				null_ls_utils.register_sources_on_ft, { method, source })
 		end
 	end
 	Log:debug(

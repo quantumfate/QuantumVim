@@ -4,25 +4,18 @@ local Log = require("qvim.integrations.log")
 local _ = require("mason-core.functional")
 local fmt = string.format
 local null_ls = require("null-ls")
+local shared_util = require("qvim.lang.utils")
 
 local FORMATTING = null_ls.methods.FORMATTING
 local DIAGNOSTICS = null_ls.methods.DIAGNOSTICS
 local CODE_ACTION = null_ls.methods.CODE_ACTION
 
----Checks whether a given `source` is a mason package.
----@param source table|string
-function M.is_package(source)
-	if type(source) == "table" and source.name then
-		return tostring(source) == fmt("Package(name=%s)", source.name)
-	end
-	return false
-end
 
 ---Returns an Optional mason package either from the mason registry or creates a new mason package with
 ---a provided spec.
 ---
 ---For more information to custom package hangle, see: https://github.com/williamboman/mason.nvim/blob/main/lua/mason-core/package/init.lua
----@param null_ls_source_name Package|string
+---@param null_ls_source_name string
 ---@return Package|nil
 function M.resolve_null_ls_package_from_mason(null_ls_source_name)
 	-- taken from mason-null-ls and modified
@@ -37,8 +30,9 @@ function M.resolve_null_ls_package_from_mason(null_ls_source_name)
 			Log:warn(fmt("The null-ls source '%s' is not supported by mason.", null_ls_source_name))
 		end
 
-		---@diagnostic disable-next-line: param-type-mismatch
-		local custom_is_defined, custom_pkg = M.register_custom_mason_package(null_ls_source_name)
+
+		local custom_is_defined, custom_pkg = shared_util.register_custom_mason_package(null_ls_source_name,
+			"qvim.lang.null-ls.packages")
 		if custom_is_defined then
 			return custom_pkg
 		end
@@ -62,7 +56,7 @@ function M.register_sources_on_ft(method, source)
 	local null_ls_methods = require("qvim.lang.null-ls._meta").method_bridge()
 	local mason_null_ls_mapping = require("mason-null-ls.mappings.source")
 	local source_options = {}
-	if not M.is_package(source) then
+	if not shared_util.is_package(source) then
 		local _, provided = pcall(require, "qvim.lang.null-ls.sources." .. source)
 		source_options = provided.settings or {}
 	else
@@ -87,73 +81,6 @@ function M.register_sources_on_ft(method, source)
 	kind.setup({ source_options })
 	Log:info(fmt("Source '%s' for method '%s' was registered.", source, method))
 	return true
-end
-
----Attempts to install a mason package for a given `source`. If no mason package could be resolved the
----`source` will be returned. Otherwise returns a mason package. Also registers the package in null-ls.
----@param source Package|string
----@return Package|string
-function M.try_install_and_register_mason_package(method, source)
-	---@class Package
-	---@field is_installed function
-	---@field install function
-	---@field name string
-	---@param package Package
-	local function install_package(package)
-		if not package:is_installed() then
-			Log:debug(fmt("Automatically installing '%s' by the mason package '%s'.", source, package.name))
-			package:install():once("closed", function()
-				vim.schedule(function()
-					if package:is_installed() then
-						Log:info(fmt("Installed '%s' by the mason package '%s'.", source, package.name))
-						M.register_sources_on_ft(method, source)
-					else
-						Log:warn(
-							fmt(
-								"Installation of '%s' by the mason package '%s' failed. Consult mason logs.",
-								source,
-								package.name
-							)
-						)
-					end
-				end)
-			end)
-		else
-			M.register_sources_on_ft(method, source)
-		end
-	end
-
-	if M.is_package(source) then
-		---@diagnostic disable-next-line: param-type-mismatch
-		install_package(source)
-	end
-
-	return source
-end
-
----Register a custom mason package with a spec provided by the user.
----@param null_ls_source_name string
----@return boolean
----@return Package|nil
-function M.register_custom_mason_package(null_ls_source_name)
-	---@class Package
-	---@field new function
-	local Package = require("mason-core.package")
-	local _ok, source_package_spec = pcall(require, "qvim.lang.null-ls.packages." .. null_ls_source_name)
-	if _ok then
-		Log:debug(
-			fmt(
-				"A custom mason package '%s' was instanciated from the source '%s' that will be used for installation.",
-				source_package_spec.name,
-				null_ls_source_name
-			)
-		)
-		local pkg_ok, pkg = pcall(Package.new, source_package_spec)
-		if pkg_ok then
-			return pkg_ok, pkg
-		end
-	end
-	return false, nil
 end
 
 ---Ensures that only methods will be processed that are not selected yet
@@ -182,8 +109,8 @@ function M.invert_method_to_sources_map(ft_builtins)
 				inverted[source] = { method }
 			else
 				if not _.any(function(e)
-					return method == e
-				end, inverted[source]) then
+						return method == e
+					end, inverted[source]) then
 					table.insert(inverted[source], method)
 				end
 			end
@@ -201,7 +128,7 @@ end
 ---@return number score the computed score
 function M.compute_score_of_source(source, source_amount, priority)
 	local scores = { package = 10, string = 2 }
-	local score = M.is_package(source) and scores.package or scores.string
+	local score = shared_util.is_package(source) and scores.package or scores.string
 	return score * source_amount + priority
 end
 

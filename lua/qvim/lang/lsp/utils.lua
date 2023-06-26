@@ -3,6 +3,18 @@ local M = {}
 local tbl = require("qvim.utils.fn_t")
 local Log = require("qvim.integrations.log")
 
+---Returns a mason package or the server name when the package does not exist in
+---the mason registry.
+---@param server_name any
+---@return Package|string
+function M.get_mason_package(server_name)
+	local server_mapping = require("mason-lspconfig.mappings.server")
+	local registry = require("mason-registry")
+
+	local pkg_name = server_mapping.lspconfig_to_package[server_name]
+	return registry.get_package(pkg_name) or pkg_name
+end
+
 function M.is_client_active(name)
 	local clients = vim.lsp.get_active_clients()
 	return tbl.find_first(clients, function(client)

@@ -138,7 +138,7 @@ function M.setup()
 	config["on_attach"] = function(client, bufnr)
 		local _, _ = pcall(vim.lsp.codelens.refresh)
 		require("jdtls").setup_dap({ hotcodereplace = "auto" })
-		require("qvim.lang.lsp").on_attach(client, bufnr)
+		require("qvim.lang.lsp").common_on_attach(client, bufnr)
 		local status_ok, jdtls_dap = pcall(require, "jdtls.dap")
 		if status_ok then
 			jdtls_dap.setup_dap_main_class_configs()

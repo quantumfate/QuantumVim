@@ -1,6 +1,7 @@
 local M = {}
 
 local Log = require("qvim.integrations.log")
+local shared_util = require("qvim.lang.utils")
 local fmt = string.format
 local lsp_utils = require("qvim.lang.lsp.utils")
 local is_windows = vim.loop.os_uname().version:match("Windows")
@@ -117,50 +118,22 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 		return
 	end
 
-	local server_mapping = require("mason-lspconfig.mappings.server")
-	local registry = require("mason-registry")
+	local package = lsp_utils.get_mason_package(server_name)
 
-	local pkg_name = server_mapping.lspconfig_to_package[server_name]
-	if not pkg_name then
+	if shared_util.is_package(package) then
+		shared_util.try_install_and_setup_mason_package(
+		---@diagnostic disable-next-line: param-type-mismatch
+			package,
+			fmt("language server %s", server_name),
+			function(_server_name, _user_config)
+				local config = resolve_config(_server_name, resolve_mason_config(_server_name), _user_config)
+				launch_server(_server_name, config)
+			end,
+			{ server_name, user_config })
+	else
 		local config = resolve_config(server_name, user_config)
 		launch_server(server_name, config)
-		return
 	end
-
-	Log:debug(string.format("Processing package: '%s' from '%s'.", pkg_name, server_name))
-	local should_auto_install = function(name)
-		local installer_settings = qvim.lsp.installer.setup
-		return installer_settings.automatic_installation
-			and not vim.tbl_contains(installer_settings.automatic_installation.exclude, name)
-	end
-
-	if not registry.is_installed(pkg_name) then
-		if should_auto_install(server_name) then
-			Log:debug("Automatic server installation detected")
-			vim.notify_once(string.format("Installation in progress for [%s]", server_name), vim.log.levels.INFO)
-			local pkg = registry.get_package(pkg_name)
-			pkg:install():once("closed", function()
-				if pkg:is_installed() then
-					vim.schedule(function()
-						vim.notify_once(
-							string.format("Installation complete for [%s]", server_name),
-							vim.log.levels.INFO
-						)
-						-- mason config is only available once the server has been installed
-						local config = resolve_config(server_name, resolve_mason_config(server_name), user_config)
-						launch_server(server_name, config)
-					end)
-				end
-			end)
-		else
-			Log:debug(server_name .. " is not managed by the automatic installer")
-		end
-	end
-
-
-
-	local config = resolve_config(server_name, resolve_mason_config(server_name), user_config)
-	launch_server(server_name, config)
 end
 
 return M
