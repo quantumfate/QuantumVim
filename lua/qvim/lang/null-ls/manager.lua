@@ -97,17 +97,14 @@ function M.setup(filetype, lsp_server)
 	local selection = select_null_ls_sources(filetype, method_to_package_info)
 
 	for method, source in pairs(selection) do
-		if null_ls_utils.skip_register_source(filetype, method, source) then
-			goto continue
+		if not null_ls_utils.skip_register_source(filetype, method, source) then
+			if not shared_util.is_package(source) then
+				null_ls_utils.register_sources_on_ft(method, source)
+			else
+				shared_util.try_install_and_setup_mason_package(source, fmt("null-ls source %s", source),
+					null_ls_utils.register_sources_on_ft, { method, source })
+			end
 		end
-
-		if not shared_util.is_package(source) then
-			null_ls_utils.register_sources_on_ft(method, source)
-		else
-			shared_util.try_install_and_setup_mason_package(source, fmt("null-ls source %s", source),
-				null_ls_utils.register_sources_on_ft, { method, source })
-		end
-		::continue::
 	end
 	Log:debug(
 		fmt(
