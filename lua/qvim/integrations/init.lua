@@ -21,7 +21,7 @@ function M:init()
 			local obj, instance = base:new(name)
 
 			if obj and instance then
-				qvim.integrations[name] = obj
+				qvim.integrations[name:gsub("-", "_")] = obj
 				Log:debug(
 					string.format(
 						"The integration '%s' was added to the global qvim.integrations table. Referenced table is '%s'.",

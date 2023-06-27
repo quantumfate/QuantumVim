@@ -5,9 +5,12 @@ local Log = require("qvim.integrations.log")
 
 ---Registers the global configuration scope for nvim-tree
 function M:init()
-	local nvim_tree = {
+	local tree = {
 		active = true,
 		on_config_done = nil,
+		keymaps = {
+			["<leader>E"] = { desc = "Toggle nvim file tree", rhs = require("nvim-tree.api").tree.toggle }
+		},
 		options = {
 			auto_reload_on_write = false,
 			disable_netrw = false,
@@ -223,9 +226,11 @@ function M:init()
 			},
 		},
 	}
-	return nvim_tree
+	return tree
 end
 
+---Start telescope with as specified mode
+---@param telescope_mode any
 function M.start_telescope(telescope_mode)
 	local node = require("nvim-tree.lib").get_node_at_cursor()
 	local abspath = node.link_to or node.absolute_path
@@ -240,59 +245,55 @@ local function on_attach(bufnr)
 	local api = require("nvim-tree.api")
 
 	local function telescope_find_files(_)
-		require("lvim.core.nvimtree").start_telescope("find_files")
+		require("qvim.integrations.nvim-tree").start_telescope("find_files")
 	end
 
 	local function telescope_live_grep(_)
-		require("lvim.core.nvimtree").start_telescope("live_grep")
-	end
-
-	local function opts(desc)
-		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+		require("qvim.integrations.nvim-tree").start_telescope("live_grep")
 	end
 
 	api.config.mappings.default_on_attach(bufnr)
 
 	local useful_keys = {
-		["l"] = { api.node.open.edit, opts("Open") },
-		["o"] = { api.node.open.edit, opts("Open") },
-		["<CR>"] = { api.node.open.edit, opts("Open") },
-		["v"] = { api.node.open.vertical, opts("Open: Vertical Split") },
-		["h"] = { api.node.navigate.parent_close, opts("Close Directory") },
-		["C"] = { api.tree.change_root_to_node, opts("CD") },
-		["gtg"] = { telescope_live_grep, opts("Telescope Live Grep") },
-		["gtf"] = { telescope_find_files, opts("Telescope Find File") },
+		["l"] = { callback = api.node.open.edit, desc = "Open" },
+		["o"] = { api.node.open.edit, desc = "Open" },
+		["<CR>"] = { api.node.open.edit, desc = "Open" },
+		["v"] = { api.node.open.vertical, desc = "Open: Vertical Split" },
+		["h"] = { api.node.navigate.parent_close, desc = "Close Directory" },
+		["C"] = { api.tree.change_root_to_node, desc = "CD" },
+		["gtg"] = { telescope_live_grep, desc = "Telescope Live Grep" },
+		["gtf"] = { telescope_find_files, desc = "Telescope Find File" },
 	}
 
-	require("lvim.keymappings").load_mode("n", useful_keys)
+	require("qvim.keymaps"):register(bufnr, useful_keys)
 end
 
 ---The nvim-tree setup function. The module will be required by
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
-	local status_ok, nvim_tree = pcall(reload, "nvim-tree")
+	local status_ok, tree = pcall(reload, "nvim-tree")
 	if not status_ok then
-		Log:warn("The plugin '%s' could not be loaded.", nvim_tree)
+		Log:warn("The plugin '%s' could not be loaded.", tree)
 		return
 	end
 
 	-- Implicitly update nvim-tree when project module is active
 	if qvim.integrations.project.active then
-		qvim.integrations.nvimtree.options.respect_buf_cwd = true
-		qvim.integrations.nvimtree.options.update_cwd = true
-		qvim.integrations.nvimtree.options.update_focused_file.enable = true
-		qvim.integrations.nvimtree.options.update_focused_file.update_cwd = true
+		qvim.integrations.tree.options.respect_buf_cwd = true
+		qvim.integrations.tree.options.update_cwd = true
+		qvim.integrations.tree.options.update_focused_file.enable = true
+		qvim.integrations.tree.options.update_focused_file.update_cwd = true
 	end
-	if qvim.integrations.nvimtree.options.on_attach == "default" then
-		qvim.integrations.nvimtree.options.on_attach = on_attach
+	if qvim.integrations.tree.options.on_attach == "default" then
+		qvim.integrations.tree.options.on_attach = on_attach
 	end
-	local _nvim_tree = qvim.integrations.nvim_tree
-	nvim_tree.icons = _nvim_tree.glyphs
-	nvim_tree.setup(_nvim_tree.options)
+	local _tree = qvim.integrations.tree
+	tree.icons = _tree.glyphs
+	tree.setup(_tree.options)
 
-	if _nvim_tree.on_config_done then
-		_nvim_tree.on_config_done()
+	if _tree.on_config_done then
+		_tree.on_config_done()
 	end
 end
 

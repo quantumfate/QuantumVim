@@ -5,6 +5,16 @@ local Log = require("qvim.integrations.log")
 function M.load_defaults()
 	local definitions = {
 		{
+			"InsertEnter",
+			{
+				group = "_general_settings",
+				desc = "Close nvim tree when entering insert mode",
+				callback = function()
+					require("nvim-tree.api").tree.close()
+				end
+			}
+		},
+		{
 			"TextYankPost",
 			{
 				group = "_general_settings",

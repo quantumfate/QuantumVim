@@ -1,7 +1,4 @@
 local nvim_tree = {
-	--config = function()
-	--    re.quire("qvim.core.nvimtree").setup()
-	--end,
 	cmd = {
 		"NvimTreeToggle",
 		"NvimTreeOpen",
@@ -9,6 +6,9 @@ local nvim_tree = {
 		"NvimTreeFindFileToggle",
 	},
 	event = "User DirOpened",
+	config = function()
+		require("qvim.integrations.tree"):setup()
+	end
 }
 
 return nvim_tree

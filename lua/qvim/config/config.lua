@@ -25,7 +25,7 @@ return {
 			"neodev",
 			"nightfox",
 			"notify",
-			"nvim-tree",
+			"tree",
 			"null-ls",
 			"project",
 			"telescope",

@@ -33,7 +33,7 @@ M.qvim_integrations = {
 	luasnip = "L3MON4D3/LuaSnip",
 	"nvim-telescope/telescope.nvim",
 	"nvim-lua/plenary.nvim",
-	"kyazdani42/nvim-tree.lua",
+	tree = "kyazdani42/nvim-tree.lua",
 	"phaazon/hop.nvim",
 	"ahmedkhalf/project.nvim",
 	"folke/neodev.nvim",
