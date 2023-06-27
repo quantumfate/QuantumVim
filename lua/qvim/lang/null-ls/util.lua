@@ -98,6 +98,29 @@ function M.disassociate_selection_from_input(selection, ft_builtins)
 	end
 end
 
+---Determine whether a given `source` associated with a given `filetype` and a given `method` is already
+---registered and therefor should be skipped.
+---@param filetype string
+---@param method string
+---@param source Package|string
+---@return boolean
+function M.skip_register_source(filetype, method, source)
+	local source_name
+	if shared_util.is_package(source) then
+		source_name = source.name
+	else
+		source_name = source
+	end
+	local registered_sources = require("null-ls.sources").get({ filetype = filetype, method = method })
+	return _.any(function(registered_source)
+		if shared_util.is_package(registered_source) then
+			return registered_source.name == source_name
+		else
+			return registered_source == source_name
+		end
+	end, registered_sources)
+end
+
 ---Takes a given `ft_builtins` table and inverts it so that sources are
 ---mapped to a set view of unique methods where they are available.
 ---@generic T: table, K:string, V:table<string>, M:Package|string

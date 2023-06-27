@@ -90,10 +90,6 @@ function M.setup(filetype, lsp_server)
 	vim.validate({ name = { filetype, "string" } })
 	vim.validate({ name = { lsp_server, "string" } })
 
-	if #require("null-ls.sources").get({}) ~= 0 then
-		return
-	end
-
 	local ft_map = require("qvim.lang.null-ls._meta").ft_bridge()
 	local null_ls_builtins = ft_map[filetype]
 
@@ -101,12 +97,17 @@ function M.setup(filetype, lsp_server)
 	local selection = select_null_ls_sources(filetype, method_to_package_info)
 
 	for method, source in pairs(selection) do
+		if null_ls_utils.skip_register_source(filetype, method, source) then
+			goto continue
+		end
+
 		if not shared_util.is_package(source) then
 			null_ls_utils.register_sources_on_ft(method, source)
 		else
 			shared_util.try_install_and_setup_mason_package(source, fmt("null-ls source %s", source),
 				null_ls_utils.register_sources_on_ft, { method, source })
 		end
+		::continue::
 	end
 	Log:debug(
 		fmt(
