@@ -95,7 +95,7 @@ return {
 	autocommands = {},
 	log = {
 		---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" },
-		level = "debug",
+		level = "info",
 		viewer = {
 			---@usage this will fallback on "less +F" if not found
 			cmd = "qnav",

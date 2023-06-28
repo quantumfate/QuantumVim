@@ -41,7 +41,7 @@ function Log:init()
 		qvim = {
 			pipelines = {
 				{
-					level = log_level,
+					level = Log.levels.ERROR,
 					processors = {
 						structlog.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 2 }),
 						structlog.processors.Timestamper("%H:%M:%S"),
@@ -51,10 +51,10 @@ function Log:init()
 						{ "timestamp", "level", "logger_name", "msg" },
 						{ level = structlog.formatters.FormatColorizer.color_level() }
 					),
-					sink = structlog.sinks.Console(false), -- async=false
+					sink = structlog.sinks.Console(), -- async=false
 				},
 				{
-					level = log_level,
+					level = Log.levels.ERROR,
 					processors = {
 						structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3, stack_level = 2 }),
 						structlog.processors.Timestamper("%F %H:%M:%S"),
