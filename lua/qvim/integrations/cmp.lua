@@ -145,6 +145,9 @@ function M:init()
 				if buftype == "prompt" then
 					return false
 				end
+				if require("cmp_dap").is_dap_buffer() then
+					return true
+				end
 				return qvim.integrations.cmp.active
 			end,
 			confirm_opts = {
@@ -158,6 +161,11 @@ function M:init()
 			experimental = {
 				ghost_text = false,
 				native_menu = false,
+			},
+			filetype = {
+				"dap-repl",
+				"dapui_watches",
+				"dapui_hover",
 			},
 			formatting = {
 				fields = { "kind", "abbr", "menu" },
@@ -283,6 +291,7 @@ function M:init()
 				{ name = "treesitter" },
 				{ name = "crates" },
 				{ name = "tmux" },
+				{ name = "dap" },
 			},
 			mapping = cmp_mapping.preset.insert({
 				["<C-k>"] = cmp_mapping(cmp_mapping.select_prev_item(), { "i", "c" }),

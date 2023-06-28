@@ -83,24 +83,6 @@ function M:setup()
 
 	--dap.setup(_dap.options)
 
-	dap.adapters.python = {
-		type = "executable",
-		command = os.getenv("HOME") .. "/.virtualenvs/debugpy/bin/python",
-		args = { "-m", "debugpy.adapter" },
-	}
-
-	dap.configurations.python = {
-		{
-			type = "python",
-			request = "launch",
-			name = "Launch file",
-			program = "${file}",
-			pythonPath = function()
-				return "/usr/bin/python"
-			end,
-		},
-	}
-
 	dap.set_log_level(qvim.integrations.dap.options.log.level)
 	if _dap.on_config_done then
 		_dap.on_config_done()

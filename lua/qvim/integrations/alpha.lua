@@ -26,7 +26,11 @@ function M:init()
 				{ key = "f", desc = "  Find file", cmd = ":Telescope find_files <CR>" },
 				{ key = "e", desc = "  New file", cmd = ":ene <BAR> startinsert <CR>" },
 				{ key = "p", desc = "  Find project", cmd = ":Telescope projects <CR>" },
-				{ key = "r", desc = "  Recently used files", cmd = ":Telescope oldfiles <CR>" },
+				{
+					key = "r",
+					desc = "  Recently used files",
+					cmd = ":lua require'telescope'.extensions.project.project{}<CR>",
+				},
 				{ key = "t", desc = "  Find text", cmd = ":Telescope live_grep <CR>" },
 				{ key = "c", desc = "  Configuration", cmd = ":e ~/.config/qvim/ <CR>" },
 				{ key = "q", desc = "  Quit Neovim", cmd = ":qa<CR>" },

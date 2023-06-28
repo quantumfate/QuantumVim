@@ -10,7 +10,9 @@ function M:config()
 			extensions_to_load = {
 				"fzf",
 				"lazy",
-				-- "dap", TODO: implement dap
+				"dap",
+				"project",
+				"file_browser",
 			},
 			-- extensions option configuration
 			extensions = {
@@ -34,6 +36,11 @@ function M:config()
 					override_file_sorter = true, -- override the file sorter
 					case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 					-- the default case_mode is "smart_case"
+				},
+				file_browser = {
+					theme = qvim.config.colorscheme,
+					-- disables netrw and use telescope-file-browser in its place
+					hijack_netrw = true,
 				},
 			},
 		},

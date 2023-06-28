@@ -176,6 +176,7 @@ function M:setup()
 	for _, value in ipairs(_telescope_extensions.options.extensions_to_load) do
 		-- important to call after telescope setup
 		telescope.load_extension(value)
+		Log:debug(string.format("Loaded telescope extension '%s'.", value))
 	end
 
 	if _telescope.on_config_done then

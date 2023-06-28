@@ -8,6 +8,26 @@ function M.load_defaults()
 	end
 	local definitions = {
 		{
+			"VimEnter",
+			{
+				group = "_general_settings",
+				desc = "Disable terminal padding",
+				callback = function()
+					vim.cmd("!kitty @ set-spacing padding=0")
+				end,
+			},
+		},
+		{
+			"VimLeave",
+			{
+				group = "_general_settings",
+				desc = "Disable terminal padding",
+				callback = function()
+					vim.cmd("!kitty @ set-spacing padding=5")
+				end,
+			},
+		},
+		{
 			{
 				"WinScrolled", -- or WinResized on NVIM-v0.9 and higher
 				"BufWinEnter",
