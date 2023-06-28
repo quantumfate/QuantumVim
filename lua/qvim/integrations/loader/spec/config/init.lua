@@ -9,7 +9,7 @@ M.qvim_integrations = {
 	alpha = "goolord/alpha-nvim",
 	"akinsho/bufferline.nvim",
 	breadcrumbs = "SmiteshP/nvim-navic",
-	"kyazdani42/nvim-web-devicons",
+	"nvim-tree/nvim-web-devicons",
 	"b0o/schemastore.nvim",
 	comment = "numToStr/Comment.nvim",
 	"mfussenegger/nvim-jdtls",
