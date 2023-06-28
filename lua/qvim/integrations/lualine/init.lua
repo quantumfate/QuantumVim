@@ -15,7 +15,7 @@ function M:init()
 			icons_enabled = nil,
 			component_separators = nil,
 			section_separators = nil,
-			theme = nil,
+			theme = "catppuccin",
 			disabled_filetypes = { statusline = { "alpha" }, "dashboard", "NvimTree", "Outline" },
 			globalstatus = true,
 		},

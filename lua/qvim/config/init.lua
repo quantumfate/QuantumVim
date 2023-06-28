@@ -29,6 +29,8 @@ function M:init()
 
 	local qvim_lsp_config = require("qvim.lang.lsp.config")
 	qvim.lsp = vim.deepcopy(qvim_lsp_config)
+
+	vim.cmd.colorscheme(qvim.config.colorscheme)
 	Log:info("Configs were loaded.")
 end
 

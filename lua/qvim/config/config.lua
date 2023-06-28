@@ -1,6 +1,6 @@
 return {
 	config = {
-		colorscheme = "nightfox",
+		colorscheme = "catppuccin",
 		reload_config_on_save = true,
 		leader = " ",
 		use_icons = true,
@@ -23,7 +23,6 @@ return {
 			"mason-lspconfig",
 			"mason-null-ls",
 			"neodev",
-			"nightfox",
 			"notify",
 			"tree",
 			"null-ls",
@@ -33,6 +32,7 @@ return {
 			"treesitter",
 			"vimtex",
 			"whichkey",
+			"catppuccin",
 		},
 		languages = {
 			-- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages

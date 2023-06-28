@@ -7,7 +7,13 @@ local Log = require("qvim.integrations.log")
 function M:init()
 	-- HACK: work-around for https://github.com/lukas-reineke/indent-blankline.nvim/issues/59
 	vim.wo.colorcolumn = "99999"
-
+	vim.cmd([[highlight IndentBlanklineIndent1 guifg=#2e2e2e gui=nocombine]])
+	vim.cmd([[highlight IndentBlanklineIndent2 guifg=#2e2e2e gui=nocombine]])
+	vim.cmd([[highlight IndentBlanklineIndent3 guifg=#2e2e2e gui=nocombine]])
+	vim.cmd([[highlight IndentBlanklineIndent4 guifg=#2e2e2e gui=nocombine]])
+	vim.cmd([[highlight IndentBlanklineIndent5 guifg=#2e2e2e gui=nocombine]])
+	vim.cmd([[highlight IndentBlanklineIndent6 guifg=#2e2e2e gui=nocombine]])
+	vim.opt.list = true
 	local indentline = {
 		active = true,
 		on_config_done = nil,
@@ -23,8 +29,12 @@ function M:init()
 			blankline_char = "▏",
 			space_char = "⋅",
 			char_highlight_list = {
-				"Error",
-				"Function",
+				"IndentBlanklineIndent1",
+				"IndentBlanklineIndent2",
+				"IndentBlanklineIndent3",
+				"IndentBlanklineIndent4",
+				"IndentBlanklineIndent5",
+				"IndentBlanklineIndent6",
 			},
 			buftype_exclude = { "nofile", "prompt", "quickfix, :terminal" },
 			context_patterns = {

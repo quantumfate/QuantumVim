@@ -9,7 +9,7 @@ function M:init()
 		active = true,
 		on_config_done = nil,
 		keymaps = {
-			["<leader>E"] = { desc = "Toggle nvim file tree", rhs = require("nvim-tree.api").tree.toggle }
+			["<leader>E"] = { desc = "Toggle nvim file tree", rhs = require("nvim-tree.api").tree.toggle },
 		},
 		options = {
 			auto_reload_on_write = false,
@@ -29,7 +29,7 @@ function M:init()
 			view = {
 				adaptive_size = false,
 				centralize_selection = true,
-				width = 30,
+				width = 40,
 				hide_root_folder = false,
 				side = "left",
 				preserve_window_proportions = false,

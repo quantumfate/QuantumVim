@@ -49,7 +49,10 @@ M.qvim_integrations = {
 	"nvim-neotest/neotest-python",
 	"stevearc/dressing.nvim",
 	"AckslD/swenv.nvim",
-	"p00f/clangd_extensions.nvim"
+	"p00f/clangd_extensions.nvim",
+	"AlexvZyl/nordic.nvim",
+	catppuccin = "catppuccin/nvim",
+	"utilyre/barbecue.nvim",
 }
 
 ---Set the lazy configuration spec for a plugin.

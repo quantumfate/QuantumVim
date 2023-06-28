@@ -17,6 +17,15 @@ function M:init()
 			right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
 			left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"
 			middle_mouse_command = nil, -- can be a string | function, see "Mouse actions"
+			get_element_icon = function(element)
+				-- element consists of {filetype: string, path: string, extension: string, directory: string}
+				-- This can be used to change how bufferline fetches the icon
+				-- for an element e.g. a buffer or a tab.
+				-- e.g.
+				local icon, hl =
+					require("nvim-web-devicons").get_icon_by_filetype(element.filetype, { default = false })
+				return icon, hl
+			end,
 			icon = "▎",
 			--indicator = {
 			--  icon = '▎', -- this should be omitted if indicator style is not 'icon'
@@ -48,7 +57,7 @@ function M:init()
 			--diagnostics_indicator = function(count, level, diagnostics_dict, context)
 			--    return "("..count..")"
 			--end,
-			---- NOTE: this will be called a lot so don't do any heavy processing here
+			--- NOTE: this will be called a lot so don't do any heavy processing here
 			--custom_filter = function(buf_number, buf_numbers)
 			--    -- filter out filetypes you don't want to see
 			--    if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
@@ -79,7 +88,6 @@ function M:init()
 			color_icons = true, --  whether or not to add the filetype icon highlights
 			show_buffer_icons = true, -- disable filetype icons for buffers
 			show_buffer_close_icons = false,
-			show_buffer_default_icon = true, -- whether or not an unrecognised filetype should show a default icon
 			show_close_icon = false,
 			show_tab_indicators = false,
 			show_duplicate_prefix = true, -- whether to show duplicate buffer prefix
@@ -115,8 +123,24 @@ function M:setup()
 	end
 
 	local _bufferline = qvim.integrations.bufferline.options
+	local mocha = require("catppuccin.palettes").get_palette("mocha")
+	local highlights = require("catppuccin.groups.integrations.bufferline").get({
+		styles = { "italic", "bold" },
+		custom = {
+			all = {
+				fill = { bg = "#000000" },
+			},
+			mocha = {
+				background = { fg = mocha.text },
+			},
+			latte = {
+				background = { fg = "#000000" },
+			},
+		},
+	})
 
-	bufferline.setup({ options = _bufferline.options })
+	_bufferline.highlights = highlights
+	bufferline.setup({ options = _bufferline })
 
 	if _bufferline.on_config_done then
 		_bufferline.bufferline.on_config_done()

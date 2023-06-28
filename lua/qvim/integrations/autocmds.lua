@@ -5,14 +5,31 @@ local Log = require("qvim.integrations.log")
 function M.load_defaults()
 	local definitions = {
 		{
+			{
+				"WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+				"BufWinEnter",
+				"CursorHold",
+				"InsertLeave",
+
+				-- include this if you have set `show_modified` to `true`
+				"BufModifiedSet",
+			},
+			{
+				group = vim.api.nvim_create_augroup("barbecue.updater", {}),
+				callback = function()
+					require("barbecue.ui").update()
+				end,
+			},
+		},
+		{
 			"InsertEnter",
 			{
 				group = "_general_settings",
 				desc = "Close nvim tree when entering insert mode",
 				callback = function()
 					require("nvim-tree.api").tree.close()
-				end
-			}
+				end,
+			},
 		},
 		{
 			"TextYankPost",
