@@ -48,7 +48,7 @@ function plugin_loader:init(opts)
 				snapshot["lazy.nvim"].commit,
 			})
 		end
-		vim.api.nvim_create_autocmd("User", { pattern = "LazyDone", callback = require("qvim.lsp").setup })
+		vim.api.nvim_create_autocmd("User", { pattern = "LazyDone", callback = require("qvim.lang").setup })
 	end
 
 	local rtp = vim.opt.rtp:get()

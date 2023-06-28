@@ -5,6 +5,9 @@ local Log = require("qvim.integrations.log")
 
 ---Registers the global configuration scope for nvim-tree
 function M:init()
+	if _G.in_headless_mode() then
+		return
+	end
 	local tree = {
 		active = true,
 		on_config_done = nil,

@@ -57,6 +57,9 @@ function M:init()
 end
 
 function M:config()
+	if _G.in_headless_mode() then
+		return
+	end
 	for _, ext in pairs(qvim.integrations.dap.extensions) do
 		require("qvim.integrations.dap." .. ext):config()
 	end

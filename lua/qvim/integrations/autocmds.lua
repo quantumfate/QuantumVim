@@ -3,6 +3,9 @@ local Log = require("qvim.integrations.log")
 
 --- Load the default set of autogroups and autocommands.
 function M.load_defaults()
+	if _G.in_headless_mode() then
+		return
+	end
 	local definitions = {
 		{
 			{

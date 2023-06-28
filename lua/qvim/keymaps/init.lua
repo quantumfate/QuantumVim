@@ -7,10 +7,7 @@ local default = require("qvim.keymaps.default")
 local fn_t = require("qvim.utils.fn_t")
 local util = require("qvim.keymaps.util")
 local adapt = require("qvim.keymaps.adapters")
-if _G.in_headless_mode() then
-	Log:info("Headless Mode: Not setting any keymaps.")
-	return
-end
+
 
 --- A global variable to track standalone keymaps
 _G.g_yikes_current_standalone_bindings = {}

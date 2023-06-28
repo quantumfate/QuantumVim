@@ -107,6 +107,10 @@ local function add_to_path(append)
 end
 
 function M.bootstrap()
+	if _G.in_headless_mode() then
+		Log:debug("Headless mode detected. Skipping lualine")
+		return
+	end
 	add_to_path()
 end
 

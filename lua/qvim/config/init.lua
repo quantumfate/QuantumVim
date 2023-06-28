@@ -30,7 +30,10 @@ function M:init()
 	local qvim_lsp_config = require("qvim.lang.lsp.config")
 	qvim.lsp = vim.deepcopy(qvim_lsp_config)
 
-	vim.cmd.colorscheme(qvim.config.colorscheme)
+	if not _G.in_headless_mode() then
+		vim.cmd.colorscheme(qvim.config.colorscheme)
+	end
+
 	Log:info("Configs were loaded.")
 end
 
