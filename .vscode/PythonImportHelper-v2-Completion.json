@@ -1,0 +1,1228 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "os",
+        "description": "os",
+        "isExtraImport": true,
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "name",
+        "importPath": "os",
+        "description": "os",
+        "isExtraImport": true,
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "os.path",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os.path",
+        "description": "os.path",
+        "detail": "os.path",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "TYPE_CHECKING",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "abc",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "abc",
+        "description": "abc",
+        "detail": "abc",
+        "documentation": {}
+    },
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "StringIO",
+        "importPath": "io",
+        "description": "io",
+        "isExtraImport": true,
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "pytest",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pytest",
+        "description": "pytest",
+        "detail": "pytest",
+        "documentation": {}
+    },
+    {
+        "label": "ExceptionRepr",
+        "importPath": "_pytest._code.code",
+        "description": "_pytest._code.code",
+        "isExtraImport": true,
+        "detail": "_pytest._code.code",
+        "documentation": {}
+    },
+    {
+        "label": "TerminalReporter",
+        "importPath": "_pytest.terminal",
+        "description": "_pytest.terminal",
+        "isExtraImport": true,
+        "detail": "_pytest.terminal",
+        "documentation": {}
+    },
+    {
+        "label": "inspect",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "inspect",
+        "description": "inspect",
+        "detail": "inspect",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "traceback",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "traceback",
+        "description": "traceback",
+        "detail": "traceback",
+        "documentation": {}
+    },
+    {
+        "label": "unittest",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "unittest",
+        "description": "unittest",
+        "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "unittest",
+        "description": "unittest",
+        "isExtraImport": true,
+        "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "TestResult",
+        "importPath": "unittest",
+        "description": "unittest",
+        "isExtraImport": true,
+        "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "TestSuite",
+        "importPath": "unittest",
+        "description": "unittest",
+        "isExtraImport": true,
+        "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "TracebackType",
+        "importPath": "types",
+        "description": "types",
+        "isExtraImport": true,
+        "detail": "types",
+        "documentation": {}
+    },
+    {
+        "label": "TextTestResult",
+        "importPath": "unittest.runner",
+        "description": "unittest.runner",
+        "isExtraImport": true,
+        "detail": "unittest.runner",
+        "documentation": {}
+    },
+    {
+        "label": "TextTestRunner",
+        "importPath": "unittest.runner",
+        "description": "unittest.runner",
+        "isExtraImport": true,
+        "detail": "unittest.runner",
+        "documentation": {}
+    },
+    {
+        "label": "contextmanager",
+        "importPath": "contextlib",
+        "description": "contextlib",
+        "isExtraImport": true,
+        "detail": "contextlib",
+        "documentation": {}
+    },
+    {
+        "label": "itemgetter",
+        "importPath": "operator",
+        "description": "operator",
+        "isExtraImport": true,
+        "detail": "operator",
+        "documentation": {}
+    },
+    {
+        "label": "print_function",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "bar",
+        "importPath": "foo",
+        "description": "foo",
+        "isExtraImport": true,
+        "detail": "foo",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "indent",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "def indent(lines: List[str], amount: int) -> List[str]:\n    ret = []\n    for line in lines:\n        if amount >= 0:\n            ret.append(\" \" * amount + line)\n        else:\n            space = re.match(r\"[ \\t]+\", line)\n            if space:\n                ret.append(line[min(abs(amount), space.span()[1]) :])\n            else:",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "replace_section",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "def replace_section(file: str, start_pat: str, end_pat: str, lines: List[str]) -> None:\n    prefix_lines: List[str] = []\n    postfix_lines: List[str] = []\n    file_lines = prefix_lines\n    found_section = False\n    with open(file, \"r\", encoding=\"utf-8\") as ifile:\n        inside_section = False\n        for line in ifile:\n            if inside_section:\n                if re.match(end_pat, line):",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "read_section",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "def read_section(filename: str, start_pat: str, end_pat: str) -> List[str]:\n    lines = []\n    with open(filename, \"r\", encoding=\"utf-8\") as ifile:\n        inside_section = False\n        for line in ifile:\n            if inside_section:\n                if re.match(end_pat, line):\n                    break\n                lines.append(line)\n            elif re.match(start_pat, line):",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "def main() -> None:\n    \"\"\"Update the README\"\"\"\n    config_file = os.path.join(ROOT, \"lua\", \"dressing\", \"config.lua\")\n    opt_lines = read_section(config_file, r\"^\\s*local default_config =\", r\"^}$\")\n    replace_section(README, r\"^require\\('dressing'\\)\\.setup\", r\"^}\\)$\", opt_lines)\n    replace_section(\n        DOC, r\"^\\s*require\\('dressing'\\)\\.setup\", r\"^\\s*}\\)$\", indent(opt_lines, 4)\n    )\n    get_config_lines = read_section(DOC, r\"^dressing.get_config\", \"^===\")\n    for i, line in enumerate(get_config_lines):",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "HERE",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "HERE = os.path.dirname(__file__)\nROOT = os.path.abspath(os.path.join(HERE, os.path.pardir))\nREADME = os.path.join(ROOT, \"README.md\")\nDOC = os.path.join(ROOT, \"doc\", \"dressing.txt\")\ndef indent(lines: List[str], amount: int) -> List[str]:\n    ret = []\n    for line in lines:\n        if amount >= 0:\n            ret.append(\" \" * amount + line)\n        else:",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "ROOT",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "ROOT = os.path.abspath(os.path.join(HERE, os.path.pardir))\nREADME = os.path.join(ROOT, \"README.md\")\nDOC = os.path.join(ROOT, \"doc\", \"dressing.txt\")\ndef indent(lines: List[str], amount: int) -> List[str]:\n    ret = []\n    for line in lines:\n        if amount >= 0:\n            ret.append(\" \" * amount + line)\n        else:\n            space = re.match(r\"[ \\t]+\", line)",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "README",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "README = os.path.join(ROOT, \"README.md\")\nDOC = os.path.join(ROOT, \"doc\", \"dressing.txt\")\ndef indent(lines: List[str], amount: int) -> List[str]:\n    ret = []\n    for line in lines:\n        if amount >= 0:\n            ret.append(\" \" * amount + line)\n        else:\n            space = re.match(r\"[ \\t]+\", line)\n            if space:",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "DOC",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.dressing..github.update_readme",
+        "description": "site.pack.lazy.opt.dressing..github.update_readme",
+        "peekOfCode": "DOC = os.path.join(ROOT, \"doc\", \"dressing.txt\")\ndef indent(lines: List[str], amount: int) -> List[str]:\n    ret = []\n    for line in lines:\n        if amount >= 0:\n            ret.append(\" \" * amount + line)\n        else:\n            space = re.match(r\"[ \\t]+\", line)\n            if space:\n                ret.append(line[min(abs(amount), space.span()[1]) :])",
+        "detail": "site.pack.lazy.opt.dressing..github.update_readme",
+        "documentation": {}
+    },
+    {
+        "label": "NeotestResultStatus",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.neotest-python.neotest_python.base",
+        "description": "site.pack.lazy.opt.neotest-python.neotest_python.base",
+        "peekOfCode": "class NeotestResultStatus(str, Enum):\n    SKIPPED = \"skipped\"\n    PASSED = \"passed\"\n    FAILED = \"failed\"\n    def __gt__(self, other) -> bool:\n        members = list(self.__class__.__members__.values())\n        return members.index(self) > members.index(other)\nif TYPE_CHECKING:\n    from typing import TypedDict\n    class NeotestError(TypedDict):",
+        "detail": "site.pack.lazy.opt.neotest-python.neotest_python.base",
+        "documentation": {}
+    },
+    {
+        "label": "NeotestAdapter",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.neotest-python.neotest_python.base",
+        "description": "site.pack.lazy.opt.neotest-python.neotest_python.base",
+        "peekOfCode": "class NeotestAdapter(abc.ABC):\n    def update_result(\n        self, base: Optional[NeotestResult], update: NeotestResult\n    ) -> NeotestResult:\n        if not base:\n            return update\n        return {\n            \"status\": max(base[\"status\"], update[\"status\"]),\n            \"errors\": (base.get(\"errors\") or []) + (update.get(\"errors\") or []) or None,\n            \"short\": (base.get(\"short\") or \"\") + (update.get(\"short\") or \"\"),",
+        "detail": "site.pack.lazy.opt.neotest-python.neotest_python.base",
+        "documentation": {}
+    },
+    {
+        "label": "PytestNeotestAdapter",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "description": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "peekOfCode": "class PytestNeotestAdapter(NeotestAdapter):\n    def run(\n        self,\n        args: List[str],\n        stream: Callable[[str, NeotestResult], None],\n    ) -> Dict[str, NeotestResult]:\n        result_collector = NeotestResultCollector(self, stream=stream)\n        pytest.main(args=args, plugins=[\n            result_collector,\n            NeotestDebugpyPlugin(),",
+        "detail": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "documentation": {}
+    },
+    {
+        "label": "NeotestResultCollector",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "description": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "peekOfCode": "class NeotestResultCollector:\n    def __init__(\n        self,\n        adapter: PytestNeotestAdapter,\n        stream: Callable[[str, NeotestResult], None],\n    ):\n        self.stream = stream\n        self.adapter = adapter\n        self.pytest_config: Optional[\"pytest.Config\"] = None  # type: ignore\n        self.results: Dict[str, NeotestResult] = {}",
+        "detail": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "documentation": {}
+    },
+    {
+        "label": "NeotestDebugpyPlugin",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "description": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "peekOfCode": "class NeotestDebugpyPlugin:\n    \"\"\"A pytest plugin that would make debugpy stop at thrown exceptions.\"\"\"\n    def pytest_exception_interact(\n        self,\n        node: Union[\"pytest.Item\", \"pytest.Collector\"],\n        call: \"pytest.CallInfo\",\n        report: Union[\"pytest.CollectReport\", \"pytest.TestReport\"],\n    ):\n        # call.excinfo: _pytest._code.ExceptionInfo\n        self.maybe_debugpy_postmortem(call.excinfo._excinfo)",
+        "detail": "site.pack.lazy.opt.neotest-python.neotest_python.pytest",
+        "documentation": {}
+    },
+    {
+        "label": "UnittestNeotestAdapter",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.neotest-python.neotest_python.unittest",
+        "description": "site.pack.lazy.opt.neotest-python.neotest_python.unittest",
+        "peekOfCode": "class UnittestNeotestAdapter(NeotestAdapter):\n    def case_file(self, case) -> str:\n        return str(Path(inspect.getmodule(case).__file__).absolute())  # type: ignore\n    def case_id_elems(self, case) -> List[str]:\n        file = self.case_file(case)\n        elems = [file, case.__class__.__name__]\n        if isinstance(case, TestCase):\n            elems.append(case._testMethodName)\n        return elems\n    def case_id(self, case: \"TestCase | TestSuite\") -> str:",
+        "detail": "site.pack.lazy.opt.neotest-python.neotest_python.unittest",
+        "documentation": {}
+    },
+    {
+        "label": "add_to_path",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.neotest-python.neotest",
+        "description": "site.pack.lazy.opt.neotest-python.neotest",
+        "peekOfCode": "def add_to_path():\n    old_path = sys.path[:]\n    sys.path.insert(0, str(Path(__file__).parent))\n    try:\n        yield\n    finally:\n        sys.path = old_path\nwith add_to_path():\n    from neotest_python import main\nif __name__ == \"__main__\":",
+        "detail": "site.pack.lazy.opt.neotest-python.neotest",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-dap.tests.example",
+        "description": "site.pack.lazy.opt.nvim-dap.tests.example",
+        "peekOfCode": "def main():\n    cwd = os.getcwd()\n    print(cwd)\n    a = 10\n    b = 30\n    return print(a + b)\nif __name__ == '__main__':\n    main()",
+        "detail": "site.pack.lazy.opt.nvim-dap.tests.example",
+        "documentation": {}
+    },
+    {
+        "label": "add",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-dap-python.tests.simple",
+        "description": "site.pack.lazy.opt.nvim-dap-python.tests.simple",
+        "peekOfCode": "def add(a, b):\n    return a + b\ndef main():\n    x = 10\n    y = 20\n    z = add(x, y)\n    return z\nmain()",
+        "detail": "site.pack.lazy.opt.nvim-dap-python.tests.simple",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-dap-python.tests.simple",
+        "description": "site.pack.lazy.opt.nvim-dap-python.tests.simple",
+        "peekOfCode": "def main():\n    x = 10\n    y = 20\n    z = add(x, y)\n    return z\nmain()",
+        "detail": "site.pack.lazy.opt.nvim-dap-python.tests.simple",
+        "documentation": {}
+    },
+    {
+        "label": "Solution",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "description": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "peekOfCode": "class Solution:\n    def twoSum(self, nums: list[int], target: int) -> list[int]:\n        if len(nums) < 2:\n            return nums\n        arr = list(sorted(enumerate(nums), key=itemgetter(1)))\n        i = 0\n        j = len(nums) - 1\n        while i < j:\n            arri = arr[i]\n            arrj = arr[j]",
+        "detail": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "documentation": {}
+    },
+    {
+        "label": "arr",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "description": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "peekOfCode": "arr = [2, 7, 11, 15]\ntarget = 9\nSolution().twoSum(arr, target) == [0, 1]",
+        "detail": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "documentation": {}
+    },
+    {
+        "label": "target",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "description": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "peekOfCode": "target = 9\nSolution().twoSum(arr, target) == [0, 1]",
+        "detail": "site.pack.lazy.opt.nvim-dap-virtual-text.test_cases.issue_36_value_not_updated",
+        "documentation": {}
+    },
+    {
+        "label": "x",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "peekOfCode": "class x: # Ignore comment\nclass y: \n    def z(): # Ignore comment\nclass t:",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "documentation": {}
+    },
+    {
+        "label": "y",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "peekOfCode": "class y: \n    def z(): # Ignore comment\nclass t:",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "documentation": {}
+    },
+    {
+        "label": "t",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "peekOfCode": "class t:",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.algorithm.trailing",
+        "documentation": {}
+    },
+    {
+        "label": "aligned_indent",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.aligned_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.aligned_indent",
+        "peekOfCode": "def aligned_indent(arg1,\n                   arg2):\n    pass\naligned_indent(1,\n               2)\naligned_indent(1,\n               2\n               )\nfoodsadsa(sdada,\n          2",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.aligned_indent",
+        "documentation": {}
+    },
+    {
+        "label": "Foo",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_blocks",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_blocks",
+        "peekOfCode": "class Foo:\n    def __init__(self):\n        pass\n    def foo(self):\n        pass",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_blocks",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_blocks",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_blocks",
+        "peekOfCode": "def foo(x):\n    pass\nclass Foo:\n    def __init__(self):\n        pass\n    def foo(self):\n        pass",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_blocks",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "peekOfCode": "a = [\n    1, 2,\n    3\n]\n# set\nb = {\n    3,\n    4,\n}\n# dict",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "documentation": {}
+    },
+    {
+        "label": "b",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "peekOfCode": "b = {\n    3,\n    4,\n}\n# dict\nc = {\n    'a': 'b',\n    'c': 1,\n}\n# tuple",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "documentation": {}
+    },
+    {
+        "label": "c",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "peekOfCode": "c = {\n    'a': 'b',\n    'c': 1,\n}\n# tuple\nd = (\n    1,\n    2,\n)",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "documentation": {}
+    },
+    {
+        "label": "d",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "peekOfCode": "d = (\n    1,\n    2,\n)",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.basic_collections",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "peekOfCode": "def foo(x, y):\n    pass\nfoo(\n    a,\n    b)\nif (a and\n        b):\n    pass\nif (a\n        and b):",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "peekOfCode": "a = [\n    1, 2, 3]\nb = [\n    x + 1\n    for x in range(3)]\nc = [[[\n    1\n]]]\nd = [[[\n    4]]]",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "documentation": {}
+    },
+    {
+        "label": "b",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "peekOfCode": "b = [\n    x + 1\n    for x in range(3)]\nc = [[[\n    1\n]]]\nd = [[[\n    4]]]\ne = [[\n    1], 2, 3]",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "documentation": {}
+    },
+    {
+        "label": "c",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "peekOfCode": "c = [[[\n    1\n]]]\nd = [[[\n    4]]]\ne = [[\n    1], 2, 3]\ndef foo(x, y):\n    pass\nfoo(",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "documentation": {}
+    },
+    {
+        "label": "d",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "peekOfCode": "d = [[[\n    4]]]\ne = [[\n    1], 2, 3]\ndef foo(x, y):\n    pass\nfoo(\n    a,\n    b)\nif (a and",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "documentation": {}
+    },
+    {
+        "label": "e",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "peekOfCode": "e = [[\n    1], 2, 3]\ndef foo(x, y):\n    pass\nfoo(\n    a,\n    b)\nif (a and\n        b):\n    pass",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.branches",
+        "documentation": {}
+    },
+    {
+        "label": "f",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.break_continue",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.break_continue",
+        "peekOfCode": "def f():\n    for x in range(1, 2):\n        if x == 1:\n            break\ndef f():\n    for x in range(1, 2):\n        if x == 1:\n            continue",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.break_continue",
+        "documentation": {}
+    },
+    {
+        "label": "f",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.break_continue",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.break_continue",
+        "peekOfCode": "def f():\n    for x in range(1, 2):\n        if x == 1:\n            continue",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.break_continue",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "peekOfCode": "a = [\n    x + 1 for x in range(3)\n]\n# dict\nb = {\n    x: x + 1 for x in range(3)\n}\n# generator\nc = (\n    x * x for x in range(3)",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "documentation": {}
+    },
+    {
+        "label": "b",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "peekOfCode": "b = {\n    x: x + 1 for x in range(3)\n}\n# generator\nc = (\n    x * x for x in range(3)\n)\n# set\nd = {\n    x + x for x in range(3)",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "documentation": {}
+    },
+    {
+        "label": "c",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "peekOfCode": "c = (\n    x * x for x in range(3)\n)\n# set\nd = {\n    x + x for x in range(3)\n}\n# other styles\ne = [\n    x + 1 for x",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "documentation": {}
+    },
+    {
+        "label": "d",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "peekOfCode": "d = {\n    x + x for x in range(3)\n}\n# other styles\ne = [\n    x + 1 for x\n    in range(3)\n]",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "documentation": {}
+    },
+    {
+        "label": "e",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "peekOfCode": "e = [\n    x + 1 for x\n    in range(3)\n]",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.comprehensions",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_def",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_def",
+        "peekOfCode": "def foo(a,\n        b,\n        c):\n    pass\ndef foobar(a,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_def",
+        "documentation": {}
+    },
+    {
+        "label": "foobar",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_def",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_def",
+        "peekOfCode": "def foobar(a,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_def",
+        "documentation": {}
+    },
+    {
+        "label": "d",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_dict",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_dict",
+        "peekOfCode": "d = {1:4,\n     2:3,\n     4:5}\nd2 = {1:3,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_dict",
+        "documentation": {}
+    },
+    {
+        "label": "d2",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_dict",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_dict",
+        "peekOfCode": "d2 = {1:3,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_dict",
+        "documentation": {}
+    },
+    {
+        "label": "l",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_list",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_list",
+        "peekOfCode": "l = [1,\n     2,\n     3]\nl2 = [1,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_list",
+        "documentation": {}
+    },
+    {
+        "label": "l2",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_list",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_list",
+        "peekOfCode": "l2 = [1,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_list",
+        "documentation": {}
+    },
+    {
+        "label": "s",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_set",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_set",
+        "peekOfCode": "s = {1,\n     2,\n     3}\ns2 = {1,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_set",
+        "documentation": {}
+    },
+    {
+        "label": "s2",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_set",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_set",
+        "peekOfCode": "s2 = {1,",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.error_state_set",
+        "documentation": {}
+    },
+    {
+        "label": "hanging_indent",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.hanging_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.hanging_indent",
+        "peekOfCode": "def hanging_indent(\n        arg1, arg2):\n    pass\nhanging_indent(\n    1, 2)",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.hanging_indent",
+        "documentation": {}
+    },
+    {
+        "label": "test_branch_else",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.if_else",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.if_else",
+        "peekOfCode": "def test_branch_else():\n    if True:\n        x = 1",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.if_else",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "peekOfCode": "a = 2 \\\n    + 2\nb = 'hello' \\\n    'world'\nc = lambda x: \\\n    x + 3",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "documentation": {}
+    },
+    {
+        "label": "b",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "peekOfCode": "b = 'hello' \\\n    'world'\nc = lambda x: \\\n    x + 3",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "documentation": {}
+    },
+    {
+        "label": "c",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "peekOfCode": "c = lambda x: \\\n    x + 3",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.join_lines",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "peekOfCode": "foo = [\n    1, \n    2, \n    3\n]\nfoo = {\n    \"a\": 1,\n    \"b\": 2,\n    \"c\": 3\n}",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "peekOfCode": "foo = {\n    \"a\": 1,\n    \"b\": 2,\n    \"c\": 3\n}\nfoo = {\n    1,\n    2,\n    3,\n}",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "peekOfCode": "foo = {\n    1,\n    2,\n    3,\n}\nfoo = (\n    1 + 2\n)\n(\n    a for a in range(0, 10)",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "peekOfCode": "foo = (\n    1 + 2\n)\n(\n    a for a in range(0, 10)\n)\nfoo = [\n    a for a in range(0, 10)\n]\nfoo = {",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "peekOfCode": "foo = [\n    a for a in range(0, 10)\n]\nfoo = {\n    a for a in range(0, 10)\n}\nfoo = {\n    a: b for a, b in items\n}\nfoo.bar(",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "peekOfCode": "foo = {\n    a for a in range(0, 10)\n}\nfoo = {\n    a: b for a, b in items\n}\nfoo.bar(\n    \"baz\")\n[\n    a + b for (",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "documentation": {}
+    },
+    {
+        "label": "foo",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "peekOfCode": "foo = {\n    a: b for a, b in items\n}\nfoo.bar(\n    \"baz\")\n[\n    a + b for (\n        a, \n        b\n    ) ",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.line_after_indent",
+        "documentation": {}
+    },
+    {
+        "label": "test_match_case",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "peekOfCode": "def test_match_case():\n    match a:\n        case 1:\n            return\ndef test_match():\n    match a:\ndef test_case():\n    match a:\n        case b:",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "documentation": {}
+    },
+    {
+        "label": "test_match",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "peekOfCode": "def test_match():\n    match a:\ndef test_case():\n    match a:\n        case b:",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "documentation": {}
+    },
+    {
+        "label": "test_case",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "peekOfCode": "def test_case():\n    match a:\n        case b:",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "peekOfCode": "a = 0\ndef test_match_case():\n    match a:\n        case 1:\n            return\ndef test_match():\n    match a:\ndef test_case():\n    match a:\n        case b:",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.match_case",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "peekOfCode": "a = [\n    1,\n    [\n        2,\n        [\n            3\n        ]\n    ]\n]\nb = [",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "documentation": {}
+    },
+    {
+        "label": "b",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "peekOfCode": "b = [\n    1, [[\n        3\n    ],\n    ]\n]\nc = [[[\n    3\n]]]\nd = {",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "documentation": {}
+    },
+    {
+        "label": "c",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "peekOfCode": "c = [[[\n    3\n]]]\nd = {\n    'a': [\n        2, 3\n    ],\n    'c': (\n        [1, 2, 3],\n        [",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "documentation": {}
+    },
+    {
+        "label": "d",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "peekOfCode": "d = {\n    'a': [\n        2, 3\n    ],\n    'c': (\n        [1, 2, 3],\n        [\n            2,\n            4\n        ], {",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "documentation": {}
+    },
+    {
+        "label": "e",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "peekOfCode": "e = (1, 2,\n     3, 4,\n     5, 6\n     )",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.nested_collections",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return\ndef a():\n    return True\ndef a():\n    return (1, 2, 3)\ndef a():\n    return x.y.z\ndef a():\n    return (",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return True\ndef a():\n    return (1, 2, 3)\ndef a():\n    return x.y.z\ndef a():\n    return (\n        1, 2, 3\n    )",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return (1, 2, 3)\ndef a():\n    return x.y.z\ndef a():\n    return (\n        1, 2, 3\n    )\ndef a():\n    return b(",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return x.y.z\ndef a():\n    return (\n        1, 2, 3\n    )\ndef a():\n    return b(\n        1, 2, 3\n    )",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return (\n        1, 2, 3\n    )\ndef a():\n    return b(\n        1, 2, 3\n    )\ndef a():\n    return [1, 2, 3]",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return b(\n        1, 2, 3\n    )\ndef a():\n    return [1, 2, 3]\ndef a():\n    return {1, 2, 3}\ndef a():\n    return {",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return [1, 2, 3]\ndef a():\n    return {1, 2, 3}\ndef a():\n    return {\n        \"a\": 1,\n        \"b\": 2,\n        \"c\": 3\n    }",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return {1, 2, 3}\ndef a():\n    return {\n        \"a\": 1,\n        \"b\": 2,\n        \"c\": 3\n    }\ndef a():\n    return [",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return {\n        \"a\": 1,\n        \"b\": 2,\n        \"c\": 3\n    }\ndef a():\n    return [\n        a for a in range (1, 3)\n    ]",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "peekOfCode": "def a():\n    return [\n        a for a in range (1, 3)\n    ]",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.return_dedent",
+        "documentation": {}
+    },
+    {
+        "label": "a",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "peekOfCode": "a = \"\"\"\n    String A\n\"\"\"\nb = \"\"\"\nString B\n\"\"\"\nc = \"\"\"\n    String C\n    \"\"\"\nd = \"\"\"",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "documentation": {}
+    },
+    {
+        "label": "b",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "peekOfCode": "b = \"\"\"\nString B\n\"\"\"\nc = \"\"\"\n    String C\n    \"\"\"\nd = \"\"\"\n    String D\nString D\n        String D",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "documentation": {}
+    },
+    {
+        "label": "c",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "peekOfCode": "c = \"\"\"\n    String C\n    \"\"\"\nd = \"\"\"\n    String D\nString D\n        String D\n    \"\"\"",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "documentation": {}
+    },
+    {
+        "label": "d",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "peekOfCode": "d = \"\"\"\n    String D\nString D\n        String D\n    \"\"\"",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.indent.python.strings",
+        "documentation": {}
+    },
+    {
+        "label": "Fields",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.fields",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.fields",
+        "peekOfCode": "class Fields:\n    def __init__(self, fields: list[int]) -> None:\n#                                   ^^^ @type.builtin\n#                                            ^^^^ @constant.builtin\n        self.fields = fields\n#            ^^^^^^ @field\n        self.__dunderfield__ = None\n#            ^^^^^^^^^^^^^^^ @field\n        self._FunKyFielD = 0\n#            ^^^^^^^^^^^ @field",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.fields",
+        "documentation": {}
+    },
+    {
+        "label": "match",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.pattern_matching",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.pattern_matching",
+        "peekOfCode": "match = 2\n#   ^ variable\nmatch, a = 2, 3\n#   ^ variable\nmatch: int = secret\n#   ^ variable\nx, match: str = 2, \"hey, what's up?\"\n# <- variable\n#   ^ variable",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.pattern_matching",
+        "documentation": {}
+    },
+    {
+        "label": "generator",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.yield_from",
+        "description": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.yield_from",
+        "peekOfCode": "def generator():\n    yield from bar(42)\n    # ^ @keyword.return\n    #       ^ @keyword.return",
+        "detail": "site.pack.lazy.opt.nvim-treesitter.tests.query.highlights.python.yield_from",
+        "documentation": {}
+    },
+    {
+        "label": "generate_file",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.plenary.scripts.update_vararg",
+        "description": "site.pack.lazy.opt.plenary.scripts.update_vararg",
+        "peekOfCode": "def generate_file(name, outpath, **kwargs):\n    from jinja2 import Environment, FileSystemLoader\n    env = Environment(loader=FileSystemLoader('./vararg'))\n    template = env.get_template(name)\n    path = os.path.join(outpath, name)\n    with open(path, 'w') as fp:\n        fp.write(template.render(kwargs))\n    subprocess.run([\"lua-format\", \"-i\", path])\nif __name__ == '__main__':\n    generate_file('rotate.lua', '../lua/plenary/vararg', amount=16)",
+        "detail": "site.pack.lazy.opt.plenary.scripts.update_vararg",
+        "documentation": {}
+    },
+    {
+        "label": "generate_file",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.plenary.nvim.scripts.update_vararg",
+        "description": "site.pack.lazy.opt.plenary.nvim.scripts.update_vararg",
+        "peekOfCode": "def generate_file(name, outpath, **kwargs):\n    from jinja2 import Environment, FileSystemLoader\n    env = Environment(loader=FileSystemLoader('./vararg'))\n    template = env.get_template(name)\n    path = os.path.join(outpath, name)\n    with open(path, 'w') as fp:\n        fp.write(template.render(kwargs))\n    subprocess.run([\"lua-format\", \"-i\", path])\nif __name__ == '__main__':\n    generate_file('rotate.lua', '../lua/plenary/vararg', amount=16)",
+        "detail": "site.pack.lazy.opt.plenary.nvim.scripts.update_vararg",
+        "documentation": {}
+    },
+    {
+        "label": "merge",
+        "kind": 2,
+        "importPath": "site.pack.lazy.opt.vimtex.autoload.vimtex.complete.tools.symbols-merge",
+        "description": "site.pack.lazy.opt.vimtex.autoload.vimtex.complete.tools.symbols-merge",
+        "peekOfCode": "def merge(filename):\n    \"\"\"Do the actions\"\"\"\n    changed = False\n    lines = []\n    with open(filename) as f:\n        for line in f.readlines():\n            parts = line.strip().split()\n            if len(parts) > 0:\n                command = parts[0]\n                symbol = D.get(command, '')",
+        "detail": "site.pack.lazy.opt.vimtex.autoload.vimtex.complete.tools.symbols-merge",
+        "documentation": {}
+    },
+    {
+        "label": "files",
+        "kind": 5,
+        "importPath": "site.pack.lazy.opt.vimtex.autoload.vimtex.complete.tools.symbols-merge",
+        "description": "site.pack.lazy.opt.vimtex.autoload.vimtex.complete.tools.symbols-merge",
+        "peekOfCode": "files = [f for f in os.listdir('.') if os.path.isfile(f)]\nfor f in files:\n    merge(f)",
+        "detail": "site.pack.lazy.opt.vimtex.autoload.vimtex.complete.tools.symbols-merge",
+        "documentation": {}
+    },
+    {
+        "label": "Source",
+        "kind": 6,
+        "importPath": "site.pack.lazy.opt.vimtex.rplugin.python3.denite.source.vimtex",
+        "description": "site.pack.lazy.opt.vimtex.rplugin.python3.denite.source.vimtex",
+        "peekOfCode": "class Source(Base):\n    def __init__(self, vim):\n        super().__init__(vim)\n        self.name = 'vimtex'\n        self.kind = 'file'\n    @staticmethod\n    def format_number(n):\n        if not n or not type(n) is dict or n['frontmatter'] or n['backmatter']:\n            return ''\n        num = [str(n[k]) for k in [",
+        "detail": "site.pack.lazy.opt.vimtex.rplugin.python3.denite.source.vimtex",
+        "documentation": {}
+    }
+]

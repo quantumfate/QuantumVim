@@ -29,7 +29,6 @@ meta.integration_opts_mt = setmetatable({}, {
 		end
 	end,
 	__newindex = function(t, opt, value)
-		Log:debug(string.format("Adding option '%s'."), opt)
 		t[opt] = value
 	end,
 })

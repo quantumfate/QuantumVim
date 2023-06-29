@@ -10,7 +10,8 @@ end
 
 print(vim.env.QUANTUMVIM_DIR)
 
-require("qvim.bootstrap"):init()
+print(base_dir)
+require("qvim.bootstrap"):init(base_dir)
 
 require("qvim.keymaps"):init()
 

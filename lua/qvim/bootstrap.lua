@@ -48,7 +48,7 @@ end
 
 ---Initialize the `&runtimepath` variables, load the globals and prepare for startup
 ---@return table
-function M:init()
+function M:init(base_dir)
 	self.qvim_rtp_dir = get_qvim_rtp_dir()
 	self.cache_dir = get_cache_dir()
 	self.pack_dir = join_paths(self.qvim_rtp_dir, "site", "pack")
@@ -64,6 +64,10 @@ function M:init()
 			return _G.get_cache_dir()
 		end
 		return vim.call("stdpath", what)
+	end
+
+	function _G.get_lua_qvim_dir()
+		return base_dir .. "/lua/qvim"
 	end
 
 	vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site"))

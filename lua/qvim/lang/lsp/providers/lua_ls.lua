@@ -2,6 +2,7 @@ local default_workspace = {
 	library = {
 		vim.fn.expand("$VIMRUNTIME"),
 		get_qvim_rtp_dir(),
+		get_lua_qvim_dir(),
 		require("neodev.config").types(),
 		"${3rd}/busted/library",
 		"${3rd}/luassert/library",
@@ -34,7 +35,7 @@ local make_on_new_config = function(on_new_config, _)
 		if server_name ~= "lua_ls" then
 			return
 		end
-		local plugins = { "plenary.nvim", "telescope.nvim", "nvim-treesitter", "LuaSnip" }
+		local plugins = { "plenary.nvim", "telescope.nvim", "nvim-treesitter", "LuaSnip", "lua.qvim" }
 		add_packages_to_workspace(plugins, new_config)
 	end)
 end

@@ -9,20 +9,10 @@ local Log = require("qvim.integrations.log")
 ---@param name string
 ---@return table base_table
 local function create_base_table(name, config)
-	local enabled = true
-	if type(config.active) == "boolean" then
-		enabled = config.active
-	end
-
 	local opts = setmetatable({}, meta.integration_opts_mt)
-
-	Log:debug(string.format("Config table length is '%s'.", #config))
 	for option, value in pairs(config) do
-		Log:debug(string.format("'%s': Adding option '%s' to config table with value '%s'.", name, option, value))
 		opts[option] = value
 	end
-
-	Log:debug(string.format("Created the options table '%s' for the integration '%s'.", opts, name))
 	return opts
 end
 
