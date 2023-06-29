@@ -2,6 +2,8 @@
 ---@field setup function
 local M = {}
 
+local Log = require("qvim.integrations.log")
+local fmt = string.format
 ---Setup the jdtls for java
 ---@return boolean server_started whether the jdtls server started
 function M.setup()
@@ -12,6 +14,17 @@ function M.setup()
 
 	-- Setup Workspace
 	local home = os.getenv("HOME")
+	local java_home = os.getenv("JAVA_HOME")
+	local jdk_home = os.getenv("JDK_HOME")
+
+	if not java_home then
+		Log:error("Java home environment variable not set.")
+	end
+
+	if not jdk_home then
+		Log:error("JDK home environment variable not set.")
+	end
+
 	local workspace_path = home .. "/.local/share/quantumvim/jdtls-workspace/"
 	local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 	local workspace_dir = workspace_path .. project_name
@@ -92,28 +105,32 @@ function M.setup()
 						globalSettings = home .. "/.m2/settings.xml",
 					},
 					runtimes = {
+						-- Debian
 						{
 							name = "JavaSE-17",
 							path = "/usr/lib/jvm/java-17-openjdk-amd64",
 							javadoc = "/usr/lib/jvm/java-17-openjdk-amd64/docs/api",
 							sources = "/usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip",
 						},
-						--{
-						--	name = "Java 20 SepMachine",
-						--	path = "~/.sdkman/candidates/java/20.0.1-sem",
-						--},
-						--{
-						--	name = "Java 17 SepMachine",
-						--	path = "~/.sdkman/candidates/java/17.0.7-sem",
-						--},
-						--{
-						--	name = "Java 11 SepMachine",
-						--	path = "~/.sdkman/candidates/java/11.0.19-sem",
-						--},
-						--{
-						--	name = "Java 8 SepMachine",
-						--	path = "~/.sdkman/candidates/java/8.0.372-sem",
-						--},
+						{
+							name = "JavaSE-20",
+							path = "/usr/lib/jvm/java-20-openjdk-amd64",
+							javadoc = "/usr/lib/jvm/java-20-openjdk-amd64/docs/api",
+							sources = "/usr/lib/jvm/java-20-openjdk-amd64/lib/src.zip",
+						},
+						--Arch
+						{
+							name = "JavaSE-17",
+							path = "/usr/lib/jvm/java-17-openjdk",
+							javadoc = "/usr/share/doc/java17-openjdk/api",
+							sources = "/usr/lib/jvm/java-17-openjdk/lib/src.zip",
+						},
+						{
+							name = "JavaSE-20",
+							path = "/usr/lib/jvm/java-20-openjdk",
+							javadoc = "/usr/share/doc/java20-openjdk/api",
+							sources = "/usr/lib/jvm/java-20-openjdk/lib/src.zip",
+						},
 					},
 				},
 				includeSourceMethodDeclarations = true,
