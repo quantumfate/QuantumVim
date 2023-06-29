@@ -66,7 +66,7 @@ function M.setup()
 			"-data",
 			workspace_dir,
 		},
-		root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }),
+		root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle", ".mvn" }),
 		capabilities = vim.tbl_extend("keep", capabilities, {
 			workspace = {
 				configuration = true,
@@ -86,24 +86,42 @@ function M.setup()
 					downloadSources = true,
 				},
 				configuration = {
-					updateBuildConfiguration = "interactive",
+					updateBuildConfiguration = "automatic",
+					maven = {
+						userSettings = home .. "/.m2/settings.xml",
+						globalSettings = home .. "/.m2/settings.xml",
+					},
 					runtimes = {
 						{
-							name = "Java 20 SepMachine",
-							path = "~/.sdkman/candidates/java/20.0.1-sem"
+							name = "JavaSE-17",
+							path = "/usr/lib/jvm/java-17-openjdk-amd64",
+							javadoc = "/usr/lib/jvm/java-17-openjdk-amd64/docs/api",
+							sources = "/usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip",
 						},
-						{
-							name = "Java 17 SepMachine",
-							path = "~/.sdkman/candidates/java/17.0.7-sem"
-						},
-						{
-							name = "Java 11 SepMachine",
-							path = "~/.sdkman/candidates/java/11.0.19-sem"
-						},
-						{
-							name = "Java 8 SepMachine",
-							path = "~/.sdkman/candidates/java/8.0.372-sem"
-						},
+						--{
+						--	name = "Java 20 SepMachine",
+						--	path = "~/.sdkman/candidates/java/20.0.1-sem",
+						--},
+						--{
+						--	name = "Java 17 SepMachine",
+						--	path = "~/.sdkman/candidates/java/17.0.7-sem",
+						--},
+						--{
+						--	name = "Java 11 SepMachine",
+						--	path = "~/.sdkman/candidates/java/11.0.19-sem",
+						--},
+						--{
+						--	name = "Java 8 SepMachine",
+						--	path = "~/.sdkman/candidates/java/8.0.372-sem",
+						--},
+					},
+				},
+				includeSourceMethodDeclarations = true,
+				jdt = {
+					ls = {
+						androidSupport = true,
+						lombokSupport = true,
+						protofBufSupport = true,
 					},
 				},
 				maven = {
@@ -111,6 +129,9 @@ function M.setup()
 				},
 				implementationsCodeLens = {
 					enabled = true,
+				},
+				signatureHelp = {
+					true,
 				},
 				referencesCodeLens = {
 					enabled = true,
@@ -127,7 +148,6 @@ function M.setup()
 					enabled = false,
 				},
 			},
-			signatureHelp = { enabled = true },
 			extendedClientCapabilities = extendedClientCapabilities,
 		},
 		init_options = {
@@ -156,46 +176,41 @@ function M.setup()
 
 	local keymaps = require("qvim.keymaps")
 
-	keymaps:register(nil,
+	keymaps:register(nil, {
 		{
-			{
-				binding_group = "C",
-				name = "+Java",
-				bindings = {
-					o = { "<Cmd>lua require'jdtls'.organize_imports()<CR>", "Organize Imports" },
-					v = { "<Cmd>lua require('jdtls').extract_variable()<CR>", "Extract Variable" },
-					c = { "<Cmd>lua require('jdtls').extract_constant()<CR>", "Extract Constant" },
-					t = { "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", "Test Method" },
-					T = { "<Cmd>lua require'jdtls'.test_class()<CR>", "Test Class" },
-					u = { "<Cmd>JdtUpdateConfig<CR>", "Update Config" },
-				},
-				options = {
-					prefix = "<leader>",
-				},
+			binding_group = "C",
+			name = "+Java",
+			bindings = {
+				o = { "<Cmd>lua require'jdtls'.organize_imports()<CR>", "Organize Imports" },
+				v = { "<Cmd>lua require('jdtls').extract_variable()<CR>", "Extract Variable" },
+				c = { "<Cmd>lua require('jdtls').extract_constant()<CR>", "Extract Constant" },
+				t = { "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", "Test Method" },
+				T = { "<Cmd>lua require'jdtls'.test_class()<CR>", "Test Class" },
+				u = { "<Cmd>JdtUpdateConfig<CR>", "Update Config" },
 			},
+			options = {
+				prefix = "<leader>",
+			},
+		},
+	})
 
-		}
-	)
-
-	keymaps:register(nil,
+	keymaps:register(nil, {
 		{
-			{
-				binding_group = "C",
-				name = "+Java",
-				bindings = {
-					v = { "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", "Extract Variable" },
-					c = { "<Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>", "Extract Constant" },
-					m = { "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", "Extract Method" },
-				},
-				options = {
-					prefix = "<leader>",
-					mode = "v"
-				},
+			binding_group = "C",
+			name = "+Java",
+			bindings = {
+				v = { "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", "Extract Variable" },
+				c = { "<Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>", "Extract Constant" },
+				m = { "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", "Extract Method" },
 			},
+			options = {
+				prefix = "<leader>",
+				mode = "v",
+			},
+		},
+	})
 
-		}
-	)
-
+	vim.cmd(":set ft=java") -- weird hack ik for seme reason java filetype doesn't load after opening the first file
 	return true
 end
 

@@ -8,7 +8,6 @@ local fn_t = require("qvim.utils.fn_t")
 local util = require("qvim.keymaps.util")
 local adapt = require("qvim.keymaps.adapters")
 
-
 --- A global variable to track standalone keymaps
 _G.g_yikes_current_standalone_bindings = {}
 --- A global variable to track group keymaps
@@ -46,9 +45,6 @@ end
 ---@param declaration table
 ---@param bufnr number|nil
 local function parse_group_to_descripted(descripted_keymaps, declaration, bufnr)
-	if bufnr then
-		declaration.options.buffer = bufnr
-	end
 	local keymap_groups = meta.get_new_group_proxy_mt()
 	local current_index = #keymap_groups + 1
 	keymap_groups[current_index] = declaration
