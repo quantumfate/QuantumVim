@@ -64,6 +64,7 @@ local function client_is_configured(server_name, ft)
 	local active_autocmds = vim.api.nvim_get_autocmds({ event = "FileType", pattern = ft })
 	for _, result in ipairs(active_autocmds) do
 		if result.desc ~= nil and result.desc:match("server " .. server_name .. " ") then
+			print("Is already conf")
 			Log:debug(string.format("[%q] is already configured", server_name))
 			return true
 		end
@@ -96,13 +97,10 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 	vim.validate({ name = { server_name, "string" } })
 	user_config = user_config or {}
 
-	if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
-		return
-	end
-
 	if not skip_ft_ext and filetype then
 		local status_ok, filetypes = pcall(require, "qvim.lang.lsp.filetypes")
 		if status_ok then
+			Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
 			if filetypes.setup(filetype) then
 				return
 			end
@@ -111,23 +109,30 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 			if custom_lsp_settings then
 				user_config = custom_lsp_settings
 			end
-
-			Log:debug(fmt("Called filetype extension. Server: '%s', FileType: '%s'", server_name, filetype))
 		end
 	end
 
 	local package = lsp_utils.get_mason_package(server_name)
 
+	if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
+		if server_name == "jdtls" then
+			local config = resolve_config(server_name, user_config)
+			launch_server(server_name, config)
+		end
+		return
+	end
+
 	if shared_util.is_package(package) then
 		shared_util.try_install_and_setup_mason_package(
-		---@diagnostic disable-next-line: param-type-mismatch
+			---@diagnostic disable-next-line: param-type-mismatch
 			package,
 			fmt("language server %s", server_name),
 			function(_server_name, _user_config)
 				local config = resolve_config(_server_name, resolve_mason_config(_server_name), _user_config)
 				launch_server(_server_name, config)
 			end,
-			{ server_name, user_config })
+			{ server_name, user_config }
+		)
 	else
 		--TODO: install custom mason spec
 		local config = resolve_config(server_name, user_config)
