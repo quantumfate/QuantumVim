@@ -1,7 +1,7 @@
 local M = {}
 
 local meta = require("qvim.integrations.meta")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 --- Create the base table for an integration with the `keymap_meta.mt` and populates
 --- the table with additionally defined options from a given `config`.

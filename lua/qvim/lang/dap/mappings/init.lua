@@ -5,7 +5,7 @@
 local M = {}
 local _ = require('mason-core.functional')
 local mason_nvim_dap_mappings = require("mason-nvim-dap.mappings.source")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fmt = string.format
 
 M.ft_to_dap = {

@@ -1,6 +1,6 @@
 ---A base and utility to work with lazy plugin specs
 local M = {}
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Plugins that should be installed. The key
 ---values represent the accepted plugin name

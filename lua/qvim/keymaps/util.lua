@@ -2,7 +2,7 @@
 ---@class keymap.util
 local util = {}
 local constants = require("qvim.keymaps.constants")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Calls the pairs method on a proxy table.
 ---@generic T: table, K, V

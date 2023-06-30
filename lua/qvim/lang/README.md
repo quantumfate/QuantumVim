@@ -1,4 +1,4 @@
-#Languages
+# Languages
 
 Everything is done by [filetype plugins](https://neovim.io/doc/user/filetype.html). An autocommand will
 generate a filetype plugin upon the event `User FileOpened` is triggered with the following content:
@@ -69,7 +69,7 @@ is completed. In some cases (like java) it will require you to handle everything
 
 ## LSP providers
 
-Creating a file `<luanguage_server>.lua` in `lsp/providers` will inject settings into the launch of `<luanguage_server`.
+Creating a file `<luanguage_server>.lua` in `lsp/providers` will inject settings into the launch of `<luanguage_server>`.
 
 - example for `jsonls.lua`
 

@@ -9,7 +9,7 @@ function M.setup()
 	end
 	require("qvim.lang.lsp").setup()
 	require("qvim.lang.null-ls").setup()
-
+	require("qvim.lang.dap").setup()
 
 	autocmds.configure_format_on_save()
 end

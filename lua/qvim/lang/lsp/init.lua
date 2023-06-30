@@ -1,6 +1,6 @@
 ---@class lsp
 local M = {}
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local utils = require("qvim.utils")
 local autocmds = require("qvim.integrations.autocmds")
 

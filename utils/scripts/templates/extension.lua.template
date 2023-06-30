@@ -1,7 +1,7 @@
 ---The QV_STRING_EXT_PLUGIN_NAME_VAR configuration file of the QV_STRING_PLUGIN_NAME_VAR plugin
 local M = {}
 
-local Log = require "qvim.integrations.log"
+local Log = require "qvim.log"
 
 ---Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
 function M:config()

@@ -1,7 +1,7 @@
 ---The whichkey configuration file
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local keymaps = require("qvim.keymaps")
 
 ---Registers the global configuration scope for whichkey
@@ -76,15 +76,15 @@ function M:init()
 				winblend = 0,
 			},
 			layout = {
-				height = { min = 4, max = 50 }, -- min and max height of the columns
-				width = { min = 20, max = 50 }, -- min and max width of the columns
-				spacing = 3, -- spacing between columns
-				align = "left", -- align columns left, center or right
+				height = { min = 4, max = 50 },                                  -- min and max height of the columns
+				width = { min = 20, max = 50 },                                  -- min and max width of the columns
+				spacing = 3,                                                     -- spacing between columns
+				align = "left",                                                  -- align columns left, center or right
 			},
-			ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
+			ignore_missing = false,                                              -- enable this to hide mappings for which you didn't specify a label
 			hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " }, -- hide mapping boilerplate
-			show_help = true, -- show help message on the command line when the popup is visible
-			triggers = "auto", -- automatically setup triggers
+			show_help = true,                                                    -- show help message on the command line when the popup is visible
+			triggers = "auto",                                                   -- automatically setup triggers
 			-- triggers = {"<leader>"} -- or specify a list manually
 			triggers_blacklist = {
 				-- list of mode / prefixes that should never be hooked by WhichKey

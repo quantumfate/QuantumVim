@@ -1,7 +1,7 @@
 --- yet (another) innovative keymap enabling setter
 ---@class keymap
 local keymap = {}
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fn_t = require("qvim.utils.fn_t")
 local shared_util = require("qvim.keymaps.util")
 ---@class util

@@ -1,7 +1,7 @@
 ---@class descriptor
 local descriptor = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local shared_util = require("qvim.keymaps.util")
 local fn_t = require("qvim.utils.fn_t")
 

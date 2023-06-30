@@ -2,7 +2,7 @@ local M = {}
 local _ = require("mason-core.functional")
 local ft_map = require("null-ls.builtins._meta.filetype_map")
 local null_ls = require("null-ls")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 local fmt = string.format
 

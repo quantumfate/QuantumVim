@@ -1,11 +1,13 @@
 ---@class whichkey
 local M = {}
 
+---@class util
 local util = require("qvim.keymaps.adapters.util")
 local fn = require("qvim.utils.fn")
 local shared_util = require("qvim.keymaps.util")
 local constants = require("qvim.keymaps.constants")
 
+-- constants
 local rhs = constants.neovim_options_constants.rhs
 local desc = constants.neovim_options_constants.desc
 local group_binding_trigger = constants.binding_group_constants.key_binding_group
@@ -36,8 +38,6 @@ local function mutation_for_single_binding(descriptors_t, binding_descriptor)
 			whichkey_mappings[lhs][constants.neovim_options_constants.callback] =
 				keymaps[lhs][constants.neovim_options_constants.callback]
 		end
-		opts[rhs] = nil
-		opts[desc] = nil
 	end
 	return { whichkey_mappings, _opts }
 end
@@ -46,17 +46,17 @@ local function mutation_for_group_binding(descriptors_t, group_descriptor)
 	local group = descriptors_t[group_descriptor]
 	local _group = fn.shallow_table_copy(group)
 	local whichkey_group = {}
+	local whichkey_group_bindings = {}
 	local whichkey_group_opts = _group[group_opts]
-	for _, opts in pairs(_group[group_bindings]) do
-		-- Don't ask me why but for some reason whichkey expects the
-		-- values in the following order (it's counter intuitive but
-		-- it is what it is)
-		opts[constants.desc_index] = opts[rhs]
-		opts[constants.rhs_index] = opts[desc]
-		opts[rhs] = nil
-		opts[desc] = nil
+	for lhs, opts in pairs(_group[group_bindings]) do
+		whichkey_group_bindings[lhs] = { opts[rhs], opts[desc] }
+		for key, value in pairs(opts) do
+			if not (key == rhs or key == desc) then
+				whichkey_group_bindings[lhs][key] = value
+			end
+		end
 	end
-	whichkey_group[_group[group_binding_trigger]] = _group[group_bindings]
+	whichkey_group[_group[group_binding_trigger]] = whichkey_group_bindings
 	whichkey_group[_group[group_binding_trigger]][group_name] = _group[group_name]
 
 	whichkey_group_opts[group_prefix] = group[group_prefix]

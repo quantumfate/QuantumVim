@@ -2,7 +2,7 @@
 ---@field get_all_supported_filetypes_to_servers function
 ---@field select_language_server function
 local M = {}
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fmt = string.format
 
 ---Get a proxy table that maps filetypes to there specific ft file.

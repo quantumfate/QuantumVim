@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local shared_util = require("qvim.lang.utils")
 local fmt = string.format
 local lsp_utils = require("qvim.lang.lsp.utils")
@@ -124,7 +124,7 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 
 	if shared_util.is_package(package) then
 		shared_util.try_install_and_setup_mason_package(
-			---@diagnostic disable-next-line: param-type-mismatch
+		---@diagnostic disable-next-line: param-type-mismatch
 			package,
 			fmt("language server %s", server_name),
 			function(_server_name, _user_config)

@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 function M.setup()
 	Log:debug("Setting up null-ls")

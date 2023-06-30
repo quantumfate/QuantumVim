@@ -1,7 +1,7 @@
 ---@class Table
 local Table = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Wraps Lua's builtin rawget. Calls rawget and prints debug information.
 ---@param t any

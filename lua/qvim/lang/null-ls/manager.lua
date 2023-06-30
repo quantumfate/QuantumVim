@@ -3,7 +3,7 @@ local M = {}
 local _ = require("mason-core.functional")
 local null_ls_utils = require("qvim.lang.null-ls.util")
 local shared_util = require("qvim.lang.utils")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fmt = string.format
 
 ---Takes a map of null-ls methods mapped to a table of sources and transforms supported

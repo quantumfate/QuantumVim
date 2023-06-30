@@ -1,7 +1,7 @@
 ---The dap configuration file
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Registers the global configuration scope for dap
 function M:init()
@@ -12,21 +12,33 @@ function M:init()
 		end,
 		extensions = {
 			"mason-dap",
-			"repl-highlights",
 			"ui",
 			"virtual-text",
 			"cmp-dap",
 		},
 		keymaps = {
-			["gt"] = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle breakpoint" },
-			["gT"] = { "<cmd>lua require('dap').set_breakpoint()<cr>", "Set breakpoint" },
-			["gC"] = { "<cmd>lua require'dap'.continue()<cr>", "Continue" },
-			["gso"] = { "<cmd>lua require'dap'.step_over()<cr>", "Step over" },
-			["gsi"] = { "<cmd>lua require'dap'.step_into()<cr>", "Step into" },
-			["gse"] = { "<cmd>require('dap').step_out()<cr>", "Step out" },
-			["gro"] = { "<cmd>lua require'dap'.repl.open()<cr>", "Toggle breakpoint" },
-			["grl"] = { "<cmd>lua require('dap').run_last()<cr>", "Run last" },
-			["gr"] = { "<cmd>lua require('dap').restart()<cr>", "Restart" },
+			{
+				binding_group = "d",
+				bindings = {
+					["tc"] = { "<cmd>lua require'telescope'.extensions.dap.commands{}<cr>", "Show commands" },
+					["ts"] = { "<cmd>lua require'telescope'.extensions.dap.configurations{}<cr>", "Show setups" },
+					["tv"] = { "<cmd>lua require'telescope'.extensions.dap.variables{}<cr>", "Show variables" },
+					["tf"] = { "<cmd>lua require'telescope'.extensions.dap.frames{}<cr>", "Show frames" },
+					["tb"] = { "<cmd>lua require'telescope'.extensions.dap.list_breakpoints{}<cr>", "Show breakpoints" },
+					["b"] = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle breakpoint" },
+					["B"] = { "<cmd>lua require('dap').set_breakpoint()<cr>", "Set breakpoint" },
+					["R"] = { "<cmd>lua require'dap'.continue()<cr>", "Continue|Run" },
+					["so"] = { "<cmd>lua require'dap'.step_over()<cr>", "Step over" },
+					["si"] = { "<cmd>lua require'dap'.step_into()<cr>", "Step into" },
+					["sr"] = { "<cmd>require('dap').step_out()<cr>", "Step out" },
+					["ro"] = { "<cmd>lua require'dap'.repl.open()<cr>", "Repl open" },
+					["rl"] = { "<cmd>lua require('dap').run_last()<cr>", "Run last" },
+					["<backspace>"] = { "<cmd>lua require('dap').restart()<cr>", "Restart" },
+				},
+				options = {
+					prefix = "<leader>",
+				},
+			},
 		},
 		options = {
 			-- dap option configuration
@@ -80,8 +92,6 @@ function M:setup()
 	end
 
 	local _dap = qvim.integrations.dap
-
-	--dap.setup(_dap.options)
 
 	dap.set_log_level(qvim.integrations.dap.options.log.level)
 	if _dap.on_config_done then

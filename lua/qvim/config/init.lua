@@ -1,5 +1,5 @@
 local utils = require("qvim.utils")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 local M = {}
 

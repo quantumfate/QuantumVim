@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 -- revisit this
 -- function prequire(package)
 --   local status, lib = pcall(require, package)

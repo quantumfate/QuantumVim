@@ -2,7 +2,7 @@
 ---@field setup function
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fmt = string.format
 ---Setup the jdtls for java
 ---@return boolean server_started whether the jdtls server started
@@ -198,12 +198,12 @@ function M.setup()
 			binding_group = "C",
 			name = "+Java",
 			bindings = {
-				o = { "<Cmd>lua require'jdtls'.organize_imports()<CR>", "Organize Imports" },
-				v = { "<Cmd>lua require('jdtls').extract_variable()<CR>", "Extract Variable" },
-				c = { "<Cmd>lua require('jdtls').extract_constant()<CR>", "Extract Constant" },
-				t = { "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", "Test Method" },
-				T = { "<Cmd>lua require'jdtls'.test_class()<CR>", "Test Class" },
-				u = { "<Cmd>JdtUpdateConfig<CR>", "Update Config" },
+				o = { rhs = "<Cmd>lua require'jdtls'.organize_imports()<CR>", desc = "Organize Imports" },
+				v = { rhs = "<Cmd>lua require('jdtls').extract_variable()<CR>", desc = "Extract Variable" },
+				c = { rhs = "<Cmd>lua require('jdtls').extract_constant()<CR>", desc = "Extract Constant" },
+				t = { rhs = "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", desc = "Test Method" },
+				T = { rhs = "<Cmd>lua require'jdtls'.test_class()<CR>", desc = "Test Class" },
+				u = { rhs = "<Cmd>JdtUpdateConfig<CR>", desc = "Update Config" },
 			},
 			options = {
 				prefix = "<leader>",
@@ -216,9 +216,9 @@ function M.setup()
 			binding_group = "C",
 			name = "+Java",
 			bindings = {
-				v = { "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", "Extract Variable" },
-				c = { "<Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>", "Extract Constant" },
-				m = { "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", "Extract Method" },
+				v = { rhs = "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", desc = "Extract Variable" },
+				c = { rhs = "<Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>", desc = "Extract Constant" },
+				m = { rhs = "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", desc = "Extract Method" },
 			},
 			options = {
 				prefix = "<leader>",

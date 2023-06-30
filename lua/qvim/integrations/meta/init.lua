@@ -3,7 +3,7 @@ local meta = {}
 
 local keymap = require("qvim.keymaps.meta.keymap")
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fn = require("qvim.utils.fn")
 local fn_t = require("qvim.utils.fn_t")
 local default = require("qvim.keymaps.default")
@@ -39,9 +39,7 @@ meta.integration_base_mt = setmetatable({}, {
 		return t[fn.normalize(name)]
 	end,
 	__newindex = function(t, name, options)
-		print("is this calsseds")
 		local _name = fn.normalize(name)
-		Log:debug(string.format("Processing configuration for '%s'.", _name))
 		t[name] = options
 	end,
 })

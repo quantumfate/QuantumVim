@@ -18,5 +18,5 @@ require("qvim.keymaps"):init()
 local integration_loader = require("qvim.integrations.loader")
 integration_loader:load()
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 Log:debug("Starting QuantumVim")

@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fmt = string.format
 local if_nil = vim.F.if_nil
 

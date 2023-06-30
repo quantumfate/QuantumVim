@@ -1,7 +1,7 @@
 ---The treesitter configuration file
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local utils = require("qvim.utils")
 
 ---Registers the global configuration scope for treesitter
@@ -119,8 +119,12 @@ function M:setup()
 		Log:warn(string.format("The plugin '%s' could not be loaded.", treesitter))
 		return
 	end
-
-	require("qvim.integrations.dap.repl-highlights"):setup()
+	local repl_status_ok, repl_highlights = pcall(reload, "nvim-dap-repl-highlights")
+	if repl_status_ok then
+		repl_highlights.setup()
+	else
+		Log:warn(string.format("The extension '%s' could not be loaded.", repl_highlights))
+	end
 
 	local _treesitter = qvim.integrations.treesitter
 	treesitter.setup(_treesitter.options)

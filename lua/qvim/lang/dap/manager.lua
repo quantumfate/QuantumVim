@@ -1,7 +1,7 @@
 ---@class dap.manager
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local utils = require("qvim.lang.dap.utils")
 local shared_util = require("qvim.lang.utils")
 local fmt = string.format

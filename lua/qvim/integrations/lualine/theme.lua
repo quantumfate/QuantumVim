@@ -134,12 +134,12 @@ themes.qvim = {
 function M.get_theme(theme)
 	local theme_keys = vim.tbl_keys(themes)
 	if not vim.tbl_contains(theme_keys, theme) then
-		local Log = require("qvim.integrations.log")
+		local Log = require("qvim.log")
 		Log:error(
 			"Invalid lualine theme"
-				.. string.format('"%s"', theme)
-				.. "options are: "
-				.. string.format('"%s"', table.concat(theme_keys, '", "'))
+			.. string.format('"%s"', theme)
+			.. "options are: "
+			.. string.format('"%s"', table.concat(theme_keys, '", "'))
 		)
 		Log:debug('"qvim" theme is applied.')
 		theme = "qvim"
@@ -149,7 +149,7 @@ end
 
 function M.update()
 	local theme = M.get_theme(qvim.integrations.lualine.theme)
-	local Log = require("qvim.integrations.log")
+	local Log = require("qvim.log")
 
 	qvim.integrations.lualine = vim.tbl_deep_extend("keep", qvim.integrations.lualine, theme)
 

@@ -56,6 +56,19 @@ function Log:init()
 				{
 					level = Log.levels.ERROR,
 					processors = {
+						structlog.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 2 }),
+						structlog.processors.Timestamper("%H:%M:%S"),
+					},
+					formatter = structlog.formatters.FormatColorizer(
+						"%s [%-5s] %s: %-30s",
+						{ "timestamp", "level", "logger_name", "msg" },
+						{ level = structlog.formatters.FormatColorizer.color_level() }
+					),
+					sink = structlog.sinks.Console(), -- async=false
+				},
+				{
+					level = Log.levels.ERROR,
+					processors = {
 						structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3, stack_level = 2 }),
 						structlog.processors.Timestamper("%F %H:%M:%S"),
 					},
@@ -134,7 +147,7 @@ function Log:add_entry(level, msg, event)
 			logger:log(level, vim.inspect(msg), event)
 		end)
 	then
-		vim.notify("structlog version too old, run `:Lazy sync`")
+		vim.notify(level, msg)
 	end
 end
 
@@ -147,15 +160,6 @@ function Log:get_logger()
 	if logger_ok and logger then
 		return logger
 	end
-
-	logger = self:init()
-
-	if not logger then
-		return
-	end
-
-	self.__handle = logger
-	return logger
 end
 
 ---Retrieves the path of the logfile

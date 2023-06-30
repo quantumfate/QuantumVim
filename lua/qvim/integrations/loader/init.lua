@@ -1,7 +1,7 @@
 local plugin_loader = {}
 
 local utils = require("qvim.utils")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local join_paths = utils.join_paths
 
 local get_qvim_rtp_dir = _G.get_qvim_rtp_dir

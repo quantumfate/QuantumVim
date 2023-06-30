@@ -1,7 +1,7 @@
 ---The virtual-text configuration file of the dap plugin
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Registers the global configuration scope for dap
 function M:config()
@@ -11,6 +11,7 @@ function M:config()
 		keymaps = {},
 		options = {
 			-- virtual_text option configuration
+			only_first_definition = true,
 		},
 	}
 end

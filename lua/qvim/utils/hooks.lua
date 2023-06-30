@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local in_headless = #vim.api.nvim_list_uis() == 0
 local plugin_loader = require("qvim.integrations.loader")
 

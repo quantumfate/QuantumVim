@@ -71,13 +71,13 @@ return {
 			binding_group = "l",
 			name = "+LSP",
 			bindings = {
-				["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Goto definition" },
-				["D"] = { "<cmd>lua vim.lsp.buf.declaration()<cr>", "Goto Declaration" },
-				["r"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Goto references" },
-				["I"] = { "<cmd>lua vim.lsp.buf.implementation()<cr>", "Goto Implementation" },
-				["s"] = { "<cmd>lua vim.lsp.buf.signature_help()<cr>", "show signature help" },
+				["d"] = { rhs = "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Goto definition" },
+				["D"] = { rhs = "<cmd>lua vim.lsp.buf.declaration()<cr>", desc = "Goto Declaration" },
+				["r"] = { rhs = "<cmd>lua vim.lsp.buf.references()<cr>", desc = "Goto references" },
+				["I"] = { rhs = "<cmd>lua vim.lsp.buf.implementation()<cr>", desc = "Goto Implementation" },
+				["s"] = { rhs = "<cmd>lua vim.lsp.buf.signature_help()<cr>", desc = "show signature help" },
 				["l"] = {
-					function()
+					callback = function()
 						local float = vim.diagnostic.config().float
 
 						if float then
@@ -87,7 +87,7 @@ return {
 							vim.diagnostic.open_float(config)
 						end
 					end,
-					"Show line diagnostics",
+					desc = "Show line diagnostics",
 				},
 			},
 			options = {

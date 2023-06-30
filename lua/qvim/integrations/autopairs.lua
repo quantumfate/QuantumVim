@@ -1,7 +1,7 @@
 ---The autopairs configuration file
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Registers the global configuration scope for autopairs
 function M:init()

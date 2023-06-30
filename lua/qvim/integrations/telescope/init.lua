@@ -1,7 +1,7 @@
 ---The telescope configuration file
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---@alias telescope_themes
 ---| "cursor"   # see `telescope.themes.get_cursor()`

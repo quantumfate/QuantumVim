@@ -1,6 +1,6 @@
 ---@class keymaps
 local M = {}
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local meta = require("qvim.keymaps.meta")
 local keymap_defaults = require("qvim.keymaps.keymap")
 local default = require("qvim.keymaps.default")

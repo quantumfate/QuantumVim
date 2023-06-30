@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Replaces hyphons with underscores in a string
 ---@param val string|nil

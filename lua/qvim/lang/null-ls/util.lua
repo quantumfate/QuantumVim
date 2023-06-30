@@ -1,6 +1,6 @@
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local _ = require("mason-core.functional")
 local fmt = string.format
 local null_ls = require("null-ls")

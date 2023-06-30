@@ -1,7 +1,7 @@
 ---The nightfox configuration file
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 if in_headless_mode() then
 	return

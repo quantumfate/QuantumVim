@@ -83,7 +83,7 @@ M.defaults = {
 	{
 		name = "qvimOpenlog",
 		fn = function()
-			vim.fn.execute("edit " .. require("qvim.integrations.log"):get_path())
+			vim.fn.execute("edit " .. require("qvim.log"):get_path())
 		end,
 	},
 }

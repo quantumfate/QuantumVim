@@ -1,7 +1,7 @@
 local M = {}
 
 local tbl = require("qvim.utils.fn_t")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 ---Returns a mason package or the server name when the package does not exist in
 ---the mason registry.

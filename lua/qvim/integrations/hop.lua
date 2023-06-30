@@ -2,7 +2,7 @@
 local M = {}
 
 local utils = require("qvim.utils")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local directions = require("hop.hint").HintDirection
 ---Registers the global configuration scope for hop
 function M:init()
@@ -10,49 +10,59 @@ function M:init()
 		active = true,
 		on_config_done = nil,
 		keymaps = {
-			f = {
-				"",
-				"Jump anywhere after the selected cursor.",
-				callback = function()
-					local hop = require("hop")
-					hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
-				end,
-			},
-			F = {
-				"",
-				"Jump anywhere before the selected cursor.",
-				callback = function()
-					local hop = require("hop")
-					hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
-				end,
-			},
-			t = {
-				"",
-				"Jump after the selected cursor on the current line only.",
-				callback = function()
-					local hop = require("hop")
-					hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
-				end,
-			},
-			T = {
-				"",
-				"Jump before the selected cursor on the current line only.",
-				callback = function()
-					local hop = require("hop")
-					hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
-				end,
+			{
+				binding_group = "h",
+				name = "+Hop",
+				bindings = {
+					h = {
+						"",
+						"Jump anywhere after the selected cursor.",
+						callback = function()
+							local hop = require("hop")
+							hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
+						end,
+					},
+					H = {
+						"",
+						"Jump anywhere before the selected cursor.",
+						callback = function()
+							local hop = require("hop")
+							hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+						end,
+					},
+					t = {
+						"",
+						"Jump after the selected cursor on the current line only.",
+						callback = function()
+							local hop = require("hop")
+							hop.hint_char1({
+								direction = directions.AFTER_CURSOR,
+								current_line_only = true,
+								hint_offset = -1,
+							})
+						end,
+					},
+					T = {
+						"",
+						"Jump before the selected cursor on the current line only.",
+						callback = function()
+							local hop = require("hop")
+							hop.hint_char1({
+								direction = directions.BEFORE_CURSOR,
+								current_line_only = true,
+								hint_offset = 1,
+							})
+						end,
+					},
+					options = {
+						prefix = "<leader>",
+					},
+				},
 			},
 		},
 		-- hop option configuration
 		options = {
 			keys = "etovxqpdygfblzhckisuran",
-			-- Options to parse to a keymap
-			opts = {
-				silent = true,
-				noremap = true,
-				callback = nil,
-				desc = nil,
-			},
 		},
 	}
 	return hop

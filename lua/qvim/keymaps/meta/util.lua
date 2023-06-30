@@ -2,7 +2,7 @@
 ---@class util
 local util = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fn_t = require("qvim.utils.fn_t")
 local binding_group_constants = require("qvim.keymaps.constants").binding_group_constants
 local constants = require("qvim.keymaps.constants")

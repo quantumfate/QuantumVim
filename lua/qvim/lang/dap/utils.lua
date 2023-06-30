@@ -3,7 +3,7 @@ local M = {}
 
 local mappings = require("qvim.lang.dap.mappings")
 local shared_utils = require("qvim.lang.utils")
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 local fmt = string.format
 
 ---Get the package name of a debug adapter of a given `ft`

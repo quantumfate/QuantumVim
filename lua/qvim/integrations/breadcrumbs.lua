@@ -1,7 +1,7 @@
 ---The breadcrumbs configuration file
 local M = {}
 
-local Log = require("qvim.integrations.log")
+local Log = require("qvim.log")
 
 local icons = qvim.icons.kind
 ---Registers the global configuration scope for breadcrumbs
