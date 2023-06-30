@@ -15,24 +15,21 @@ function M:init()
 				name = "+Hop",
 				bindings = {
 					h = {
-						"",
-						"Jump anywhere after the selected cursor.",
+						desc = "Jump anywhere after the selected cursor.",
 						callback = function()
 							local hop = require("hop")
 							hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
 						end,
 					},
 					H = {
-						"",
-						"Jump anywhere before the selected cursor.",
+						desc = "Jump anywhere before the selected cursor.",
 						callback = function()
 							local hop = require("hop")
 							hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
 						end,
 					},
 					t = {
-						"",
-						"Jump after the selected cursor on the current line only.",
+						desc = "Jump after the selected cursor on the current line only.",
 						callback = function()
 							local hop = require("hop")
 							hop.hint_char1({
@@ -43,8 +40,7 @@ function M:init()
 						end,
 					},
 					T = {
-						"",
-						"Jump before the selected cursor on the current line only.",
+						desc = "Jump before the selected cursor on the current line only.",
 						callback = function()
 							local hop = require("hop")
 							hop.hint_char1({
@@ -54,9 +50,9 @@ function M:init()
 							})
 						end,
 					},
-					options = {
-						prefix = "<leader>",
-					},
+				},
+				options = {
+					prefix = "<leader>",
 				},
 			},
 		},

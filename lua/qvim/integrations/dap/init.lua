@@ -19,6 +19,7 @@ function M:init()
 		keymaps = {
 			{
 				binding_group = "d",
+				name = "+Dap",
 				bindings = {
 					["tc"] = { "<cmd>lua require'telescope'.extensions.dap.commands{}<cr>", "Show commands" },
 					["ts"] = { "<cmd>lua require'telescope'.extensions.dap.configurations{}<cr>", "Show setups" },
