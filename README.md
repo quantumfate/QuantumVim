@@ -1,6 +1,6 @@
 # QuantumVim
 
-My personal configuration adapted from [LunarVim](https://github.com/LunarVim/LunarVim)
+![QuantumVim](./images/quantumvim.png)
 
 ## Disclaimer
 
