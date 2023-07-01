@@ -66,7 +66,8 @@ return {
 		skipped_filetypes = skipped_filetypes,
 	},
 	buffer_mappings = {
-		["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show hover" },
+		["K"] = { callback = require("hover").hover, desc = "Show hover" },
+		["gK"] = { callback = require("hover").hover_select, desc = "Select hover and show" },
 		{
 			binding_group = "l",
 			name = "+LSP",

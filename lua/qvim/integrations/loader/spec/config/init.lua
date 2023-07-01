@@ -34,7 +34,6 @@ M.qvim_integrations = {
 	"nvim-telescope/telescope.nvim",
 	"nvim-lua/plenary.nvim",
 	tree = "kyazdani42/nvim-tree.lua",
-	"phaazon/hop.nvim",
 	"ahmedkhalf/project.nvim",
 	"folke/neodev.nvim",
 	notify = "rcarriga/nvim-notify",
@@ -50,7 +49,9 @@ M.qvim_integrations = {
 	"stevearc/dressing.nvim",
 	"AckslD/swenv.nvim",
 	"p00f/clangd_extensions.nvim",
+	"lewis6991/hover.nvim",
 	"AlexvZyl/nordic.nvim",
+	"smoka7/hop.nvim",
 	catppuccin = "catppuccin/nvim",
 	"utilyre/barbecue.nvim",
 }

@@ -3,7 +3,7 @@ local M = {}
 
 local utils = require("qvim.utils")
 local Log = require("qvim.log")
-local directions = require("hop.hint").HintDirection
+local hint_position = require("hop.hint").HintPosition
 ---Registers the global configuration scope for hop
 function M:init()
 	local hop = {
@@ -15,38 +15,51 @@ function M:init()
 				name = "+Hop",
 				bindings = {
 					h = {
-						desc = "Jump anywhere after the selected cursor.",
-						callback = function()
-							local hop = require("hop")
-							hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
-						end,
-					},
-					H = {
-						desc = "Jump anywhere before the selected cursor.",
-						callback = function()
-							local hop = require("hop")
-							hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
-						end,
-					},
-					t = {
-						desc = "Jump after the selected cursor on the current line only.",
+						desc = "Jump before any char.",
 						callback = function()
 							local hop = require("hop")
 							hop.hint_char1({
-								direction = directions.AFTER_CURSOR,
+								current_line_only = false,
+								hint_offset = -1,
+							})
+						end,
+					},
+					H = {
+						desc = "Jump after any char.",
+						callback = function()
+							local hop = require("hop")
+							hop.hint_char1({
+								current_line_only = false,
+								hint_offset = 1,
+							})
+						end,
+					},
+					t = {
+						desc = "Jump before any char on the current line.",
+						callback = function()
+							local hop = require("hop")
+							hop.hint_char1({
 								current_line_only = true,
 								hint_offset = -1,
 							})
 						end,
 					},
 					T = {
-						desc = "Jump before the selected cursor on the current line only.",
+						desc = "Jump after any char on the current line.",
 						callback = function()
 							local hop = require("hop")
 							hop.hint_char1({
-								direction = directions.BEFORE_CURSOR,
 								current_line_only = true,
 								hint_offset = 1,
+							})
+						end,
+					},
+					["/"] = {
+						desc = "Jump to search pattern.",
+						callback = function()
+							local hop = require("hop")
+							hop.hint_patterns({
+								current_line_only = false,
 							})
 						end,
 					},

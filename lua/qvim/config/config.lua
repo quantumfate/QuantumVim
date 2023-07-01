@@ -33,6 +33,7 @@ return {
 			"vimtex",
 			"whichkey",
 			"catppuccin",
+			"hover",
 		},
 		languages = {
 			-- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
