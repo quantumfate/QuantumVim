@@ -144,7 +144,7 @@ end
 ---Loads all plugins and calls their setup function
 ---@param spec table|nil the plugin configuration table
 function plugin_loader:load(spec)
-	spec = spec or require("qvim.integrations.loader.spec")
+	spec = spec or require("qvim.integrations._loader.spec")
 	Log:debug("loading plugins configuration")
 	local lazy_available, lazy = pcall(require, "lazy")
 	if not lazy_available then
@@ -192,7 +192,7 @@ end
 ---@return table
 function plugin_loader:get_integrations()
 	local names = {}
-	local integrations = require("qvim.integrations.loader.spec")
+	local integrations = require("qvim.integrations._loader.spec")
 	local get_name = require("lazy.core.plugin").Spec.get_name
 	for _, spec in pairs(integrations) do
 		if spec.enabled == true or spec.enabled == nil then

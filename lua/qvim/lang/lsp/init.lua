@@ -61,7 +61,7 @@ function M.common_on_attach(client, bufnr)
 	if client.server_capabilities["documentSymbolProvider"] then
 		require("nvim-navic").attach(client, bufnr)
 	end
-	require("qvim.keymaps"):register(bufnr, qvim.lsp.buffer_mappings)
+	require("qvim.keymaps"):register(qvim.lsp.buffer_mappings, bufnr)
 	add_lsp_buffer_options(bufnr)
 	lu.setup_document_symbols(client, bufnr)
 end

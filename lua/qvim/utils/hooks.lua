@@ -2,7 +2,7 @@ local M = {}
 
 local Log = require("qvim.log")
 local in_headless = #vim.api.nvim_list_uis() == 0
-local plugin_loader = require("qvim.integrations.loader")
+local plugin_loader = require("qvim.integrations._loader")
 
 function M.run_pre_update()
 	Log:debug("Starting pre-update hook")

@@ -121,9 +121,9 @@ function M:init()
 end
 
 ---Register bindings
----@param bufnr number|nil
 ---@param bindings table
-function M:register(bufnr, bindings)
+---@param bufnr number|nil
+function M:register(bindings, bufnr)
 	bufnr = bufnr or vim.api.nvim_get_current_buf()
 	local descripted_keymaps = meta.get_new_descriptor_proxy_mt()
 	fetch_bindings(bindings, descripted_keymaps, bufnr)

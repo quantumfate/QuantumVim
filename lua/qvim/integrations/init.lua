@@ -1,7 +1,7 @@
 local M = {}
 local Log = require("qvim.log")
 local fn = require("qvim.utils.fn")
-local meta = require("qvim.integrations.meta")
+local meta = require("qvim.integrations._meta")
 
 ---Populate the qvim.integrations table and defines how
 ---the table can be interacted with. And the following actions:
@@ -12,7 +12,7 @@ function M:init()
 	local autocmds = require("qvim.integrations.autocmds")
 	autocmds.load_defaults()
 
-	local base = require("qvim.integrations.base")
+	local base = require("qvim.integrations._base")
 
 	qvim.integrations = setmetatable({}, meta.integration_base_mt)
 

@@ -15,7 +15,7 @@ require("qvim.bootstrap"):init(base_dir)
 
 require("qvim.keymaps"):init()
 
-local integration_loader = require("qvim.integrations.loader")
+local integration_loader = require("qvim.integrations._loader")
 integration_loader:load()
 
 local Log = require("qvim.log")

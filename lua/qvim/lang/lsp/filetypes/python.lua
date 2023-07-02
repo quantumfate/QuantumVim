@@ -23,7 +23,7 @@ function M.setup()
 
 	local keymaps = require("qvim.keymaps")
 
-	keymaps:register(nil, {
+	keymaps:register({
 		{
 			binding_group = "C",
 			name = "+Python",

@@ -268,7 +268,7 @@ local function on_attach(bufnr)
 		["gtf"] = { telescope_find_files, desc = "Telescope Find File" },
 	}
 
-	require("qvim.keymaps"):register(bufnr, useful_keys)
+	require("qvim.keymaps"):register(useful_keys, bufnr)
 end
 
 ---The nvim-tree setup function. The module will be required by

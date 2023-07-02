@@ -9,9 +9,18 @@ function M:init()
 	local treesitter = {
 		active = true,
 		on_config_done = nil,
-		keymaps = {},
+		keymaps = {
+			{
+				name = "+Treesitter",
+				binding_group = "T",
+				bindings = {},
+				options = {
+					prefix = "<leader>",
+				},
+			},
+		},
 		options = {
-			-- A list of parser names, or "all"
+			-- treesitter option configuration
 			ensure_installed = { "comment", "markdown_inline", "regex", "dap_repl" },
 
 			-- List of parsers to ignore installing (for "all")
@@ -45,63 +54,63 @@ function M:init()
 					return status_ok and big_file_detected
 				end,
 			},
-			context_commentstring = {
-				enable = true,
-				enable_autocmd = false,
-				config = {
-					-- Languages that have a single comment style
-					typescript = "// %s",
-					css = "/* %s */",
-					scss = "/* %s */",
-					html = "<!-- %s -->",
-					svelte = "<!-- %s -->",
-					vue = "<!-- %s -->",
-					json = "",
-				},
-			},
+
 			indent = { enable = true, disable = { "yaml", "python" } },
 			autotag = { enable = false },
-			textobjects = {
-				swap = {
-					enable = false,
-					-- swap_next = textobj_swap_keymaps,
-				},
-				-- move = textobj_move_keymaps,
-				select = {
-					enable = false,
-					-- keymaps = textobj_sel_keymaps,
-				},
-			},
-			textsubjects = {
-				enable = false,
-				keymaps = { ["."] = "textsubjects-smart", [";"] = "textsubjects-big" },
-			},
-			playground = {
-				enable = false,
-				disable = {},
-				updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-				persist_queries = false, -- Whether the query persists across vim sessions
-				keybindings = {
-					toggle_query_editor = "o",
-					toggle_hl_groups = "i",
-					toggle_injected_languages = "t",
-					toggle_anonymous_nodes = "a",
-					toggle_language_display = "I",
-					focus_language = "f",
-					unfocus_language = "F",
-					update = "R",
-					goto_node = "<cr>",
-					show_help = "?",
-				},
-			},
-			rainbow = {
-				enable = false,
-				extended_mode = true, -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-				max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
-			},
 		},
 	}
 	return treesitter
+end
+
+function M:config()
+	-- treesitter config function to call additional configs
+	local rainbow_ok, rainbow = pcall(require, "qvim.integrations.treesitter.rainbow")
+	if rainbow_ok then
+		rainbow:config()
+	else
+		Log:debug("Skipping rainbow for treesitter.")
+	end
+
+	qvim.integrations.treesitter.options = vim.tbl_deep_extend("keep", qvim.integrations.treesitter.options, {
+		rainbow = qvim.integrations.treesitter.rainbow.options,
+	})
+
+	local climber_ok, climber = pcall(require, "qvim.integrations.treesitter.climber")
+	if climber_ok then
+		climber:config()
+	else
+		Log:debug("Skipping climber for treesitter.")
+	end
+
+	qvim.integrations.treesitter.options = vim.tbl_deep_extend("keep", qvim.integrations.treesitter.options, {
+		climber = qvim.integrations.treesitter.climber.options,
+	})
+
+	-- TODO do something less scuffed
+	qvim.integrations.treesitter.keymaps[1].bindings = vim.tbl_deep_extend(
+		"keep",
+		qvim.integrations.treesitter.keymaps[1].bindings,
+		qvim.integrations.treesitter.climber.keymaps
+	)
+
+	local ctx_ok, ctx = pcall(require, "qvim.integrations.treesitter.context")
+	if ctx_ok then
+		ctx:config()
+	else
+		Log:debug("Skipping context-commentstring for treesitter.")
+	end
+
+	local ctx_comment_string_ok, ctx_comment_string =
+		pcall(require, "qvim.integrations.treesitter.context-commentstring")
+	if ctx_comment_string_ok then
+		ctx_comment_string:config()
+	else
+		Log:debug("Skipping context-commentstring for treesitter.")
+	end
+
+	qvim.integrations.treesitter.options = vim.tbl_deep_extend("keep", qvim.integrations.treesitter.options, {
+		context_commentstring = qvim.integrations.treesitter.context_commentstring.options,
+	})
 end
 
 ---The treesitter setup function. The module will be required by
@@ -128,6 +137,13 @@ function M:setup()
 
 	local _treesitter = qvim.integrations.treesitter
 	treesitter.setup(_treesitter.options)
+
+	local ctx_ok, ctx = pcall(require, "qvim.integrations.treesitter.context")
+	if ctx_ok then
+		ctx:setup()
+	else
+		Log:debug("Skipping context-commentstring for treesitter.")
+	end
 
 	if _treesitter.on_config_done then
 		_treesitter.on_config_done()

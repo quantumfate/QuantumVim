@@ -19,7 +19,14 @@ function M.setup()
 
 	local default_opts = require("qvim.lang.lsp").get_common_opts()
 	vim.diagnostic.config({ update_in_insert = qvim.lsp.null_ls.setup.update_in_insert })
-	null_ls.setup(vim.tbl_deep_extend("force", default_opts, qvim.lsp.null_ls.setup))
+	null_ls.setup(
+		vim.tbl_deep_extend(
+			"force",
+			default_opts,
+			qvim.lsp.null_ls.setup,
+			{ sources = null_ls.builtins.code_actions.gitsigns }
+		)
+	)
 end
 
 return M

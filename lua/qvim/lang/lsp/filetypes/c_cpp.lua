@@ -38,7 +38,7 @@ function M.custom_lsp_settings()
 		require("clangd_extensions.inlay_hints").set_inlay_hints()
 		local keymaps = require("qvim.keymaps")
 
-		keymaps:register(nil, {
+		keymaps:register({
 			{
 				binding_group = "C",
 				name = "+c/cpp",

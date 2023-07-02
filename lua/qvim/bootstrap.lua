@@ -84,7 +84,7 @@ function M:init(base_dir)
 
 	vim.opt.packpath = vim.opt.rtp:get()
 
-	require("qvim.integrations.loader"):init({
+	require("qvim.integrations._loader"):init({
 		package_root = self.pack_dir,
 		install_path = self.lazy_install_dir,
 	})

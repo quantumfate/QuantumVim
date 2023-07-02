@@ -13,6 +13,7 @@ meta.default_values = {
 	on_config_done = nil,
 	keymaps = {},
 	options = {},
+	url = "",
 }
 
 --- The metatable for integration options.

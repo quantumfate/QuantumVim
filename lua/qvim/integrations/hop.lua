@@ -20,7 +20,6 @@ function M:init()
 							local hop = require("hop")
 							hop.hint_char1({
 								current_line_only = false,
-								hint_offset = -1,
 							})
 						end,
 					},
@@ -40,7 +39,6 @@ function M:init()
 							local hop = require("hop")
 							hop.hint_char1({
 								current_line_only = true,
-								hint_offset = -1,
 							})
 						end,
 					},

@@ -9,37 +9,51 @@ function M:init()
 		active = true,
 		on_config_done = nil,
 		whichkey = {},
-		keymaps = {
-			{
-				binding_group = "g",
-				name = "+Git",
-				bindings = {
-					["g"] = { rhs = "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Lazygit" },
-					["j"] = { rhs = "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = "Next Hunk" },
-					["k"] = { rhs = "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", desc = "Prev Hunk", buffer = 0 },
-					["l"] = { rhs = "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = "Blame" },
-					["p"] = { rhs = "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", desc = "Preview Hunk" },
-					["r"] = { rhs = "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = "Reset Hunk" },
-					["R"] = { rhs = "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", desc = "Reset Buffer" },
-					["s"] = { rhs = "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = "Stage Hunk" },
-					["u"] = {
-						rhs = "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-						desc = "Undo Stage Hunk",
-					},
-					["o"] = { rhs = "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
-					["b"] = { rhs = "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-					["c"] = { rhs = "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
-					["d"] = {
-						rhs = "<cmd>Gitsigns diffthis HEAD<cr>",
-						desc = "Diff",
-					},
-				},
-				options = {
-					prefix = "<leader>",
-				},
-			},
-		},
+		keymaps = {},
 		options = {
+			on_attach = function(bufnr)
+				require("qvim.keymaps"):register({
+					{
+						binding_group = "g",
+						name = "+Git",
+						bindings = {
+							["g"] = { rhs = "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Lazygit" },
+							["j"] = { rhs = "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = "Next Hunk" },
+							["k"] = {
+								rhs = "<cmd>lua require 'gitsigns'.prev_hunk()<cr>",
+								desc = "Prev Hunk",
+								buffer = 0,
+							},
+							["l"] = { rhs = "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = "Blame" },
+							["p"] = {
+								rhs = "<cmd>lua require 'gitsigns'.preview_hunk()<cr>",
+								desc = "Preview Hunk",
+							},
+							["r"] = { rhs = "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = "Reset Hunk" },
+							["R"] = {
+								rhs = "<cmd>lua require 'gitsigns'.reset_buffer()<cr>",
+								desc = "Reset Buffer",
+							},
+							["s"] = { rhs = "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = "Stage Hunk" },
+							["u"] = {
+								rhs = "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
+								desc = "Undo Stage Hunk",
+							},
+							["o"] = { rhs = "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
+							["b"] = { rhs = "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+							["c"] = { rhs = "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
+							["d"] = {
+								rhs = "<cmd>Gitsigns diffthis HEAD<cr>",
+								desc = "Diff",
+							},
+						},
+						options = {
+							prefix = "<leader>",
+						},
+					},
+					bufnr,
+				})
+			end,
 			-- gitsigns option configuration
 			signs = {
 				add = { hl = "GitSignsAdd", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
