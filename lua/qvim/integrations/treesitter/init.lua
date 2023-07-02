@@ -135,15 +135,15 @@ function M:setup()
 		Log:warn(string.format("The extension '%s' could not be loaded.", repl_highlights))
 	end
 
-	local _treesitter = qvim.integrations.treesitter
-	treesitter.setup(_treesitter.options)
-
 	local ctx_ok, ctx = pcall(require, "qvim.integrations.treesitter.context")
 	if ctx_ok then
 		ctx:setup()
 	else
 		Log:debug("Skipping context-commentstring for treesitter.")
 	end
+
+	local _treesitter = qvim.integrations.treesitter
+	treesitter.setup(_treesitter.options)
 
 	if _treesitter.on_config_done then
 		_treesitter.on_config_done()

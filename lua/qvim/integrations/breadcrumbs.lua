@@ -106,7 +106,7 @@ end
 M.get_filename = function()
 	local filename = vim.fn.expand("%:t")
 	local extension = vim.fn.expand("%:e")
-	local f = require("lvim.utils.functions")
+	local f = require("qvim.utils.fn")
 
 	if not f.isempty(filename) then
 		local file_icon, hl_group
@@ -181,7 +181,7 @@ M.get_winbar = function()
 	if excludes() then
 		return
 	end
-	local f = require("lvim.utils.functions")
+	local f = require("qvim.utils.fn")
 	local value = M.get_filename()
 
 	local gps_added = false

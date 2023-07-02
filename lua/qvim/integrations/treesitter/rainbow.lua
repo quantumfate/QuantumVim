@@ -11,7 +11,6 @@ function M:config()
 		keymaps = {},
 		options = {
 			-- rainbow option configuration
-
 			enable = true,
 			-- list of languages you want to disable the plugin for
 			disable = {},

@@ -10,6 +10,7 @@ return {
 			"autopairs",
 			"breadcrumbs",
 			"bufferline",
+			"barbecue",
 			"cmp",
 			"comment",
 			"dap",
@@ -31,9 +32,11 @@ return {
 			"toggleterm",
 			"treesitter",
 			"vimtex",
+			"dressing",
 			"whichkey",
 			"catppuccin",
 			"hover",
+			"copilot",
 		},
 		languages = {
 			-- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
