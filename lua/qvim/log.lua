@@ -1,4 +1,18 @@
+---@class Log
+---@field levels table
+---@field set_level function
+---@field init function
+---@field configure_notifications function
+---@field add_entry function
+---@field get_logger function
+---@field get_path function
+---@field trace function
+---@field debug function
+---@field info function
+---@field warn function
+---@field error function
 local Log = {}
+Log.__index = Log
 
 Log.levels = {
 	TRACE = 1,
@@ -36,7 +50,6 @@ function Log:init()
 		return nil
 	end
 
-	local log_level = Log.levels[(qvim.log.level):upper() or "WARN"]
 	structlog.configure({
 		qvim = {
 			pipelines = {
@@ -203,6 +216,4 @@ function Log:error(msg, event)
 	self:add_entry(self.levels.ERROR, msg, event)
 end
 
-setmetatable({}, Log)
-
-return Log
+return setmetatable({}, Log)

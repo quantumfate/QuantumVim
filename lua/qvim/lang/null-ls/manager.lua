@@ -101,8 +101,12 @@ function M.setup(filetype, lsp_server)
 			if not shared_util.is_package(source) then
 				null_ls_utils.register_sources_on_ft(method, source)
 			else
-				shared_util.try_install_and_setup_mason_package(source, fmt("null-ls source %s", source),
-					null_ls_utils.register_sources_on_ft, { method, source })
+				shared_util.try_install_and_setup_mason_package(
+					source,
+					fmt("null-ls source %s", source),
+					null_ls_utils.register_sources_on_ft,
+					{ method, source }
+				)
 			end
 		end
 	end

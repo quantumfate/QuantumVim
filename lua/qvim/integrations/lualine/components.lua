@@ -114,16 +114,25 @@ return {
 			end
 
 			-- add formatter
-			local formatters = require("qvim.lang.null-ls.formatters")
-			local supported_formatters = formatters.list_registered(buf_ft)
+			local formatters = require("qvim.lang.null-ls.methodservice.formatters")
+			local supported_formatters = formatters:list_registered(buf_ft)
 			vim.list_extend(buf_client_names, supported_formatters)
 
 			-- add linter
-			local linters = require("qvim.lang.null-ls.linters")
-			local supported_linters = linters.list_registered(buf_ft)
-			vim.list_extend(buf_client_names, supported_linters)
+			local diagnostics = require("qvim.lang.null-ls.methodservice.diagnostics")
+			local supported_diagnostics = diagnostics:list_registered(buf_ft)
+			vim.list_extend(buf_client_names, supported_diagnostics)
 
-			local unique_client_names = table.concat(buf_client_names, ", ")
+			local make_unique = function(list)
+				local unique_list = {}
+				for _, item in pairs(list) do
+					if not vim.tbl_contains(unique_list, item) then
+						table.insert(unique_list, item)
+					end
+				end
+				return unique_list
+			end
+			local unique_client_names = table.concat(make_unique(buf_client_names), ", ")
 			local language_servers = string.format("[%s]", unique_client_names)
 
 			if copilot_active then

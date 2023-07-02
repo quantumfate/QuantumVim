@@ -54,6 +54,7 @@ M.qvim_integrations = {
 	"smoka7/hop.nvim",
 	catppuccin = "catppuccin/nvim",
 	"utilyre/barbecue.nvim",
+	"zbirenbaum/copilot.lua",
 }
 
 ---Set the lazy configuration spec for a plugin.

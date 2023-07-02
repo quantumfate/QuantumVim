@@ -9,7 +9,7 @@ local shared_util = require("qvim.lang.utils")
 local FORMATTING = null_ls.methods.FORMATTING
 local DIAGNOSTICS = null_ls.methods.DIAGNOSTICS
 local CODE_ACTION = null_ls.methods.CODE_ACTION
-
+local HOVER = null_ls.methods.HOVER
 
 ---Returns an Optional mason package either from the mason registry or creates a new mason package with
 ---a provided spec.
@@ -30,9 +30,8 @@ function M.resolve_null_ls_package_from_mason(null_ls_source_name)
 			Log:warn(fmt("The null-ls source '%s' is not supported by mason.", null_ls_source_name))
 		end
 
-
-		local custom_is_defined, custom_pkg = shared_util.register_custom_mason_package(null_ls_source_name,
-			"qvim.lang.null-ls.packages")
+		local custom_is_defined, custom_pkg =
+			shared_util.register_custom_mason_package(null_ls_source_name, "qvim.lang.null-ls.packages")
 		if custom_is_defined then
 			return custom_pkg
 		end
@@ -68,20 +67,27 @@ function M.register_sources_on_ft(method, source)
 
 	source_options["name"] = source
 
-	local kind = nil
+	---@class MethodService
+	local kind
 	if null_ls_methods[method] == CODE_ACTION then
-		kind = require("qvim.lang.null-ls.code_actions")
+		---@class CodeActions : MethodService
+		kind = require("qvim.lang.null-ls.methodservice.code_actions")
 	elseif null_ls_methods[method] == FORMATTING then
-		kind = require("qvim.lang.null-ls.formatters")
+		---@class Formatters : MethodService
+		kind = require("qvim.lang.null-ls.methodservice.formatters")
 	elseif null_ls_methods[method] == DIAGNOSTICS then
-		kind = require("qvim.lang.null-ls.linters")
+		---@class Diagnostics : MethodService
+		kind = require("qvim.lang.null-ls.methodservice.diagnostics")
+	elseif null_ls_methods[method] == HOVER then
+		kind = require("qvim.lang.null-ls.methodservice.hover")
 	else
 		Log:error(fmt("The method '%s' is not a valid null-ls method.", method))
-		return kind
+		return nil
 	end
 
 	-- we need to pase this as a table itself to stay compatible with the service.register_sources(configs, method)
-	kind.setup({ source_options })
+	---@class MethodService
+	kind:setup({ source_options })
 	Log:info(fmt("Source '%s' for method '%s' was registered.", source, method))
 	return true
 end
@@ -135,8 +141,8 @@ function M.invert_method_to_sources_map(ft_builtins)
 				inverted[source] = { method }
 			else
 				if not _.any(function(e)
-						return method == e
-					end, inverted[source]) then
+					return method == e
+				end, inverted[source]) then
 					table.insert(inverted[source], method)
 				end
 			end
