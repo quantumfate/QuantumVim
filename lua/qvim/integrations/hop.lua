@@ -10,6 +10,27 @@ function M:init()
 		active = true,
 		on_config_done = nil,
 		keymaps = {
+			t = {
+				desc = "Jump before any char on the current line.",
+				noremap = false,
+				callback = function()
+					local hop = require("hop")
+					hop.hint_char1({
+						current_line_only = true,
+					})
+				end,
+			},
+			T = {
+				desc = "Jump after any char on the current line.",
+				noremap = false,
+				callback = function()
+					local hop = require("hop")
+					hop.hint_char1({
+						current_line_only = true,
+						hint_offset = 1,
+					})
+				end,
+			},
 			{
 				binding_group = "h",
 				name = "+Hop",
@@ -29,25 +50,6 @@ function M:init()
 							local hop = require("hop")
 							hop.hint_char1({
 								current_line_only = false,
-								hint_offset = 1,
-							})
-						end,
-					},
-					t = {
-						desc = "Jump before any char on the current line.",
-						callback = function()
-							local hop = require("hop")
-							hop.hint_char1({
-								current_line_only = true,
-							})
-						end,
-					},
-					T = {
-						desc = "Jump after any char on the current line.",
-						callback = function()
-							local hop = require("hop")
-							hop.hint_char1({
-								current_line_only = true,
 								hint_offset = 1,
 							})
 						end,
