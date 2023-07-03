@@ -39,6 +39,19 @@ function Table.find_first(t, predicate)
 	return nil
 end
 
+---Checks if any entry in a table satisfies a predicate
+---@param t any
+---@param predicate any
+---@return boolean
+function Table.any(t, predicate)
+	for _, entry in pairs(t) do
+		if predicate(entry) then
+			return true
+		end
+	end
+	return false
+end
+
 ---Takes keys or values from a given table `tbl` and applies a transformation on either the keys or values
 ---specified by the function `transform_fn`.
 ---When `do_keys` is true the transformed value will be mapped to their initial keys otherwise the transformed keys will
