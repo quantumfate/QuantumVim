@@ -69,19 +69,6 @@ function Log:init()
 				{
 					level = Log.levels.ERROR,
 					processors = {
-						structlog.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 2 }),
-						structlog.processors.Timestamper("%H:%M:%S"),
-					},
-					formatter = structlog.formatters.FormatColorizer(
-						"%s [%-5s] %s: %-30s",
-						{ "timestamp", "level", "logger_name", "msg" },
-						{ level = structlog.formatters.FormatColorizer.color_level() }
-					),
-					sink = structlog.sinks.Console(), -- async=false
-				},
-				{
-					level = Log.levels.ERROR,
-					processors = {
 						structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3, stack_level = 2 }),
 						structlog.processors.Timestamper("%F %H:%M:%S"),
 					},
@@ -215,5 +202,5 @@ end
 function Log:error(msg, event)
 	self:add_entry(self.levels.ERROR, msg, event)
 end
-
-return setmetatable({}, Log)
+setmetatable({}, Log)
+return Log

@@ -10,7 +10,7 @@ local fmt = string.format
 function M.get_ft_bridge_proxy()
 	local bridge = {
 		["c"] = "c_cpp",
-		["cpp"] = "c_cpp"
+		["cpp"] = "c_cpp",
 	}
 
 	local bridge_proxy_mt = {
@@ -19,7 +19,7 @@ function M.get_ft_bridge_proxy()
 				return bridge[k]
 			end
 			return k
-		end
+		end,
 	}
 
 	return setmetatable({}, bridge_proxy_mt)

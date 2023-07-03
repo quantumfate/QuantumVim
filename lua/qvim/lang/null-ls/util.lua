@@ -60,7 +60,7 @@ function M.register_sources_on_ft(method, source)
 	local source_options = {}
 	if not shared_util.is_package(source) then
 		local _, provided = pcall(require, "qvim.lang.null-ls.sources." .. source)
-		source_options = provided.settings or {}
+		source_options = provided or {}
 	else
 		source = mason_null_ls_mapping.getNullLsFromPackage(source.name)
 	end

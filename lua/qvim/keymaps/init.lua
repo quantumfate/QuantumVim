@@ -1,4 +1,4 @@
----@class keymaps
+---@class yikes
 local M = {}
 local Log = require("qvim.log")
 local meta = require("qvim.keymaps.meta")

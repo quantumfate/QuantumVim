@@ -27,7 +27,7 @@ function M:init()
 
 	require("qvim.integrations"):init()
 
-	local qvim_lsp_config = require("qvim.lang.lsp.config")
+	local qvim_lsp_config = require("qvim.lang.config")
 	qvim.lsp = vim.deepcopy(qvim_lsp_config)
 
 	if not _G.in_headless_mode() then

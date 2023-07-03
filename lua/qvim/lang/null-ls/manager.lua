@@ -68,7 +68,8 @@ local function select_null_ls_sources(ft, ft_builtins)
 	local null_ls_methods = require("qvim.lang.null-ls._meta").method_bridge()
 	local selection = {}
 
-	local ok_provided, provided = pcall(require, "qvim.lang.null-ls.filetypes." .. ft)
+	local ok_provided, provided =
+		pcall(require, "qvim.lang.null-ls.filetypes." .. shared_util.get_ft_bridge_proxy()[ft])
 	if ok_provided and type(provided) == "table" then
 		selection = get_mason_packages_or_null_ls_sources(provided)
 	end

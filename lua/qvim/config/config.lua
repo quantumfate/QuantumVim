@@ -37,6 +37,7 @@ return {
 			"catppuccin",
 			"hover",
 			"copilot",
+			"refactoring",
 		},
 		languages = {
 			-- https://github.com/nvim-treesitter/nvim-treesitter#supported-languages
@@ -99,7 +100,7 @@ return {
 	autocommands = {},
 	log = {
 		---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" },
-		level = "info",
+		level = "error",
 		viewer = {
 			---@usage this will fallback on "less +F" if not found
 			cmd = "qnav",

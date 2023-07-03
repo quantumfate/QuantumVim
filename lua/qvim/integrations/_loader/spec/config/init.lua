@@ -55,6 +55,7 @@ M.qvim_integrations = {
 	catppuccin = "catppuccin/nvim",
 	"utilyre/barbecue.nvim",
 	"zbirenbaum/copilot.lua",
+	"ThePrimeagen/refactoring.nvim",
 }
 
 ---Set the lazy configuration spec for a plugin.

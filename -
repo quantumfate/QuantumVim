@@ -13,33 +13,11 @@ local ft_bridge = {
 	["guile"] = "scheme.guile",
 }
 
-local ft_to_refactoring_supported = {
-	["java"] = true,
-	["typescript"] = true,
-	["javascript"] = true,
-	["lua"] = true,
-	["python"] = true,
-	["rust"] = true,
-	["go"] = true,
-	["c"] = true,
-	["cpp"] = true,
-	["php"] = true,
-	["ruby"] = true,
-}
-
----Inject a method to a filetype in the null-ls filetype map.
----@param ft any
----@param method any
----@param source any
 local function inject_method_to_ft(ft, method, source)
-	if not ft_map[ft][method] then
-		ft_map[ft][method] = {}
+	if not ft_map[ft] then
+		ft_map[ft] = {}
 	end
-	if not _.any(function(v)
-		return v == source
-	end, ft_map[ft][method]) then
-		table.insert(ft_map[ft][method], source)
-	end
+	ft_map[ft][method] = source
 end
 
 ---Create a proxy table to to the null-ls builtin filetype map that maps some filetype exception to their corresponding null-ls managed filetype.
@@ -50,9 +28,6 @@ end
 function M.ft_bridge()
 	local proxy = {
 		__index = function(_, v)
-			if ft_to_refactoring_supported[v] then
-				inject_method_to_ft(v, "code_actions", "refactoring")
-			end
 			if ft_bridge[v] then
 				return ft_map[ft_bridge][v]
 			else

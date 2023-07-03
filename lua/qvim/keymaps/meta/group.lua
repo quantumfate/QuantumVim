@@ -1,4 +1,6 @@
----@class group
+---@class yikes.group
+---@field mt table
+---@field member_mt table
 local group = {}
 
 ---@class default

@@ -64,7 +64,6 @@ local function client_is_configured(server_name, ft)
 	local active_autocmds = vim.api.nvim_get_autocmds({ event = "FileType", pattern = ft })
 	for _, result in ipairs(active_autocmds) do
 		if result.desc ~= nil and result.desc:match("server " .. server_name .. " ") then
-			print("Is already conf")
 			Log:debug(string.format("[%q] is already configured", server_name))
 			return true
 		end
@@ -124,7 +123,7 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 
 	if shared_util.is_package(package) then
 		shared_util.try_install_and_setup_mason_package(
-		---@diagnostic disable-next-line: param-type-mismatch
+			---@diagnostic disable-next-line: param-type-mismatch
 			package,
 			fmt("language server %s", server_name),
 			function(_server_name, _user_config)

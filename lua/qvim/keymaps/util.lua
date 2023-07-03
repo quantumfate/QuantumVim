@@ -1,5 +1,5 @@
 ---Util for keymap declaration
----@class keymap.util
+---@class yikes.util
 local util = {}
 local constants = require("qvim.keymaps.constants")
 local Log = require("qvim.log")
@@ -23,6 +23,21 @@ function util.pairs_on_proxy(t)
 		)
 	end
 	error("The given table is not a Proxy table.")
+end
+
+---Recursively creates a shallow copy of a given table
+---@param t table
+---@return table
+function util.shallow_table_copy(t)
+	local copy = {}
+	for k, v in pairs(t) do
+		if type(v) == "table" then
+			copy[k] = util.shallow_table_copy(v)
+		else
+			copy[k] = v
+		end
+	end
+	return copy
 end
 
 ---Verifies that a given `tbl` is from an accepted structure.
