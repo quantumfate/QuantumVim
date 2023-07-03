@@ -6,6 +6,7 @@
 local MethodService = {}
 MethodService.__index = MethodService
 MethodService.log = require("qvim.log")
+MethodService.fn_t = require("qvim.utils.fn_t")
 
 ---Create a new MethodService
 ---@generic T
@@ -60,7 +61,7 @@ local local_providers = {
 ---@param filetype any
 ---@return table
 function MethodService:list_registered(filetype)
-	local registered_sources = require("null-ls").get_sources({ filetype = filetype, method = self.method })
+	local registered_sources = require("null-ls").get_source({ filetype = filetype, method = self.method })
 	local source_names = {}
 	for _, source in ipairs(registered_sources) do
 		table.insert(source_names, source.name)

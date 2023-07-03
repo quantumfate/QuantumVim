@@ -1,5 +1,6 @@
 local conditions = require("qvim.integrations.lualine.conditions")
-local colors = require("qvim.integrations.lualine.colors")
+---@class colors
+local colors = require("qvim.integrations.catppuccin").get_colors()
 
 local function diff_source()
 	local gitsigns = vim.b.gitsigns_status_dict
@@ -20,17 +21,17 @@ end
 
 return {
 	mode = {
-		function()
-			return " " .. qvim.icons.ui.Target .. " "
-		end,
-		padding = { left = 0, right = 0 },
-		color = {},
+		"mode",
+		padding = { left = 1, right = 1 },
+		color = { fg = colors.base, gui = "bold", bg = colors.sapphire },
+		separator = { right = qvim.icons.ui.BoldDividerRight },
 		cond = nil,
 	},
 	branch = {
 		"b:gitsigns_head",
 		icon = branch,
-		color = { gui = "bold" },
+		separator = { right = qvim.icons.ui.BoldDividerRight },
+		color = { fg = colors.base, gui = "bold", bg = colors.teal },
 	},
 	filename = {
 		"filename",
@@ -113,15 +114,21 @@ return {
 				end
 			end
 
-			-- add formatter
 			local formatters = require("qvim.lang.null-ls.methodservice.formatters")
 			local supported_formatters = formatters:list_registered(buf_ft)
 			vim.list_extend(buf_client_names, supported_formatters)
 
-			-- add linter
 			local diagnostics = require("qvim.lang.null-ls.methodservice.diagnostics")
 			local supported_diagnostics = diagnostics:list_registered(buf_ft)
 			vim.list_extend(buf_client_names, supported_diagnostics)
+
+			local code_actions = require("qvim.lang.null-ls.methodservice.code_actions")
+			local supported_code_actions = code_actions:list_registered(buf_ft)
+			vim.list_extend(buf_client_names, supported_code_actions)
+
+			local hover = require("qvim.lang.null-ls.methodservice.hover")
+			local supported_hover = hover:list_registered(buf_ft)
+			vim.list_extend(buf_client_names, supported_hover)
 
 			local make_unique = function(list)
 				local unique_list = {}
@@ -136,21 +143,24 @@ return {
 			local language_servers = string.format("[%s]", unique_client_names)
 
 			if copilot_active then
-				language_servers = language_servers .. "%#SLCopilot#" .. " " .. qvim.icons.git.Octoface .. "%*"
+				language_servers = language_servers .. " " .. qvim.icons.git.Octoface .. " "
 			end
 
 			return language_servers
 		end,
-		color = { gui = "bold" },
+		color = { gui = "bold", fg = colors.text, bg = colors.crust },
 		cond = conditions.hide_in_width,
 	},
-	location = { "location" },
+	location = {
+		"location",
+		color = { fg = colors.base, gui = "bold", bg = colors.peach },
+	},
 	progress = {
 		"progress",
 		fmt = function()
 			return "%P/%L"
 		end,
-		color = {},
+		color = { fg = colors.base, gui = "bold", bg = colors.mauve },
 	},
 
 	spaces = {
@@ -159,6 +169,7 @@ return {
 			return qvim.icons.ui.Tab .. " " .. shiftwidth
 		end,
 		padding = 1,
+		color = { fg = colors.text, gui = "bold", bg = colors.crust },
 	},
 	encoding = {
 		"o:encoding",
@@ -166,7 +177,11 @@ return {
 		color = {},
 		cond = conditions.hide_in_width,
 	},
-	filetype = { "filetype", cond = nil, padding = { left = 1, right = 1 } },
+	filetype = {
+		"filetype",
+		cond = nil,
+		color = { fg = colors.text, gui = "bold", bg = colors.crust },
+	},
 	scrollbar = {
 		function()
 			local current_line = vim.fn.line(".")

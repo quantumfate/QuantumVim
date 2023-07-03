@@ -13,7 +13,7 @@ themes.none = {
 		theme = "auto",
 		globalstatus = true,
 		icons_enabled = qvim.use_icons,
-		component_separators = { left = "", right = "" },
+		component_separators = { left = qvim.icons.ui.BoldDividerLeft, right = "" },
 		section_separators = { left = "", right = "" },
 		disabled_filetypes = {},
 	},
@@ -79,8 +79,8 @@ themes.qvim = {
 		theme = "auto",
 		globalstatus = true,
 		icons_enabled = qvim.use_icons,
-		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
+		component_separators = { left = qvim.icons.ui.BoldDividerRight, right = qvim.icons.ui.BoldDividerLeft },
+		section_separators = { left = qvim.icons.ui.BoldDividerRight, right = qvim.icons.ui.BoldDividerLeft },
 		disabled_filetypes = { "alpha" },
 	},
 	sections = {
@@ -119,6 +119,7 @@ themes.qvim = {
 		lualine_x = {
 			components.diagnostics,
 			components.lsp,
+			components.copilot,
 			components.spaces,
 			components.filetype,
 		},
@@ -137,9 +138,9 @@ function M.get_theme(theme)
 		local Log = require("qvim.log")
 		Log:error(
 			"Invalid lualine theme"
-			.. string.format('"%s"', theme)
-			.. "options are: "
-			.. string.format('"%s"', table.concat(theme_keys, '", "'))
+				.. string.format('"%s"', theme)
+				.. "options are: "
+				.. string.format('"%s"', table.concat(theme_keys, '", "'))
 		)
 		Log:debug('"qvim" theme is applied.')
 		theme = "qvim"
@@ -151,7 +152,7 @@ function M.update()
 	local theme = M.get_theme(qvim.integrations.lualine.theme)
 	local Log = require("qvim.log")
 
-	qvim.integrations.lualine = vim.tbl_deep_extend("keep", qvim.integrations.lualine, theme)
+	qvim.integrations.lualine = vim.tbl_deep_extend("force", qvim.integrations.lualine, theme)
 
 	local color_template = vim.g.colors_name or qvim.colorscheme
 	local theme_supported, template = pcall(function()

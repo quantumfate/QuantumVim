@@ -15,11 +15,15 @@ function M:list_registered(filetype)
 	for _, method in ipairs(alternative_methods) do
 		local sources = null_ls.get_sources({ filetype = filetype, method = method })
 		for _, source in ipairs(sources) do
-			table.insert(registered_sources_from_alt, source.name)
+			if self.fn_t.any(source.filetypes, function(ft)
+				return ft == filetype
+			end) then
+				table.insert(registered_sources_from_alt, source.name)
+			end
 		end
 	end
 
-	local registered_sources = getmetatable(self).list_registered(self, filetype)
+	local registered_sources = MethodService.list_registered(self, filetype)
 
 	return vim.tbl_extend("force", registered_sources_from_alt, registered_sources)
 end
