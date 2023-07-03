@@ -8,7 +8,48 @@ function M:init()
 	local refactoring = {
 		active = true,
 		on_config_done = nil,
-		keymaps = {},
+		keymaps = {
+			{
+				binding_group = "r",
+				name = "+Refactoring",
+				bindings = {
+					e = {
+						mode = "v",
+						rhs = "<ESC><cmd>lua require('refactoring').refactor('Extract Function')<CR>",
+						desc = "Extract Function",
+					},
+					f = {
+						mode = "v",
+						rhs = "<ESC><cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
+						desc = "Extract Function To File",
+					},
+					v = {
+						mode = "v",
+						rhs = "<ESC><cmd>lua require('refactoring').refactor('Extract Variable')<CR>",
+						desc = "Extract Variable",
+					},
+					i = {
+						mode = "v",
+						rhs = "<ESC><cmd>lua require('refactoring').refactor('Inline Variable')<CR>",
+						desc = "Inline Variable",
+					},
+					b = {
+						rhs = "<cmd>lua require('refactoring').refactor('Extract Block')<CR>",
+						desc = "Extract Block",
+					},
+					["bf"] = {
+						rhs = "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>",
+						desc = "Extract Block To File",
+					},
+				},
+				options = {
+					prefix = "<leader>",
+					noremap = true,
+					silent = true,
+					expr = false,
+				},
+			},
+		},
 		options = {
 			-- refactoring option configuration
 			-- prompt for return type
