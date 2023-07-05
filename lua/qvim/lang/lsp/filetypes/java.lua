@@ -56,6 +56,60 @@ function M.setup()
 			"\n"
 		)
 	)
+	local java_17_debian_path = "/usr/lib/jvm/java-17-openjdk-amd64"
+	local java_20_debian_path = "/usr/lib/jvm/java-20-openjdk-amd64"
+	local java_17_arch_path = "/usr/lib/jvm/java-17-openjdk"
+	local java_20_arch_path = "/usr/lib/jvm/java-20-openjdk"
+
+	local is_java_17_debian = java_home == java_17_debian_path
+	local is_java_20_debian = java_home == java_20_debian_path
+	local is_java_17_arch = java_home == java_17_arch_path
+	local is_java_20_arch = java_home == java_20_arch_path
+
+	local runtimes = {
+		[java_17_debian_path] = {
+			name = "JavaSE-17",
+			path = "/usr/lib/jvm/java-17-openjdk-amd64",
+			javadoc = "/usr/lib/jvm/java-17-openjdk-amd64/docs/api",
+			sources = "/usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip",
+			default = is_java_17_debian,
+		},
+		[java_20_debian_path] = {
+			name = "JavaSE-20",
+			path = "/usr/lib/jvm/java-20-openjdk-amd64",
+			javadoc = "/usr/lib/jvm/java-20-openjdk-amd64/docs/api",
+			sources = "/usr/lib/jvm/java-20-openjdk-amd64/lib/src.zip",
+			default = is_java_20_debian,
+		},
+		--Arch
+		[java_17_arch_path] = {
+			name = "JavaSE-17",
+			path = "/usr/lib/jvm/java-17-openjdk",
+			javadoc = "/usr/share/doc/java17-openjdk/api",
+			sources = "/usr/lib/jvm/java-17-openjdk/lib/src.zip",
+			default = is_java_17_arch,
+		},
+		[java_20_arch_path] = {
+			name = "JavaSE-20",
+			path = "/usr/lib/jvm/java-20-openjdk",
+			javadoc = "/usr/share/doc/java20-openjdk/api",
+			sources = "/usr/lib/jvm/java-20-openjdk/lib/src.zip",
+			default = is_java_20_arch,
+		},
+	}
+
+	local runtime
+	if is_java_17_debian then
+		runtime = runtimes[java_17_debian_path]
+	elseif is_java_20_debian then
+		runtime = runtimes[java_20_debian_path]
+	elseif is_java_17_arch then
+		runtime = runtimes[java_17_arch_path]
+	elseif is_java_20_arch then
+		runtime = runtimes[java_20_arch_path]
+	else
+		Log:error("Java runtime not found.")
+	end
 
 	local config = {
 		cmd = {
@@ -105,32 +159,7 @@ function M.setup()
 						globalSettings = home .. "/.m2/settings.xml",
 					},
 					runtimes = {
-						-- Debian
-						{
-							name = "JavaSE-17",
-							path = "/usr/lib/jvm/java-17-openjdk-amd64",
-							javadoc = "/usr/lib/jvm/java-17-openjdk-amd64/docs/api",
-							sources = "/usr/lib/jvm/java-17-openjdk-amd64/lib/src.zip",
-						},
-						{
-							name = "JavaSE-20",
-							path = "/usr/lib/jvm/java-20-openjdk-amd64",
-							javadoc = "/usr/lib/jvm/java-20-openjdk-amd64/docs/api",
-							sources = "/usr/lib/jvm/java-20-openjdk-amd64/lib/src.zip",
-						},
-						--Arch
-						{
-							name = "JavaSE-17",
-							path = "/usr/lib/jvm/java-17-openjdk",
-							javadoc = "/usr/share/doc/java17-openjdk/api",
-							sources = "/usr/lib/jvm/java-17-openjdk/lib/src.zip",
-						},
-						{
-							name = "JavaSE-20",
-							path = "/usr/lib/jvm/java-20-openjdk",
-							javadoc = "/usr/share/doc/java20-openjdk/api",
-							sources = "/usr/lib/jvm/java-20-openjdk/lib/src.zip",
-						},
+						runtime,
 					},
 				},
 				includeSourceMethodDeclarations = true,

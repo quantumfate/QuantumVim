@@ -14,7 +14,7 @@ function M:init()
 				name = "+Refactoring",
 				bindings = {
 					e = {
-						mode = "v",
+						mode = { "n", "v" },
 						rhs = "<ESC><cmd>lua require('refactoring').refactor('Extract Function')<CR>",
 						desc = "Extract Function",
 					},

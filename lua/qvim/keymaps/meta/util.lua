@@ -12,9 +12,7 @@ local initialized = false
 --[[
    Modules
 ]]
-local ---@class binding
-binding, ---@class group
-group, ---@class keymap
+local ---@class bindingbinding, ---@class groupgroup, ---@class keymap
 keymap, ---@class default
 default, ---@class mode
 mode, ---@class descriptor
@@ -24,9 +22,7 @@ descriptor =
 --[[
     Require paths
 ]]
-local ---@class string
-path_binding, ---@class string
-path_group, ---@class string
+local ---@class stringpath_binding, ---@class stringpath_group, ---@class string
 path_keymap, ---@class string
 path_default, ---@class string
 path_descriptor =

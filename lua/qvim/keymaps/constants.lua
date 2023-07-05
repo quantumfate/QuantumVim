@@ -1,17 +1,6 @@
----@class constants
----@field binding_prefix string a prefix to denote binding descriptors
----@field binding_group_prefix string a prefix to denote key group descriptors
----@field binding_prefix_pt string a pattern to match binding descriptors
----@field binding_group_prefix_pt string a pattern to match key group descriptors
----@field rhs_index number the index in a binding for a right hand side
----@field desc_index number the index in a binding for description
----@field binding_group_constants binding_group_constants Constants for a binding group
----@field neovim_options_constants neovim_options_constants Constants for neovim specific options
-local M = {}
-
 local error_message = "Attempt to modify read-only table"
 
-local function new_index(t, key, value)
+local function new_index(_, _, _)
 	error(error_message)
 end
 
@@ -71,6 +60,15 @@ local constants = {
 	neovim_options_constants = table_util.read_only(neovim_options_constants, new_index),
 }
 
-M = table_util.read_only(constants, new_index)
+---@class constants
+---@field binding_prefix string a prefix to denote binding descriptors
+---@field binding_group_prefix string a prefix to denote key group descriptors
+---@field binding_prefix_pt string a pattern to match binding descriptors
+---@field binding_group_prefix_pt string a pattern to match key group descriptors
+---@field rhs_index number the index in a binding for a right hand side
+---@field desc_index number the index in a binding for description
+---@field binding_group_constants binding_group_constants Constants for a binding group
+---@field neovim_options_constants neovim_options_constants Constants for neovim specific options
+local M = table_util.read_only(constants, new_index)
 
 return M

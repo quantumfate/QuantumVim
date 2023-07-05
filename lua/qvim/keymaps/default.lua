@@ -22,7 +22,7 @@ local table_util = require("qvim.keymaps.table_util")
 
 local error_message = "Attempt to modify read-only table"
 
-local function new_index(t, key, value)
+local function new_index(_, _, _)
 	error(error_message)
 end
 

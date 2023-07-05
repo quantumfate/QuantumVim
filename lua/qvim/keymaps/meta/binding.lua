@@ -3,7 +3,6 @@ local binding = {}
 
 local default = require("qvim.keymaps.default")
 local constants = require("qvim.keymaps.constants")
-local shared_util = require("qvim.keymaps.util")
 ---@class util
 local util = nil
 
@@ -15,9 +14,9 @@ function binding.init(_util)
 	return binding
 end
 
---- The meta table that maps an index function to retrieve
---- the default keymap options. It implements an `__eq` meta method
---- to allow comparing of right hand side bindings.
+---The meta table that maps an index function to retrieve
+---the default keymap options. It implements an `__eq` meta method
+---to allow comparing of right hand side bindings.
 binding.mt = {
 	---Merges default options with user defined options stored in the table
 	---@param t table the indexed table
@@ -66,9 +65,18 @@ binding.mt = {
 		return true
 	end,
 	__tostring = function(t)
+		local mode_str
+		if type(t.mode) == "table" then
+			---@type string
+			mode_str = "{"
+			for _, value in pairs(t.mode) do
+				mode_str = mode_str .. value .. ","
+			end
+			mode_str = string.format("%s}", mode_str:sub(1, #mode_str - 1)) .. "}"
+		end
 		return string.format(
 			constants.binding_prefix .. "%s::%s::%s::%s::%s::%s::%s::%s",
-			constants.neovim_options_constants.mode .. "=" .. t.mode,
+			constants.neovim_options_constants.mode .. "=" .. type(t.mode) == "table" and mode_str or t.mode,
 			constants.neovim_options_constants.noremap .. "=" .. tostring(t.noremap),
 			constants.neovim_options_constants.nowait .. "=" .. tostring(t.nowait),
 			constants.neovim_options_constants.silent .. "=" .. tostring(t.silent),
