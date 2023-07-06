@@ -11,10 +11,11 @@ local Log = require("qvim.log")
 
 ---Registers the global configuration scope for telescope
 
-if in_headless_mode() then
-	return
-end
+
 function M:init()
+	if in_headless_mode() then
+		return
+	end
 	local actions = require("qvim.utils.modules").require_on_exported_call("telescope.actions")
 	local builtin = require("qvim.utils.modules").require_on_exported_call("telescope.builtin")
 	local telescope = {
