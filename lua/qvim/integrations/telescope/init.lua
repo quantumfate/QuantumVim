@@ -136,6 +136,9 @@ function M:init()
 end
 
 function M:config()
+	if in_headless_mode() then
+		return
+	end
 	require("qvim.integrations.telescope.extensions"):config()
 
 	local _telescope_options = qvim.integrations.telescope.options
