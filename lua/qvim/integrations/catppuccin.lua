@@ -1,6 +1,9 @@
 ---The catpuccin configuration file
 local M = {}
 
+if in_headless_mode() then
+	return
+end
 local Log = require("qvim.log")
 
 ---Registers the global configuration scope for catpuccin
