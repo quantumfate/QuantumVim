@@ -4,6 +4,9 @@ local utils = require("qvim.utils")
 local autocmds = require("qvim.integrations.autocmds")
 
 function M.setup()
+	if in_headless_mode() then
+		return
+	end
 	if not utils.is_directory(qvim.lsp.templates_dir) then
 		require("qvim.lang.templates").generate_templates()
 	end
