@@ -1,14 +1,14 @@
 ---The treesitter configuration file
 local M = {}
-if in_headless_mode() then
-	return
-end
 
 local Log = require("qvim.log")
 local utils = require("qvim.utils")
 
 ---Registers the global configuration scope for treesitter
 function M:init()
+	if in_headless_mode() then
+		return
+	end
 	local treesitter = {
 		active = true,
 		on_config_done = nil,

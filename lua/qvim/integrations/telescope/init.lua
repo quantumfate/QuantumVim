@@ -1,8 +1,5 @@
 ---The telescope configuration file
 local M = {}
-if in_headless_mode() then
-	return
-end
 
 local Log = require("qvim.log")
 
@@ -13,6 +10,10 @@ local Log = require("qvim.log")
 ---| "center"   # retain the default telescope theme
 
 ---Registers the global configuration scope for telescope
+
+if in_headless_mode() then
+	return
+end
 function M:init()
 	local actions = require("qvim.utils.modules").require_on_exported_call("telescope.actions")
 	local builtin = require("qvim.utils.modules").require_on_exported_call("telescope.builtin")

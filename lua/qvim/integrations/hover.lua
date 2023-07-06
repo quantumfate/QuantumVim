@@ -1,13 +1,14 @@
 ---The hover configuration file
 local M = {}
-if in_headless_mode() then
-	return
-end
+
 
 local Log = require("qvim.log")
 
 ---Registers the global configuration scope for hover
 function M:init()
+	if in_headless_mode() then
+		return
+	end
 	local hover = {
 		active = true,
 		on_config_done = nil,

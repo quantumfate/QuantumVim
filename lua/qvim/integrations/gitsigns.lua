@@ -1,14 +1,15 @@
 ---The gitsigns configuration file
 local M = {}
 
-if in_headless_mode() then
-	return
-end
+
 
 local Log = require("qvim.log")
 
 ---Registers the global configuration scope for gitsigns
 function M:init()
+	if in_headless_mode() then
+		return
+	end
 	local gitsigns = {
 		active = true,
 		on_config_done = nil,

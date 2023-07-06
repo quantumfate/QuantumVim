@@ -1,8 +1,6 @@
 ---The cmp configuration file
 local M = {}
-if in_headless_mode() then
-	return
-end
+
 
 local Log = require("qvim.log")
 
@@ -126,6 +124,9 @@ M.methods.jumpable = jumpable
 
 ---Registers the global configuration scope for cmp
 function M:init()
+	if in_headless_mode() then
+		return
+	end
 	local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
 	if not status_cmp_ok then
 		return

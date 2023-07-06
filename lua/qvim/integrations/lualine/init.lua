@@ -1,13 +1,14 @@
 ---The lualine configuration file
 local M = {}
-if in_headless_mode() then
-	return
-end
+
 
 local Log = require("qvim.log")
 
 ---Registers the global configuration scope for lualine
 function M:init()
+	if in_headless_mode() then
+		return
+	end
 	local lualine = {
 		active = true,
 		on_config_done = nil,
@@ -45,6 +46,9 @@ function M:init()
 end
 
 function M:config()
+	if in_headless_mode() then
+		return
+	end
 	-- lualine config function to call additional configs
 	require("qvim.integrations.lualine.theme").update()
 end

@@ -1,14 +1,15 @@
 ---The hop configuration file
 local M = {}
-if in_headless_mode() then
-	return
-end
+
 
 local utils = require("qvim.utils")
 local Log = require("qvim.log")
 local hint_position = require("hop.hint").HintPosition
 ---Registers the global configuration scope for hop
 function M:init()
+	if in_headless_mode() then
+		return
+	end
 	local hop = {
 		active = true,
 		on_config_done = nil,
