@@ -1,5 +1,8 @@
 ---The lualine configuration file
 local M = {}
+if in_headless_mode() then
+	return
+end
 
 local Log = require("qvim.log")
 

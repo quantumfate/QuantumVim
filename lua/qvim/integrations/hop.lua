@@ -1,5 +1,8 @@
 ---The hop configuration file
 local M = {}
+if in_headless_mode() then
+	return
+end
 
 local utils = require("qvim.utils")
 local Log = require("qvim.log")

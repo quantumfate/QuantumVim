@@ -1,4 +1,7 @@
 local M = {}
+if in_headless_mode() then
+	return
+end
 
 vim.cmd([[
   function! QuickFixToggle()
