@@ -23,10 +23,16 @@ Checkout the [Languages section](./lua/qvim/lang/README.md)
 
 ## Install
 
+### HTTPS
 - currently only on linux and mac
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/quantumfate/quantumvim/main/utils/installer/install.sh)
+```
+### SSH
+
+```bash
+bash <(curl -s https://raw.githubusercontent.com/quantumfate/quantumvim/main/utils/installer/install.sh) --ssh
 ```
 
 ## Run and runtime

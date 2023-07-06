@@ -5,7 +5,7 @@ OS="$(uname -s)"
 
 #Set branch to master unless specified by the user
 declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
-declare -xr QV_REMOTE="${QV_REMOTE:-quantumfate/quantumvim.git}"
+declare -xr QV_REMOTE="${QV_REMOTE:-quantumfate/qvim.git}"
 declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
 declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
@@ -25,6 +25,7 @@ declare ARGS_OVERWRITE=0
 #declare ARGS_INSTALL_DEPENDENCIES=1
 #declare INTERACTIVE_MODE=1
 declare ADDITIONAL_WARNINGS=""
+declare USE_SSH=0
 
 declare -a __qvim_dirs=(
     "$QUANTUMVIM_CACHE_DIR"
@@ -47,6 +48,9 @@ function parse_arguments() {
             --overwrite)
                 ARGS_OVERWRITE=1
                 ;;
+	    --ssh)
+		USE_SSH=1
+		;;
                 # Currently no supported dependencies
                 #-y | --yes)
                 #  INTERACTIVE_MODE=0
@@ -215,10 +219,20 @@ function verify_qvim_dirs() {
 
 function clone_qvim() {
     msg "Cloning LunarVim configuration"
-    if ! git clone --branch "$QV_BRANCH" \
-        "https://github.com/${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
-        echo "Failed to clone repository. Installation failed."
-        exit 1
+
+    if [ "$USE_SSH" -eq 0 ]; then
+
+	    if ! git clone --branch "$QV_BRANCH" \
+		"https://github.com/${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
+		echo "Failed to clone repository. Installation failed."
+		exit 1
+	    fi
+	else
+	    if ! git clone --branch "$QV_BRANCH" \
+		"git@github.com:${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
+		echo "Failed to clone repository. Installation failed."
+		exit 1
+	    fi
     fi
 }
 
