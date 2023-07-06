@@ -58,6 +58,9 @@ end
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
+	if in_headless_mode() then
+		return
+	end
 	local status_ok, autopairs = pcall(reload, "nvim-autopairs")
 	if not status_ok then
 		Log:warn("The plugin '%s' could not be loaded.", autopairs)

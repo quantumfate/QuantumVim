@@ -92,6 +92,9 @@ M.defaults = {
 }
 
 function M.load(collection)
+	if in_headless_mode() then
+		return
+	end
 	local common_opts = { force = true }
 	for _, cmd in pairs(collection) do
 		local opts = vim.tbl_deep_extend("force", common_opts, cmd.opts or {})

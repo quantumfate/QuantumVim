@@ -29,6 +29,9 @@ end
 ---this function and it will call the respective setup function.
 ---A on_config_done function will be called if the plugin implements it.
 function M:setup()
+  if in_headless_mode() then
+		return
+	end
   local status_ok, swenv = pcall(reload, "swenv")
   if not status_ok then
     Log:warn(string.format("The plugin '%s' could not be loaded.", swenv))
