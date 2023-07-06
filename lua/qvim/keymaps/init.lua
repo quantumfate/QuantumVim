@@ -48,10 +48,6 @@ local function parse_group_to_descripted(descripted_keymaps, declaration, bufnr)
 	local keymap_groups = meta.get_new_group_proxy_mt()
 	local current_index = #keymap_groups + 1
 
-	if bufnr then
-		declaration.options.buffer = bufnr
-	end
-
 	keymap_groups[current_index] = declaration
 	local descriptor = tostring(keymap_groups[current_index])
 	if descripted_keymaps[descriptor] then
