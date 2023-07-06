@@ -28,6 +28,7 @@ function M:new(config_file)
 		return
 	end
 	if instance then
+		print(config_file)
 		local config = instance:init()
 	
 		Log:debug(string.format("Called init function for '%s'. Config is '%s'.", config_file, config))
