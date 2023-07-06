@@ -27,8 +27,11 @@ function M:init()
 
 	require("qvim.integrations"):init()
 
-	local qvim_lsp_config = require("qvim.lang.config")
-	qvim.lsp = vim.deepcopy(qvim_lsp_config)
+	if not _G.in_headless_mode() then
+		local qvim_lsp_config = require("qvim.lang.config")
+		qvim.lsp = vim.deepcopy(qvim_lsp_config)
+	end
+
 
 	if not _G.in_headless_mode() then
 		vim.cmd.colorscheme(qvim.config.colorscheme)
