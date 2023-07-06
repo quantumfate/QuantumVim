@@ -66,6 +66,9 @@ function M:init()
 end
 
 function M:config()
+	if in_headless_mode() then
+		return
+	end
 	-- treesitter config function to call additional configs
 	local rainbow_ok, rainbow = pcall(require, "qvim.integrations.treesitter.rainbow")
 	if rainbow_ok then
