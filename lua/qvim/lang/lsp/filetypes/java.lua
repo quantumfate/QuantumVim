@@ -7,6 +7,7 @@ local fmt = string.format
 ---Setup the jdtls for java
 ---@return boolean server_started whether the jdtls server started
 function M.setup()
+	vim.cmd(":set ft=java") -- weird hack ik for seme reason java filetype doesn't load after opening the first file
 	local status, jdtls = pcall(require, "jdtls")
 	if not status then
 		return false
@@ -256,7 +257,7 @@ function M.setup()
 		},
 	})
 
-	vim.cmd(":set ft=java") -- weird hack ik for seme reason java filetype doesn't load after opening the first file
+	
 	return true
 end
 
