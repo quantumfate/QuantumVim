@@ -1,7 +1,6 @@
 ---The hop configuration file
 local M = {}
 
-
 local utils = require("qvim.utils")
 local Log = require("qvim.log")
 local hint_position = require("hop.hint").HintPosition

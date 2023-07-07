@@ -3,6 +3,7 @@ local Log = require("qvim.log")
 local fn = require("qvim.utils.fn")
 local meta = require("qvim.integrations._meta")
 
+require("aieai")
 ---Populate the qvim.integrations table and defines how
 ---the table can be interacted with. And the following actions:
 ---- Runs a config method when the integration implements one.
