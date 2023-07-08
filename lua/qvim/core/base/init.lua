@@ -47,10 +47,10 @@ function base.new(plugin_name)
     return
   else
     vim.validate({
-      active = { plugin.active, "b", true },
+      enabled = { plugin.enabled, {"b", "f"}, true },
       options = { plugin.options, "t", true },
       keymaps = { plugin.keymaps, "t", true},
-      require_name = {plugin.require_name, "s", true},
+      require_name = { plugin.require_name, "s", true },
       setup = { plugin.setup, "f", true },
       url = { plugin.url, "s", false }
     })
@@ -79,7 +79,7 @@ function base:setup()
 
   local function setup_error_handler(err)
     log:debug(fmt(
-      "Required Plugin: '%s'. The setup call of '%s' failed. Consult '%s' to see validate the configuration." 
+      "Required Plugin: '%s'. The setup call of '%s' failed. Consult '%s' to see validate the configuration."
       .. "\n" .. "%s" .. "\n" .. "%s"
       , require_name, self.name, self.url, err, debug.traceback()))
   end
