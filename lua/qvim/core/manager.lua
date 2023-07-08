@@ -1,4 +1,4 @@
-local plugin_loader = {}
+local manager = {}
 
 local utils = require("qvim.utils")
 local Log = require("qvim.log")
@@ -14,7 +14,7 @@ local integration_dir = join_paths(get_qvim_rtp_dir(), "site", "pack", "lazy", "
 ---setup the cache for plugins and it will additionally prevent
 ---lazy vims setup function to be called twice.
 ---@param opts table optionally parse supported options by lazy vim
-function plugin_loader:init(opts)
+function manager:init(opts)
 	opts = opts or {}
 
 	local lazy_install_dir = opts.install_path
@@ -72,7 +72,7 @@ function plugin_loader:init(opts)
 	end)
 end
 
-function plugin_loader:reset_cache()
+function manager:reset_cache()
 	os.remove(require("lazy.core.cache").path)
 end
 
@@ -84,11 +84,11 @@ end
 ---section, the unloaded plugins will be loaded again
 ---with their preserved state before they were unloaded.
 ---
----The plugin_loader.load(spec) function will be called
+---The manager.load(spec) function will be called
 ---at the end when everything went right.
 ---
 ---@param spec table the spec table https://github.com/folke/lazy.nvim#-plugin-spec
-function plugin_loader:reload(spec)
+function manager:reload(spec)
 	local modules = require("qvim.utils.modules")
 	local old_modules = {}
 	for m, _ in pairs(package.loaded) do
@@ -137,13 +137,13 @@ function plugin_loader:reload(spec)
 		end
 		return
 	else
-		plugin_loader:load(spec)
+		manager:load(spec)
 	end
 end
 
 ---Loads all plugins and calls their setup function
 ---@param spec table|nil the plugin configuration table
-function plugin_loader:load(spec)
+function manager:load(spec)
 	spec = spec or require("qvim.integrations._loader.spec")
 	Log:debug("loading plugins configuration")
 	local lazy_available, lazy = pcall(require, "lazy")
@@ -190,7 +190,7 @@ end
 
 ---Requires the plugin spec and filter
 ---@return table
-function plugin_loader:get_integrations()
+function manager:get_integrations()
 	local names = {}
 	local integrations = require("qvim.integrations._loader.spec")
 	local get_name = require("lazy.core.plugin").Spec.get_name
@@ -202,15 +202,15 @@ function plugin_loader:get_integrations()
 	return names
 end
 
-function plugin_loader:sync_integrations()
-	local integrations = plugin_loader:get_integrations()
+function manager:sync_integrations()
+	local integrations = manager:get_integrations()
 	Log:trace(string.format("Syncing integrations: [%q]", table.concat(integrations, ", ")))
 	require("lazy").update({ wait = true, plugins = integrations })
 end
 
-function plugin_loader.ensure_plugins()
+function manager.ensure_plugins()
 	Log:debug("calling lazy.install()")
 	require("lazy").install({ wait = true })
 end
 
-return plugin_loader
+return manager

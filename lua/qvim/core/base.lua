@@ -37,8 +37,9 @@ end
 ---Additionally `spec` extends the `base_mt` that provides a general purpose setup function and is
 ---directly returned as a table.
 ---@param plugin_name string
+---@param url string
 ---@return plugin? plugin_spec the `spec` of a plugin that extends the `base_mt`.
-function base.new(plugin_name)
+function base.new(plugin_name, url)
 	local plugin_path = plugin_path_prefix .. plugin_name
 
 	local function error_handler_closure(err)
@@ -54,11 +55,15 @@ function base.new(plugin_name)
 			enabled = { plugin.enabled, { "b", "f" }, true },
 			options = { plugin.options, "t", true },
 			keymaps = { plugin.keymaps, "t", true },
-			require_name = { plugin.require_name, "s", true },
+			require_name = { plugin.require_name, "s", false },
 			setup = { plugin.setup, "f", true },
 			url = { plugin.url, "s", false },
 		})
 		plugin["name"] = plugin_name
+
+    if not plugin.url then
+      plugin.url = url
+    end
 
 		---@class plugin : base
 		---@field active boolean
