@@ -7,17 +7,12 @@ local M = {}
 --- This must be called at the beginning when qvim is
 --- loaded since everything depends on this.
 function M:init()
-	_G.qvim = setmetatable({}, { __index = vim.deepcopy(require("qvim.config.config")) })
+	_G.qvim = setmetatable({}, { __index = vim.deepcopy(require("qvim.config")) })
 
 	vim.g.mapleader = qvim.config.leader
 	vim.g.maplocalleader = qvim.config.leader
 	local settings = require("qvim.config.settings")
 	settings.load_defaults()
-
-	---@return table integrations
-	function _G.qvim_integrations()
-		return qvim.config.integrations
-	end
 
 	---@return table languages
 	function _G.qvim_languages()
@@ -25,7 +20,7 @@ function M:init()
 		return languages
 	end
 
-	require("qvim.integrations"):init()
+	require("qvim.core").init_plugin_configurations()
 
 	if not _G.in_headless_mode() then
 		local qvim_lsp_config = require("qvim.lang.config")

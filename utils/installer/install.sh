@@ -8,6 +8,8 @@ declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
 declare -xr QV_REMOTE="${QV_REMOTE:-quantumfate/qvim.git}"
 declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
+declare -xir QV_FIRST_TIME_SETUP=1
+
 declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
 declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 declare -xr XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
@@ -22,8 +24,8 @@ BASEDIR="$(dirname -- "$(dirname -- "$BASEDIR")")"
 readonly BASEDIR
 
 declare ARGS_OVERWRITE=0
-#declare ARGS_INSTALL_DEPENDENCIES=1
-#declare INTERACTIVE_MODE=1
+declare ARGS_INSTALL_DEPENDENCIES=1
+declare INTERACTIVE_MODE=1
 declare ADDITIONAL_WARNINGS=""
 declare USE_SSH=0
 
@@ -32,14 +34,32 @@ declare -a __qvim_dirs=(
     "$QUANTUMVIM_DIR"
 )
 
+declare -a __npm_deps=(
+  "neovim"
+)
+# treesitter installed with brew causes conflicts #3738
+if ! command -v tree-sitter &>/dev/null; then
+  __npm_deps+=("tree-sitter-cli")
+fi
+
+declare -a __pip_deps=(
+  "pynvim"
+)
+
+declare -a __rust_deps=(
+  "fd::fd-find"
+  "rg::ripgrep"
+)
+
 function usage() {
     echo "Usage: install.sh [<options>]"
     echo ""
     echo "Options:"
     echo "    -h, --help                               Print this help message"
-    #  echo "    -y, --yes                                Disable confirmation prompts (answer yes to all questions)"
+    echo "    --ssh                                    Use git clone with ssh"
+    echo "    -y, --yes                                Disable confirmation prompts (answer yes to all questions)"
     echo "    --overwrite                              Overwrite previous QuantumVim configuration (a backup is always performed first)"
-    #  echo "    --[no-]install-dependencies              Whether to automatically install external dependencies (will prompt by default)"
+    echo "    --[no-]install-dependencies              Whether to automatically install external dependencies (will prompt by default)"
 }
 
 function parse_arguments() {
@@ -48,19 +68,18 @@ function parse_arguments() {
             --overwrite)
                 ARGS_OVERWRITE=1
                 ;;
-	    --ssh)
-		USE_SSH=1
-		;;
-                # Currently no supported dependencies
-                #-y | --yes)
-                #  INTERACTIVE_MODE=0
-                #  ;;
-                #--install-dependencies)
-                #  ARGS_INSTALL_DEPENDENCIES=1
-                #  ;;
-                #--no-install-dependencies)
-                #  ARGS_INSTALL_DEPENDENCIES=0
-                #  ;;
+            --ssh)
+                USE_SSH=1
+                ;;
+            -y | --yes)
+              INTERACTIVE_MODE=0
+              ;;
+            --install-dependencies)
+              ARGS_INSTALL_DEPENDENCIES=1
+              ;;
+            --no-install-dependencies)
+              ARGS_INSTALL_DEPENDENCIES=0
+                 ;;
             -h | --help)
                 usage
                 exit 0
@@ -89,67 +108,67 @@ function msg() {
     printf "%s\n" "$text"
 }
 
-#function confirm() {
-#  local question="$1"
-#  while true; do
-#    msg "$question"
-#    read -p "[y]es or [n]o (default: no) : " -r answer
-#    case "$answer" in
-#      y | Y | yes | YES | Yes)
-#        return 0
-#        ;;
-#      n | N | no | NO | No | *[[:blank:]]* | "")
-#        return 1
-#        ;;
-#      *)
-#        msg "Please answer [y]es or [n]o."
-#        ;;
-#    esac
-#  done
-#}
+function confirm() {
+ local question="$1"
+ while true; do
+   msg "$question"
+   read -p "[y]es or [n]o (default: no) : " -r answer
+   case "$answer" in
+     y | Y | yes | YES | Yes)
+       return 0
+       ;;
+     n | N | no | NO | No | *[[:blank:]]* | "")
+       return 1
+       ;;
+     *)
+       msg "Please answer [y]es or [n]o."
+       ;;
+   esac
+ done
+}
 
 function stringify_array() {
     echo -n "${@}" | sed 's/ /, /'
 }
 
-#function detect_platform() {
-#  case "$OS" in
-#    Linux)
-#      if [ -f "/etc/arch-release" ] || [ -f "/etc/artix-release" ]; then
-#        RECOMMEND_INSTALL="sudo pacman -S"
-#      elif [ -f "/etc/fedora-release" ] || [ -f "/etc/redhat-release" ]; then
-#        RECOMMEND_INSTALL="sudo dnf install -y"
-#      elif [ -f "/etc/gentoo-release" ]; then
-#        RECOMMEND_INSTALL="emerge -tv"
-#      else # assume debian based
-#        RECOMMEND_INSTALL="sudo apt install -y"
-#      fi
-#      ;;
-#    FreeBSD)
-#      RECOMMEND_INSTALL="sudo pkg install -y"
-#      ;;
-#    NetBSD)
-#      RECOMMEND_INSTALL="sudo pkgin install"
-#      ;;
-#    OpenBSD)
-#      RECOMMEND_INSTALL="doas pkg_add"
-#      ;;
-#    Darwin)
-#      RECOMMEND_INSTALL="brew install"
-#      ;;
-#    *)
-#      echo "OS $OS is not currently supported."
-#      exit 1
-#      ;;
-#  esac
-#}
+function detect_platform() {
+ case "$OS" in
+   Linux)
+     if [ -f "/etc/arch-release" ] || [ -f "/etc/artix-release" ]; then
+       RECOMMEND_INSTALL="sudo pacman -S"
+     elif [ -f "/etc/fedora-release" ] || [ -f "/etc/redhat-release" ]; then
+       RECOMMEND_INSTALL="sudo dnf install -y"
+     elif [ -f "/etc/gentoo-release" ]; then
+       RECOMMEND_INSTALL="emerge -tv"
+     else # assume debian based
+       RECOMMEND_INSTALL="sudo apt install -y"
+     fi
+     ;;
+   FreeBSD)
+     RECOMMEND_INSTALL="sudo pkg install -y"
+     ;;
+   NetBSD)
+     RECOMMEND_INSTALL="sudo pkgin install"
+     ;;
+   OpenBSD)
+     RECOMMEND_INSTALL="doas pkg_add"
+     ;;
+   Darwin)
+     RECOMMEND_INSTALL="brew install"
+     ;;
+   *)
+     echo "OS $OS is not currently supported."
+     exit 1
+     ;;
+ esac
+}
 
 function check_neovim_min_version() {
     local verify_version_cmd='if !has("nvim-0.8") | cquit | else | quit | endif'
 
     # exit with an error if min_version not found
     if ! nvim --headless -u NONE -c "$verify_version_cmd"; then
-        echo "[ERROR]: LunarVim requires at least Neovim v0.8 or higher"
+        echo "[ERROR]: QuantumVim requires at least Neovim v0.8 or higher"
         exit 1
     fi
 }
@@ -167,6 +186,100 @@ function validate_install_prefix() {
 
     # avoid problems when calling any verify_* function
     export PATH="$prefix/bin:$PATH"
+}
+
+function __install_nodejs_deps_pnpm() {
+  echo "Installing node modules with pnpm.."
+  pnpm install -g "${__npm_deps[@]}"
+  echo "All NodeJS dependencies are successfully installed"
+}
+
+function __install_nodejs_deps_npm() {
+  echo "Installing node modules with npm.."
+  for dep in "${__npm_deps[@]}"; do
+    if ! npm ls -g "$dep" &>/dev/null; then
+      printf "installing %s .." "$dep"
+      npm install -g "$dep"
+    fi
+  done
+
+  echo "All NodeJS dependencies are successfully installed"
+}
+
+function __install_nodejs_deps_yarn() {
+  echo "Installing node modules with yarn.."
+  yarn global add "${__npm_deps[@]}"
+  echo "All NodeJS dependencies are successfully installed"
+}
+
+function __validate_node_installation() {
+  local pkg_manager="$1"
+  local manager_home
+
+  if ! command -v "$pkg_manager" &>/dev/null; then
+    return 1
+  fi
+
+  if [ "$pkg_manager" == "npm" ]; then
+    manager_home="$(npm config get prefix 2>/dev/null)"
+  elif [ "$pkg_manager" == "pnpm" ]; then
+    manager_home="$(pnpm config get prefix 2>/dev/null)"
+  else
+    manager_home="$(yarn global bin 2>/dev/null)"
+  fi
+
+  if [ ! -d "$manager_home" ] || [ ! -w "$manager_home" ]; then
+    return 1
+  fi
+
+  return 0
+}
+
+function install_nodejs_deps() {
+  local -a pkg_managers=("pnpm" "yarn" "npm")
+  for pkg_manager in "${pkg_managers[@]}"; do
+    if __validate_node_installation "$pkg_manager"; then
+      eval "__install_nodejs_deps_$pkg_manager"
+      return
+    fi
+  done
+  echo "[WARN]: skipping installing optional nodejs dependencies due to insufficient permissions."
+  echo "check how to solve it: https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally"
+}
+
+function install_python_deps() {
+  echo "Verifying that pip is available.."
+  if ! python3 -m ensurepip >/dev/null; then
+    if ! python3 -m pip --version &>/dev/null; then
+      echo "[WARN]: skipping installing optional python dependencies"
+      return 1
+    fi
+  fi
+  echo "Installing with pip.."
+  for dep in "${__pip_deps[@]}"; do
+    python3 -m pip install --user "$dep" || return 1
+  done
+  echo "All Python dependencies are successfully installed"
+}
+
+function __attempt_to_install_with_cargo() {
+  if command -v cargo &>/dev/null; then
+    echo "Installing missing Rust dependency with cargo"
+    cargo install "$1"
+  else
+    echo "[WARN]: Unable to find cargo. Make sure to install it to avoid any problems"
+    exit 1
+  fi
+}
+
+# we try to install the missing one with cargo even though it's unlikely to be found
+function install_rust_deps() {
+  for dep in "${__rust_deps[@]}"; do
+    if ! command -v "${dep%%::*}" &>/dev/null; then
+      __attempt_to_install_with_cargo "${dep##*::}"
+    fi
+  done
+  echo "All Rust dependencies are successfully installed"
 }
 
 function check_system_deps() {
@@ -218,20 +331,20 @@ function verify_qvim_dirs() {
 }
 
 function clone_qvim() {
-    msg "Cloning LunarVim configuration"
+    msg "Cloning QuantumVim configuration"
 
     if [ "$USE_SSH" -eq 0 ]; then
 
 	    if ! git clone --branch "$QV_BRANCH" \
-		"https://github.com/${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
-		echo "Failed to clone repository. Installation failed."
-		exit 1
+        "https://github.com/${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
+        echo "Failed to clone repository. Installation failed."
+        exit 1
 	    fi
 	else
 	    if ! git clone --branch "$QV_BRANCH" \
-		"git@github.com:${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
-		echo "Failed to clone repository. Installation failed."
-		exit 1
+        "git@github.com:${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
+        echo "Failed to clone repository. Installation failed."
+        exit 1
 	    fi
     fi
 }
@@ -296,28 +409,28 @@ function main() {
 
     print_logo
 
-    #msg "Detecting platform for managing any additional neovim dependencies"
-    #detect_platform
+    msg "Detecting platform for managing any additional neovim dependencies"
+    detect_platform
 
-    #check_system_deps
+    check_system_deps
 
-    #if [ "$ARGS_INSTALL_DEPENDENCIES" -eq 1 ]; then
-    #  if [ "$INTERACTIVE_MODE" -eq 1 ]; then
-    #    if confirm "Would you like to install LunarVim's NodeJS dependencies: $(stringify_array ${__npm_deps[@]})?"; then
-    #      install_nodejs_deps
-    #    fi
-    #    if confirm "Would you like to install LunarVim's Python dependencies: $(stringify_array ${__pip_deps[@]})?"; then
-    #      install_python_deps
-    #    fi
-    #    if confirm "Would you like to install LunarVim's Rust dependencies: $(stringify_array ${__rust_deps[@]})?"; then
-    #      install_rust_deps
-    #    fi
-    #  else
-    #    install_nodejs_deps
-    #    install_python_deps
-    #    install_rust_deps
-    #  fi
-    #fi
+  if [ "$ARGS_INSTALL_DEPENDENCIES" -eq 1 ]; then
+    if [ "$INTERACTIVE_MODE" -eq 1 ]; then
+      if confirm "Would you like to install QuantumVim's NodeJS dependencies: $(stringify_array "${__npm_deps[@]}")?"; then
+        install_nodejs_deps
+      fi
+      if confirm "Would you like to install QuantumVim's Python dependencies: $(stringify_array "${__pip_deps[@]}")?"; then
+        install_python_deps
+      fi
+      if confirm "Would you like to install QuantumVim's Rust dependencies: $(stringify_array "${__rust_deps[@]}")?"; then
+        install_rust_deps
+      fi
+    else
+      install_nodejs_deps
+      install_python_deps
+      install_rust_deps
+    fi
+  fi
 
     remove_old_cache_files
 

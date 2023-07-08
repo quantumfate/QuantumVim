@@ -4,9 +4,9 @@ local utils = require("qvim.utils")
 local Log = require("qvim.log")
 local join_paths = utils.join_paths
 
-local get_qvim_rtp_dir = _G.get_qvim_rtp_dir
+local get_qvim_dir = _G.get_qvim_dir
 
-local integration_dir = join_paths(get_qvim_rtp_dir(), "site", "pack", "lazy", "opt")
+local integration_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -22,7 +22,7 @@ function manager:init(opts)
 
 	if not utils.is_directory(lazy_install_dir) then
 		print("Initializing first time setup")
-		local integrations_dir = join_paths(get_qvim_rtp_dir(), "plugins")
+		local integrations_dir = join_paths(get_qvim_dir(), "plugins")
 		if utils.is_directory(integrations_dir) then
 			vim.fn.mkdir(integration_dir, "p")
 			vim.loop.fs_rmdir(integration_dir)
@@ -36,9 +36,7 @@ function manager:init(opts)
 				"https://github.com/folke/lazy.nvim.git",
 				lazy_install_dir,
 			})
-
-			local default_snapshot_path = join_paths(get_qvim_rtp_dir(), "snapshots", "default.json")
-			print("Snap path: " .. default_snapshot_path)
+			local default_snapshot_path = join_paths(get_qvim_dir(), "snapshots", "default.json")
 			local snapshot = assert(vim.fn.json_decode(vim.fn.readfile(default_snapshot_path)))
 			vim.fn.system({
 				"git",
@@ -52,7 +50,7 @@ function manager:init(opts)
 	end
 
 	local rtp = vim.opt.rtp:get()
-	local base_dir = (get_qvim_rtp_dir() .. "/qvim"):gsub("\\", "/")
+	local base_dir = get_qvim_dir():gsub("\\", "/")
 	local idx_base = #rtp + 1
 	for i, path in ipairs(rtp) do
 		path = path:gsub("\\", "/")
@@ -144,7 +142,7 @@ end
 ---Loads all plugins and calls their setup function
 ---@param spec table|nil the plugin configuration table
 function manager:load(spec)
-	spec = spec or require("qvim.integrations._loader.spec")
+	spec = spec or require("qvim.core").load_lazy_spec_light()
 	Log:debug("loading plugins configuration")
 	local lazy_available, lazy = pcall(require, "lazy")
 	if not lazy_available then
@@ -168,14 +166,14 @@ function manager:load(spec)
 			git = {
 				timeout = 120,
 			},
-			lockfile = join_paths(get_qvim_rtp_dir(), "lazy-lock.json"),
+			lockfile = join_paths(get_qvim_dir(), "lazy-lock.json"),
 			performance = {
 				rtp = {
 					reset = false,
 				},
 			},
 			readme = {
-				root = join_paths(get_qvim_rtp_dir(), "lazy", "readme"),
+				root = join_paths(get_qvim_dir(), "lazy", "readme"),
 			},
 		}
 

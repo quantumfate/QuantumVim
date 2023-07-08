@@ -15,8 +15,8 @@ require("qvim.bootstrap"):init(base_dir)
 
 require("qvim.keymaps"):init()
 
-local integration_loader = require("qvim.integrations._loader")
-integration_loader:load()
+local manager = require("qvim.core.manager")
+manager:load()
 
 local Log = require("qvim.log")
 Log:debug("Starting QuantumVim")
