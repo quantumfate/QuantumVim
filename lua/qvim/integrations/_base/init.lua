@@ -30,13 +30,12 @@ function M:new(config_file)
 	if instance then
 		print(config_file)
 		local config = instance:init()
-	
+
 		Log:debug(string.format("Called init function for '%s'. Config is '%s'.", config_file, config))
 		local _, base_t = pcall(create_base_table, config_file, config)
 		return base_t, instance
 	end
 	return nil, nil
-	
 end
 
 return M

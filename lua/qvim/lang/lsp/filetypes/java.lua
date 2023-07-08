@@ -7,7 +7,6 @@ local fmt = string.format
 ---Setup the jdtls for java
 ---@return boolean server_started whether the jdtls server started
 function M.setup()
-	
 	local status, jdtls = pcall(require, "jdtls")
 	if not status then
 		return false

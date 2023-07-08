@@ -3,8 +3,6 @@ local M = {}
 
 local Log = require("qvim.log")
 
-
-
 ---Registers the global configuration scope for nightfox
 function M:init()
 	if in_headless_mode() then

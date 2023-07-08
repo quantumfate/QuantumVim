@@ -1,5 +1,3 @@
-local dressing = {
-
-}
+local dressing = {}
 
 return dressing

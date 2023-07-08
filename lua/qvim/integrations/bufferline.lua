@@ -1,7 +1,6 @@
 ---The bufferline configuration file
 local M = {}
 
-
 local Log = require("qvim.log")
 
 ---Registers the global configuration scope for bufferline
@@ -15,8 +14,8 @@ function M:init()
 		keymaps = {},
 		options = {
 			-- bufferline option configuration
-			mode = "buffers",           -- set to "tabs" to only show tabpages instead
-			numbers = "none",           --| "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string
+			mode = "buffers", -- set to "tabs" to only show tabpages instead
+			numbers = "none", --| "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string
 			close_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
 			right_mouse_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
 			left_mouse_command = "buffer %d", -- can be a string | function, see "Mouse actions"

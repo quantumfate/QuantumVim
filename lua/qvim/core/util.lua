@@ -7,7 +7,7 @@ local util = {}
 ---- user/`plugin`
 ---- `plugin`/nvim
 ---
----The string `plugin` will be extracted and returned in lower case 
+---The string `plugin` will be extracted and returned in lower case
 ---and `-` will be replaced by `_` as well as any occurence of the string `nvim`
 ---will be romoved.
 ---@param plugin string
@@ -19,22 +19,19 @@ function util.is_valid_plugin_name(plugin)
 	local normal_pattern = "^[%a%d%-_]+/([%a%d%-_]+)$"
 	local plugin_name = plugin:match(nvim_pattern) or plugin:match(lua_pattern) or plugin:match(normal_pattern) or nil
 
-  if plugin_name == "nvim" then
-    plugin_name = nil
-    local special_pattern = "^([%a%d%-_]+)/nvim$"
-    plugin_name = plugin:match(special_pattern)
-
-  end
+	if plugin_name == "nvim" then
+		plugin_name = nil
+		local special_pattern = "^([%a%d%-_]+)/nvim$"
+		plugin_name = plugin:match(special_pattern)
+	end
 
 	if plugin_name then
-    plugin_name = string.gsub(plugin_name, "-", "_")
-    plugin_name = string.gsub(plugin_name, "nvim", "")
+		plugin_name = string.gsub(plugin_name, "-", "_")
+		plugin_name = string.gsub(plugin_name, "nvim", "")
 		return true, string.lower(plugin_name)
 	else
 		return false
 	end
 end
-
-
 
 return util

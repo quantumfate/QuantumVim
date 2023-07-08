@@ -1,7 +1,6 @@
 ---The cmp configuration file
 local M = {}
 
-
 local Log = require("qvim.log")
 
 M.methods = {}

@@ -1,7 +1,6 @@
 local swenv = {
-    lazy = true,
-    ft = "python"
-
+	lazy = true,
+	ft = "python",
 }
 
 return swenv

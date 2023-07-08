@@ -1,7 +1,6 @@
 ---The toggleterm configuration file
 local M = {}
 
-
 local Log = require("qvim.log")
 
 ---Registers the global configuration scope for toggleterm

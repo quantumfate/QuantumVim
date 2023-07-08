@@ -32,7 +32,6 @@ function M:init()
 		qvim.lsp = vim.deepcopy(qvim_lsp_config)
 	end
 
-
 	if not _G.in_headless_mode() then
 		vim.cmd.colorscheme(qvim.config.colorscheme)
 	end

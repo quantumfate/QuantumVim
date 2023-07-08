@@ -23,22 +23,22 @@ function M:init()
 			header_hl = "Include",
 			-- alpha option configuration
 			buttons = {
-				{ key = "f", desc = "  Find file",    cmd = ":Telescope find_files <CR>" },
-				{ key = "e", desc = "  New file",     cmd = ":ene <BAR> startinsert <CR>" },
+				{ key = "f", desc = "  Find file", cmd = ":Telescope find_files <CR>" },
+				{ key = "e", desc = "  New file", cmd = ":ene <BAR> startinsert <CR>" },
 				{ key = "p", desc = "  Find project", cmd = ":Telescope projects <CR>" },
 				{
 					key = "r",
 					desc = "  Recently used files",
 					cmd = ":lua require'telescope'.extensions.project.project{}<CR>",
 				},
-				{ key = "t", desc = "  Find text",     cmd = ":Telescope live_grep <CR>" },
+				{ key = "t", desc = "  Find text", cmd = ":Telescope live_grep <CR>" },
 				{ key = "c", desc = "  Configuration", cmd = ":e ~/.config/qvim/ <CR>" },
-				{ key = "q", desc = "  Quit Neovim",   cmd = ":qa<CR>" },
+				{ key = "q", desc = "  Quit Neovim", cmd = ":qa<CR>" },
 			},
 			button_area = {
 				type = "group",
 				val = {
-					{ type = "text",    val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
+					{ type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
 					{ type = "padding", val = 1 },
 				},
 				position = "center",

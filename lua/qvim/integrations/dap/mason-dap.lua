@@ -13,8 +13,7 @@ function M:config()
 			-- mason setup is handled by lang section
 			automatic_installation = false,
 			ensure_installed = { "python", "mix_task", "cppdbg", "codelldb", "chrome", "bash", "node2" },
-			handlers = {
-			},
+			handlers = {},
 		},
 	}
 end

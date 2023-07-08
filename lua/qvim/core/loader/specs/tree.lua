@@ -8,7 +8,7 @@ local nvim_tree = {
 	event = "User DirOpened",
 	config = function()
 		require("qvim.integrations.tree"):setup()
-	end
+	end,
 }
 
 return nvim_tree
