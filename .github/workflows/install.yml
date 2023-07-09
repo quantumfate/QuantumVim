@@ -38,7 +38,7 @@ jobs:
           RELEASE_VER: ${{ matrix.neovim }}
         run: |
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          bash ./utils/installer/install-neovim-from-release
+          bash ./utils/installer/install-neovim-from-release.sh
 
       - name: Install QuantumVim
         timeout-minutes: 4
