@@ -68,10 +68,10 @@ function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
 
   if qvim.plugins[plugin_name] then
     local enabled
-    if type(qvim[plugin_name] == "string") then
-      enabled = qvim[plugin_name].enabled
+    if type(qvim.plugins[plugin_name] == "string") then
+      enabled = qvim.plugins[plugin_name].enabled
     else
-      enabled = qvim[plugin_name].enabled()
+      enabled = qvim.plugins[plugin_name].enabled()
     end
     return {
       url,
