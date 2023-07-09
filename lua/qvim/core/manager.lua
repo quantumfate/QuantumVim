@@ -6,7 +6,7 @@ local join_paths = utils.join_paths
 
 local get_qvim_dir = _G.get_qvim_dir
 
-local integration_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
+local plugins_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -22,11 +22,11 @@ function manager:init(opts)
 
 	if not utils.is_directory(lazy_install_dir) then
 		print("Initializing first time setup")
-		local integrations_dir = join_paths(get_qvim_dir(), "plugins")
-		if utils.is_directory(integrations_dir) then
-			vim.fn.mkdir(integration_dir, "p")
-			vim.loop.fs_rmdir(integration_dir)
-			require("qvim.utils").fs_copy(integrations_dir, integration_dir)
+		local core_plugins_dir = join_paths(get_qvim_base_dir(), "plugins")
+		if utils.is_directory(core_plugins_dir) then
+			vim.fn.mkdir(plugins_dir, "p")
+			vim.loop.fs_rmdir(plugins_dir)
+			require("qvim.utils").fs_copy(core_plugins_dir, plugins_dir)
 		else
 			vim.fn.system({
 				"git",
@@ -36,7 +36,7 @@ function manager:init(opts)
 				"https://github.com/folke/lazy.nvim.git",
 				lazy_install_dir,
 			})
-			local default_snapshot_path = join_paths(get_qvim_dir(), "snapshots", "default.json")
+			local default_snapshot_path = join_paths(get_qvim_base_dir(), "snapshots", "default.json")
 			local snapshot = assert(vim.fn.json_decode(vim.fn.readfile(default_snapshot_path)))
 			vim.fn.system({
 				"git",
@@ -50,7 +50,7 @@ function manager:init(opts)
 	end
 
 	local rtp = vim.opt.rtp:get()
-	local base_dir = get_qvim_dir():gsub("\\", "/")
+	local base_dir = (get_qvim_base_dir() or get_qvim_dir()):gsub("\\", "/")
 	local idx_base = #rtp + 1
 	for i, path in ipairs(rtp) do
 		path = path:gsub("\\", "/")
@@ -60,7 +60,7 @@ function manager:init(opts)
 		end
 	end
 	table.insert(rtp, idx_base, lazy_install_dir)
-	table.insert(rtp, idx_base + 1, join_paths(integration_dir, "*"))
+	table.insert(rtp, idx_base + 1, join_paths(plugins_dir, "*"))
 	vim.opt.rtp = rtp
 
 	pcall(function()

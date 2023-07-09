@@ -26,6 +26,7 @@ stds.nvim = {
 		"get_cache_dir",
 		"get_qvim_dir",
 		"get_state_dir",
+		"get_qvim_base_dir",
 		"require_clean",
 	},
 }
