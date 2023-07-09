@@ -1,8 +1,8 @@
----@class base
-local base = {}
-base.__index = base
+---@class core_base
+local core_base = {}
+core_base.__index = core_base
 
-local base_mt = { __index = base }
+local core_base_mt = { __index = core_base }
 
 local fmt = string.format
 local log = require "qvim.log"
@@ -40,14 +40,14 @@ end
 ---adds it to the global `qvim` table where the configuration is referenced by the
 ---`plugin_name`. Such as: `qvim.[plugin] = spec` where `spec` is a table.
 ---
----Additionally `spec` extends the `base_mt` that provides a general purpose setup function and is
+---Additionally `spec` extends the `core_base_mt` that provides a general purpose setup function and is
 ---directly returned as a table.
 ---@param plugin_name string
 ---@param url string
 ---@param hr_name string
----@return plugin? plugin_spec the `spec` of a plugin that extends the `base_mt`.
-function base.new(plugin_name, url, hr_name)
-	local plugin_path = plugin_path_prefix .. plugin_name
+---@return plugin? plugin_spec the `spec` of a plugin that extends the `core_base_mt`.
+function core_base.new(plugin_name, url, hr_name)
+	local plugin_path = plugin_path_prefix .. hr_name
 
 	local function error_handler_closure(err)
 		error_handler(err, plugin_name, plugin_path)
@@ -66,7 +66,7 @@ function base.new(plugin_name, url, hr_name)
 			enabled = { plugin.enabled, { "b", "f" }, true },
 			options = { plugin.options, "t", true },
 			keymaps = { plugin.keymaps, "t", true },
-			require_name = { plugin.require_name, "s", false },
+			main = { plugin.main, "s", false },
 			setup = { plugin.setup, "f", true },
 			url = { plugin.url, "s", false },
 		}
@@ -76,21 +76,21 @@ function base.new(plugin_name, url, hr_name)
 			plugin.url = url
 		end
 
-		---@class plugin : base
+		---@class plugin : core_base
 		---@field active boolean
 		---@field options table|nil
 		---@field keymaps table|nil
 		---@field require_name string|nil
 		---@field name string
 		---@field url string
-		local plugin_spec = setmetatable(plugin, base_mt)
+		local plugin_spec = setmetatable(plugin, core_base_mt)
 		return plugin_spec
 	end
 end
 
 ---Generic setup function for plugins that don't implement anything special.
 ---@param self plugin
-function base:setup()
+function core_base:setup()
 	local require_name = self.require_name or self.name
 	local status_ok, plugin = pcall(require, require_name)
 	if not status_ok then
@@ -140,4 +140,4 @@ function base:setup()
 	end
 end
 
-return base
+return core_base

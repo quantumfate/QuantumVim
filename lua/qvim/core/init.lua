@@ -5,8 +5,8 @@ local fmt = string.format
 local log = require "qvim.log"
 ---@class util
 local util = require "qvim.core.util"
----@class base
-local base = require "qvim.core.base"
+---@class core_base
+local core_base = require "qvim.core.base"
 ---@class core_loader
 local core_loader = require "qvim.core.loader"
 
@@ -67,7 +67,7 @@ core.plugins = {
 ---are specified in `core.plugins` with their corresponding configuration in
 ---`qvim.core.plugins`.
 function core.init_plugin_configurations()
-    util.qvim_process_plugins(base.new)
+    util.qvim_process_plugins(core_base.new)
     log:debug(
         fmt(
             "[core] Global qvim plugins table initialized. It total: '%s'",
