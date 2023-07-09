@@ -19,7 +19,7 @@ local function error_handler(err, plugin_name, plugin_path)
 	elseif err:match ".*module '.*' not found.*" then
 		log:warn(
 			fmt(
-				"A module in the configuratieon of '%s' caused an error. Is this first time setup? If it's not some plugin in '%s' is missing or malfunctioning require path was used.",
+				"A module in the configuration of '%s' caused an error. Is this first time setup? If it's not some plugin in '%s' is missing or malfunctioning require path was used.",
 				plugin_name,
 				plugin_path
 			)
