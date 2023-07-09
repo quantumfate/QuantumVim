@@ -1,6 +1,6 @@
 local indentline = {
-	event = "User FileOpened",
-	lazy = true,
+    event = "User FileOpened",
+    lazy = true,
 }
 
 return indentline

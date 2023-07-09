@@ -1,6 +1,6 @@
 local whichkey = {
-	cmd = "WhichKey",
-	event = "VeryLazy",
+    cmd = "WhichKey",
+    event = "VeryLazy",
 }
 
 return whichkey

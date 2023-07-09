@@ -7,16 +7,16 @@ local table_util = {}
 ---@param callable function
 ---@return table proxy
 function table_util.read_only(t, callable)
-	local proxy = {}
-	local mt = {
-		__index = t,
-		__newindex = callable,
-		__pairs = function(_)
-			return pairs(t)
-		end,
-	}
-	setmetatable(proxy, mt)
-	return proxy
+    local proxy = {}
+    local mt = {
+        __index = t,
+        __newindex = callable,
+        __pairs = function(_)
+            return pairs(t)
+        end,
+    }
+    setmetatable(proxy, mt)
+    return proxy
 end
 
 return table_util

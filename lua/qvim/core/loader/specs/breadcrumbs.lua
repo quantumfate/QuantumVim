@@ -1,5 +1,5 @@
 local breadcrumbs = {
-	event = "User FileOpened",
+    event = "User FileOpened",
 }
 
 return breadcrumbs

@@ -1,6 +1,6 @@
 local neoconf = {
 
-	enabled = false,
+    enabled = false,
 }
 
 return neoconf

@@ -1,5 +1,5 @@
 local nightfox = {
-	enabled = false,
+    enabled = false,
 }
 
 return nightfox

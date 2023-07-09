@@ -1,6 +1,6 @@
 local neodev = {
-	lazy = true,
-	ft = { "lua" },
+    lazy = true,
+    ft = { "lua" },
 }
 
 return neodev

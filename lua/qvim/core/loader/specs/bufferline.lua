@@ -1,5 +1,5 @@
 local bufferline = {
-	event = "User FileOpened",
+    event = "User FileOpened",
 }
 
 return bufferline

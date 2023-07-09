@@ -1,5 +1,5 @@
 local hover = {
-	lazy = false,
+    lazy = false,
 }
 
 return hover

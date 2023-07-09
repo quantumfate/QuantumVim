@@ -1,10 +1,10 @@
 local plenary = {
-	cmd = {
-		"PlenaryBustedFile",
-		"PlenaryBustedDirectory",
-	},
-	lazy = true,
-	setup = false,
+    cmd = {
+        "PlenaryBustedFile",
+        "PlenaryBustedDirectory",
+    },
+    lazy = true,
+    setup = false,
 }
 
 return plenary

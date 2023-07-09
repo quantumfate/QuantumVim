@@ -1,5 +1,5 @@
 local notify = {
-	lazy = true,
+    lazy = true,
 }
 
 return notify

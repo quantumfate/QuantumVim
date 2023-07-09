@@ -1,4 +1,4 @@
 return {
-	formatting = "beautysh",
-	hover = "printenv",
+    formatting = "beautysh",
+    hover = "printenv",
 }

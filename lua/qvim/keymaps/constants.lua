@@ -1,11 +1,11 @@
 local error_message = "Attempt to modify read-only table"
 
 local function new_index(_, _, _)
-	error(error_message)
+    error(error_message)
 end
 
 ---@class keymap.table_util
-local table_util = require("qvim.keymaps.table_util")
+local table_util = require "qvim.keymaps.table_util"
 
 ---@class neovim_options_constants
 ---@field rhs string right hand side
@@ -21,18 +21,18 @@ local table_util = require("qvim.keymaps.table_util")
 ---@field callback string callback
 ---@field ignore string ignore
 local neovim_options_constants = {
-	rhs = "rhs",
-	desc = "desc",
-	mode = "mode",
-	noremap = "noremap",
-	nowait = "nowait",
-	silent = "silent",
-	script = "script",
-	expr = "expr",
-	unique = "unique",
-	buffer = "buffer",
-	callback = "callback",
-	ignore = "ignore",
+    rhs = "rhs",
+    desc = "desc",
+    mode = "mode",
+    noremap = "noremap",
+    nowait = "nowait",
+    silent = "silent",
+    script = "script",
+    expr = "expr",
+    unique = "unique",
+    buffer = "buffer",
+    callback = "callback",
+    ignore = "ignore",
 }
 
 ---@class binding_group_constants
@@ -42,22 +42,28 @@ local neovim_options_constants = {
 ---@field key_bindings string Binds of a binding group
 ---@field key_options string global options specific for a binding group
 local binding_group_constants = {
-	key_name = "name",
-	key_binding_group = "binding_group",
-	key_prefix = "prefix",
-	key_bindings = "bindings",
-	key_options = "options",
+    key_name = "name",
+    key_binding_group = "binding_group",
+    key_prefix = "prefix",
+    key_bindings = "bindings",
+    key_options = "options",
 }
 
 local constants = {
-	binding_prefix = "binding=",
-	binding_group_prefix = "binding_group=",
-	binding_prefix_pt = "^binding=.*$",
-	binding_group_prefix_pt = "^binding_group=.*$",
-	rhs_index = 1,
-	desc_index = 2,
-	binding_group_constants = table_util.read_only(binding_group_constants, new_index),
-	neovim_options_constants = table_util.read_only(neovim_options_constants, new_index),
+    binding_prefix = "binding=",
+    binding_group_prefix = "binding_group=",
+    binding_prefix_pt = "^binding=.*$",
+    binding_group_prefix_pt = "^binding_group=.*$",
+    rhs_index = 1,
+    desc_index = 2,
+    binding_group_constants = table_util.read_only(
+        binding_group_constants,
+        new_index
+    ),
+    neovim_options_constants = table_util.read_only(
+        neovim_options_constants,
+        new_index
+    ),
 }
 
 ---@class constants

@@ -1,5 +1,5 @@
 local schemastore = {
-	lazy = true,
+    lazy = true,
 }
 
 return schemastore

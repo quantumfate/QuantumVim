@@ -1,5 +1,5 @@
 local mason_nvim_dap = {
-	lazy = true,
+    lazy = true,
 }
 
 return mason_nvim_dap

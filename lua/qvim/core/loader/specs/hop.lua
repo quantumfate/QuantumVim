@@ -1,5 +1,5 @@
 local hop = {
-	lazy = true,
+    lazy = true,
 }
 
 return hop
