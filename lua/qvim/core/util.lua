@@ -1,6 +1,7 @@
 ---@class util
 local util = {}
 
+local fmt = string.format
 local log = require "qvim.log"
 
 ---Validates the plugin name. By comparing it against the accepted patterns:
@@ -87,9 +88,11 @@ end
 ---A vim walidate wrapper to exit neovim with OS error code 1 in
 ---case the validation fails.
 ---@param args table
-function util.vim_validate_wrapper(args)
+---@param hr_name string
+function util.vim_validate_wrapper(args, hr_name)
     local status, err = pcall(vim.validate, args)
     if not status then
+        vim.api.nvim_err_writeln(fmt("Validation of '%s' plugin configuration failed.", hr_name))
         vim.api.nvim_err_writeln(err)
         os.exit(1)
     end

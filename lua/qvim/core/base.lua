@@ -63,14 +63,14 @@ function core_base.new(plugin_name, url, hr_name)
 		)
 		return
 	else
-		core_util.vim_validate_wrapper {
+		core_util.vim_validate_wrapper({
 			enabled = { plugin.enabled, { "b", "f" }, true },
 			options = { plugin.options, "t", true },
 			keymaps = { plugin.keymaps, "t", true },
 			main = { plugin.main, "s", false },
 			setup = { plugin.setup, "f", true },
 			url = { plugin.url, "s", false },
-		}
+		}, hr_name)
 		plugin["name"] = plugin_name
 
 		if not plugin.url then
