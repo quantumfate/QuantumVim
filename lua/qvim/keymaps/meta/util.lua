@@ -13,16 +13,13 @@ local initialized = false
 --[[
    Modules
 ]]
-local  ---@class bindingbinding, ---@class groupgroup, ---@class keymapkeymap, ---@class defaultdefault, ---@class mode
-    mode, ---@class descriptor
-    descriptor =
-    nil, nil, nil, nil, nil, nil
+local  ---@class bindingbinding, ---@class groupgroup, ---@class keymapkeymap, ---@class defaultdefault, ---@class modemode, ---@class descriptor
+    descriptor = nil, nil, nil, nil, nil, nil
 
 --[[
     Require paths
 ]]
-local  ---@class stringpath_binding, ---@class stringpath_group, ---@class stringpath_keymap, ---@class stringpath_default, ---@class string
-    path_descriptor = "", "", "", "", ""
+local  ---@class stringpath_binding, ---@class stringpath_group, ---@class stringpath_keymap, ---@class stringpath_default, ---@class stringpath_descriptor = "", "", "", "", ""
 
 local util_require = require
 

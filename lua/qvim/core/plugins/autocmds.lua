@@ -209,22 +209,14 @@ function M.load_defaults()
                         "SLGitIcon",
                         { fg = "#E8AB53", bg = cursorline_hl.background }
                     )
-                    vim.api.nvim_set_hl(
-                        0,
-                        "SLBranchName",
-                        {
-                            fg = normal_hl.foreground,
-                            bg = cursorline_hl.background,
-                        }
-                    )
-                    vim.api.nvim_set_hl(
-                        0,
-                        "SLSeparator",
-                        {
-                            fg = cursorline_hl.background,
-                            bg = statusline_hl.background,
-                        }
-                    )
+                    vim.api.nvim_set_hl(0, "SLBranchName", {
+                        fg = normal_hl.foreground,
+                        bg = cursorline_hl.background,
+                    })
+                    vim.api.nvim_set_hl(0, "SLSeparator", {
+                        fg = cursorline_hl.background,
+                        bg = statusline_hl.background,
+                    })
                 end,
             },
         },
