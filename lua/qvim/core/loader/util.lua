@@ -115,7 +115,6 @@ function util.minimal_plugin_spec(plugin_name, url, hr_name)
         )
     end
 
-    print(plugin_name)
     return {
         url,
         name = hr_name,
