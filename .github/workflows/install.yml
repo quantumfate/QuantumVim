@@ -53,6 +53,13 @@ jobs:
           installer_url="https://raw.githubusercontent.com/${QV_REMOTE}/${QV_BRANCH}/utils/installer/install.sh"
           curl -LSsO "$installer_url"
           bash ./install.sh
+      
+      - name: Test QuantumVim startup
+        env:
+          QUANTUMVIM_DIR: "$HOME/.config/qvim"
+          QUANTUMVIM_CACHE_DIR: "$HOME/.cache/qvim"
+        run: |
+          qvim -c 'q'
 
 #       - name: Run unit-tests
 #         # NOTE: make sure to adjust the timeout if you start adding a lot of tests
