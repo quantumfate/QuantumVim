@@ -8,11 +8,15 @@ if not vim.tbl_contains(vim.opt.rtp:get(), base_dir) then
 	vim.opt.rtp:prepend(base_dir)
 end
 
-require("qvim").init(base_dir)
---require("qvim.keymaps"):init()
+print(vim.env.QUANTUMVIM_DIR)
 
-local manager = require("qvim.core.manager")
-manager:load()
+print(base_dir)
+require("qvim.bootstrap"):init(base_dir)
+
+require("qvim.keymaps"):init()
+
+--[[ local integration_loader = require("qvim.integrations._loader")
+integration_loader:load() ]]
 
 local Log = require("qvim.log")
 Log:debug("Starting QuantumVim")

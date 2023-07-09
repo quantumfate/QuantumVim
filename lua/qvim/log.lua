@@ -202,5 +202,5 @@ end
 function Log:error(msg, event)
 	self:add_entry(self.levels.ERROR, msg, event)
 end
-setmetatable({}, Log)
-return Log
+
+return setmetatable({}, Log)

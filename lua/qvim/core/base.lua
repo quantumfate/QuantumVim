@@ -48,7 +48,7 @@ function base.new(plugin_name, url)
 
 	local status_ok, plugin = xpcall(require, error_handler_closure, plugin_path)
 	if not status_ok then
-		log.debug("Skipping configuration of '%s'. No configuration available.", plugin_name)
+		log:debug("Skipping configuration of '%s'. No configuration available.", plugin_name)
 		return
 	else
 		vim.validate({
@@ -61,9 +61,9 @@ function base.new(plugin_name, url)
 		})
 		plugin["name"] = plugin_name
 
-    if not plugin.url then
-      plugin.url = url
-    end
+		if not plugin.url then
+			plugin.url = url
+		end
 
 		---@class plugin : base
 		---@field active boolean
@@ -90,10 +90,10 @@ function base:setup()
 		log:debug(
 			fmt(
 				"Required Plugin: '%s'. The setup call of '%s' failed. Consult '%s' to see validate the configuration."
-					.. "\n"
-					.. "%s"
-					.. "\n"
-					.. "%s",
+				.. "\n"
+				.. "%s"
+				.. "\n"
+				.. "%s",
 				require_name,
 				self.name,
 				self.url,

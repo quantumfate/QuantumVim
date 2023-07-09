@@ -150,8 +150,6 @@ function manager:load(spec)
 		return
 	end
 
-	-- remove plugins from rtp before loading lazy, so that all plugins won't be loaded on startup
-	vim.opt.runtimepath:remove(join_paths(integration_dir, "*"))
 
 	local status_ok = xpcall(function()
 		local opts = {
@@ -162,7 +160,7 @@ function manager:load(spec)
 			ui = {
 				border = "rounded",
 			},
-			root = integration_dir,
+			root = plugins_dir,
 			git = {
 				timeout = 120,
 			},
