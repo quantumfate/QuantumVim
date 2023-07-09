@@ -6,6 +6,7 @@ local core_base_mt = { __index = core_base }
 
 local fmt = string.format
 local log = require "qvim.log"
+local core_util = require("qvim.core.util")
 
 local plugin_path_prefix = "qvim.core.plugins."
 
@@ -62,7 +63,7 @@ function core_base.new(plugin_name, url, hr_name)
 		)
 		return
 	else
-		vim.validate {
+		core_util.vim_validate_wrapper {
 			enabled = { plugin.enabled, { "b", "f" }, true },
 			options = { plugin.options, "t", true },
 			keymaps = { plugin.keymaps, "t", true },

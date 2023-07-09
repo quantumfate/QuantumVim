@@ -84,4 +84,15 @@ function util.lazy_process_plugins(call, first_time_setup)
     return lazy_specs
 end
 
+---A vim walidate wrapper to exit neovim with OS error code 1 in
+---case the validation fails.
+---@param args table
+function util.vim_validate_wrapper(args)
+    local status, err = pcall(vim.validate, args)
+    if not status then
+        vim.api.nvim_err_writeln(err)
+        os.exit(1)
+    end
+end
+
 return util
