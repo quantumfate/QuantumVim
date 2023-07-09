@@ -97,8 +97,7 @@ function base:setup()
 				.. "%s",
 				require_name,
 				self.name,
-				self.url,
-				err,
+				self.url, err,
 				debug.traceback()
 			)
 		)
