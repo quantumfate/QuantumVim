@@ -14,20 +14,22 @@ local plugin_spec_path = "qvim.core.loader.specs."
 ---@param plugin_name string
 ---@param url string
 ---@param first_time_setup boolean
+---@param hr_name string matching filenames will be hooked from specs
 ---@return table? plugin_spec
-function core_loader.new(plugin_name, url, first_time_setup)
+function core_loader.new(plugin_name, url, first_time_setup, hr_name)
   vim.validate({
     plugin_name = { plugin_name, "s", false },
     url = { url, "s", false },
+    first_time_setup = { first_time_setup, "b", false },
+    hr_name = { hr_name, "s", false }
   })
 
-  -- probably unterminated recursion
   local spec_require_path = plugin_spec_path .. plugin_name
   local plugin_spec
   if first_time_setup then
-    plugin_spec = core_loader_util.minimal_plugin_spec(plugin_name, url)
+    plugin_spec = core_loader_util.minimal_plugin_spec(plugin_name, url, hr_name)
   else
-    local default_spec = core_loader_util.core_plugin_spec_or_default(plugin_name, url)
+    local default_spec = core_loader_util.core_plugin_spec_or_default(plugin_name, url, hr_name)
     plugin_spec = core_loader_util.load_lazy_config_spec_for_plugin(spec_require_path, { __index = default_spec })
   end
 
@@ -35,9 +37,9 @@ function core_loader.new(plugin_name, url, first_time_setup)
     local dep_spec = {}
     for _, dep in pairs(plugin_spec.dependencies) do
       if type(dep) == "string" then
-        local dep_ok, dep_name = core_util.is_valid_plugin_name(dep)
-        if dep_ok and dep_name then
-          dep_spec[#dep_spec + 1] = core_loader.new(dep_name, dep, first_time_setup)
+        local dep_ok, dep_name, dep_hr_name = core_util.is_valid_plugin_name(dep)
+        if dep_ok and dep_name and dep_hr_name then
+          dep_spec[#dep_spec + 1] = core_loader.new(dep_name, dep, first_time_setup, dep_hr_name)
         else
           log:debug(
             fmt(

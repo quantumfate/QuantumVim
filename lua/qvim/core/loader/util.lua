@@ -59,8 +59,9 @@ end
 ---- init
 ---@param plugin_name string
 ---@param url string
+---@param hr_name string
 ---@return table
-function util.core_plugin_spec_or_default(plugin_name, url)
+function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
   local function init()
     log:debug(fmt("[core.loader] Loaded the plugin '%s'", url))
   end
@@ -74,7 +75,7 @@ function util.core_plugin_spec_or_default(plugin_name, url)
     end
     return {
       url,
-      name = plugin_name,
+      name = hr_name,
       lazy = false,
       enabled = enabled,
       main = qvim.plugins[plugin_name].require_name,
@@ -87,7 +88,7 @@ function util.core_plugin_spec_or_default(plugin_name, url)
   else
     return {
       url,
-      name = plugin_name,
+      name = hr_name,
       lazy = false,
       pin = false,
       init = init
@@ -103,15 +104,17 @@ end
 ---- init
 ---@param plugin_name string
 ---@param url string
+---@param hr_name string
 ---@return table
-function util.minimal_plugin_spec(plugin_name, url)
+function util.minimal_plugin_spec(plugin_name, url, hr_name)
   local function init()
     log:debug(fmt("[core.loader] First time setup! Loaded the plugin '%s'", url))
   end
 
+  print(plugin_name)
   return {
     url,
-    name = plugin_name,
+    name = hr_name,
     lazy = false,
     pin = false,
     init = init

@@ -20,14 +20,10 @@ function M:init()
 		return languages
 	end
 
-	require("qvim.core").init_plugin_configurations()
-
-	if not _G.in_headless_mode() then
+	if not os.getenv("QV_FIRST_TIME_SETUP") then
+		require("qvim.core").init_plugin_configurations()
 		local qvim_lsp_config = require("qvim.lang.config")
 		qvim.lsp = vim.deepcopy(qvim_lsp_config)
-	end
-
-	if not _G.in_headless_mode() then
 		vim.cmd.colorscheme(qvim.config.colorscheme)
 	end
 

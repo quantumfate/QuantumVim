@@ -90,7 +90,7 @@ function M:init(base_dir)
 	})
 
 	require("qvim.config"):init()
-	require("qvim.integrations.mason").bootstrap()
+	--require("qvim.core.plugins.mason").bootstrap()
 
 	return self
 end

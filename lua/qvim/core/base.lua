@@ -38,8 +38,9 @@ end
 ---directly returned as a table.
 ---@param plugin_name string
 ---@param url string
+---@param hr_name string
 ---@return plugin? plugin_spec the `spec` of a plugin that extends the `base_mt`.
-function base.new(plugin_name, url)
+function base.new(plugin_name, url, hr_name)
 	local plugin_path = plugin_path_prefix .. plugin_name
 
 	local function error_handler_closure(err)
