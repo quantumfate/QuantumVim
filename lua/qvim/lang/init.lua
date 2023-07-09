@@ -1,7 +1,7 @@
 ---@class lang
 local M = {}
 local utils = require("qvim.utils")
-local autocmds = require("qvim.integrations.autocmds")
+local autocmds = require("qvim.core.plugins.autocmds")
 
 function M.setup()
 	if in_headless_mode() then

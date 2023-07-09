@@ -23,7 +23,7 @@ M.defaults = {
 	{
 		name = "qvimToggleFormatOnSave",
 		fn = function()
-			require("qvim.integrations.autocmds").toggle_format_on_save()
+			require("qvim.core.plugins.autocmds").toggle_format_on_save()
 		end,
 	},
 	--{

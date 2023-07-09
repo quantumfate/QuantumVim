@@ -7,13 +7,13 @@ local fmt = string.format
 ---@param path string
 ---@return table options the options defined in the spec or an empty table.
 function util.load_lazy_config_spec_for_plugin(path, spec_mt)
-	local plugin_spec = {}
-	local success, spec = pcall(require, path)
-	if not success then
-		log:debug(fmt("[core.loader] No spec available for '%s'.", path))
-	end
+  local plugin_spec
+  local success, spec = pcall(require, path)
+  if not success then
+    log:debug(fmt("[core.loader] No spec available for '%s'.", path))
+  end
 
-	plugin_spec = setmetatable(spec, spec_mt)
+  plugin_spec = setmetatable(spec, spec_mt)
   vim.validate({
     url = { plugin_spec[1], "s", false },
     name = { plugin_spec.name, "s", true },
@@ -36,11 +36,11 @@ function util.load_lazy_config_spec_for_plugin(path, spec_mt)
     keys = { plugin_spec.keys, { "s", "t", "f" }, true },
     priority = { plugin_spec.priority, "n", true },
   })
-	log:debug(fmt("[core.loader] lazy config spec for '%s' was obtained.", path))
-	return plugin_spec
+  log:debug(fmt("[core.loader] lazy config spec for '%s' was obtained.", path))
+  return plugin_spec
 end
 
----Provides a default spec for a plugin. 
+---Provides a default spec for a plugin.
 ---
 ---Spec for plugins that are available in `qvim.plugins`:
 ---- url
@@ -95,7 +95,7 @@ function util.core_plugin_spec_or_default(plugin_name, url)
   end
 end
 
----Provides a minimal spec for a plugin. 
+---Provides a minimal spec for a plugin.
 ---- url
 ---- name
 ---- lazy
@@ -117,6 +117,5 @@ function util.minimal_plugin_spec(plugin_name, url)
     init = init
   }
 end
-
 
 return util

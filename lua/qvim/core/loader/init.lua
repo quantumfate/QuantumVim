@@ -1,6 +1,6 @@
 ---@class core_loader
 local core_loader = {}
-core_loader.__index = core_loader
+
 
 local log = require("qvim.log")
 local fmt = string.format
@@ -16,11 +16,12 @@ local plugin_spec_path = "qvim.core.loader.specs."
 ---@param first_time_setup boolean
 ---@return table? plugin_spec
 function core_loader.new(plugin_name, url, first_time_setup)
-	vim.validate({
-		plugin_name = { plugin_name, "s", false },
-		url = { url, "s", false },
-	})
+  vim.validate({
+    plugin_name = { plugin_name, "s", false },
+    url = { url, "s", false },
+  })
 
+  -- probably unterminated recursion
   local spec_require_path = plugin_spec_path .. plugin_name
   local plugin_spec
   if first_time_setup then
@@ -62,6 +63,5 @@ function core_loader.new(plugin_name, url, first_time_setup)
   end
   return plugin_spec
 end
-
 
 return core_loader

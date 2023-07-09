@@ -20,6 +20,7 @@ stds.nvim = {
 	read_globals = {
 		"jit",
 		"os",
+		"path_sep",
 		"vim",
 		"join_paths",
 		"get_cache_dir",
