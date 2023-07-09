@@ -8,8 +8,7 @@ if not vim.tbl_contains(vim.opt.rtp:get(), base_dir) then
 	vim.opt.rtp:prepend(base_dir)
 end
 
-require("lvim.bootstrap"):init(base_dir)
-require("qvim")
+require("qvim").init(base_dir)
 --require("qvim.keymaps"):init()
 
 local manager = require("qvim.core.manager")
