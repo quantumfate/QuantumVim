@@ -72,6 +72,7 @@ function core.init_plugin_configurations()
             util.plugins_tbl_size()
         )
     )
+    print(vim.inspect(qvim.plugins))
 end
 
 ---Fetches a complete lazy spec for all specified plugins with configuration and

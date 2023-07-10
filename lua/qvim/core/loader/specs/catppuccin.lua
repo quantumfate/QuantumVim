@@ -1,7 +1,5 @@
-local catpuccin = {
+return {
     name = "catppuccin",
     priority = 1000,
     lazy = false,
 }
-
-return catpuccin

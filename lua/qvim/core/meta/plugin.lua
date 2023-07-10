@@ -34,7 +34,8 @@ function core_meta_plugin:setup()
             )
         )
     else
-        log:trace(
+        print(self.name)
+        log:error(
             fmt(
                 "Setup from '%s' configured by '%s' not called. More information in logs.",
                 self.main,
