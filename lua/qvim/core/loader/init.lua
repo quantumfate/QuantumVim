@@ -23,7 +23,7 @@ function core_loader.new(plugin_name, url, first_time_setup, hr_name)
         hr_name = { hr_name, "s", false },
     }
 
-    local spec_require_path = plugin_spec_path .. plugin_name
+    local spec_require_path = plugin_spec_path .. hr_name
     local plugin_spec
     if first_time_setup then
         plugin_spec =

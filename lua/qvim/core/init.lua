@@ -69,7 +69,7 @@ function core.init_plugin_configurations()
     log:debug(
         fmt(
             "[core] Global qvim plugins table initialized. It total: '%s'",
-            #qvim.plugins
+            3
         )
     )
 end

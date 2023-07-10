@@ -11,6 +11,7 @@ function util.load_lazy_config_spec_for_plugin(path, spec_mt)
     local success, spec = pcall(require, path)
     if not success then
         log:debug(fmt("[core.loader] No spec available for '%s'.", path))
+        return {}
     end
 
     plugin_spec = setmetatable(spec, spec_mt)
@@ -80,7 +81,7 @@ function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
             name = hr_name,
             lazy = false,
             enabled = enabled,
-            main = qvim.plugins[plugin_name].require_name,
+            main = qvim.plugins[plugin_name].main,
             config = function()
                 qvim.plugins[plugin_name]:setup()
             end,

@@ -165,7 +165,13 @@ end
 ---Loads all plugins and calls their setup function
 ---@param spec table|nil the plugin configuration table
 function manager:load(spec)
-    spec = spec or require("qvim.core").load_lazy_spec_light()
+    local startup_spec
+    if os.getenv("QV_FIRST_TIME_SETUP") then
+        startup_spec = require("qvim.core").load_lazy_spec_light()
+    else
+        startup_spec = require("qvim.core").load_lazy_spec()
+    end
+    spec = spec or startup_spec
     Log:debug "loading plugins configuration"
     local lazy_available, lazy = pcall(require, "lazy")
     if not lazy_available then
