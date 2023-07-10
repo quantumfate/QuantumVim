@@ -1,4 +1,11 @@
 return {
+    ---@class config
+    ---@field colorscheme string
+    ---@field reload_config_on_save boolean
+    ---@field leader string
+    ---@field use_icons boolean
+    ---@field transparent_window boolean
+    ---@field languages table<string>
     config = {
         colorscheme = "catppuccin",
         reload_config_on_save = true,
@@ -46,6 +53,10 @@ return {
             "yaml",
         },
     },
+    ---@class format_on_save
+    ---@field enabled boolean
+    ---@field pattern string
+    ---@field timout number
     format_on_save = {
         ---@usage boolean: format on save (Default: false)
         enabled = true,
@@ -57,12 +68,18 @@ return {
         --filter = require("qvim.lang.lsp.utils").format_filter,
         -- TODO add mason-lspconfig
     },
+    ---@class luasnip
+    ---@field sources luasnip.sources
     luasnip = {
+        ---@class luasnip.sources
+        ---@field friendly_snippets boolean
         sources = {
             friendly_snippets = true,
         },
     },
+    ---@class icons
     icons = require "qvim.icons",
+    ---@class autocommands
     autocommands = {},
     log = {
         ---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" },
@@ -81,5 +98,7 @@ return {
         -- currently disabled due to instabilities
         override_notify = false,
     },
+    ---@alias plugins table<string, core_meta_plugin>|table<string, core_meta_parent>
+    ---@type table<string, core_meta_plugin>|table<string, core_meta_parent>
     plugins = {},
 }

@@ -8,7 +8,17 @@ local core_meta_ext = require("qvim.core.meta.ext")
 
 local core_base_mt = { __index = core_meta_plugin }
 local core_base_parent_mt = { __index = core_meta_parent }
-local core_base_parent_extension_mt = { __index = core_base_parent_mt, core_meta_ext }
+local core_base_parent_extension_mt = {
+	__index = function(_, k)
+		-- First try to get from core_base_parent_mt
+		local v = core_base_parent_mt[k]
+		if v ~= nil then
+			return v
+		end
+		-- If not found, then try to get from core_meta_ext
+		return core_meta_ext[k]
+	end,
+}
 
 local fmt = string.format
 local log = require("qvim.log")

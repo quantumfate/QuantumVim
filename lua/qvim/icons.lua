@@ -1,4 +1,45 @@
+---@class icons
+---@field kind kind
+---@field git git
+---@field ui ui
+---@field diagnostics diagnostics
+---@field misc misc
 return {
+    ---@class kind
+    ---@field Array string
+    ---@field Boolean string
+    ---@field Class string
+    ---@field Color string
+    ---@field Constant string
+    ---@field Constructor string
+    ---@field Enum string
+    ---@field EnumMember string
+    ---@field Event string
+    ---@field Field string
+    ---@field File string
+    ---@field Folder string
+    ---@field Function string
+    ---@field Interface string
+    ---@field Key string
+    ---@field Keyword string
+    ---@field Method string
+    ---@field Module string
+    ---@field Namespace string
+    ---@field Null string
+    ---@field Number string
+    ---@field Object string
+    ---@field Operator string
+    ---@field Package string
+    ---@field Property string
+    ---@field Reference string
+    ---@field Snippet string
+    ---@field String string
+    ---@field Struct string
+    ---@field Text string
+    ---@field TypeParameter string
+    ---@field Unit string
+    ---@field Value string
+    ---@field Variable string
     kind = {
         Array = "",
         Boolean = "",
@@ -35,6 +76,21 @@ return {
         Value = "",
         Variable = "",
     },
+    ---@class git
+    ---@field LineAdded string
+    ---@field LineModified string
+    ---@field LineRemoved string
+    ---@field FileDeleted string
+    ---@field FileIgnored string
+    ---@field FileRenamed string
+    ---@field FileStaged string
+    ---@field FileUnmerged string
+    ---@field FileUnstaged string
+    ---@field FileUntracked string
+    ---@field Diff string
+    ---@field Repo string
+    ---@field Octoface string
+    ---@field Branch string
     git = {
         LineAdded = "",
         LineModified = "",
@@ -51,6 +107,82 @@ return {
         Octoface = "",
         Branch = "",
     },
+    ---@class ui
+    ---@field ArrowCircleDown string
+    ---@field ArrowCircleLeft string
+    ---@field ArrowCircleRight string
+    ---@field ArrowCircleUp string
+    ---@field BoldArrowDown string
+    ---@field BoldArrowLeft string
+    ---@field BoldArrowRight string
+    ---@field BoldArrowUp string
+    ---@field BoldClose string
+    ---@field BoldDividerLeft string
+    ---@field BoldDividerRight string
+    ---@field BoldLineLeft string
+    ---@field BookMark string
+    ---@field BoxChecked string
+    ---@field Bug string
+    ---@field Stacks string
+    ---@field Scopes string
+    ---@field Watches string
+    ---@field DebugConsole string
+    ---@field Calendar string
+    ---@field Check string
+    ---@field ChevronRight string
+    ---@field ChevronShortDown string
+    ---@field ChevronShortLeft string
+    ---@field ChevronShortRight string
+    ---@field ChevronShortUp string
+    ---@field Circle string
+    ---@field Close string
+    ---@field CloudDownload string
+    ---@field Code string
+    ---@field Comment string
+    ---@field Dashboard string
+    ---@field DividerLeft string
+    ---@field DividerRight string
+    ---@field DoubleChevronRight string
+    ---@field Ellipsis string
+    ---@field EmptyFolder string
+    ---@field EmptyFolderOpen string
+    ---@field File string
+    ---@field FileSymlink string
+    ---@field Files string
+    ---@field FindFile string
+    ---@field FindText string
+    ---@field Fire string
+    ---@field Folder string
+    ---@field FolderOpen string
+    ---@field FolderSymlink string
+    ---@field Forward string
+    ---@field Gear string
+    ---@field History string
+    ---@field Lightbulb string
+    ---@field LineLeft string
+    ---@field LineMiddle string
+    ---@field List string
+    ---@field Lock string
+    ---@field NewFile string
+    ---@field Note string
+    ---@field Package string
+    ---@field Pencil string
+    ---@field Plus string
+    ---@field Project string
+    ---@field Search string
+    ---@field SignIn string
+    ---@field SignOut string
+    ---@field Tab string
+    ---@field Table string
+    ---@field Target string
+    ---@field Telescope string
+    ---@field Text string
+    ---@field Tree string
+    ---@field Triangle string
+    ---@field TriangleShortArrowDown string
+    ---@field TriangleShortArrowLeft string
+    ---@field TriangleShortArrowRight string
+    ---@field TriangleShortArrowUp string
     ui = {
         ArrowCircleDown = "",
         ArrowCircleLeft = "",
@@ -128,6 +260,19 @@ return {
         TriangleShortArrowRight = "",
         TriangleShortArrowUp = "",
     },
+    ---@class diagnostics
+    ---@field BoldError string
+    ---@field Error string
+    ---@field BoldWarning string
+    ---@field Warning string
+    ---@field BoldInformation string
+    ---@field Information string
+    ---@field BoldQuestion string
+    ---@field Question string
+    ---@field BoldHint string
+    ---@field Hint string
+    ---@field Debug string
+    ---@field Trace string
     diagnostics = {
         BoldError = "",
         Error = "",
@@ -142,6 +287,14 @@ return {
         Debug = "",
         Trace = "✎",
     },
+    ---@class misc
+    ---@field Robot string
+    ---@field Squirrel string
+    ---@field Tag string
+    ---@field Watch string
+    ---@field Smiley string
+    ---@field Package string
+    ---@field CircuitBoard string
     misc = {
         Robot = "ﮧ",
         Squirrel = "",

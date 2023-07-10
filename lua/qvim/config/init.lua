@@ -7,6 +7,13 @@ local M = {}
 --- This must be called at the beginning when qvim is
 --- loaded since everything depends on this.
 function M:init()
+    ---@class qvim
+    ---@field plugins plugins
+    ---@field config config
+    ---@field format_on_save format_on_save
+    ---@field luasnip luasnip
+    ---@field icons icons
+    ---@field autocommands autocommands
     _G.qvim = setmetatable(
         {},
         { __index = vim.deepcopy(require "qvim.config.config") }
