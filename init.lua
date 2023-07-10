@@ -8,9 +8,6 @@ if not vim.tbl_contains(vim.opt.rtp:get(), base_dir) then
     vim.opt.rtp:prepend(base_dir)
 end
 
-print(vim.env.QUANTUMVIM_DIR)
-
-print(base_dir)
 require("qvim.bootstrap"):init(base_dir)
 
 --require("qvim.keymaps"):init()

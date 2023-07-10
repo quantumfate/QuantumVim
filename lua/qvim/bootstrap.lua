@@ -54,13 +54,12 @@ end
 ---Initialize the `&runtimepath` variables, load the globals and prepare for startup
 ---@return table
 function M:init(base_dir)
+    local utils = require "qvim.utils"
     self.qvim_rtp_dir = get_qvim_dir()
     self.cache_dir = get_cache_dir()
     self.pack_dir = join_paths(self.qvim_rtp_dir, "site", "pack")
     self.lazy_install_dir =
         join_paths(self.pack_dir, "lazy", "opt", "lazy.nvim")
-
-    require("qvim.log"):init()
 
     ---@meta overridden to use QUANTUMVIM_CACHE_DIR instead, since a lot of plugins call this function internally
     ---NOTE: changes to "data" are currently unstable, see #2507
@@ -72,6 +71,11 @@ function M:init(base_dir)
         return vim.call("stdpath", what)
     end
 
+    local structlog_path = join_paths(self.pack_dir, "lazy", "opt", "structlog")
+    if not os.getenv("QV_FIRST_TIME_SETUP") and utils.is_directory(structlog_path) then
+        vim.opt.rtp:append(structlog_path)
+        require("qvim.log"):init_pre_setup()
+    end
     function _G.get_qvim_base_dir()
         return base_dir
     end
@@ -86,14 +90,16 @@ function M:init(base_dir)
     vim.opt.rtp:prepend(self.qvim_rtp_dir)
     vim.opt.rtp:append(join_paths(self.qvim_rtp_dir, "after"))
 
-    vim.opt.packpath = vim.opt.rtp:get()
-
     require("qvim.core.manager"):init {
         package_root = self.pack_dir,
         install_path = self.lazy_install_dir,
     }
 
+
     require("qvim.config"):init()
+    if utils.is_directory(structlog_path) then
+        require("qvim.log"):init_post_setup()
+    end
     --require("qvim.core.plugins.mason").bootstrap()
 
     return self

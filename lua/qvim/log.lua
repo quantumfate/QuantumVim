@@ -12,7 +12,6 @@
 ---@field warn function
 ---@field error function
 local Log = {}
-Log.__index = Log
 
 Log.levels = {
     TRACE = 1,
@@ -23,8 +22,6 @@ Log.levels = {
 }
 vim.tbl_add_reverse_lookup(Log.levels)
 
-local notify_opts = {}
-local log_notify_as_notification = false
 
 function Log:set_level(level)
     if
@@ -44,102 +41,116 @@ function Log:set_level(level)
     end
 end
 
-function Log:init()
+function Log:init_pre_setup()
     local status_ok, structlog = pcall(require, "structlog")
     if not status_ok then
         return nil
     end
-
-    structlog.configure {
+    structlog.configure({
         qvim = {
             pipelines = {
                 {
-                    level = Log.levels.ERROR,
+                    level = structlog.level.INFO,
                     processors = {
-                        structlog.processors.StackWriter(
-                            { "line", "file" },
-                            { max_parents = 0, stack_level = 2 }
-                        ),
-                        structlog.processors.Timestamper "%H:%M:%S",
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 0 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
                     },
-                    formatter = structlog.formatters.FormatColorizer(
-                        "%s [%-5s] %s: %-30s",
+                    formatter = structlog.formatters.FormatColorizer( --
+                        "%s [%s] %s: %-30s",
                         { "timestamp", "level", "logger_name", "msg" },
                         {
                             level = structlog.formatters.FormatColorizer.color_level(),
                         }
                     ),
-                    sink = structlog.sinks.Console(), -- async=false
+                    sink = structlog.sinks.Console(),
                 },
                 {
-                    level = Log.levels.ERROR,
+                    level = structlog.level.ERROR,
                     processors = {
-                        structlog.processors.StackWriter(
-                            { "line", "file" },
-                            { max_parents = 3, stack_level = 2 }
-                        ),
-                        structlog.processors.Timestamper "%F %H:%M:%S",
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
                     },
-                    formatter = structlog.formatters.Format(
-                        "%s [%-5s] %s: %-30s",
+                    formatter = structlog.formatters.Format( --
+                        "%s [%s] %s: %-30s",
                         { "timestamp", "level", "logger_name", "msg" }
                     ),
-                    sink = structlog.sinks.File(self:get_path()),
+                    sink = structlog.sinks.File(self:get_path("error")),
+                },
+                {
+                    level = structlog.level.DEBUG,
+                    processors = {
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
+                    },
+                    formatter = structlog.formatters.Format( --
+                        "%s [%s] %s: %-30s",
+                        { "timestamp", "level", "logger_name", "msg" }
+                    ),
+                    sink = structlog.sinks.File(self:get_path("debug")),
+                },
+                {
+                    level = structlog.level.TRACE,
+                    processors = {
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
+                    },
+                    formatter = structlog.formatters.Format( --
+                        "%s [%s] %s: %-30s",
+                        { "timestamp", "level", "logger_name", "msg" }
+                    ),
+                    sink = structlog.sinks.File(self:get_path("trace")),
                 },
             },
         },
-    }
-
-    local logger = structlog.get_logger "qvim"
-
-    -- Overwrite `vim.notify` to use the logger
-    if qvim.log.override_notify then
-        vim.notify = function(msg, vim_log_level, opts)
-            notify_opts = opts or {}
-
-            -- vim_log_level can be omitted
-            if vim_log_level == nil then
-                vim_log_level = Log.levels["INFO"]
-            elseif type(vim_log_level) == "string" then
-                vim_log_level = Log.levels[(vim_log_level):upper()]
-                    or Log.levels["INFO"]
-            else
-                -- https://github.com/neovim/neovim/blob/685cf398130c61c158401b992a1893c2405cd7d2/runtime/lua/vim/lsp/log.lua#L5
-                vim_log_level = vim_log_level + 1
-            end
-
-            self:add_entry(vim_log_level, msg)
-        end
-    end
-
-    return logger
+    })
 end
 
---- Configure the sink in charge of logging notifications
----@param nvim_notify table The nvim-notify instance
-function Log:configure_notifications(nvim_notify)
+function Log:init_post_setup()
     local status_ok, structlog = pcall(require, "structlog")
     if not status_ok then
-        return
+        return nil
     end
-
-    local function log_writer(log)
-        local opts = { title = log.logger_name }
-        opts = vim.tbl_deep_extend("force", opts, notify_opts)
-        notify_opts = {}
-
-        if log_notify_as_notification then
-            nvim_notify(log.msg, log.level, opts)
-        end
-    end
-
-    local notif_pipeline = structlog.Pipeline(
-        structlog.level.INFO,
-        {},
-        structlog.formatters.Format("%s", { "msg" }, { blacklist_all = true }),
-        structlog.sinks.Adapter(log_writer)
-    )
-    self.__handle:add_pipeline(notif_pipeline)
+    structlog.configure({
+        qvim = {
+            pipelines = {
+                {
+                    level = structlog.level.INFO,
+                    processors = {
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 0, stack_level = 0 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
+                    },
+                    formatter = structlog.formatters.FormatColorizer( --
+                        "%s [%s] %s: %-30s",
+                        { "timestamp", "level", "logger_name", "msg" },
+                        { level = structlog.formatters.FormatColorizer.color_level() }
+                    ),
+                    sink = structlog.sinks.Console(),
+                },
+                {
+                    level = structlog.level.WARN,
+                    processors = {},
+                    formatter = structlog.formatters.Format( --
+                        "%s",
+                        { "msg" },
+                        { blacklist = { "level", "logger_name" } }
+                    ),
+                    sink = structlog.sinks.NvimNotify(),
+                },
+                {
+                    level = structlog.level.ERROR,
+                    processors = {
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
+                    },
+                    formatter = structlog.formatters.Format( --
+                        "%s [%s] %s: %-30s",
+                        { "timestamp", "level", "logger_name", "msg" }
+                    ),
+                    sink = structlog.sinks.File(self:get_path("error")),
+                },
+            },
+        },
+    })
 end
 
 --- Adds a log entry using Plenary.log
@@ -172,44 +183,46 @@ function Log:get_logger()
 end
 
 ---Retrieves the path of the logfile
+---@param variant string|nil
 ---@return string path of the logfile
-function Log:get_path()
-    return string.format("%s/%s.log", get_cache_dir(), "qvim")
+function Log:get_path(variant)
+    variant = variant or ""
+    return string.format("%s/%s-%s.log", get_cache_dir(), variant:lower(), "qvim")
 end
 
 ---Add a log entry at TRACE level
 ---@param msg any
 ---@param event any
 function Log:trace(msg, event)
-    self:add_entry(self.levels.TRACE, msg, event)
+    Log:add_entry(self.levels.TRACE, msg, event)
 end
 
 ---Add a log entry at DEBUG level
 ---@param msg any
 ---@param event any
 function Log:debug(msg, event)
-    self:add_entry(self.levels.DEBUG, msg, event)
+    Log:add_entry(self.levels.DEBUG, msg, event)
 end
 
 ---Add a log entry at INFO level
 ---@param msg any
 ---@param event any
 function Log:info(msg, event)
-    self:add_entry(self.levels.INFO, msg, event)
+    Log:add_entry(self.levels.INFO, msg, event)
 end
 
 ---Add a log entry at WARN level
 ---@param msg any
 ---@param event any
 function Log:warn(msg, event)
-    self:add_entry(self.levels.WARN, msg, event)
+    Log:add_entry(self.levels.WARN, msg, event)
 end
 
 ---Add a log entry at ERROR level
 ---@param msg any
 ---@param event any
 function Log:error(msg, event)
-    self:add_entry(self.levels.ERROR, msg, event)
+    Log:add_entry(self.levels.ERROR, msg, event)
 end
 
-return setmetatable({}, Log)
+return Log

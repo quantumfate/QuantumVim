@@ -18,16 +18,15 @@ local function error_handler(err, plugin_name, plugin_path)
 	if err:match(".*'" .. plugin_path .. "'.*") then
 		log:debug(fmt("No configuration file found for '%s'.", plugin_name))
 	elseif err:match ".*module '.*' not found.*" then
-		log:warn(
+		log:debug(
 			fmt(
 				"A module in the configuration of '%s' caused an error. Is this first time setup? If it's not some plugin in '%s' is missing or malfunctioning require path was used.",
 				plugin_name,
 				plugin_path
 			)
 		)
-		print(debug.traceback())
 	else
-		log:warn(
+		log:error(
 			fmt(
 				"Unknown error occured during configuration of '%s' in '%s'.",
 				plugin_name,
@@ -57,10 +56,10 @@ function core_base.new(plugin_name, url, hr_name)
 	local status_ok, plugin =
 		xpcall(require, error_handler_closure, plugin_path)
 	if not status_ok then
-		log:debug(
+		log:debug(fmt(
 			"Skipping configuration of '%s'. No configuration available.",
 			plugin_name
-		)
+		))
 		return
 	else
 		core_util.vim_validate_wrapper({
@@ -123,6 +122,7 @@ function core_base:setup()
 
 	local setup_ok, _ = xpcall(plugin.setup, setup_error_handler, self.options)
 	if setup_ok then
+		print("setup called")
 		log:debug(
 			fmt(
 				"SUCCESS: Called setup function from '%s' configured by '%s'.",

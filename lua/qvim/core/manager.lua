@@ -58,7 +58,12 @@ function manager:init(opts)
         end
         vim.api.nvim_create_autocmd(
             "User",
-            { pattern = "LazyDone", callback = require("qvim.lang").setup }
+            {
+                pattern = "LazyDone",
+                callback = function()
+                    require("qvim.lang").setup()
+                end
+            }
         )
     end
 
@@ -76,6 +81,7 @@ function manager:init(opts)
     table.insert(rtp, idx_base + 1, join_paths(plugins_dir, "*"))
     vim.opt.rtp = rtp
 
+    vim.opt.packpath = vim.opt.rtp:get()
     pcall(function()
         -- set a custom path for lazy's cache
         local lazy_cache = require "lazy.core.cache"
