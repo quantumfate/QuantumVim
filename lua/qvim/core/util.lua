@@ -111,7 +111,24 @@ function util.plugins_tbl_size()
 end
 
 ---Calls the setup function of the meta table that `self` extends.
----@param self core_meta_parent|core_meta_plugin
+---It is possible to invoke any setup function by providing the necessary
+---fields in a `setmetatable` that the setup function expects. If a custom
+---table is parsed instead of the usual `self` the meta table needs to point
+---the `__index` method to the module that implements the setup function.
+---
+---Example argument:
+---```lua
+---setmetatable({
+--- url = self.url,
+--- main = self.main,
+--- name = self.name,
+--- options = theme.config
+---}, {
+--- __index = core_meta_plugin
+---})
+---```
+---
+---@param self core_meta_parent|core_meta_plugin|table
 function util.call_super_setup(self)
     getmetatable(self).__index.setup(self)
 end
