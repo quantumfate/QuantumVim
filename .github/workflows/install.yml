@@ -58,6 +58,7 @@ jobs:
         env:
           QUANTUMVIM_DIR: "$HOME/.config/qvim"
           QUANTUMVIM_CACHE_DIR: "$HOME/.cache/qvim"
+          QV_IN_GIT_WORKFLOW: 1
         run: |
           qvim -c 'q'
 
