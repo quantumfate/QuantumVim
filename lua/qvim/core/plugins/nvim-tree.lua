@@ -1,14 +1,16 @@
 local log = require("qvim.log")
 
----@class nvim-tree : core_base
+---@class nvim-tree : core_meta_plugin
 ---@field enabled boolean|fun():boolean|nil
+---@field name string|nil the human readable name
 ---@field options table|nil
 ---@field keymaps table|nil
 ---@field main string
----@field setup fun(self: table)|nil
+---@field setup fun(self: nvim-tree)|nil
 ---@field url string
 local nvim_tree = {
   enabled = true,
+  name = nil,
   options = {
     auto_reload_on_write = false,
     disable_netrw = false,

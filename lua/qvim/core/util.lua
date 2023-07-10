@@ -47,12 +47,12 @@ end
 ---Invokes a callable on a all plugins with plugin_name and url as an argument.
 ---The return value of the callable will be added to the global `qvim.plugins` table
 ---where the corresponding key is the plugin_name.
----@param call fun(plugin_name: string, url: string, hr_name: string)
+---@param call fun(hr_name: string)
 function util.qvim_process_plugins(call)
     for _, url in pairs(require("qvim.core").plugins) do
         local name_ok, plugin_name, hr_name = util.is_valid_plugin_name(url)
         if name_ok and plugin_name and hr_name then
-            qvim.plugins[plugin_name] = call(plugin_name, url, hr_name)
+            qvim.plugins[plugin_name] = call(hr_name)
         else
             log:debug(
                 "The plugin url '%s' did not pass the plugin name validation. No configuration or setup will be called.",
@@ -94,7 +94,9 @@ function util.vim_validate_wrapper(args, hr_name)
     if not status then
         vim.api.nvim_err_writeln(fmt("Validation of '%s' plugin configuration failed.", hr_name))
         vim.api.nvim_err_writeln(err)
-        os.exit(1)
+        if os.getenv("QV_IN_GIT_WORKFLOW") then
+            os.exit(1)
+        end
     end
 end
 
