@@ -124,6 +124,8 @@ end
 function core_base.new_ext(plugin_name, hr_name_parent, extension_url)
 	local is_valid, plugin_name_ext, hr_name_ext = core_util.is_valid_plugin_name(extension_url)
 	if not (is_valid and plugin_name_ext and hr_name_ext) then
+		log:debug(fmt("The extension url '%s' of the plugin '%s' did not pass the name check valitation.", extension_url,
+			hr_name_parent))
 		return
 	else
 		local plugin_path = plugin_path_prefix .. hr_name_parent .. "." .. hr_name_ext
@@ -171,6 +173,7 @@ function core_base.new_ext(plugin_name, hr_name_parent, extension_url)
 end
 
 ---Generic setup function for plugins that don't implement anything special.
+---Can be called from tables that inherit from plugin with: `getmetatable(self).__index.setup(self)`
 ---@param self plugin
 function core_base:setup()
 	local status_ok, plugin = pcall(require, self.main)

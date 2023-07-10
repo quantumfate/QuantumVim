@@ -1,6 +1,6 @@
 local log = require("qvim.log")
 
----@class nvim_tree : core_base
+---@class nvim-tree : core_base
 ---@field enabled boolean|fun():boolean|nil
 ---@field options table|nil
 ---@field keymaps table|nil
@@ -21,7 +21,32 @@ local nvim_tree = {
     sync_root_with_cwd = true,
     reload_on_bufenter = false,
     respect_buf_cwd = false,
-    on_attach = "default",
+    on_attach = function(bufnr)
+      local api = require "nvim-tree.api"
+
+      local function telescope_find_files(_)
+        require("qvim.integrations.nvim-tree").start_telescope "find_files"
+      end
+
+      local function telescope_live_grep(_)
+        require("qvim.integrations.nvim-tree").start_telescope "live_grep"
+      end
+
+      api.config.mappings.default_on_attach(bufnr)
+
+      --[[       local useful_keys = {
+        ["l"] = { callback = api.node.open.edit, desc = "Open" },
+        ["o"] = { api.node.open.edit, desc = "Open" },
+        ["<CR>"] = { api.node.open.edit, desc = "Open" },
+        ["v"] = { api.node.open.vertical, desc = "Open: Vertical Split" },
+        ["h"] = { api.node.navigate.parent_close, desc = "Close Directory" },
+        ["C"] = { api.tree.change_root_to_node, desc = "CD" },
+        ["gtg"] = { telescope_live_grep, desc = "Telescope Live Grep" },
+        ["gtf"] = { telescope_find_files, desc = "Telescope Find File" },
+      }
+
+      require("qvim.keymaps"):register(useful_keys, bufnr) ]]
+    end,
     remove_keymaps = false,
     select_prompts = false,
     view = {
@@ -237,7 +262,16 @@ local nvim_tree = {
   },
   keymaps = {},
   main = "nvim-tree",
-  setup = nil,
+  ---@param self nvim-tree
+  setup = function(self)
+    if qvim.plugins.project and qvim.plugins.project.enabled then
+      self.options.respect_buf_cwd = true
+      self.options.update_cwd = true
+      self.options.update_focused_file.enable = true
+      self.options.update_focused_file.update_cwd = true
+    end
+    getmetatable(self).__index.setup(self)
+  end,
   url = "https://github.com/nvim-tree/nvim-tree.lua",
 }
 

@@ -1,6 +1,6 @@
 local log = require("qvim.log")
 
----@class QV_PLUGIN_NAME_VAR : core_base
+---@class QV_STRING_PLUGIN_NAME_VAR : core_base
 ---@field enabled boolean|fun():boolean|nil
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
@@ -12,7 +12,7 @@ local QV_PLUGIN_NAME_VAR = {
   options = {},
   keymaps = {},
   main = nil,
-  setup = nil,
+  setup = nil, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
   url = nil,
 }
 
