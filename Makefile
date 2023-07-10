@@ -16,9 +16,13 @@ parent:
 	@echo creating parent folder for plugin configuration
 	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -t
 
+parent-ext:
+	@echo creating parent folder for plugin with an extension
+	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -e $(EXT) -t
+
 ext:
 	@echo creating extension in an existing parent
-	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -e $(EXT)
+	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -e $(EXT) -n
 
 lint:
 	lint-lua lint-sh
@@ -37,6 +41,3 @@ style-lua:
 style-sh:
 	shfmt -f . | grep -v jdtls | xargs shfmt -i 2 -ci -bn -l -d
 	
-parent-ext:
-	@echo creating parent folder for plugin with an extension
-	bash ./utils/scripts/genconfig.sh -p $(PLUGIN) -e $(EXT) -t
