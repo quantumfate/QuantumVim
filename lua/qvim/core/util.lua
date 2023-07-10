@@ -110,4 +110,10 @@ function util.plugins_tbl_size()
     return count
 end
 
+---Calls the setup function of the meta table that `self` extends.
+---@param self core_meta_parent|core_meta_plugin
+function util.call_super_setup(self)
+    getmetatable(self).__index.setup(self)
+end
+
 return util

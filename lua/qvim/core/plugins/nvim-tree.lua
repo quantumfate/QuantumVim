@@ -1,4 +1,5 @@
 local log = require("qvim.log")
+local call_super_setup = require("qvim.core.util").call_super_setup
 
 ---@class nvim-tree : core_meta_plugin
 ---@field enabled boolean|fun():boolean|nil
@@ -272,7 +273,7 @@ local nvim_tree = {
       self.options.update_focused_file.enable = true
       self.options.update_focused_file.update_cwd = true
     end
-    getmetatable(self).__index.setup(self)
+    call_super_setup(self)
   end,
   url = "https://github.com/nvim-tree/nvim-tree.lua",
 }
