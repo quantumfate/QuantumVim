@@ -2,11 +2,11 @@ local log = require("qvim.log")
 
 ---@class QV_PLUGIN_NAME_VAR : core_base
 ---@field enabled boolean|fun():boolean|nil
----@field options table|nil
----@field keymaps table|nil
----@field main string
----@field setup fun(self: table)|nil
----@field url string
+---@field options table|nil options used in the setup call of a neovim plugin
+---@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field main string the string to use when the neovim plugin is required
+---@field setup fun(self: table)|nil overwrite the setup function in core_base
+---@field url string neovim plugin url
 local QV_PLUGIN_NAME_VAR = {
   enabled = true,
   options = {},
