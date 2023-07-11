@@ -184,7 +184,7 @@ function M.load_defaults()
                 end,
             },
         }, ]]
-        --[[         { -- taken from AstroNvim
+        { -- taken from AstroNvim
             "BufEnter",
             {
                 group = "_dir_opened",
@@ -209,11 +209,11 @@ function M.load_defaults()
                     if not (vim.fn.expand("%") == "" or buftype == "nofile") then
                         vim.api.nvim_del_augroup_by_name("_file_opened")
                         vim.cmd("do User FileOpened")
-                        require("qvim.lang").setup()
+                        --require("qvim.lang").setup()
                     end
                 end,
             },
-        }, ]]
+        },
     }
 
     M.define_autocmds(definitions)
