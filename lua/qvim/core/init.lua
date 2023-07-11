@@ -87,6 +87,7 @@ function core.load_lazy_spec()
             #lazy_spec
         )
     )
+    print(vim.inspect(lazy_spec))
     return lazy_spec
 end
 

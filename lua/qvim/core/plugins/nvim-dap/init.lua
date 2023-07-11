@@ -1,5 +1,5 @@
 ---@generic T
----@class QV_STRING_PLUGIN_NAME_VAR : core_meta_parent
+---@class nvim-dap : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field extensions table<string> a list of extension url's
@@ -7,11 +7,11 @@
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
----@field on_setup_start fun(self: QV_STRING_PLUGIN_NAME_VAR, instance: table)|nil hook setup logic at the beginning of the setup call
----@field setup fun(self: QV_STRING_PLUGIN_NAME_VAR)|nil overwrite the setup function in core_meta_parent
----@field on_setup_done fun(self: QV_STRING_PLUGIN_NAME_VAR, instance: table)|nil hook setup logic at the end of the setup call
+---@field on_setup_start fun(self: nvim-dap, instance: table)|nil hook setup logic at the beginning of the setup call
+---@field setup fun(self: nvim-dap)|nil overwrite the setup function in core_meta_parent
+---@field on_setup_done fun(self: nvim-dap, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
-local QV_PLUGIN_NAME_VAR = {
+local nvim_dap = {
     enabled = true,
     name = nil,
     extensions = {},
@@ -25,6 +25,6 @@ local QV_PLUGIN_NAME_VAR = {
     url = nil,
 }
 
-QV_PLUGIN_NAME_VAR.__index = QV_PLUGIN_NAME_VAR
+nvim_dap.__index = nvim_dap
 
-return QV_PLUGIN_NAME_VAR
+return nvim_dap

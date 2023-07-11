@@ -264,17 +264,17 @@ local nvim_tree = {
   },
   keymaps = {},
   main = "nvim-tree",
-  on_setup_start = nil,
   ---@param self nvim-tree
-  setup = function(self)
+  ---@param _ table
+  on_setup_start = function(self, _)
     if qvim.plugins.project and qvim.plugins.project.enabled then
       self.options.respect_buf_cwd = true
       self.options.update_cwd = true
       self.options.update_focused_file.enable = true
       self.options.update_focused_file.update_cwd = true
     end
-    require("qvim.core.util").call_super_setup(self)
   end,
+  setup = nil,
   on_setup_done = nil,
   url = "https://github.com/nvim-tree/nvim-tree.lua",
 }
