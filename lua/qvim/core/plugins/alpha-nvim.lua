@@ -1,5 +1,3 @@
-local log = require("qvim.log")
-local call_super_setup = require("qvim.core.util").call_super_setup
 local core_meta_plugin = require("qvim.core.meta.plugin")
 
 local function create_buttons(buttons, button_area)
@@ -128,7 +126,7 @@ local alpha_nvim = {
     }
     theme.config.layout = layout
 
-    call_super_setup(
+    require("qvim.core.util").call_super_setup(
       setmetatable({
         url = self.url,
         main = self.main,

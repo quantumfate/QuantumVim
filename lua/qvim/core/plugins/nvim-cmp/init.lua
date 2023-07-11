@@ -1,6 +1,3 @@
-local log = require("qvim.log")
-local call_super_setup = require("qvim.core.util").call_super_setup
-
 local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
 if not status_cmp_ok then
   return
@@ -270,7 +267,17 @@ local nvim_cmp = {
   },
   keymaps = {},
   main = "cmp",
-  setup = nil, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
+  ---@param self nvim-cmp
+  setup = function(self)
+    require("qvim.core.util").call_super_setup(self)
+    local cmp = require("cmp")
+    for _, opt in ipairs(self.options.cmdline.options) do
+      cmp.setup.cmdline(opt.type, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = opt.sources,
+      })
+    end
+  end, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
   url = "https://github.com/hrsh7th/nvim-cmp",
 }
 

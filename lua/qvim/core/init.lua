@@ -73,6 +73,7 @@ function core.init_plugin_configurations()
         )
     )
     require("qvim.core.autocmds").load_defaults()
+    require("qvim.core.commands").load()
 end
 
 ---Fetches a complete lazy spec for all specified plugins with configuration and

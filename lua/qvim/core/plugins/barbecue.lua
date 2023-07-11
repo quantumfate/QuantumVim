@@ -1,6 +1,3 @@
-local log = require("qvim.log")
-local call_super_setup = require("qvim.core.util").call_super_setup
-
 ---@class barbecue : core_meta_plugin
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name

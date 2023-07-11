@@ -1,6 +1,3 @@
-local log = require("qvim.log")
-local call_super_setup = require("qvim.core.util").call_super_setup
-
 ---@generic T
 ---@class QV_STRING_PLUGIN_NAME_VAR : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil

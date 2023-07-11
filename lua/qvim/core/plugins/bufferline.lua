@@ -1,6 +1,3 @@
-local log = require("qvim.log")
-local call_super_setup = require("qvim.core.util").call_super_setup
-
 ---@class bufferline : core_meta_plugin
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
@@ -135,7 +132,7 @@ local bufferline = {
         },
       },
     }
-    call_super_setup(self)
+    require("qvim.core.util").call_super_setup(self)
   end,
   url = "https://github.com/akinsho/bufferline.nvim",
 }
