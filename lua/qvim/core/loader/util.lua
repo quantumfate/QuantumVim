@@ -43,6 +43,20 @@ function util.load_lazy_config_spec_for_plugin(path, spec_mt)
     return plugin_spec
 end
 
+---@param resolved_plugin_table AbstractPlugin|AbstractParent|AbstractExtension
+---@return boolean
+local function is_enabled(resolved_plugin_table)
+    local enabled
+    if type(resolved_plugin_table.enabled == "string") then
+        ---@type boolean
+        enabled = resolved_plugin_table.enabled
+    else
+        ---@type boolean
+        enabled = resolved_plugin_table.enabled()
+    end
+    return enabled
+end
+
 ---Provides a default spec for a plugin.
 ---
 ---Spec for plugins that are available in `qvim.plugins`:
@@ -70,17 +84,11 @@ function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
     end
 
     if qvim.plugins[plugin_name] then
-        local enabled
-        if type(qvim.plugins[plugin_name] == "string") then
-            enabled = qvim.plugins[plugin_name].enabled
-        else
-            enabled = qvim.plugins[plugin_name].enabled()
-        end
         return {
             url,
             name = hr_name,
             lazy = true,
-            enabled = enabled,
+            enabled = is_enabled(qvim.plugins[plugin_name]),
             main = qvim.plugins[plugin_name].main,
             config = function()
                 qvim.plugins[plugin_name]:setup()
@@ -99,6 +107,45 @@ function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
     end
 end
 
+---Resolves a spec for a dependency.
+---@param parent_plugin_name string
+---@param dep_plugin_name string
+---@param dep_hr_name string
+---@param url string
+---@return table
+function util.extension_or_standalone_dependency_spec(parent_plugin_name, dep_plugin_name, dep_hr_name, url)
+    local function init()
+        log:debug(fmt("[core.loader] Loaded the dependency plugin spec '%s'", url))
+    end
+
+    local qvim_parent = qvim.plugins[parent_plugin_name]
+    local qvim_ext
+    if qvim_parent and qvim_parent.conf_extensions then
+        qvim_ext = qvim_parent.conf_extensions[dep_plugin_name]
+    end
+
+    if qvim_parent and qvim_ext then
+        return {
+            url,
+            name = dep_hr_name,
+            enabled = is_enabled(qvim_ext),
+            config = function()
+                qvim_ext:setup_ext()
+            end,
+            pin = false,
+            init = init,
+        }
+    else
+        return {
+            url,
+            name = dep_hr_name,
+            enabled = true,
+            pin = false,
+            init = init,
+        }
+    end
+end
+
 ---Provides a minimal spec for a plugin.
 ---- url
 ---- name
@@ -109,16 +156,27 @@ end
 ---@param url string
 ---@param hr_name string
 ---@return table
-function util.minimal_plugin_spec(plugin_name, url, hr_name)
+function util.minimal_plugin_spec(plugin_name, url, hr_name, path)
     local function init()
         log:debug(
             fmt("[core.loader] First time setup! Loaded the plugin '%s'", url)
         )
     end
 
+    local success, spec = pcall(require, path)
+    if not success then
+        log:debug(fmt("[core.loader] No spec available for '%s'.", path))
+        return {}
+    end
+
+    local dependencies
+    if spec and spec.dependencies then
+        dependencies = spec.dependencies
+    end
     return {
         url,
         name = hr_name,
+        dependencies = dependencies,
         lazy = false,
         pin = false,
         init = init,
