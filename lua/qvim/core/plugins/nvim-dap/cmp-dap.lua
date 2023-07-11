@@ -14,7 +14,7 @@ local cmp_dap = {
     name = nil,
     options = {},
     keymaps = {},
-    main = nil,
+    main = "",
     on_setup_start = nil,
     setup_ext = function()
         -- skip setup

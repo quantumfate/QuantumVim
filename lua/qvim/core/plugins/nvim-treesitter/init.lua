@@ -65,7 +65,12 @@ local nvim_treesitter = {
         }, ]]
     },
     main = "nvim-treesitter.configs",
-    on_setup_start = nil,
+    ---@param self nvim-treesitter
+    ---@param instance table
+    on_setup_start = function(self, instance)
+        local path = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt", "nvim-treesitter")
+        vim.opt.rtp:prepend(path) -- treesitter needs to be before nvim's runtime in rtp
+    end,
     setup = nil,
     on_setup_done = nil,
     url = "https://github.com/nvim-treesitter/nvim-treesitter",

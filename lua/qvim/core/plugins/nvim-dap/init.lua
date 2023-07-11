@@ -77,7 +77,7 @@ local nvim_dap = {
     ---@param self nvim-dap
     setup = function(self)
         local nvim_mason_dap = self.conf_extensions["mason_nvim_dap"]
-
+        --print(vim.inspect(self))
         local mason_ok, mason = pcall(require, nvim_mason_dap.main)
         if not mason_ok then
             log:warn("Failed to setup '%s' for '%s'.", nvim_mason_dap.name, self.name)

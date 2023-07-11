@@ -5,16 +5,17 @@ local fmt = string.format
 
 ---Requires a lazy spec of a plugin by a given path. The spec will extend a given `spec_mt`.
 ---@param path string
----@return table options the options defined in the spec or an empty table.
-function util.load_lazy_config_spec_for_plugin(path, spec_mt)
+---@return table? options the options defined in the spec or an empty table.
+function util.load_lazy_config_spec_for_plugin(path, default_spec)
     local plugin_spec
     local success, spec = pcall(require, path)
     if not success then
         log:debug(fmt("[core.loader] No spec available for '%s'.", path))
-        return {}
+        return
     end
 
-    plugin_spec = setmetatable(spec, spec_mt)
+    plugin_spec = vim.tbl_deep_extend("keep", spec, default_spec)
+
     vim.validate {
         url = { plugin_spec[1], "s", false },
         name = { plugin_spec.name, "s", true },
@@ -171,13 +172,20 @@ function util.minimal_plugin_spec(url, hr_name, path)
     end
 
     local dependencies
-    if spec and spec.dependencies then
-        dependencies = spec.dependencies
+    local build
+    if spec then
+        if spec.dependencies then
+            dependencies = spec.dependencies
+        end
+        if spec.build then
+            build = spec.build
+        end
     end
     return {
         url,
         name = hr_name,
         dependencies = dependencies,
+        build = build,
         lazy = false,
         pin = false,
         init = init,

@@ -47,11 +47,11 @@ function core_loader.new(plugin_name, url, first_time_setup, hr_name, has_parent
         end
         plugin_spec = core_loader_util.load_lazy_config_spec_for_plugin(
             spec_require_path,
-            { __index = default_spec }
+            default_spec
         )
     end
 
-    if plugin_spec.dependencies then
+    if plugin_spec and plugin_spec.dependencies then
         local dep_spec = {}
         for _, dep in pairs(plugin_spec.dependencies) do
             if type(dep) == "string" then

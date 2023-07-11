@@ -87,7 +87,6 @@ function core.load_lazy_spec()
             #lazy_spec
         )
     )
-    print(vim.inspect(lazy_spec))
     return lazy_spec
 end
 
@@ -102,6 +101,7 @@ function core.load_lazy_spec_light()
             #lazy_spec_minimal
         )
     )
+    print(vim.inspect(lazy_spec_minimal))
     return lazy_spec_minimal
 end
 

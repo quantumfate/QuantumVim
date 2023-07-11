@@ -8,17 +8,6 @@ local core_meta_ext = require("qvim.core.meta.ext")
 
 local core_base_mt = { __index = core_meta_plugin }
 local core_base_parent_mt = { __index = core_meta_parent }
-local core_base_parent_extension_mt = {
-	__index = function(_, k)
-		-- First try to get from core_base_parent_mt
-		local v = core_base_parent_mt[k]
-		if v ~= nil then
-			return v
-		end
-		-- If not found, then try to get from core_meta_ext
-		return core_meta_ext[k]
-	end,
-}
 
 local fmt = string.format
 local log = require("qvim.log")
@@ -60,7 +49,9 @@ function core_base.new(hr_name)
 
 		local uv = vim.loop
 		local path_sep = uv.os_uname().version:match "Windows" and "\\" or "/"
-		if qvim_util.is_directory(join_paths(get_qvim_dir(), "lua", plugin_path:gsub("\\.", path_sep))) then
+
+		if qvim_util.is_directory(join_paths(get_qvim_dir(), "lua", (plugin_path:gsub("%.", path_sep)))) then
+			print("aeiaio")
 			core_util.vim_validate_wrapper({
 				enabled = { plugin.enabled, { "b", "f" }, true },
 				name = { plugin.name, "s", true },
@@ -74,10 +65,13 @@ function core_base.new(hr_name)
 				on_setup_done = { plugin.on_setup_done, "f", true },
 				url = { plugin.url, "s", false },
 			}, hr_name)
-			for _, extension_url in pairs(plugin.extensions) do
-				local ext_name, ext_spec = core_base.new_ext(hr_name, extension_url)
-				if ext_name and ext_spec then
-					plugin.conf_extensions[ext_name] = ext_spec
+			if plugin.extensions then
+				for _, extension_url in pairs(plugin.extensions) do
+					print(extension_url)
+					local ext_name, ext_spec = core_base.new_ext(hr_name, extension_url, plugin)
+					if ext_name and ext_spec then
+						plugin.conf_extensions[ext_name] = ext_spec
+					end
 				end
 			end
 			---@generic AbstractParent
@@ -131,9 +125,10 @@ end
 ---directly returned as a table.
 ---@param hr_name_parent string
 ---@param extension_url string
+---@param parent AbstractParent a reference to the table of the parent
 ---@return string? plugin_name_ext
 ---@return AbstractExtension? plugin_spec the `spec` of a plugin that extends the `core_base_mt`.
-function core_base.new_ext(hr_name_parent, extension_url)
+function core_base.new_ext(hr_name_parent, extension_url, parent)
 	local is_valid, plugin_name_ext, hr_name_ext = core_util.is_valid_plugin_name(extension_url)
 	if not (is_valid and plugin_name_ext and hr_name_ext) then
 		log:debug(fmt("The extension url '%s' of the plugin '%s' did not pass the name check valitation.", extension_url,
@@ -182,7 +177,7 @@ function core_base.new_ext(hr_name_parent, extension_url)
 			---@field setup_ext fun(self: AbstractExtension)|nil overwrite the setup function in core_base
 			---@field on_setup_done fun(self: AbstractExtension, instance: table|nil)|nil hook setup logic at the end of the setup call
 			---@field url string neovim plugin url
-			plugin_spec = setmetatable(plugin, core_base_parent_extension_mt)
+			plugin_spec = setmetatable(plugin, parent)
 		end
 		return plugin_name_ext, plugin_spec
 	end
