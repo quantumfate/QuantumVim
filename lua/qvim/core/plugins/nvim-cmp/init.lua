@@ -270,18 +270,23 @@ local nvim_cmp = {
   keymaps = {},
   main = "cmp",
   on_setup_start = nil,
+  setup = nil,
   ---@param self nvim-cmp
-  setup = function(self)
-    require("qvim.core.util").call_super_setup(self)
-    local cmp = require("cmp")
+  ---@param cmp table
+  on_setup_done = function(self, cmp)
     for _, opt in ipairs(self.options.cmdline.options) do
       cmp.setup.cmdline(opt.type, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = opt.sources,
       })
     end
+    cmp.setup.filetype(self.options.filetype, {
+      sources = {
+        name = "dap"
+      }
+    })
   end,
-  on_setup_done = nil,
+
   url = "https://github.com/hrsh7th/nvim-cmp",
 }
 

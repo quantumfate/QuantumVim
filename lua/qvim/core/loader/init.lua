@@ -28,7 +28,7 @@ function core_loader.new(plugin_name, url, first_time_setup, hr_name, has_parent
     local plugin_spec
     if first_time_setup then
         plugin_spec =
-            core_loader_util.minimal_plugin_spec(plugin_name, url, hr_name, spec_require_path)
+            core_loader_util.minimal_plugin_spec(url, hr_name, spec_require_path)
     else
         local default_spec
         if has_parent then

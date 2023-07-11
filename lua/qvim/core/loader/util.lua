@@ -120,14 +120,16 @@ function util.extension_or_standalone_dependency_spec(parent_plugin_name, dep_pl
 
     local qvim_parent = qvim.plugins[parent_plugin_name]
     local qvim_ext
-    if qvim_parent and qvim_parent.conf_extensions then
-        qvim_ext = qvim_parent.conf_extensions[dep_plugin_name]
+    if qvim_parent then
+        if qvim_parent.conf_extensions then
+            qvim_ext = qvim_parent.conf_extensions[dep_plugin_name]
+        end
     end
-
     if qvim_parent and qvim_ext then
         return {
             url,
             name = dep_hr_name,
+            main = qvim_ext.main and qvim_ext.main or nil,
             enabled = is_enabled(qvim_ext),
             config = function()
                 qvim_ext:setup_ext()
@@ -152,11 +154,10 @@ end
 ---- lazy
 ---- pin
 ---- init
----@param plugin_name string
 ---@param url string
 ---@param hr_name string
 ---@return table
-function util.minimal_plugin_spec(plugin_name, url, hr_name, path)
+function util.minimal_plugin_spec(url, hr_name, path)
     local function init()
         log:debug(
             fmt("[core.loader] First time setup! Loaded the plugin '%s'", url)

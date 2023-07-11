@@ -30,7 +30,12 @@ function core_meta_ext:setup_ext()
         core_error_util.setup_error_handler(self, err)
     end
 
-    local setup_ok, _ = xpcall(plugin.setup, error_handler_closure, self.options)
+    local setup_ok, _
+    if self.options then
+        setup_ok, _ = xpcall(plugin.setup, error_handler_closure, self.options)
+    else
+        setup_ok, _ = xpcall(plugin.setup, error_handler_closure)
+    end
     if setup_ok then
         log:debug(
             fmt(
