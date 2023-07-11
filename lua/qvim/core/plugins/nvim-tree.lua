@@ -4,7 +4,9 @@
 ---@field options table|nil
 ---@field keymaps table|nil
 ---@field main string
----@field setup fun(self: nvim-tree)|nil
+---@field on_setup_start fun(self: nvim-tree, instance: table)|nil hook setup logic at the beginning of the setup call
+---@field setup fun(self: nvim-tree)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: nvim-tree, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string
 local nvim_tree = {
   enabled = true,
@@ -262,6 +264,7 @@ local nvim_tree = {
   },
   keymaps = {},
   main = "nvim-tree",
+  on_setup_start = nil,
   ---@param self nvim-tree
   setup = function(self)
     if qvim.plugins.project and qvim.plugins.project.enabled then
@@ -272,6 +275,7 @@ local nvim_tree = {
     end
     require("qvim.core.util").call_super_setup(self)
   end,
+  on_setup_done = nil,
   url = "https://github.com/nvim-tree/nvim-tree.lua",
 }
 

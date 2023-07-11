@@ -19,7 +19,9 @@ local cmp_mapping = require("cmp.config.mapping")
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: nvim-cmp, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: nvim-cmp)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: nvim-cmp, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 ---@field has_words_before fun():boolean
 ---@field feedkeys fun(key: string, mode:string)
@@ -267,6 +269,7 @@ local nvim_cmp = {
   },
   keymaps = {},
   main = "cmp",
+  on_setup_start = nil,
   ---@param self nvim-cmp
   setup = function(self)
     require("qvim.core.util").call_super_setup(self)
@@ -277,7 +280,8 @@ local nvim_cmp = {
         sources = opt.sources,
       })
     end
-  end, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
+  end,
+  on_setup_done = nil,
   url = "https://github.com/hrsh7th/nvim-cmp",
 }
 

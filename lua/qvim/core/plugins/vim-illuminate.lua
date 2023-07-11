@@ -4,7 +4,9 @@
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: vim-illuminate, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: vim-illuminate)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: vim-illuminate, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local vim_illuminate = {
   enabled = true,
@@ -56,6 +58,7 @@ local vim_illuminate = {
   },
   keymaps = {},
   main = "illuminate",
+  on_setup_start = nil,
   ---@param self vim-illuminate
   setup = function(self)
     local log = require("qvim.log")
@@ -65,7 +68,8 @@ local vim_illuminate = {
       return
     end
     vim_illuminate.configure(self.options)
-  end, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
+  end,
+  on_setup_done = nil,
   url = "https://github.com/RRethy/vim-illuminate",
 }
 

@@ -16,7 +16,9 @@ end
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: alpha-nvim, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: alpha-nvim)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: alpha-nvim, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local alpha_nvim = {
   enabled = true,
@@ -107,6 +109,7 @@ local alpha_nvim = {
   },
   keymaps = {},
   main = "alpha",
+  on_setup_start = nil,
   ---@param self alpha-nvim
   setup = function(self)
     local theme = require("alpha.themes." .. self.options.theme)
@@ -136,6 +139,7 @@ local alpha_nvim = {
         __index = core_meta_plugin
       }))
   end,
+  on_setup_done = nil,
   url = "https://github.com/goolord/alpha-nvim",
 }
 

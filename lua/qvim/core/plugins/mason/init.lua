@@ -6,8 +6,11 @@ local log = require("qvim.log")
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: mason, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: mason)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: mason, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
+---@field bootstrap fun()
 local mason = {
   enabled = true,
   name = nil,
@@ -87,13 +90,17 @@ local mason = {
   },
   keymaps = {},
   main = "mason",
+  on_setup_start = nil,
   ---@param self mason
   setup = function(self)
     require("qvim.core.plugins.mason.util").add_to_path(self.options.PATH == "append")
     require("qvim.core.util").call_super_setup(self)
-  end, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
+  end,
+  on_setup_done = nil,
   url = "https://github.com/williamboman/mason.nvim",
 }
+
+mason.bootstrap = require("qvim.core.plugins.mason.util").bootstrap
 
 mason.__index = mason
 

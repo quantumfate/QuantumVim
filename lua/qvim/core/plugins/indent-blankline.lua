@@ -4,7 +4,9 @@
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: indent-blankline, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: indent-blankline)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: indent-blankline, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local indent_blankline = {
   enabled = true,
@@ -63,6 +65,7 @@ local indent_blankline = {
   },
   keymaps = {},
   main = "indent_blankline",
+  on_setup_start = nil,
   ---@param self indent-blankline
   setup = function(self)
     vim.wo.colorcolumn = "99999"
@@ -74,7 +77,8 @@ local indent_blankline = {
     vim.cmd([[highlight IndentBlanklineIndent6 guifg=#2e2e2e gui=nocombine]])
     vim.opt.list = true
     require("qvim.core.util").call_super_setup(self)
-  end, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
+  end,
+  on_setup_done = nil,
   url = "https://github.com/lukas-reineke/indent-blankline.nvim",
 }
 

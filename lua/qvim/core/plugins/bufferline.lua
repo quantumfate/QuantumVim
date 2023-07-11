@@ -4,7 +4,9 @@
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: bufferline, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: bufferline)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: bufferline, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local bufferline = {
   enabled = true,
@@ -115,6 +117,7 @@ local bufferline = {
   },
   keymaps = {},
   main = "bufferline",
+  on_setup_start = nil,
   ---@param self bufferline
   setup = function(self)
     local mocha = require("catppuccin.palettes").get_palette "mocha"
@@ -134,6 +137,7 @@ local bufferline = {
     }
     require("qvim.core.util").call_super_setup(self)
   end,
+  on_setup_done = nil,
   url = "https://github.com/akinsho/bufferline.nvim",
 }
 

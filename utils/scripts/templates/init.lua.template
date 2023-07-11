@@ -7,7 +7,9 @@
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: QV_STRING_PLUGIN_NAME_VAR, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: QV_STRING_PLUGIN_NAME_VAR)|nil overwrite the setup function in core_meta_parent
+---@field on_setup_done fun(self: QV_STRING_PLUGIN_NAME_VAR, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local QV_STRING_PLUGIN_NAME_VAR = {
     enabled = true,
@@ -17,7 +19,9 @@ local QV_STRING_PLUGIN_NAME_VAR = {
     options = {},
     keymaps = {},
     main = nil,
-    setup = nil, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
+    on_setup_start = nil,
+    setup = nil,
+    on_setup_done = nil,
     url = nil,
 }
 

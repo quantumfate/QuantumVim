@@ -27,7 +27,7 @@ function M.load_defaults()
                 end,
             },
         }, ]]
-        {
+        --[[         {
             {
                 "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
                 "BufWinEnter",
@@ -43,7 +43,7 @@ function M.load_defaults()
                     require("barbecue.ui").update()
                 end,
             },
-        },
+        }, ]]
         {
             "InsertEnter",
             {

@@ -69,7 +69,9 @@ function core_base.new(hr_name)
 				options = { plugin.options, "t", true },
 				keymaps = { plugin.keymaps, "t", true },
 				main = { plugin.main, "s", false },
+				on_setup_start = { plugin.on_setup_start, "f", true },
 				setup = { plugin.setup, "f", true },
+				on_setup_done = { plugin.on_setup_done, "f", true },
 				url = { plugin.url, "s", false },
 			}, hr_name)
 			for _, extension_url in pairs(plugin.extensions) do
@@ -87,7 +89,9 @@ function core_base.new(hr_name)
 			---@field options table|nil options used in the setup call of a neovim plugin
 			---@field keymaps table|nil keymaps parsed to yikes.nvim
 			---@field main string|nil the string to use when the neovim plugin is required
+			---@field on_setup_start fun(self: AbstractParent, instance: table)|nil hook setup logic at the beginning of the setup call
 			---@field setup fun(self: AbstractParent)|nil overwrite the setup function in core_base
+			---@field on_setup_done fun(self: AbstractParent, instance: table)|nil hook setup logic at the end of the setup call
 			---@field url string neovim plugin url
 			plugin_spec = setmetatable(plugin, core_base_parent_mt)
 		else
@@ -96,7 +100,9 @@ function core_base.new(hr_name)
 				options = { plugin.options, "t", true },
 				keymaps = { plugin.keymaps, "t", true },
 				main = { plugin.main, "s", false },
+				on_setup_start = { plugin.on_setup_start, "f", true },
 				setup = { plugin.setup, "f", true },
+				on_setup_done = { plugin.on_setup_done, "f", true },
 				url = { plugin.url, "s", false },
 			}, hr_name)
 			---@generic AbstractPlugin
@@ -106,7 +112,9 @@ function core_base.new(hr_name)
 			---@field options table|nil options used in the setup call of a neovim plugin
 			---@field keymaps table|nil keymaps parsed to yikes.nvim
 			---@field main string the string to use when the neovim plugin is required
+			---@field on_setup_start fun(self: AbstractPlugin, instance: table)|nil hook setup logic at the beginning of the setup call
 			---@field setup fun(self: AbstractPlugin)|nil overwrite the setup function in core_base
+			---@field on_setup_done fun(self: AbstractPlugin, instance: table)|nil hook setup logic at the end of the setup call
 			---@field url string neovim plugin url
 			plugin_spec = setmetatable(plugin, core_base_mt)
 		end
@@ -155,7 +163,9 @@ function core_base.new_ext(hr_name_parent, extension_url)
 				options = { plugin.options, "t", true },
 				keymaps = { plugin.keymaps, "t", true },
 				main = { plugin.main, "s", false },
-				setup = { plugin.setup, "f", true },
+				on_setup_start = { plugin.on_setup_start, "f", true },
+				setup_ext = { plugin.setup_ext, "f", true },
+				on_setup_done = { plugin.on_setup_done, "f", true },
 				url = { plugin.url, "s", false },
 			}, hr_name_ext)
 			if not plugin["name"] then
@@ -168,7 +178,9 @@ function core_base.new_ext(hr_name_parent, extension_url)
 			---@field options table|nil options used in the setup call of a neovim plugin
 			---@field keymaps table|nil keymaps parsed to yikes.nvim
 			---@field main string the string to use when the neovim plugin is required
+			---@field on_setup_start fun(self: AbstractExtension, instance: table|nil)|nil hook setup logic at the beginning of the setup call
 			---@field setup_ext fun(self: AbstractExtension)|nil overwrite the setup function in core_base
+			---@field on_setup_done fun(self: AbstractExtension, instance: table|nil)|nil hook setup logic at the end of the setup call
 			---@field url string neovim plugin url
 			plugin_spec = setmetatable(plugin, core_base_parent_extension_mt)
 		end

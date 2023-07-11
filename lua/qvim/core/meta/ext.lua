@@ -22,6 +22,10 @@ function core_meta_ext:setup_ext()
         )
     end
 
+    if self.on_setup_start then
+        self.on_setup_start(self, plugin)
+    end
+
     local function error_handler_closure(err)
         core_error_util.setup_error_handler(self, err)
     end
@@ -45,6 +49,10 @@ function core_meta_ext:setup_ext()
                 self.main
             )
         )
+    end
+
+    if self.on_setup_done then
+        self.on_setup_done(self, plugin)
     end
 end
 

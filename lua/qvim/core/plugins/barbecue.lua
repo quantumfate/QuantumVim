@@ -4,7 +4,9 @@
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps table|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: barbecue, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: barbecue)|nil overwrite the setup function in core_base
+---@field on_setup_done fun(self: barbecue, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local barbecue = {
   enabled = true,
@@ -46,7 +48,9 @@ local barbecue = {
   },
   keymaps = {},
   main = "barbecue",
-  setup = nil, -- getmetatable(self).__index.setup(self) to call generic setup with additional logic
+  on_setup_start = nil,
+  setup = nil,
+  on_setup_done = nil,
   url = "https://github.com/utilyre/barbecue.nvim",
 }
 
