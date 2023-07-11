@@ -1,14 +1,16 @@
 ---@class core_meta_parent
 local core_mata_parent = {}
 
----@param self P
+---@param self AbstractParent|AbstractPlugin
 function core_mata_parent:setup()
     local core_error_util = require("qvim.core.error")
     local log = require "qvim.log"
     local fmt = string.format
 
-    for _, ext in pairs(self.conf_extensions) do
-        pcall(getmetatable(ext).__index.setup_ext, ext)
+    if self.conf_extensions then
+        for _, ext in pairs(self.conf_extensions) do
+            pcall(getmetatable(ext).__index.setup_ext, ext)
+        end
     end
 
     local status_ok, plugin = pcall(require, self.main)

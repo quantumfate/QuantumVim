@@ -1,4 +1,5 @@
 return {
     cmd = "Copilot",
-    event = "InsertEnter",
+    event = "BufEnter",
+    build = ":Copilot auth",
 }

@@ -1,13 +1,13 @@
 ---@class core_meta_ext
 local core_meta_ext = {}
 
----@param self E
+---@param self AbstractExtension
 function core_meta_ext:setup_ext()
     local core_error_util = require("qvim.core.error")
     local log = require "qvim.log"
     local fmt = string.format
 
-    ---@type P
+    ---@type AbstractParent
     local parent = getmetatable(self).__index
 
     local status_ok, plugin = pcall(require, self.main)

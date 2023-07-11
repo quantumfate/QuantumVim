@@ -13,13 +13,13 @@ commands.defaults = {
     {
         name = "BufferKill",
         fn = function()
-            require("qvim.integrations.bufferline").buf_kill("bd")
+            require("qvim.core.plugins.bufferline").buf_kill("bd")
         end,
     },
     {
-        name = "qvimToggleFormatOnSave",
+        name = "QvimToggleFormatOnSave",
         fn = function()
-            require("qvim.integrations.autocmds").toggle_format_on_save()
+            require("qvim.core.autocmds").toggle_format_on_save()
         end,
     },
     --{
@@ -43,7 +43,7 @@ commands.defaults = {
     --    end
     --  end,
     --},
-    {
+    --[[     {
         name = "qvimCacheReset",
         fn = function()
             require("qvim.utils.hooks").reset_cache()
@@ -60,7 +60,7 @@ commands.defaults = {
         fn = function()
             require("qvim.bootstrap"):update()
         end,
-    },
+    }, ]]
     --{
     --  name = "qvimSyncCorePlugins",
     --  fn = function()
@@ -74,13 +74,13 @@ commands.defaults = {
     --  end,
     --},
     {
-        name = "qvimVersion",
+        name = "QvimVersion",
         fn = function()
             print(require("qvim.utils.git").get_qvim_version())
         end,
     },
     {
-        name = "qvimOpenlog",
+        name = "QvimOpenlog",
         fn = function()
             vim.fn.execute("edit " .. require("qvim.log"):get_path())
         end,

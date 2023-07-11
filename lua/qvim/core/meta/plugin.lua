@@ -3,7 +3,7 @@ local core_meta_plugin = {}
 
 ---Generic setup function for plugins that don't implement anything special.
 ---Can be called from tables that inherit from plugin with: `getmetatable(self).__index.setup(self)`
----@param self T
+---@param self AbstractPlugin
 function core_meta_plugin:setup()
     local core_error_util = require("qvim.core.error")
     local log = require "qvim.log"
