@@ -13,7 +13,7 @@ local luasnip = require("qvim.utils.modules").require_on_index("luasnip")
 local cmp_window = require("cmp.config.window")
 local cmp_mapping = require("cmp.config.mapping")
 
----@class nvim-cmp : core_meta_plugin
+---@class nvim-cmp : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
