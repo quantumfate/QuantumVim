@@ -7,9 +7,9 @@ local core_error_util = {}
 ---@param hr_name string
 ---@param plugin_path string
 function core_error_util.error_handler(err, hr_name, plugin_path)
-    if err:match(".*'" .. plugin_path .. "'.*") then
+    if err:match(".*" .. plugin_path .. ".*") then
         log:debug(fmt("No configuration file found for '%s'.", hr_name))
-    elseif err:match ".*module '.*' not found.*" then
+    elseif err:match(".*module .* not found.*") then
         log:debug(
             fmt(
                 "A module in the configuration of '%s' caused an error. Is this first time setup? If it's not some plugin in '%s' is missing or malfunctioning require path was used.",

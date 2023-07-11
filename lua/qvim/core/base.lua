@@ -35,7 +35,7 @@ local plugin_path_prefix = "qvim.core.plugins."
 ---Additionally `spec` extends the `core_base_mt` that provides a general purpose setup function and is
 ---directly returned as a table.
 ---@param hr_name string
----@return P|T? plugin_spec the `spec` of a plugin that extends the `core_base_mt`.
+---@return AbstractParent|AbstractPlugin? plugin_spec the `spec` of a plugin that extends the `core_base_mt`.
 function core_base.new(hr_name)
 	local plugin_path = plugin_path_prefix .. hr_name
 
@@ -78,16 +78,16 @@ function core_base.new(hr_name)
 					plugin.conf_extensions[ext_name] = ext_spec
 				end
 			end
-			---@generic P
-			---@class P : core_meta_parent
+			---@generic AbstractParent
+			---@class AbstractParent : core_meta_parent
 			---@field enabled boolean|fun():boolean|nil
 			---@field name string|nil the human readable name
 			---@field extensions table<string> a list of extension url's
-			---@field conf_extensions table<string, T> instances of configured extensions
+			---@field conf_extensions table<string, AbstractExtension> instances of configured extensions
 			---@field options table|nil options used in the setup call of a neovim plugin
 			---@field keymaps table|nil keymaps parsed to yikes.nvim
 			---@field main string|nil the string to use when the neovim plugin is required
-			---@field setup fun(self: table)|nil overwrite the setup function in core_base
+			---@field setup fun(self: AbstractParent)|nil overwrite the setup function in core_base
 			---@field url string neovim plugin url
 			plugin_spec = setmetatable(plugin, core_base_parent_mt)
 		else
@@ -99,14 +99,14 @@ function core_base.new(hr_name)
 				setup = { plugin.setup, "f", true },
 				url = { plugin.url, "s", false },
 			}, hr_name)
-			---@generic T
-			---@class T : core_meta_plugin
+			---@generic AbstractPlugin
+			---@class AbstractPlugin : core_meta_plugin
 			---@field enabled boolean|fun():boolean|nil
 			---@field name string|nil the human readable name
 			---@field options table|nil options used in the setup call of a neovim plugin
 			---@field keymaps table|nil keymaps parsed to yikes.nvim
 			---@field main string the string to use when the neovim plugin is required
-			---@field setup fun(self: table)|nil overwrite the setup function in core_base
+			---@field setup fun(self: AbstractPlugin)|nil overwrite the setup function in core_base
 			---@field url string neovim plugin url
 			plugin_spec = setmetatable(plugin, core_base_mt)
 		end
@@ -124,7 +124,7 @@ end
 ---@param hr_name_parent string
 ---@param extension_url string
 ---@return string? plugin_name_ext
----@return E? plugin_spec the `spec` of a plugin that extends the `core_base_mt`.
+---@return AbstractExtension? plugin_spec the `spec` of a plugin that extends the `core_base_mt`.
 function core_base.new_ext(hr_name_parent, extension_url)
 	local is_valid, plugin_name_ext, hr_name_ext = core_util.is_valid_plugin_name(extension_url)
 	if not (is_valid and plugin_name_ext and hr_name_ext) then
@@ -162,13 +162,13 @@ function core_base.new_ext(hr_name_parent, extension_url)
 				plugin["name"] = hr_name_ext
 			end
 			---@generic E
-			---@class E : core_meta_ext, P
+			---@class AbstractExtension : core_meta_ext, AbstractParent
 			---@field enabled boolean
 			---@field name string|nil the human readable name
 			---@field options table|nil options used in the setup call of a neovim plugin
 			---@field keymaps table|nil keymaps parsed to yikes.nvim
 			---@field main string the string to use when the neovim plugin is required
-			---@field setup_ext fun(self: table)|nil overwrite the setup function in core_base
+			---@field setup_ext fun(self: AbstractExtension)|nil overwrite the setup function in core_base
 			---@field url string neovim plugin url
 			plugin_spec = setmetatable(plugin, core_base_parent_extension_mt)
 		end

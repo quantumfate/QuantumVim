@@ -8,7 +8,7 @@ local M = {}
 --- loaded since everything depends on this.
 function M:init()
     ---@class qvim
-    ---@field plugins plugins
+    ---@field plugins Plugins
     ---@field config config
     ---@field format_on_save format_on_save
     ---@field luasnip luasnip

@@ -47,7 +47,7 @@ end
 ---Invokes a callable on a all plugins with plugin_name and url as an argument.
 ---The return value of the callable will be added to the global `qvim.plugins` table
 ---where the corresponding key is the plugin_name.
----@param call fun(hr_name: string):P|T?
+---@param call fun(hr_name: string):AbstractPlugin|AbstractParent?
 function util.qvim_process_plugins(call)
     for _, url in pairs(require("qvim.core").plugins) do
         local name_ok, plugin_name, hr_name = util.is_valid_plugin_name(url)

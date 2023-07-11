@@ -79,7 +79,7 @@ function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
         return {
             url,
             name = hr_name,
-            lazy = false,
+            lazy = true,
             enabled = enabled,
             main = qvim.plugins[plugin_name].main,
             config = function()
@@ -92,7 +92,7 @@ function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
         return {
             url,
             name = hr_name,
-            lazy = false,
+            lazy = true,
             pin = false,
             init = init,
         }

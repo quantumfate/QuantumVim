@@ -98,7 +98,7 @@ return {
         -- currently disabled due to instabilities
         override_notify = false,
     },
-    ---@alias plugins table<string, core_meta_plugin>|table<string, core_meta_parent>
-    ---@type table<string, core_meta_plugin>|table<string, core_meta_parent>
+    ---@alias Plugins table<string, AbstractPlugin>|table<string, AbstractParent>
+    ---@type Plugins
     plugins = {},
 }

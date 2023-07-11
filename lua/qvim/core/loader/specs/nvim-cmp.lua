@@ -1,4 +1,4 @@
-local cmp = {
+return {
     event = { "InsertEnter", "CmdlineEnter", "User FileOpened" },
     dependencies = {
         { "hrsh7th/cmp-nvim-lsp" },
@@ -8,5 +8,3 @@ local cmp = {
         { "hrsh7th/cmp-cmdline" },
     },
 }
-
-return cmp
