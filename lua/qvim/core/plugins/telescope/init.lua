@@ -164,7 +164,6 @@ local telescope = {
     ---@param telescope table
     on_setup_done = function(self, telescope)
         for _, extension in pairs(self.extensions_to_load) do
-            print(extension)
             telescope.load_extension(extension)
         end
     end,

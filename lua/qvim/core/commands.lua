@@ -80,9 +80,15 @@ commands.defaults = {
         end,
     },
     {
-        name = "QvimOpenlog",
+        name = "QvimDebugLog",
         fn = function()
-            vim.fn.execute("edit " .. require("qvim.log"):get_path())
+            vim.fn.execute("edit " .. require("qvim.log"):get_path("debug"))
+        end,
+    },
+    {
+        name = "QvimErrorLog",
+        fn = function()
+            vim.fn.execute("edit " .. require("qvim.log"):get_path("error"))
         end,
     },
 }

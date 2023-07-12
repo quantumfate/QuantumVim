@@ -51,7 +51,6 @@ function core_base.new(hr_name)
 		local path_sep = uv.os_uname().version:match "Windows" and "\\" or "/"
 
 		if qvim_util.is_directory(join_paths(get_qvim_dir(), "lua", (plugin_path:gsub("%.", path_sep)))) then
-			print("aeiaio")
 			core_util.vim_validate_wrapper({
 				enabled = { plugin.enabled, { "b", "f" }, true },
 				name = { plugin.name, "s", true },
@@ -67,7 +66,6 @@ function core_base.new(hr_name)
 			}, hr_name)
 			if plugin.extensions then
 				for _, extension_url in pairs(plugin.extensions) do
-					print(extension_url)
 					local ext_name, ext_spec = core_base.new_ext(hr_name, extension_url, plugin)
 					if ext_name and ext_spec then
 						plugin.conf_extensions[ext_name] = ext_spec
