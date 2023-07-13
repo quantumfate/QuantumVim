@@ -1,6 +1,7 @@
 local util = {}
 
-local log = require "qvim.log"
+local core_utils = require("qvim.core.util")
+local log = require("qvim.log")
 local fmt = string.format
 
 ---Requires a lazy spec of a plugin by a given path. The spec will extend a given `spec_mt`.
@@ -10,8 +11,9 @@ function util.load_lazy_config_spec_for_plugin(path, default_spec)
     local plugin_spec
     local success, spec = pcall(require, path)
     if not success then
+        path = core_utils.get_plugin_basename(path)
         log:debug(fmt("[core.loader] No spec available for '%s'.", path))
-        return
+        spec = {}
     end
 
     plugin_spec = vim.tbl_deep_extend("keep", spec, default_spec)
@@ -81,7 +83,7 @@ end
 ---@return table
 function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
     local function init()
-        log:debug(fmt("[core.loader] Loaded the plugin '%s'", url))
+        log:debug(fmt("[core] Loaded the plugin '%s'", url))
     end
 
     if qvim.plugins[plugin_name] then
