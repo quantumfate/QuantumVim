@@ -91,6 +91,30 @@ commands.defaults = {
             vim.fn.execute("edit " .. require("qvim.log"):get_path("error"))
         end,
     },
+    {
+        name = "QvimInstallPlugins",
+        fn = function()
+            require("qvim.core.manager"):lazy_do_plugins("install")
+        end
+    },
+    {
+        name = "QvimUpdatePlugins",
+        fn = function()
+            require("qvim.core.manager"):lazy_do_plugins("update")
+        end
+    },
+    {
+        name = "QvimCleanPlugins",
+        fn = function()
+            require("qvim.core.manager"):lazy_do_plugins("clean")
+        end
+    },
+    {
+        name = "QvimSyncPlugins",
+        fn = function()
+            require("qvim.core.manager"):lazy_do_plugins("sync")
+        end
+    }
 }
 
 ---Load commands

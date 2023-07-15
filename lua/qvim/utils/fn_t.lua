@@ -54,6 +54,17 @@ function Table.any(t, predicate)
     return false
 end
 
+---Inverts the key and value pairs of the given table
+---@param t table
+---@return table
+function Table.invert_table(t)
+    local inverted_t = {}
+    for key, value in pairs(t) do
+        inverted_t[value] = key
+    end
+    return inverted_t
+end
+
 ---Takes keys or values from a given table `tbl` and applies a transformation on either the keys or values
 ---specified by the function `transform_fn`.
 ---When `do_keys` is true the transformed value will be mapped to their initial keys otherwise the transformed keys will

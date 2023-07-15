@@ -4,7 +4,7 @@ local Log = require "qvim.log"
 local fmt = string.format
 local if_nil = vim.F.if_nil
 
-local function git_cmd(opts)
+function M.git_cmd(opts)
     local plenary_loaded, Job = pcall(require, "plenary.job")
     if not plenary_loaded then
         return 1, { "" }
@@ -36,14 +36,14 @@ end
 
 local function safe_deep_fetch()
     local ret, result, error =
-        git_cmd { args = { "rev-parse", "--is-shallow-repository" } }
+        M.git_cmd { args = { "rev-parse", "--is-shallow-repository" } }
     if ret ~= 0 then
         Log:error(vim.inspect(error))
         return
     end
     -- git fetch --unshallow will cause an error on a complete clone
     local fetch_mode = result[1] == "true" and "--unshallow" or "--all"
-    ret = git_cmd { args = { "fetch", fetch_mode } }
+    ret = M.git_cmd { args = { "fetch", fetch_mode } }
     if ret ~= 0 then
         Log:error(
             fmt "Git fetch %s failed! Please pull the changes manually in %s",
@@ -53,7 +53,7 @@ local function safe_deep_fetch()
         return
     end
     if fetch_mode == "--unshallow" then
-        ret = git_cmd { args = { "remote", "set-branches", "origin", "*" } }
+        ret = M.git_cmd { args = { "remote", "set-branches", "origin", "*" } }
         if ret ~= 0 then
             Log:error(
                 fmt "Git fetch %s failed! Please pull the changes manually in %s",
@@ -86,13 +86,13 @@ function M.update_base_qvim()
 
     local ret
 
-    ret = git_cmd { args = { "diff", "--quiet", "@{upstream}" } }
+    ret = M.git_cmd { args = { "diff", "--quiet", "@{upstream}" } }
     if ret == 0 then
         Log:info "QuantumVim is already up-to-date"
         return
     end
 
-    ret = git_cmd { args = { "merge", "--ff-only", "--progress" } }
+    ret = M.git_cmd { args = { "merge", "--ff-only", "--progress" } }
     if ret ~= 0 then
         Log:error(
             "Update failed! Please pull the changes manually in "
@@ -117,7 +117,7 @@ function M.switch_qvim_branch(branch)
         vim.list_extend(args, { "--detach" })
     end
 
-    local ret = git_cmd { args = args }
+    local ret = M.git_cmd { args = args }
     if ret ~= 0 then
         Log:error "Unable to switch branches! Check the log for further information"
         return
@@ -129,7 +129,7 @@ end
 ---@return string|nil
 function M.get_qvim_branch()
     local _, results =
-        git_cmd { args = { "rev-parse", "--abbrev-ref", "HEAD" } }
+        M.git_cmd { args = { "rev-parse", "--abbrev-ref", "HEAD" } }
     local branch = if_nil(results[1], "")
     return branch
 end
@@ -139,7 +139,7 @@ end
 function M.get_qvim_tag()
     local args = { "describe", "--tags", "--abbrev=0" }
 
-    local _, results = git_cmd { args = args }
+    local _, results = M.git_cmd { args = args }
     local tag = if_nil(results[1], "")
     return tag
 end
@@ -162,7 +162,7 @@ end
 ---@return string|nil
 function M.get_qvim_current_sha()
     local _, log_results =
-        git_cmd { args = { "log", "--pretty=format:%h", "-1" } }
+        M.git_cmd { args = { "log", "--pretty=format:%h", "-1" } }
     local abbrev_version = if_nil(log_results[1], "")
     return abbrev_version
 end

@@ -122,9 +122,35 @@ function Log:init_post_setup()
                     formatter = structlog.formatters.FormatColorizer( --
                         "%s [%s] %s: %-30s",
                         { "timestamp", "level", "logger_name", "msg" },
-                        { level = structlog.formatters.FormatColorizer.color_level() }
+                        {
+                            level = structlog.formatters.FormatColorizer.color_level(),
+                        }
                     ),
                     sink = structlog.sinks.Console(),
+                },
+                {
+                    level = structlog.level.DEBUG,
+                    processors = {
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
+                    },
+                    formatter = structlog.formatters.Format( --
+                        "%s [%s] %s: %-30s",
+                        { "timestamp", "level", "logger_name", "msg" }
+                    ),
+                    sink = structlog.sinks.File(self:get_path("debug")),
+                },
+                {
+                    level = structlog.level.TRACE,
+                    processors = {
+                        structlog.processors.StackWriter({ "line", "file" }, { max_parents = 3 }),
+                        structlog.processors.Timestamper("%H:%M:%S"),
+                    },
+                    formatter = structlog.formatters.Format( --
+                        "%s [%s] %s: %-30s",
+                        { "timestamp", "level", "logger_name", "msg" }
+                    ),
+                    sink = structlog.sinks.File(self:get_path("trace")),
                 },
                 {
                     level = structlog.level.WARN,
