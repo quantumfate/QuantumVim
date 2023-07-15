@@ -2,7 +2,7 @@
 local M = {}
 local Log = require "qvim.log"
 local utils = require "qvim.utils"
-local autocmds = require "qvim.integrations.autocmds"
+local autocmds = require "qvim.core.autocmds"
 
 local function add_lsp_buffer_options(bufnr)
     for k, v in pairs(qvim.lsp.buffer_options) do
@@ -85,9 +85,9 @@ function M.setup()
 
     if qvim.use_icons then
         for _, sign in
-            ipairs(
-                vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}
-            )
+        ipairs(
+            vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}
+        )
         do
             vim.fn.sign_define(
                 sign.name,
@@ -99,8 +99,8 @@ function M.setup()
     local function set_handler_opts_if_not_set(name, handler, opts)
         if
             debug
-                .getinfo(vim.lsp.handlers[name], "S").source
-                :match(vim.env.VIMRUNTIME)
+            .getinfo(vim.lsp.handlers[name], "S").source
+            :match(vim.env.VIMRUNTIME)
         then
             vim.lsp.handlers[name] = vim.lsp.with(handler, opts)
         end
