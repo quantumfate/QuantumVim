@@ -43,4 +43,38 @@ function lualine_util.env_cleanup(venv)
     return venv
 end
 
+---@param displayed string
+---@param ctx table
+function lualine_util.unified_format(displayed, ctx)
+    return displayed:lower()
+end
+
+---@param branch_name string
+---@param max_length number
+---@return string
+function lualine_util.shorten_branch_name(branch_name, max_length)
+    if #branch_name <= max_length then
+        return branch_name
+    end
+
+    local parts = {}
+    for part in string.gmatch(branch_name, "([^-%/]+)") do
+        table.insert(parts, part)
+    end
+
+    if #parts == 1 then
+        return branch_name:sub(1, max_length) .. "..."
+    end
+
+    local new_branch_name = ""
+    for i, part in ipairs(parts) do
+        if #new_branch_name + #part > max_length then
+            break
+        end
+        new_branch_name = new_branch_name .. (i > 1 and "-" or "") .. part
+    end
+
+    return new_branch_name .. "..."
+end
+
 return lualine_util

@@ -1,6 +1,10 @@
 local conditions = require("qvim.core.plugins.lualine.conditions")
----@class colors
+---@type colors
 local colors = require("qvim.core.plugins.lualine.util").get_colors()
+---@type lualine_highlights
+local highlights = require("qvim.core.plugins.lualine.highlights")
+local util = require("qvim.core.plugins.lualine.util")
+local fn_t = require("qvim.utils.fn_t")
 
 local function diff_source()
     local gitsigns = vim.b.gitsigns_status_dict
@@ -39,15 +43,22 @@ return {
         "mode",
         padding = { left = 1, right = 1 },
         cond = nil,
+        ---@param displayed string
+        ---@param ctx table
+        fmt = function(displayed, ctx)
+            return util.unified_format(displayed, ctx)
+        end
     },
     branch = {
         "b:gitsigns_head",
-        icon = branch,
+        icon = qvim.icons.git.Branch,
+        fmt = function(displayed, ctx)
+            local s = util.shorten_branch_name(displayed, 50)
+            return util.unified_format(s, ctx)
+        end
     },
     filename = {
         "filename",
-        color = {},
-        cond = nil,
     },
     diff = {
         "diff",
@@ -159,6 +170,31 @@ return {
             return language_servers
         end,
         cond = conditions.hide_in_width,
+    },
+    lsp_progress = {
+        'lsp_progress',
+        display_components = { 'lsp_client_name', { 'title', 'percentage', 'message' } },
+        -- With spinner
+        -- display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' }},
+        colors = {
+            percentage      = colors.sapphire,
+            title           = colors.sapphire,
+            message         = colors.sapphire,
+            spinner         = colors.sapphire,
+            lsp_client_name = colors.red,
+            use             = true,
+        },
+        separators = {
+            component = ' ',
+            progress = ' | ',
+            percentage = { pre = '', post = '%% ' },
+            title = { pre = '', post = ': ' },
+            lsp_client_name = { pre = '[', post = ']' },
+            spinner = { pre = '', post = '' },
+            message = { commenced = 'In Progress', completed = 'Completed' },
+        },
+        timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
+        spinner_symbols = { '🌑 ', '🌒 ', '🌓 ', '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' },
     },
     location = {
         "location",

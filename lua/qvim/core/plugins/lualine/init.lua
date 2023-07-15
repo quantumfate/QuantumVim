@@ -11,6 +11,9 @@
 ---@field fmt fun(displayed: string, ctx: table)|nil
 ---@field on_click fun(count: number, m_button:string, modifiers:table)|nil
 
+---@type lualine_components
+local lualine_components = require("qvim.core.plugins.lualine.components")
+local color_template = require("qvim.core.plugins.lualine.color").catppuccin
 
 ---@class lualine : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil
@@ -46,7 +49,7 @@ local lualine = {
             icons_enabled = qvim.config.use_icons,
             component_separators = { left = qvim.icons.ui.LineMiddle, right = qvim.icons.ui.LineMiddle },
             section_separators = { left = qvim.icons.ui.BoldDividerRight, right = qvim.icons.ui.BoldDividerLeft },
-            theme = "catppuccin",
+            theme = color_template,
             disabled_filetypes = { statusline = { "alpha" }, "dashboard", "NvimTree", "Outline" },
             globalstatus = true,
         },
@@ -58,12 +61,27 @@ local lualine = {
         ---@field lualine_y table<component>|nil
         ---@field lualine_z table<component>|nil
         sections = {
-            lualine_a = nil,
-            lualine_b = nil,
-            lualine_c = nil,
-            lualine_x = nil,
-            lualine_y = nil,
-            lualine_z = nil,
+            lualine_a = {
+                lualine_components.mode,
+            },
+            lualine_b = {
+                lualine_components.branch,
+            },
+            lualine_c = {
+                lualine_components.diff,
+                lualine_components.python_env,
+                lualine_components.lsp_progress,
+            },
+            lualine_x = {
+                lualine_components.diagnostics,
+                lualine_components.lsp,
+                lualine_components.spaces,
+                lualine_components.filetype,
+            },
+            lualine_y = { lualine_components.location },
+            lualine_z = {
+                lualine_components.progress,
+            },
         },
         ---@class inactive_sections : table
         ---@field lualine_a table<component>|nil
@@ -73,77 +91,38 @@ local lualine = {
         ---@field lualine_y table<component>|nil
         ---@field lualine_z table<component>|nil
         inactive_sections = {
-            lualine_a = nil,
-            lualine_b = nil,
-            lualine_c = nil,
-            lualine_x = nil,
-            lualine_y = nil,
-            lualine_z = nil,
+            lualine_a = {
+                lualine_components.mode,
+            },
+            lualine_b = {
+                lualine_components.branch,
+            },
+            lualine_c = {
+                lualine_components.diff,
+                lualine_components.python_env,
+                lualine_components.lsp_progress,
+            },
+            lualine_x = {
+                lualine_components.diagnostics,
+                lualine_components.lsp,
+                lualine_components.spaces,
+                lualine_components.filetype,
+            },
+            lualine_y = { lualine_components.location },
+            lualine_z = {
+                lualine_components.progress,
+            },
+            tabline = nil,
+            extensions = nil,
         },
-        tabline = nil,
-        extensions = nil,
     },
     keymaps = {},
     main = "lualine",
-    ---@param self lualine
-    ---@param lualine table
-    on_setup_start = function(self, lualine)
-        ---@type lualine_components
-        local lualine_components = require("qvim.core.plugins.lualine.components")
-
-        ---@type sections
-        self.options.sections = vim.tbl_deep_extend("force", {
-            lualine_a = {
-                lualine_components.mode,
-            },
-            lualine_b = {
-                lualine_components.branch,
-            },
-            lualine_c = {
-                lualine_components.diff,
-                lualine_components.python_env,
-            },
-            lualine_x = {
-                lualine_components.diagnostics,
-                lualine_components.lsp,
-                lualine_components.spaces,
-                lualine_components.filetype,
-            },
-            lualine_y = { lualine_components.location },
-            lualine_z = {
-                lualine_components.progress,
-            },
-        }, self.options.sections)
-        self.options.inactive_sections = vim.tbl_deep_extend("force", {
-            lualine_a = {
-                lualine_components.mode,
-            },
-            lualine_b = {
-                lualine_components.branch,
-            },
-            lualine_c = {
-                lualine_components.diff,
-                lualine_components.python_env,
-            },
-            lualine_x = {
-                lualine_components.diagnostics,
-                lualine_components.lsp,
-                lualine_components.spaces,
-                lualine_components.filetype,
-            },
-            lualine_y = { lualine_components.location },
-            lualine_z = {
-                lualine_components.progress,
-            },
-        }, self.options.inactive_sections)
-        local color_template = require("qvim.core.plugins.lualine.color").catppuccin
-        self.options.options.theme = color_template
-    end,
+    on_setup_start = nil,
     setup = nil,
     on_setup_done = nil,
     url = "https://github.com/nvim-lualine/lualine.nvim",
 }
-
 lualine.__index = lualine
 
 return lualine
