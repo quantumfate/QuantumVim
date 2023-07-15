@@ -110,6 +110,14 @@ function util.plugins_tbl_size()
     return count
 end
 
+---Returns the plugin from a lua path
+---@param plugin_path string
+---@return string
+function util.get_plugin_basename(plugin_path)
+    local basename = plugin_path:match("[^%.]+$")
+    return basename
+end
+
 ---Calls the setup function of the meta table that `self` extends.
 ---It is possible to invoke any setup function by providing the necessary
 ---fields in a `setmetatable` that the setup function expects. If a custom

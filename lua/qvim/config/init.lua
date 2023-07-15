@@ -13,6 +13,7 @@ function M:init()
     ---@field format_on_save format_on_save
     ---@field luasnip luasnip
     ---@field icons icons
+    ---@field lsp table
     ---@field autocommands autocommands
     _G.qvim = setmetatable(
         {},
@@ -32,8 +33,8 @@ function M:init()
 
     if not os.getenv "QV_FIRST_TIME_SETUP" then
         require("qvim.core").init_plugin_configurations()
-        --local qvim_lsp_config = require "qvim.lang.config"
-        --qvim.lsp = vim.deepcopy(qvim_lsp_config)
+        local qvim_lsp_config = require "qvim.lang.config"
+        qvim.lsp = vim.deepcopy(qvim_lsp_config)
         vim.cmd.colorscheme(qvim.config.colorscheme)
     end
 

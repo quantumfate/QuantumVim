@@ -93,15 +93,15 @@ local nvim_tree = {
         },
       },
       icons = {
-        webdev_colors = qvim.use_icons,
+        webdev_colors = qvim.config.use_icons,
         git_placement = "before",
         padding = " ",
         symlink_arrow = " ➛ ",
         show = {
-          file = qvim.use_icons,
-          folder = qvim.use_icons,
-          folder_arrow = qvim.use_icons,
-          git = qvim.use_icons,
+          file = qvim.config.use_icons,
+          folder = qvim.config.use_icons,
+          folder_arrow = qvim.config.use_icons,
+          git = qvim.config.use_icons,
         },
         glyphs = {
           default = qvim.icons.ui.Text,
@@ -147,7 +147,7 @@ local nvim_tree = {
       ignore_list = {},
     },
     diagnostics = {
-      enable = qvim.use_icons,
+      enable = qvim.config.use_icons,
       show_on_dirs = false,
       show_on_open_dirs = true,
       debounce_delay = 50,

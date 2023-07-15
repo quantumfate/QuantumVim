@@ -90,6 +90,7 @@ local nvim_dap = {
             return
         end
         if qvim.config.use_icons then
+            print(vim.inspect(self.options))
             vim.fn.sign_define("DapBreakpoint", self.options.breakpoint)
             vim.fn.sign_define("DapBreakpointRejected", self.options.breakpoint_rejected)
             vim.fn.sign_define("DapStopped", self.options.stopped)

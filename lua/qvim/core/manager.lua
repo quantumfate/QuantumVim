@@ -1,8 +1,9 @@
 local manager = {}
 
 local utils = require "qvim.utils"
-local Log = require "qvim.log"
+local log = require "qvim.log"
 local join_paths = utils.join_paths
+local fmt = string.format
 
 local get_qvim_dir = _G.get_qvim_dir
 
@@ -152,7 +153,7 @@ function manager:reload(spec)
             "%s : something went wrong when trying to reload the lazy plugin config spec [%s]",
             lineinfo
         )
-        Log:error(msg)
+        log:error(msg)
         for m, _ in pairs(old_modules) do
             modules.require_safe(m)
         end
@@ -172,10 +173,10 @@ function manager:load(spec)
         startup_spec = require("qvim.core").load_lazy_spec()
     end
     spec = spec or startup_spec
-    Log:debug "loading plugins configuration"
+    log:debug "loading plugins configuration"
     local lazy_available, lazy = pcall(require, "lazy")
     if not lazy_available then
-        Log:warn "skipping loading plugins until lazy.nvim is installed"
+        log:warn "skipping loading plugins until lazy.nvim is installed"
         return
     end
 
@@ -183,7 +184,7 @@ function manager:load(spec)
         local opts = {
             install = {
                 missing = true,
-                colorscheme = { qvim.colorscheme, "habamax" },
+                colorscheme = { qvim.config.colorscheme, "habamax" },
             },
             ui = {
                 border = "rounded",
@@ -207,18 +208,19 @@ function manager:load(spec)
     end, debug.traceback)
 
     if not status_ok then
-        Log:warn "problems detected while loading plugins' configurations"
-        Log:trace(debug.traceback())
+        log:warn "problems detected while loading plugins' configurations"
+        log:trace(debug.traceback())
     end
 end
 
----Requires the plugin spec and filter
+---Returns a list of plugins from the lazy spec
 ---@return table
 function manager:get_integrations()
     local names = {}
-    local integrations = require "qvim.integrations._loader.spec"
+    local integrations = require("qvim.core").load_lazy_spec_light()
     local get_name = require("lazy.core.plugin").Spec.get_name
     for _, spec in pairs(integrations) do
+        print(vim.inspect(spec))
         if spec.enabled == true or spec.enabled == nil then
             table.insert(names, get_name(spec[1]))
         end
@@ -226,19 +228,48 @@ function manager:get_integrations()
     return names
 end
 
-function manager:sync_integrations()
+---Update, clean, install or sync the plugins from lazy. Stages and commits the lazy lock pre and post update.
+---@param action string update, clean, install or sync
+function manager:lazy_do_plugins(action)
+    local actions = { ["update"] = 1, ["clean"] = 2, ["install"] = 3, ["sync"] = 4 }
+    local proxy = setmetatable({}, {
+        __index = function(_, k)
+            return actions[k:lower()]
+        end,
+        __newindex = function(_, _, _)
+            return error("Immutable table")
+        end
+    })
     local integrations = manager:get_integrations()
-    Log:trace(
+    log:trace(
         string.format(
-            "Syncing integrations: [%q]",
+            "[%s] Plugins: [%q]",
+            action:upper(),
             table.concat(integrations, ", ")
         )
     )
-    require("lazy").update { wait = true, plugins = integrations }
+    local git = require("qvim.utils.git").git_cmd
+    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state pre-" .. action .. "\"" } }
+
+    local opts = { wait = true, plugins = integrations }
+    local mode = proxy[action]
+    if mode == 1 then
+        require("lazy").update(opts)
+    elseif mode == 2 then
+        require("lazy").clean(opts)
+    elseif mode == 3 then
+        require("lazy").install(opts)
+    elseif mode == 4 then
+        require("lazy").sync(opts)
+    else
+        log:error(fmt("Invalid mode '%s' for lazy update.", action))
+    end
+
+    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-" .. action .. "\"" } }
 end
 
 function manager.ensure_plugins()
-    Log:debug "calling lazy.install()"
+    log:debug "calling lazy.install()"
     require("lazy").install { wait = true }
 end
 

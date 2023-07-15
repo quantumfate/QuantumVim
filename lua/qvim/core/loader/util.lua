@@ -169,8 +169,9 @@ function util.minimal_plugin_spec(url, hr_name, path)
 
     local success, spec = pcall(require, path)
     if not success then
+        path = core_utils.get_plugin_basename(path)
         log:debug(fmt("[core.loader] No spec available for '%s'.", path))
-        return {}
+        spec = {}
     end
 
     local dependencies
