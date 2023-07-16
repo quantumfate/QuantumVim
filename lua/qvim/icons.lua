@@ -172,6 +172,7 @@ return {
     ---@field Search string
     ---@field SignIn string
     ---@field SignOut string
+    ---@field SmallDot string
     ---@field Tab string
     ---@field Table string
     ---@field Target string
@@ -248,6 +249,7 @@ return {
         Search = "",
         SignIn = "",
         SignOut = "",
+        SmallDot = "",
         Tab = "",
         Table = "",
         Target = "",

@@ -32,6 +32,7 @@ end
 ---@field diagnostics component
 ---@field treesitter component
 ---@field lsp component
+---@field copilot component
 ---@field location component
 ---@field progress component
 ---@field spaces component
@@ -122,16 +123,11 @@ return {
 
             local buf_ft = vim.bo.filetype
             local buf_client_names = {}
-            local copilot_active = false
 
             -- add client
             for _, client in pairs(buf_clients) do
                 if client.name ~= "null-ls" and client.name ~= "copilot" then
                     table.insert(buf_client_names, client.name)
-                end
-
-                if client.name == "copilot" then
-                    copilot_active = true
                 end
             end
 
@@ -160,16 +156,40 @@ return {
                 end
                 return unique_list
             end
-            local unique_client_names = table.concat(make_unique(buf_client_names), ", ")
-            local language_servers = string.format("[%s]", unique_client_names)
+            local unique_client_names = table.concat(make_unique(buf_client_names), " " .. qvim.icons.ui.SmallDot .. " ")
+            local language_servers = string.format("%s", unique_client_names)
 
-            if copilot_active then
-                language_servers = language_servers .. " " .. qvim.icons.git.Octoface .. " "
-            end
-
-            return language_servers
+            return highlights.TextOneGreyBg(language_servers)
         end,
         cond = conditions.hide_in_width,
+        padding = { left = 2, right = 2 },
+
+    },
+    copilot = {
+        function()
+            local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+            if #buf_clients == 0 then
+                return "LSP Inactive"
+            end
+            local copilot_active = false
+
+            -- add client
+            for _, client in pairs(buf_clients) do
+                if client.name == "copilot" then
+                    copilot_active = true
+                end
+            end
+
+            local icon = highlights.ItemInactiveGreyBg(qvim.icons.git.Octoface)
+            if copilot_active then
+                icon = highlights.ItemActiveGreyBg(qvim.icons.git.Octoface)
+            end
+
+            return icon
+        end,
+        cond = conditions.hide_in_width,
+        padding = { left = 2, right = 2 },
+
     },
     lsp_progress = {
         'lsp_progress',
@@ -222,6 +242,7 @@ return {
     filetype = {
         "filetype",
         cond = nil,
+        padding = { left = 2, right = 2 },
     },
     scrollbar = {
         function()
@@ -233,7 +254,6 @@ return {
             return chars[index]
         end,
         padding = { left = 0, right = 0 },
-        color = "SLProgress",
         cond = nil,
     },
 }

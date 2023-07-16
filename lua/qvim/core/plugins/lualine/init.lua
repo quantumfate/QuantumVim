@@ -14,6 +14,8 @@
 ---@type lualine_components
 local lualine_components = require("qvim.core.plugins.lualine.components")
 local color_template = require("qvim.core.plugins.lualine.color").catppuccin
+---@type lualine_highlights
+local lualine_highlights = require("qvim.core.plugins.lualine.highlights")
 
 ---@class lualine : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil
@@ -47,7 +49,10 @@ local lualine = {
         options = {
             -- lualine option configuration
             icons_enabled = qvim.config.use_icons,
-            component_separators = { left = qvim.icons.ui.LineMiddle, right = qvim.icons.ui.LineMiddle },
+            component_separators = {
+                left = lualine_highlights.ComponentDividerDarkBg(qvim.icons.ui.DividerRight),
+                right = lualine_highlights.ComponentDividerDarkBg(qvim.icons.ui.DividerLeft)
+            },
             section_separators = { left = qvim.icons.ui.BoldDividerRight, right = qvim.icons.ui.BoldDividerLeft },
             theme = color_template,
             disabled_filetypes = { statusline = { "alpha" }, "dashboard", "NvimTree", "Outline" },
@@ -75,10 +80,13 @@ local lualine = {
             lualine_x = {
                 lualine_components.diagnostics,
                 lualine_components.lsp,
-                lualine_components.spaces,
+                lualine_components.copilot,
                 lualine_components.filetype,
             },
-            lualine_y = { lualine_components.location },
+            lualine_y = {
+
+                lualine_components.location
+            },
             lualine_z = {
                 lualine_components.progress,
             },
@@ -105,10 +113,12 @@ local lualine = {
             lualine_x = {
                 lualine_components.diagnostics,
                 lualine_components.lsp,
-                lualine_components.spaces,
                 lualine_components.filetype,
             },
-            lualine_y = { lualine_components.location },
+            lualine_y = {
+
+                lualine_components.location
+            },
             lualine_z = {
                 lualine_components.progress,
             },

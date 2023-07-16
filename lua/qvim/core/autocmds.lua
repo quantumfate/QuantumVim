@@ -219,32 +219,37 @@ function M.load_defaults()
                 end
             }
         },
-        --[[         {
+        {
             "ColorScheme",
             {
                 group = "_qvim_colorscheme",
                 callback = function()
-                    if qvim.integrations.breadcrumbs.active then
-                        require("qvim.integrations.breadcrumbs").get_winbar()
+                    if qvim.plugins.nvim_navic.enabled then
+                        require("qvim.core.plugins.nvim-navic").get_winbar()
                     end
-                    local statusline_hl = vim.api.nvim_get_hl_by_name("StatusLine", true)
-                    local cursorline_hl = vim.api.nvim_get_hl_by_name("CursorLine", true)
-                    local normal_hl = vim.api.nvim_get_hl_by_name("Normal", true)
-                    vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
-                    vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = "#CA42F0" })
-                    vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = "#F64D00" })
-                    vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
-                    vim.api.nvim_set_hl(0, "SLCopilot", { fg = "#6CC644", bg = "#1e2030" })
-                    vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = cursorline_hl.background })
-                    vim.api.nvim_set_hl(0, "SLBranchName", { fg = normal_hl.foreground, bg = cursorline_hl.background })
+                    ---@type colors
+                    local colors = require("catppuccin.palettes").get_palette("mocha")
+
+
+                    vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = colors.green })
+                    vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = colors.mauve })
+                    vim.api.nvim_set_hl(0, "CmpItemKindCrate", { fg = colors.peach })
+                    vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = colors.yellow })
+                    vim.api.nvim_set_hl(0, "QVLLCopilot", { fg = colors.green })
+                    vim.api.nvim_set_hl(0, "QVLLGitIcon", { fg = colors.rosewater })
+                    vim.api.nvim_set_hl(0, "QVLLBranchName", { fg = colors.rosewater })
                     vim.api.nvim_set_hl(
                         0,
-                        "SLSeparator",
-                        { fg = cursorline_hl.background, bg = statusline_hl.background }
+                        "QVLLComponentSeparatorGreyBg",
+                        { fg = colors.pink, bg = colors.surface0 }
                     )
+                    vim.api.nvim_set_hl(0, "QVLLTextOneGreyBg", { fg = colors.rosewater, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLTextTwoGreyBg", { fg = colors.pink, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLItemActiveGreyBg", { fg = colors.teal, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLItemInactiveGreyBg", { fg = colors.red, bg = colors.surface0 })
                 end,
             },
-        }, ]]
+        },
         { -- taken from AstroNvim
             "BufEnter",
             {
