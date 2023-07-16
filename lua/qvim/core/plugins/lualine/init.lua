@@ -50,10 +50,13 @@ local lualine = {
             -- lualine option configuration
             icons_enabled = qvim.config.use_icons,
             component_separators = {
-                left = lualine_highlights.ComponentDividerDarkBg(qvim.icons.ui.DividerRight),
-                right = lualine_highlights.ComponentDividerDarkBg(qvim.icons.ui.DividerLeft)
+                left = lualine_highlights.ComponentSeparatorGreyBg(qvim.icons.misc.Stars),
+                right = lualine_highlights.ComponentSeparatorGreyBg(qvim.icons.misc.Stars)
             },
-            section_separators = { left = qvim.icons.ui.BoldDividerRight, right = qvim.icons.ui.BoldDividerLeft },
+            section_separators = {
+                left = qvim.icons.ui.BoldCircleDividerLeft,
+                right = qvim.icons.ui.BoldCircleDividerRight
+            },
             theme = color_template,
             disabled_filetypes = { statusline = { "alpha" }, "dashboard", "NvimTree", "Outline" },
             globalstatus = true,
@@ -80,6 +83,10 @@ local lualine = {
             lualine_x = {
                 lualine_components.diagnostics,
                 lualine_components.lsp,
+                lualine_components.diagnostics_source,
+                lualine_components.formatters_source,
+                lualine_components.code_action_source,
+                lualine_components.hover_source,
                 lualine_components.copilot,
                 lualine_components.filetype,
             },
@@ -113,6 +120,11 @@ local lualine = {
             lualine_x = {
                 lualine_components.diagnostics,
                 lualine_components.lsp,
+                lualine_components.diagnostics_source,
+                lualine_components.formatters_source,
+                lualine_components.code_action_source,
+                lualine_components.hover_source,
+                lualine_components.copilot,
                 lualine_components.filetype,
             },
             lualine_y = {

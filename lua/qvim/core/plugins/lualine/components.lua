@@ -4,7 +4,7 @@ local colors = require("qvim.core.plugins.lualine.util").get_colors()
 ---@type lualine_highlights
 local highlights = require("qvim.core.plugins.lualine.highlights")
 local util = require("qvim.core.plugins.lualine.util")
-local fn_t = require("qvim.utils.fn_t")
+local fmt = string.format
 
 local function diff_source()
     local gitsigns = vim.b.gitsigns_status_dict
@@ -15,12 +15,6 @@ local function diff_source()
             removed = gitsigns.removed,
         }
     end
-end
-
-local branch = qvim.icons.git.Branch
-
-if qvim.config.colorscheme == "catppuccin" then
-    branch = "%#SLGitIcon#" .. qvim.icons.git.Branch .. "%*" .. "%#SLBranchName#"
 end
 
 ---@class lualine_components
@@ -116,61 +110,98 @@ return {
     },
     lsp = {
         function()
-            local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+            local buf_clients = vim.lsp.get_active_clients({ bufnr = vim.api.nvim_get_current_buf() })
             if #buf_clients == 0 then
-                return "LSP Inactive"
+                return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.LanguageServer)
             end
-
-            local buf_ft = vim.bo.filetype
-            local buf_client_names = {}
 
             -- add client
+            local lsps = {}
             for _, client in pairs(buf_clients) do
                 if client.name ~= "null-ls" and client.name ~= "copilot" then
-                    table.insert(buf_client_names, client.name)
+                    table.insert(lsps, client.name)
                 end
             end
-
-            local formatters = require("qvim.lang.null-ls.methodservice.formatters")
-            local supported_formatters = formatters:list_registered(buf_ft)
-            vim.list_extend(buf_client_names, supported_formatters)
-
-            local diagnostics = require("qvim.lang.null-ls.methodservice.diagnostics")
-            local supported_diagnostics = diagnostics:list_registered(buf_ft)
-            vim.list_extend(buf_client_names, supported_diagnostics)
-
-            local code_actions = require("qvim.lang.null-ls.methodservice.code_actions")
-            local supported_code_actions = code_actions:list_registered(buf_ft)
-            vim.list_extend(buf_client_names, supported_code_actions)
-
-            local hover = require("qvim.lang.null-ls.methodservice.hover")
-            local supported_hover = hover:list_registered(buf_ft)
-            vim.list_extend(buf_client_names, supported_hover)
-
-            local make_unique = function(list)
-                local unique_list = {}
-                for _, item in pairs(list) do
-                    if not vim.tbl_contains(unique_list, item) then
-                        table.insert(unique_list, item)
-                    end
-                end
-                return unique_list
+            if not lsps[0] then
+                return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.LanguageServer)
             end
-            local unique_client_names = table.concat(make_unique(buf_client_names), " " .. qvim.icons.ui.SmallDot .. " ")
-            local language_servers = string.format("%s", unique_client_names)
-
-            return highlights.TextOneGreyBg(language_servers)
+            return highlights.ItemActiveGreyLighterBg(qvim.icons.ui.LanguageServer) .. " " ..
+                highlights.TextOneGreyLighterBg(util.unique_list_string_format(lsps))
         end,
-        cond = conditions.hide_in_width,
-        padding = { left = 2, right = 2 },
+        cond = function()
+            return conditions.hide_in_width() --or conditions.no_clients()
+        end,
+        padding = { left = 1, right = 1 },
+        separator = { left = highlights.ComponentSeparatorGreyLighterFgGreyBg(qvim.icons.ui.BoldCircleDividerRight) }
 
+    },
+    diagnostics_source = {
+        function()
+            local diagnostics = util.get_registered_methods("diagnostics")
+            if #diagnostics == 0 or not diagnostics then
+                return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.DiagnosticsSource)
+            else
+                return highlights.ItemActiveGreyLighterBg(qvim.icons.ui.DiagnosticsSource) ..
+                    " " .. highlights.TextTwoGreyLighterBg(diagnostics)
+            end
+        end,
+        cond = function()
+            return conditions.hide_in_width() or conditions.no_clients()
+        end,
+        padding = { left = 1, right = 1 },
+        separator = { left = highlights.ComponentSeparatorGreyLighterFgGreyBg(qvim.icons.ui.BoldCircleDividerRight) }
+    },
+    formatters_source = {
+        function()
+            local formatters = util.get_registered_methods("formatters")
+            if #formatters == 0 or not formatters then
+                return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.FormatterSource)
+            else
+                return highlights.ItemActiveGreyLighterBg(qvim.icons.ui.FormatterSource) ..
+                    " " .. highlights.TextThreeGreyLighterBg(formatters)
+            end
+        end,
+        cond = function()
+            return conditions.hide_in_width() or conditions.no_clients()
+        end,
+        padding = { left = 1, right = 1 },
+        separator = { left = highlights.ComponentSeparatorGreyLighterFgGreyBg(qvim.icons.ui.BoldCircleDividerRight) }
+    },
+    code_action_source = {
+        function()
+            local code_actions = util.get_registered_methods("code_actions")
+            if #code_actions == 0 or not code_actions then
+                return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.CodeActionSource)
+            else
+                return highlights.ItemActiveGreyLighterBg(qvim.icons.ui.CodeActionSource) ..
+                    " " .. highlights.TextFourGreyLighterBg(code_actions)
+            end
+        end,
+        cond = function()
+            return conditions.hide_in_width() or conditions.no_clients()
+        end,
+        padding = { left = 1, right = 1 },
+        separator = { left = highlights.ComponentSeparatorGreyLighterFgGreyBg(qvim.icons.ui.BoldCircleDividerRight) }
+    },
+    hover_source = {
+        function()
+            local hover = util.get_registered_methods("hover")
+            if #hover == 0 or not hover then
+                return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.HoverSource)
+            else
+                return highlights.ItemActiveGreyLighterBg(qvim.icons.ui.HoverSource) ..
+                    " " .. highlights.TextFiveGreyLighterBg(hover)
+            end
+        end,
+        cond = function()
+            return conditions.hide_in_width() or conditions.no_clients()
+        end,
+        padding = { left = 1, right = 2 },
+        separator = { left = highlights.ComponentSeparatorGreyLighterFgGreyBg(qvim.icons.ui.BoldCircleDividerRight) }
     },
     copilot = {
         function()
             local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
-            if #buf_clients == 0 then
-                return "LSP Inactive"
-            end
             local copilot_active = false
 
             -- add client
@@ -187,8 +218,14 @@ return {
 
             return icon
         end,
-        cond = conditions.hide_in_width,
-        padding = { left = 2, right = 2 },
+        cond = function()
+            return conditions.hide_in_width() or conditions.no_clients()
+        end,
+        padding = { left = 1, right = 1 },
+        separator = {
+            left = highlights.ComponentSeparatorGreyFgLighterGreyBg(qvim.icons.ui.BoldCircleDividerRight),
+            right = { highlights.ComponentSeparatorGreyBg(qvim.icons.misc.Stars) }
+        }
 
     },
     lsp_progress = {
@@ -214,10 +251,16 @@ return {
             message = { commenced = 'In Progress', completed = 'Completed' },
         },
         timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
-        spinner_symbols = { '🌑 ', '🌒 ', '🌓 ', '🌔 ', '🌕 ', '🌖 ', '🌗 ', '🌘 ' },
+        spinner_symbols = { qvim.icons.ui.MoonOne .. " ", qvim.icons.ui.MoonTwo .. " ", qvim.icons.ui.MoonThree .. " ",
+            qvim.icons.ui.MoonFour .. " ", qvim.icons.ui.MoonFive .. " ", qvim.icons.ui.MoonSix .. " ",
+            qvim.icons.ui.MoonSeven .. " ", qvim.icons.ui.MoonEight .. " " },
     },
     location = {
         "location",
+        fmt = function(string, ctx)
+            return fmt("%s", string)
+        end,
+        padding = { left = 1, right = 0 },
     },
     progress = {
         "progress",

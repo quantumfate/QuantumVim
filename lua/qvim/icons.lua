@@ -4,6 +4,7 @@
 ---@field ui ui
 ---@field diagnostics diagnostics
 ---@field misc misc
+---@field signs signs
 return {
     ---@class kind
     ---@field Array string
@@ -108,6 +109,11 @@ return {
         Branch = "",
     },
     ---@class ui
+    ---@field LanguageServer string
+    ---@field HoverSource string
+    ---@field FormatterSource string
+    ---@field DiagnosticsSource string
+    ---@field CodeActionSource string
     ---@field ArrowCircleDown string
     ---@field ArrowCircleLeft string
     ---@field ArrowCircleRight string
@@ -117,6 +123,8 @@ return {
     ---@field BoldArrowRight string
     ---@field BoldArrowUp string
     ---@field BoldClose string
+    ---@field BoldCircleDividerLeft string
+    ---@field BoldCircleDividerRight string
     ---@field BoldDividerLeft string
     ---@field BoldDividerRight string
     ---@field BoldLineLeft string
@@ -184,7 +192,20 @@ return {
     ---@field TriangleShortArrowLeft string
     ---@field TriangleShortArrowRight string
     ---@field TriangleShortArrowUp string
+    ---@field MoonOne string
+    ---@field MoonTwo string
+    ---@field MoonThree string
+    ---@field MoonFour string
+    ---@field MoonFive string
+    ---@field MoonSix string
+    ---@field MoonSeven string
+    ---@field MoonEight string
     ui = {
+        LanguageServer = "",
+        HoverSource = "",
+        FormatterSource = "󰉠",
+        DiagnosticsSource = "󰨯",
+        CodeActionSource = "󱉂",
         ArrowCircleDown = "",
         ArrowCircleLeft = "",
         ArrowCircleRight = "",
@@ -196,6 +217,8 @@ return {
         BoldClose = "",
         BoldDividerLeft = "",
         BoldDividerRight = "",
+        BoldCircleDividerLeft = "",
+        BoldCircleDividerRight = "",
         BoldLineLeft = "▎",
         BookMark = "",
         BoxChecked = "",
@@ -261,6 +284,14 @@ return {
         TriangleShortArrowLeft = "",
         TriangleShortArrowRight = "",
         TriangleShortArrowUp = "",
+        MoonOne = "",
+        MoonTwo = "",
+        MoonThree = "",
+        MoonFour = "",
+        MoonFive = "",
+        MoonSix = "",
+        MoonSeven = "",
+        MoonEight = "",
     },
     ---@class diagnostics
     ---@field BoldError string
@@ -297,6 +328,7 @@ return {
     ---@field Smiley string
     ---@field Package string
     ---@field CircuitBoard string
+    ---@field Stars string
     misc = {
         Robot = "ﮧ",
         Squirrel = "",
@@ -305,5 +337,243 @@ return {
         Smiley = "",
         Package = "",
         CircuitBoard = "",
+        Stars = "",
+    },
+    ---@class signs
+    ---@field ABoxFull string
+    ---@field ABoxOutline string
+    ---@field ACircleFull string
+    ---@field ACircleOutline string
+    ---@field BBoxFull string
+    ---@field BBoxOutline string
+    ---@field BCircleFull string
+    ---@field BCircleOutline string
+    ---@field CBoxFull string
+    ---@field CBoxOutline string
+    ---@field CCircleFull string
+    ---@field CCircleOutline string
+    ---@field DBoxFull string
+    ---@field DBoxOutline string
+    ---@field DCircleFull string
+    ---@field DCircleOutline string
+    ---@field EBoxFull string
+    ---@field EBoxOutline string
+    ---@field ECircleFull string
+    ---@field ECircleOutline string
+    ---@field FBoxFull string
+    ---@field FBoxOutline string
+    ---@field FCircleFull string
+    ---@field FCircleOutline string
+    ---@field GBoxFull string
+    ---@field GBoxOutline string
+    ---@field GCircleFull string
+    ---@field GCircleOutline string
+    ---@field HBoxFull string
+    ---@field HBoxOutline string
+    ---@field HCircleFull string
+    ---@field HCircleOutline string
+    ---@field IBoxFull string
+    ---@field IBoxOutline string
+    ---@field ICircleFull string
+    ---@field ICircleOutline string
+    ---@field JBoxFull string
+    ---@field JBoxOutline string
+    ---@field JCircleFull string
+    ---@field JCircleOutline string
+    ---@field KBoxFull string
+    ---@field KBoxOutline string
+    ---@field KCircleFull string
+    ---@field KCircleOutline string
+    ---@field LBoxFull string
+    ---@field LBoxOutline string
+    ---@field LCircleFull string
+    ---@field LCircleOutline string
+    ---@field MBoxFull string
+    ---@field MBoxOutline string
+    ---@field MCircleFull string
+    ---@field MCircleOutline string
+    ---@field NBoxFull string
+    ---@field NBoxOutline string
+    ---@field NCircleFull string
+    ---@field NCircleOutline string
+    ---@field OBoxFull string
+    ---@field OBoxOutline string
+    ---@field OCircleFull string
+    ---@field OCircleOutline string
+    ---@field PBoxFull string
+    ---@field PBoxOutline string
+    ---@field PCircleFull string
+    ---@field PCircleOutline string
+    ---@field QBoxFull string
+    ---@field QBoxOutline string
+    ---@field QCircleFull string
+    ---@field QCircleOutline string
+    ---@field RBoxFull string
+    ---@field RBoxOutline string
+    ---@field RCircleFull string
+    ---@field RCircleOutline string
+    ---@field SBoxFull string
+    ---@field SBoxOutline string
+    ---@field SCircleFull string
+    ---@field SCircleOutline string
+    ---@field TBoxFull string
+    ---@field TBoxOutline string
+    ---@field TCircleFull string
+    ---@field TCircleOutline string
+    ---@field UBoxFull string
+    ---@field UBoxOutline string
+    ---@field UCircleFull string
+    ---@field UCircleOutline string
+    ---@field VBoxFull string
+    ---@field VBoxOutline string
+    ---@field VCircleFull string
+    ---@field VCircleOutline string
+    ---@field WBoxFull string
+    ---@field WBoxOutline string
+    ---@field WCircleFull string
+    ---@field WCircleOutline string
+    ---@field XBoxFull string
+    ---@field XBoxOutline string
+    ---@field XCircleFull string
+    ---@field XCircleOutline string
+    ---@field YBoxFull string
+    ---@field YBoxOutline string
+    ---@field YCircleFull string
+    ---@field YCircleOutline string
+    ---@field ZBoxFull string
+    ---@field ZBoxOutline string
+    ---@field ZCircleFull string
+    ---@field ZCircleOutline string
+    signs = {
+        A = "󰫮",
+        ABoxFull = "󰬈",
+        ABoxOutline = "󰯫",
+        ACircleFull = "󰯬",
+        ACircleOutline = "󰯭",
+        B = "󰫯",
+        BBoxFull = "󰬉",
+        BBoxOutline = "󰯮",
+        BCircleFull = "󰯯",
+        BCircleOutline = "󰯰",
+        C = "󰫰",
+        CBoxFull = "󰬊",
+        CBoxOutline = "󰯱",
+        CCircleFull = "󰯲",
+        CCircleOutline = "󰯳",
+        D = "󰫱",
+        DBoxFull = "󰬋",
+        DBoxOutline = "󰯴",
+        DCircleFull = "󰯵",
+        DCircleOutline = "󰯶",
+        E = "󰫲",
+        EBoxFull = "󰬌",
+        EBoxOutline = "󰯷",
+        ECircleFull = "󰯸",
+        ECircleOutline = "󰯹",
+        F = "󰫳",
+        FBoxFull = "󰬍",
+        FBoxOutline = "󰯺",
+        FCircleFull = "󰯻",
+        FCircleOutline = "󰯼",
+        G = "󰫴",
+        GBoxFull = "󰬎",
+        GBoxOutline = "󰯽",
+        GCircleFull = "󰯾",
+        GCircleOutline = "󰯿",
+        H = "󰫵",
+        HBoxFull = "󰬏",
+        HBoxOutline = "󰰀",
+        HCircleFull = "󰰁",
+        HCircleOutline = "󰰂",
+        I = "󱂈",
+        IBoxFull = "󰬐",
+        IBoxOutline = "󰰃",
+        ICircleFull = "󰰄",
+        ICircleOutline = "󰰅",
+        J = "󰫷",
+        JBoxFull = "󰬑",
+        JBoxOutline = "󰰆",
+        JCircleFull = "󰰇",
+        JCircleOutline = "󰰈",
+        K = "󰫸",
+        KBoxFull = "󰬒",
+        KBoxOutline = "󰰉",
+        KCircleFull = "󰰊",
+        KCircleOutline = "󰰋",
+        L = "󱎦",
+        LBoxFull = "󰬓",
+        LBoxOutline = "󰰌",
+        LCircleFull = "󰰍",
+        LCircleOutline = "󰰎",
+        M = "󰫺",
+        MBoxFull = "󰬔",
+        MBoxOutline = "󰰏",
+        MCircleFull = "󰰐",
+        MCircleOutline = "󰰑",
+        N = "󰫻",
+        NBoxFull = "󰬕",
+        NBoxOutline = "󰰒",
+        NCircleFull = "󰰓",
+        NCircleOutline = "󰰔",
+        O = "󰬹",
+        OBoxFull = "󰬖",
+        OBoxOutline = "󰰕",
+        OCircleFull = "󰲞",
+        OCircleOutline = "󰲟",
+        P = "󰫽",
+        PBoxFull = "󰬗",
+        PBoxOutline = "󰰘",
+        PCircleFull = "󰰙",
+        PCircleOutline = "󰰚",
+        Q = "󰫾",
+        QBoxFull = "󰬘",
+        QBoxOutline = "󰰛",
+        QCircleFull = "󰰜",
+        QCircleOutline = "󰰝",
+        R = "󰫿",
+        RBoxFull = "󰬙",
+        RBoxOutline = "󰰞",
+        RCircleFull = "󰰟",
+        RCircleOutline = "󰰠",
+        S = "󰬀",
+        SBoxFull = "󰬚",
+        SBoxOutline = "󰰡",
+        SCircleFull = "󰰢",
+        SCircleOutline = "󰰣",
+        T = "󰬁",
+        TBoxFull = "󰬛",
+        TBoxOutline = "󰰤",
+        TCircleFull = "󰰥",
+        TCircleOutline = "󰰦",
+        U = "󰬂",
+        UBoxFull = "󰬜",
+        UBoxOutline = "󰰧",
+        UCircleFull = "󰰨",
+        UCircleOutline = "󰰩",
+        V = "󱂌",
+        VBoxFull = "󰬝",
+        VBoxOutline = "󰰪",
+        VCircleFull = "󰰫",
+        VCircleOutline = "󰰬",
+        W = "󰬄",
+        WBoxFull = "󰬞",
+        WBoxOutline = "󰰭",
+        WCircleFull = "󰰮",
+        WCircleOutline = "󰰯",
+        X = "󱂑",
+        XBoxFull = "󰬟",
+        XBoxOutline = "󰰰",
+        XCircleFull = "󰰱",
+        XCircleOutline = "󰰲",
+        Y = "󰬆",
+        YBoxFull = "󰬠",
+        YBoxOutline = "󰰳",
+        YCircleFull = "󰰴",
+        YCircleOutline = "󰰵",
+        Z = "󰬇",
+        ZBoxFull = "󰬡",
+        ZBoxOutline = "󰰶",
+        ZCircleFull = "󰰷",
+        ZCircleOutline = "󰰸",
     },
 }

@@ -12,6 +12,10 @@ local conditions = {
     --   local gitdir = vim.fn.finddir(".git", filepath .. ";")
     --   return gitdir and #gitdir > 0 and #gitdir < #filepath
     -- end,
+    no_clients = function()
+        local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+        return #buf_clients == 0
+    end
 }
 
 return conditions

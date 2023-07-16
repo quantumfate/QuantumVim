@@ -249,7 +249,6 @@ function manager:lazy_do_plugins(action)
     local git = require("qvim.utils.git").git_cmd
     git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state pre-" .. action .. "\"" } }
 
-    print(vim.inspect(integrations))
     local opts = { wait = true, plugins = integrations }
     local mode = proxy[action]
     if mode == 1 then
@@ -264,7 +263,7 @@ function manager:lazy_do_plugins(action)
         log:error(fmt("Invalid mode '%s' for lazy update.", action))
     end
 
-    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-" .. action .. "\"" } }
+    git { args = { "commit", "-o", "lazy-lock.json", "-m 'Lazy: lazy-lock.json state post-" .. action .. "'" } }
 end
 
 function manager.ensure_plugins()

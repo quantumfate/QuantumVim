@@ -1,5 +1,8 @@
 local lualine_util = {}
 
+local log = require("qvim.log")
+local fmt = string.format
+
 ---@return colors
 function lualine_util.get_colors()
     ---@class colors
@@ -47,6 +50,66 @@ end
 ---@param ctx table
 function lualine_util.unified_format(displayed, ctx)
     return displayed:lower()
+end
+
+---Takes a list of strings, makes them unique and concatenates them by a separator
+---@param list table<string>
+---@param sep string|nil
+---@param limit number|nil the amount of items that should be displayed before the third item becomes the total count of items not displayed
+---@return string
+function lualine_util.unique_list_string_format(list, sep, limit)
+    sep = sep or ", "
+    limit = limit or 1
+    local unique_list = {}
+    for _, item in pairs(list) do
+        if not vim.tbl_contains(unique_list, item) then
+            table.insert(unique_list, item)
+        end
+    end
+    if limit > 0 and #unique_list > limit then
+        return unique_list[1] .. " +" .. tostring(#unique_list - 1)
+    elseif #unique_list > 1 then
+        return table.concat(unique_list, sep)
+    else
+        return unique_list[1] or ""
+    end
+end
+
+---Returns a string formatted by a unique list of methods on the current filetype
+---@param method string
+---@param sep string|nil
+---@return string|nil
+function lualine_util.get_registered_methods(method, sep)
+    local buf_ft = vim.bo.filetype
+    local ok, method_service = pcall(require, "qvim.lang.null-ls.methodservice." .. method)
+    if ok then
+        local supported_diagnostics = method_service:list_registered(buf_ft)
+        if method == "code_actions" then
+            return lualine_util.unique_list_string_format(supported_diagnostics, sep)
+        else
+            return lualine_util.unique_list_string_format(supported_diagnostics, sep, 2)
+        end
+    else
+        log:error(fmt("[lualine] Invalid method '%s'", method))
+        return nil
+    end
+end
+
+---@param letter string
+---@param modifier string|nil BoxFull, BoxOutline, CircleFull, CircleOutline or nil for normal symbol
+---@return string|nil result the symbol or nil
+function lualine_util.get_symbol(letter, modifier)
+    local lookup
+    if modifier then
+        lookup = string.upper(letter) .. modifier
+    else
+        lookup = string.upper(letter)
+    end
+    if qvim.icons.signs[lookup] then
+        return qvim.icons.signs[lookup]
+    else
+        return nil
+    end
 end
 
 ---@param branch_name string

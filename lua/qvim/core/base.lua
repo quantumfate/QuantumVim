@@ -4,7 +4,6 @@ core_base.__index = core_base
 
 local core_meta_plugin = require("qvim.core.meta.plugin")
 local core_meta_parent = require("qvim.core.meta.parent")
-local core_meta_ext = require("qvim.core.meta.ext")
 
 local core_base_mt = { __index = core_meta_plugin }
 local core_base_parent_mt = { __index = core_meta_parent }

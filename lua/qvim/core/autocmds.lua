@@ -238,15 +238,42 @@ function M.load_defaults()
                     vim.api.nvim_set_hl(0, "QVLLCopilot", { fg = colors.green })
                     vim.api.nvim_set_hl(0, "QVLLGitIcon", { fg = colors.rosewater })
                     vim.api.nvim_set_hl(0, "QVLLBranchName", { fg = colors.rosewater })
+
                     vim.api.nvim_set_hl(
                         0,
                         "QVLLComponentSeparatorGreyBg",
                         { fg = colors.pink, bg = colors.surface0 }
                     )
-                    vim.api.nvim_set_hl(0, "QVLLTextOneGreyBg", { fg = colors.rosewater, bg = colors.surface0 })
-                    vim.api.nvim_set_hl(0, "QVLLTextTwoGreyBg", { fg = colors.pink, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(
+                        0,
+                        "QVLLComponentSeparatorGreyFgLighterGreyBg",
+                        { fg = colors.surface0, bg = colors.surface1 }
+                    )
                     vim.api.nvim_set_hl(0, "QVLLItemActiveGreyBg", { fg = colors.teal, bg = colors.surface0 })
                     vim.api.nvim_set_hl(0, "QVLLItemInactiveGreyBg", { fg = colors.red, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLTextOneGreyBg", { fg = colors.rosewater, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLTextTwoGreyBg", { fg = colors.pink, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLTextThreeGreyBg", { fg = colors.peach, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLTextFourGreyBg", { fg = colors.sky, bg = colors.surface0 })
+                    vim.api.nvim_set_hl(0, "QVLLTextFiveGreyBg", { fg = colors.mauve, bg = colors.surface0 })
+
+                    vim.api.nvim_set_hl(
+                        0,
+                        "QVLLComponentSeparatorGreyLighterBg",
+                        { fg = colors.pink, bg = colors.surface1 }
+                    )
+                    vim.api.nvim_set_hl(
+                        0,
+                        "QVLLComponentSeparatorGreyLighterFgGreyBg",
+                        { fg = colors.surface1, bg = colors.surface0 }
+                    )
+                    vim.api.nvim_set_hl(0, "QVLLItemActiveGreyLighterBg", { fg = colors.teal, bg = colors.surface1 })
+                    vim.api.nvim_set_hl(0, "QVLLItemInactiveGreyLighterBg", { fg = colors.red, bg = colors.surface1 })
+                    vim.api.nvim_set_hl(0, "QVLLTextOneGreyLighterBg", { fg = colors.rosewater, bg = colors.surface1 })
+                    vim.api.nvim_set_hl(0, "QVLLTextTwoGreyLighterBg", { fg = colors.pink, bg = colors.surface1 })
+                    vim.api.nvim_set_hl(0, "QVLLTextThreeGreyLighterBg", { fg = colors.flamingo, bg = colors.surface1 })
+                    vim.api.nvim_set_hl(0, "QVLLTextFourGreyLighterBg", { fg = colors.lavender, bg = colors.surface1 })
+                    vim.api.nvim_set_hl(0, "QVLLTextFiveGreyLighterBg", { fg = colors.text, bg = colors.surface1 })
                 end,
             },
         },
