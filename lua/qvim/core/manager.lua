@@ -218,11 +218,9 @@ end
 function manager:get_integrations()
     local names = {}
     local integrations = require("qvim.core").load_lazy_spec_light()
-    local get_name = require("lazy.core.plugin").Spec.get_name
     for _, spec in pairs(integrations) do
-        print(vim.inspect(spec))
         if spec.enabled == true or spec.enabled == nil then
-            table.insert(names, get_name(spec[1]))
+            table.insert(names, spec.name)
         end
     end
     return names
@@ -251,6 +249,7 @@ function manager:lazy_do_plugins(action)
     local git = require("qvim.utils.git").git_cmd
     git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state pre-" .. action .. "\"" } }
 
+    print(vim.inspect(integrations))
     local opts = { wait = true, plugins = integrations }
     local mode = proxy[action]
     if mode == 1 then

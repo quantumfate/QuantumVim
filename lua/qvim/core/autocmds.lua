@@ -7,27 +7,27 @@ function M.load_defaults()
         return
     end
     local definitions = {
-        --[[  {
-            "VimEnter * silent!",
+        {
+            "VimEnter * ",
             {
                 group = "_general_settings",
                 desc = "Disable terminal padding",
                 callback = function()
-                    vim.cmd("!kitty @ set-spacing padding=0")
+                    vim.fn.system("kitty @ set-spacing padding=0 > /dev/null 2>&1")
                 end,
             },
         },
         {
-            "VimLeave * silent!",
+            "VimLeave * ",
             {
                 group = "_general_settings",
                 desc = "Disable terminal padding",
                 callback = function()
-                    vim.cmd("!kitty @ set-spacing padding=5")
+                    vim.fn.system("kitty @ set-spacing padding=5 > /dev/null 2>&1")
                 end,
             },
-        }, ]]
-        --[[         {
+        },
+        {
             {
                 "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
                 "BufWinEnter",
@@ -43,7 +43,7 @@ function M.load_defaults()
                     require("barbecue.ui").update()
                 end,
             },
-        }, ]]
+        },
         {
             "InsertEnter",
             {
