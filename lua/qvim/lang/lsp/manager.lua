@@ -144,20 +144,13 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 
     local package = lsp_utils.get_mason_package(server_name)
 
-    if
-        lsp_utils.is_client_active(server_name)
-        or client_is_configured(server_name)
-    then
-        if server_name == "jdtls" then
-            local config = resolve_config(server_name, user_config)
-            launch_server(server_name, config)
-        end
+    if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
         return
     end
 
     if shared_util.is_package(package) then
         shared_util.try_install_and_setup_mason_package(
-            ---@diagnostic disable-next-line: param-type-mismatch
+        ---@diagnostic disable-next-line: param-type-mismatch
             package,
             fmt("language server %s", server_name),
             function(_server_name, _user_config)

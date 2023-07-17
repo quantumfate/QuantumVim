@@ -81,7 +81,7 @@ function M.get_supported_servers(filter)
 end
 
 function M.setup_document_highlight(client, bufnr)
-    if qvim.builtin.illuminate.active then
+    if qvim.plugins.vim_illuminate.enabled or qvim.plugins.vim_illuminate.enabled() then
         Log:debug "skipping setup for document_highlight, illuminate already active"
         return
     end
@@ -124,7 +124,7 @@ function M.setup_document_symbols(client, bufnr)
     if not symbols_supported then
         Log:debug(
             "skipping setup for document_symbols, method not supported by "
-                .. client.name
+            .. client.name
         )
         return
     end
@@ -166,8 +166,8 @@ end
 ---@return boolean if client matches
 function M.format_filter(client)
     local filetype = vim.bo.filetype
-    local n = require "null-ls"
-    local s = require "null-ls.sources"
+    local n = require("null-ls")
+    local s = require("null-ls.sources")
     local method = n.methods.FORMATTING
     local available_formatters = s.get_available(filetype, method)
 
