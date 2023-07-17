@@ -11,7 +11,7 @@ function M.git_cmd(opts)
     end
 
     opts = opts or {}
-    opts.cwd = opts.cwd or get_qvim_dir()
+    opts.cwd = opts.cwd or get_qvim_config_dir()
 
     local stderr = {}
     local stdout, ret = Job:new({
@@ -58,7 +58,7 @@ local function safe_deep_fetch()
             Log:error(
                 fmt "Git fetch %s failed! Please pull the changes manually in %s",
                 fetch_mode,
-                get_qvim_dir()
+                get_qvim_config_dir()
             )
             return
         end
@@ -70,11 +70,11 @@ end
 function M.update_base_qvim()
     Log:info "Checking for updates"
 
-    if not vim.loop.fs_access(get_qvim_dir(), "w") then
+    if not vim.loop.fs_access(get_qvim_config_dir(), "w") then
         Log:warn(
             fmt(
                 "QuantumVim update aborted! cannot write to %s",
-                get_qvim_dir()
+                get_qvim_config_dir()
             )
         )
         return
@@ -96,7 +96,7 @@ function M.update_base_qvim()
     if ret ~= 0 then
         Log:error(
             "Update failed! Please pull the changes manually in "
-            .. get_qvim_dir()
+            .. get_qvim_config_dir()
         )
         return
     end

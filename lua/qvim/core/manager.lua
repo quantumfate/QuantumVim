@@ -5,9 +5,9 @@ local log = require "qvim.log"
 local join_paths = utils.join_paths
 local fmt = string.format
 
-local get_qvim_dir = _G.get_qvim_dir
+local get_qvim_config_dir = _G.get_qvim_config_dir
 
-local plugins_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
+local plugins_dir = join_paths(get_qvim_config_dir(), "site", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -69,7 +69,7 @@ function manager:init(opts)
     end
 
     local rtp = vim.opt.rtp:get()
-    local base_dir = (get_qvim_base_dir() or get_qvim_dir()):gsub("\\", "/")
+    local base_dir = (get_qvim_base_dir() or get_qvim_config_dir()):gsub("\\", "/")
     local idx_base = #rtp + 1
     for i, path in ipairs(rtp) do
         path = path:gsub("\\", "/")
@@ -86,7 +86,7 @@ function manager:init(opts)
     pcall(function()
         -- set a custom path for lazy's cache
         local lazy_cache = require "lazy.core.cache"
-        lazy_cache.path = join_paths(get_cache_dir(), "lazy", "luac")
+        lazy_cache.path = join_paths(get_qvim_cache_dir(), "lazy", "luac")
     end)
 end
 
@@ -193,14 +193,14 @@ function manager:load(spec)
             git = {
                 timeout = 120,
             },
-            lockfile = join_paths(get_qvim_dir(), "lazy-lock.json"),
+            lockfile = join_paths(get_qvim_config_dir(), "lazy-lock.json"),
             performance = {
                 rtp = {
                     reset = false,
                 },
             },
             readme = {
-                root = join_paths(get_qvim_dir(), "lazy", "readme"),
+                root = join_paths(get_qvim_config_dir(), "lazy", "readme"),
             },
         }
 
@@ -263,7 +263,7 @@ function manager:lazy_do_plugins(action)
         log:error(fmt("Invalid mode '%s' for lazy update.", action))
     end
 
-    git { args = { "commit", "-o", "lazy-lock.json", "-m 'Lazy: lazy-lock.json state post-" .. action .. "'" } }
+    git { args = { "commit", "-o", "lazy-lock.json", [[-m Lazy: lazy-lock.json state post-]] .. action } }
 end
 
 function manager.ensure_plugins()

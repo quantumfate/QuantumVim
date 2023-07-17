@@ -213,7 +213,7 @@ end
 ---@return string path of the logfile
 function Log:get_path(variant)
     variant = variant or ""
-    return string.format("%s/%s-%s.log", get_cache_dir(), variant:lower(), "qvim")
+    return string.format("%s/%s-%s.log", get_qvim_cache_dir(), variant:lower(), "qvim")
 end
 
 ---Add a log entry at TRACE level

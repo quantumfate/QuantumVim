@@ -46,7 +46,7 @@ local skipped_filetypes = { "plaintext", "toml", "proto" }
 local join_paths = require("qvim.utils").join_paths
 
 return {
-    templates_dir = join_paths(get_qvim_dir(), "site", "after", "ftplugin"),
+    templates_dir = join_paths(get_qvim_config_dir(), "site", "after", "ftplugin"),
     ---@deprecated use vim.diagnostic.config({ ... }) instead
     diagnostics = {},
     document_highlight = false,
