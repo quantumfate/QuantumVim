@@ -2,7 +2,7 @@
 set -eo pipefail
 
 OS="$(uname -s)"
-declare -xr NVIM_APPNAME="qvim"
+declare -xr NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 #Set branch to master unless specified by the user
 declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
