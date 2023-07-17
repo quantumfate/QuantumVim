@@ -1,6 +1,5 @@
 ---@class lang
 local M = {}
-local utils = require "qvim.utils"
 local autocmds = require "qvim.core.autocmds"
 
 function M.setup()

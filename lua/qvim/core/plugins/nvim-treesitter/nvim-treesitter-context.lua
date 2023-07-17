@@ -1,4 +1,4 @@
----@class nvim-treesitter-context : core_meta_ext, nvim-treesitter
+---@class nvim-treesitter-context : nvim-treesitter
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin

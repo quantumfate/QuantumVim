@@ -30,7 +30,7 @@ function manager:init(opts)
 
     if not utils.is_directory(lazy_install_dir) then
         print "Initializing first time setup"
-        local core_plugins_dir = join_paths(get_qvim_base_dir(), "plugins")
+        local core_plugins_dir = join_paths(get_qvim_config_dir(), "plugins")
         if utils.is_directory(core_plugins_dir) then
             vim.fn.mkdir(plugins_dir, "p")
             vim.loop.fs_rmdir(plugins_dir)
@@ -45,7 +45,7 @@ function manager:init(opts)
                 lazy_install_dir,
             }
             local default_snapshot_path =
-                join_paths(get_qvim_base_dir(), "snapshots", "default.json")
+                join_paths(get_qvim_config_dir(), "snapshots", "default.json")
             local snapshot = assert(
                 vim.fn.json_decode(vim.fn.readfile(default_snapshot_path))
             )
@@ -69,7 +69,7 @@ function manager:init(opts)
     end
 
     local rtp = vim.opt.rtp:get()
-    local base_dir = (get_qvim_base_dir() or get_qvim_config_dir()):gsub("\\", "/")
+    local base_dir = get_qvim_config_dir():gsub("\\", "/")
     local idx_base = #rtp + 1
     for i, path in ipairs(rtp) do
         path = path:gsub("\\", "/")

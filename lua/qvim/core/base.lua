@@ -164,7 +164,7 @@ function core_base.new_ext(hr_name_parent, extension_url, parent)
 				plugin["name"] = hr_name_ext
 			end
 			---@generic E
-			---@class AbstractExtension : core_meta_ext, AbstractParent
+			---@class AbstractExtension : AbstractParent
 			---@field enabled boolean
 			---@field name string|nil the human readable name
 			---@field options table|nil options used in the setup call of a neovim plugin

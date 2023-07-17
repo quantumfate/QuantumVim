@@ -7,7 +7,7 @@ function M.search_file(file, args)
         :new({
             command = "grep",
             args = { args, file },
-            cwd = get_cache_dir(),
+            cwd = get_qvim_cache_dir(),
             on_stderr = function(_, data)
                 table.insert(stderr, data)
             end,

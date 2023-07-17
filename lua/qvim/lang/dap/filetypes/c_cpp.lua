@@ -5,7 +5,7 @@ function c_cpp.setup()
     -- install codelldb with :MasonInstall codelldb
     -- configure nvim-dap (codelldb)
 
-    local dap = require "dap"
+    local dap = require("dap")
     dap.adapters.codelldb = {
         type = "server",
         port = "${port}",

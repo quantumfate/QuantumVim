@@ -48,7 +48,7 @@ local function safe_deep_fetch()
         Log:error(
             fmt "Git fetch %s failed! Please pull the changes manually in %s",
             fetch_mode,
-            get_qvim_base_dir()
+            get_qvim_config_dir()
         )
         return
     end

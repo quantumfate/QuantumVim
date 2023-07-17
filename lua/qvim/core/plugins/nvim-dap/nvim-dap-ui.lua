@@ -1,6 +1,6 @@
 local log = require("qvim.log")
 
----@class nvim-dap-ui : core_meta_ext, nvim-dap
+---@class nvim-dap-ui : nvim-dap
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin

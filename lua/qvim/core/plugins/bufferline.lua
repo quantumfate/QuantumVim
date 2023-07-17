@@ -167,7 +167,7 @@ function bufferline.buf_kill(kill_command, bufnr, force)
         prompt = string.format([[%s. Close it anyway? [y]es or [n]o (default: no): ]], warning),
       }, function(choice)
         if choice ~= nil and choice:match("ye?s?") then
-          M.buf_kill(kill_command, bufnr, true)
+          bufferline.buf_kill(kill_command, bufnr, true)
         end
       end)
       return

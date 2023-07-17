@@ -1,4 +1,4 @@
----@class telescope-lazy : core_meta_ext, telescope
+---@class telescope-lazy : telescope
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
