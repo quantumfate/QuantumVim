@@ -73,7 +73,7 @@ end
 
 ---Initialize the `&runtimepath` variables, load the globals and prepare for startup
 ---@return table
-function M:init(base_dir)
+function M:init()
     local utils = require "qvim.utils"
     self.qvim_config_dir = get_qvim_config_dir()
     self.qvim_cache_dir = get_qvim_cache_dir()
@@ -86,44 +86,11 @@ function M:init(base_dir)
         vim.opt.rtp:append(structlog_path)
         require("qvim.log"):init_pre_setup()
     end
-    function _G.get_qvim_base_dir()
-        return base_dir
-    end
 
-    --[[     vim.opt.rtp:remove(join_paths(vim.fn.stdpath("data"), "site"))
-    vim.opt.rtp:remove(join_paths(vim.fn.stdpath("data"), "site", "after"))
-    vim.opt.rtp:append(join_paths(self.qvim_config_dir, "after"))
-    vim.opt.rtp:append(join_paths(self.qvim_config_dir, "site", "after"))
-
-    vim.opt.rtp:remove(vim.fn.stdpath("config"))
-    vim.opt.rtp:remove(join_paths(vim.fn.stdpath("config"), "after"))
-    vim.opt.rtp:prepend(self.qvim_config_dir)
-    vim.opt.rtp:append(join_paths(self.qvim_config_dir, "after"))
- ]]
-    ---@meta overridden to use QUANTUMVIM_CACHE_DIR instead, since a lot of plugins call this function internally
-    ---NOTE: changes to "data" are currently unstable, see #2507
-    ---@diagnostic disable-next-line: duplicate-set-field
-    --[[     vim.fn.stdpath = function(what)
-        if what == "cache" then
-            return _G.get_qvim_cache_dir()
-        end
-        if what == "data" then
-            return _G.get_qvim_data_dir()
-        end
-        if what == "state" then
-            return _G.get_qvim_sate_dir()
-        end
-        if what == "config" then
-            return _G.get_qvim_config_dir()
-        end
-        return vim.call("stdpath", what)
-    end
- ]]
     require("qvim.core.manager"):init {
         package_root = self.pack_dir,
         install_path = self.lazy_install_dir,
     }
-
 
     require("qvim.config"):init()
     if utils.is_directory(structlog_path) then
