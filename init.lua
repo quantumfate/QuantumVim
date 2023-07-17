@@ -1,4 +1,4 @@
-local base_dir = vim.env.QUANTUMVIM_DIR
+local base_dir = vim.env.QUANTUMVIM_CONFIG_DIR
     or (function()
         local init_path = debug.getinfo(1, "S").source
         return init_path:sub(2):match("(.*[/\\])"):sub(1, -2)
