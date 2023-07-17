@@ -100,6 +100,72 @@ local catppuccin = {
       },
       -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
     },
+    custom_highlights = function(colors)
+      local ucolors = require('catppuccin.utils.colors')
+      local mocha = require('catppuccin.palettes').get_palette('mocha')
+      return {
+
+        -- Cmp Menu
+        PmenuSel = { fg = colors.base, bg = colors.maroon, style = { 'bold' } },
+
+        -- Telescope
+        TelescopeBorder = { fg = colors.blue },
+        TelescopeSelectionCaret = { fg = colors.flamingo },
+        TelescopeSelection = { fg = colors.text, bg = colors.surface0, style = { 'bold' } },
+        TelescopeMatching = { fg = colors.blue },
+        TelescopePromptPrefix = { fg = colors.yellow, bg = colors.crust },
+        TelescopePromptNormal = { bg = colors.crust },
+        TelescopeResultsNormal = { bg = colors.mantle },
+        TelescopePreviewNormal = { bg = colors.crust },
+        TelescopePromptBorder = { bg = colors.crust, fg = colors.crust },
+        TelescopeResultsBorder = { bg = colors.mantle, fg = colors.mantle },
+        TelescopePreviewBorder = { bg = colors.crust, fg = colors.crust },
+        TelescopePromptTitle = { fg = colors.crust, bg = colors.mauve },
+        TelescopeResultsTitle = { fg = colors.crust, bg = colors.mauve },
+        TelescopePreviewTitle = { fg = colors.crust, bg = colors.mauve },
+
+        -- Bufferline
+        BufferLineIndicatorSelected = { fg = colors.pink },
+        BufferLineIndicator = { fg = colors.base },
+        BufferLineModifiedSelected = { fg = colors.teal },
+        TabLineSel = { bg = colors.pink },
+
+        -- Cursorline & Linenumbers
+        CursorLine = { bg = colors.mantle },
+
+        -- Visual Mode
+        Visual = { bg = ucolors.darken('#9745be', 0.25, mocha.mantle), style = { 'italic' } },
+      }
+    end,
+    highlight_overrides = {
+      all = function(colors)
+        return {
+          -- borders
+          FloatBorder = { fg = colors.overlay0 },
+          LspInfoBorder = { link = "FloatBorder" },
+          NvimTreeWinSeparator = { link = "FloatBorder" },
+          WhichKeyBorder = { link = "FloatBorder" },
+          -- telescope
+          TelescopeBorder = { link = "FloatBorder" },
+          TelescopeTitle = { fg = colors.text },
+          TelescopeSelection = { link = "Selection" },
+          TelescopeSelectionCaret = { link = "Selection" },
+
+          -- bufferline
+          BufferLineTabSeparator = { link = "FloatBorder" },
+          BufferLineSeparator = { link = "FloatBorder" },
+          BufferLineOffsetSeparator = { link = "FloatBorder" },
+          --
+          FidgetTitle = { fg = colors.subtext1 },
+          FidgetTask = { fg = colors.subtext0 },
+
+          NotifyBackground = { bg = colors.base },
+          NotifyINFOBorder = { link = "NotifyInfoTitle" },
+          NotifyINFOIcon = { link = "NotifyINFOTitle" },
+          NotifyINFOTitle = { fg = colors.pink },
+        }
+      end,
+    },
   },
   keymaps = {},
   main = "catppuccin",
