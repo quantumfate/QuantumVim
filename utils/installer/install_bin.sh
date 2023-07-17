@@ -31,7 +31,7 @@ function setup_qvim() {
     -e s"#DATA_DIR_VAR#\"${QUANTUMVIM_DATA_DIR}\"#"g \
     -e s"#STATE_DIR_VAR#\"${QUANTUMVIM_STATE_DIR}\"#"g \
     -e s"#CACHE_DIR_VAR#\"${QUANTUMVIM_CACHE_DIR}\"#"g \
-    -e s"#APPNAME_VAR#\"${NVIM_APPNAME}\"#"g \ "$src" \
+    -e s"#APPNAME_VAR#\"${NVIM_APPNAME}\"#"g "$src" \
     | tee "$dst" >/dev/null
 
   chmod u+x "$dst"
