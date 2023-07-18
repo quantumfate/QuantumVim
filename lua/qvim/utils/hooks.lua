@@ -2,7 +2,7 @@ local M = {}
 
 local Log = require "qvim.log"
 local in_headless = #vim.api.nvim_list_uis() == 0
-local plugin_loader = require "qvim.integrations._loader"
+local plugin_loader = require "qvim.core.manager"
 
 function M.run_pre_update()
     Log:debug "Starting pre-update hook"
@@ -27,7 +27,6 @@ end
 ---It also forces regenerating any template ftplugin files
 ---Tip: Useful for clearing any outdated settings
 function M.reset_cache()
-    plugin_loader.reset_cache()
     local qvim_modules = {}
     for module, _ in pairs(package.loaded) do
         if module:match "qvim.core" or module:match "qvim.lsp" then

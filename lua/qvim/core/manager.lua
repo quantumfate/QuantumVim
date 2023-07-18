@@ -55,8 +55,21 @@ function manager:init(opts)
             }
         end
     end
-    vim.opt.rtp:prepend(lazy_install_dir)
+    local rtp = vim.opt.rtp:get()
+    local base_dir = get_qvim_config_dir():gsub("\\", "/")
+    local idx_base = #rtp + 1
+    for i, path in ipairs(rtp) do
+        path = path:gsub("\\", "/")
+        if path == base_dir then
+            idx_base = i + 1
+            break
+        end
+    end
+    table.insert(rtp, idx_base, lazy_install_dir)
+    table.insert(rtp, idx_base + 1, join_paths(plugins_dir, "*"))
+    vim.opt.rtp = rtp
 
+    vim.opt.packpath = vim.opt.rtp:get()
     pcall(function()
         -- set a custom path for lazy's cache
         local lazy_cache = require "lazy.core.cache"
@@ -66,75 +79,6 @@ end
 
 function manager:reset_cache()
     os.remove(require("lazy.core.cache").path)
-end
-
----Reloads all the plugins configured in spec,
----resets the cache for installed plugins and unloads
----old plugins to ensure everything will be clean loaded.
----Plugins will be unloaded at the beginning of the function
----call and when something goes wrong in the critical
----section, the unloaded plugins will be loaded again
----with their preserved state before they were unloaded.
----
----The manager.load(spec) function will be called
----at the end when everything went right.
----
----@param spec table the spec table https://github.com/folke/lazy.nvim#-plugin-spec
-function manager:reload(spec)
-    local modules = require "qvim.utils.modules"
-    local old_modules = {}
-    for m, _ in pairs(package.loaded) do
-        local old = modules.unload(m)
-        old_modules[#old_modules + 1] = old
-    end
-
-    ---Critical section when reloading plugins.
-    local function relaod()
-        local Config = require "lazy.config"
-        local lazy = require "lazy"
-        local hooks = require "qvim.utils.hooks"
-
-        hooks.reset_cache()
-        Config.spec = spec
-
-        require("lazy.core.plugin").load(true)
-        require("lazy.core.plugin").update_state()
-
-        local not_installed_plugins = vim.tbl_filter(function(plugin)
-            return not plugin._.installed
-        end, Config.plugins)
-
-        require("lazy.manage").clear()
-
-        if #not_installed_plugins > 0 then
-            lazy.install { wait = true }
-        end
-
-        if #Config.to_clean > 0 then
-            -- TODO: set show to true when lazy shows something useful on clean
-            lazy.clean { wait = true, show = false }
-        end
-    end
-
-    local success, _ = pcall(relaod)
-    if not success then
-        local trace = debug.getinfo(2, "SL")
-        local shorter_src = trace.short_src
-        local lineinfo = shorter_src
-            .. ":"
-            .. (trace.currentline or trace.linedefined)
-        local msg = string.format(
-            "%s : something went wrong when trying to reload the lazy plugin config spec [%s]",
-            lineinfo
-        )
-        log:error(msg)
-        for m, _ in pairs(old_modules) do
-            modules.require_safe(m)
-        end
-        return
-    else
-        manager:load(spec)
-    end
 end
 
 ---Loads all plugins and calls their setup function

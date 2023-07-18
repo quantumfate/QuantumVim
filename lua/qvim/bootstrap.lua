@@ -93,7 +93,6 @@ function M:init()
     }
     require("qvim.config"):init()
 
-    print(vim.inspect(vim.opt.rtp:get()))
     return self
 end
 
@@ -104,19 +103,17 @@ function M:setup()
     self.pack_dir = join_paths(get_qvim_data_dir(), "lazy")
     self.lazy_install_dir =
         join_paths(self.pack_dir, "lazy.nvim")
-    print(vim.inspect(vim.opt.rtp:get()))
 
     print(vim.inspect(vim.opt.rtp:get()))
     local structlog_path = join_paths(self.pack_dir, "structlog")
 
+    require("qvim.config"):setup()
     local manager = require "qvim.core.manager"
     manager:load()
-
-    require("qvim.config"):setup()
-
     if utils.is_directory(structlog_path) then
         require("qvim.log"):init_post_setup()
     end
+
     require("qvim.core.plugins.mason").bootstrap()
 end
 
