@@ -77,9 +77,9 @@ function M:init()
     local utils = require "qvim.utils"
     self.qvim_config_dir = get_qvim_config_dir()
     self.qvim_cache_dir = get_qvim_cache_dir()
-    self.pack_dir = join_paths(get_qvim_data_dir(), "lazy")
+    self.pack_dir = join_paths(get_qvim_data_dir(), "after", "pack")
     self.lazy_install_dir =
-        join_paths(self.pack_dir, "lazy.nvim")
+        join_paths(self.pack_dir, "lazy", "opt", "lazy.nvim")
 
     local structlog_path = join_paths(self.pack_dir, "structlog")
     if not os.getenv("QV_FIRST_TIME_SETUP") and utils.is_directory(structlog_path) then

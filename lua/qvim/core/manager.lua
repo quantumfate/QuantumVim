@@ -7,7 +7,7 @@ local fmt = string.format
 
 local get_qvim_config_dir = _G.get_qvim_config_dir
 
-local plugins_dir = join_paths(get_qvim_state_dir(), "after", "pack", "lazy", "opt")
+local plugins_dir = join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -156,6 +156,7 @@ function manager:load(spec)
 
     local status_ok = xpcall(function()
         local opts = {
+            root = plugins_dir,
             install = {
                 missing = true,
                 colorscheme = { qvim.config.colorscheme, "habamax" },
