@@ -15,6 +15,7 @@ function M:init()
     ---@field icons icons
     ---@field lsp table
     ---@field autocommands autocommands
+    ---@field log log
     _G.qvim = setmetatable(
         {},
         { __index = vim.deepcopy(require "qvim.config.config") }
@@ -31,15 +32,17 @@ function M:init()
         return languages
     end
 
+    Log:set_level(qvim.log.level)
+    Log:info "Configs were loaded."
+end
+
+function M:setup()
     if not os.getenv "QV_FIRST_TIME_SETUP" then
         require("qvim.core").init_plugin_configurations()
         local qvim_lsp_config = require "qvim.lang.config"
         qvim.lsp = vim.deepcopy(qvim_lsp_config)
         vim.cmd.colorscheme(qvim.config.colorscheme)
     end
-
-    Log:set_level(qvim.log.level)
-    Log:info "Configs were loaded."
 end
 
 --[[

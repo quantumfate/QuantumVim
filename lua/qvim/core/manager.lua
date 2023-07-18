@@ -7,7 +7,7 @@ local fmt = string.format
 
 local get_qvim_config_dir = _G.get_qvim_config_dir
 
-local plugins_dir = join_paths(get_qvim_config_dir(), "site", "pack", "lazy", "opt")
+local plugins_dir = join_paths(get_qvim_state_dir(), "after", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -21,10 +21,7 @@ function manager:init(opts)
     local lazy_install_dir = opts.install_path
         or join_paths(
             vim.fn.stdpath "data",
-            "site",
-            "pack",
             "lazy",
-            "opt",
             "lazy.nvim"
         )
 
@@ -57,32 +54,9 @@ function manager:init(opts)
                 snapshot["lazy.nvim"].commit,
             }
         end
-        vim.api.nvim_create_autocmd(
-            "User",
-            {
-                pattern = "LazyDone",
-                callback = function()
-                    require("qvim.lang").setup()
-                end
-            }
-        )
     end
+    vim.opt.rtp:prepend(lazy_install_dir)
 
-    local rtp = vim.opt.rtp:get()
-    local base_dir = get_qvim_config_dir():gsub("\\", "/")
-    local idx_base = #rtp + 1
-    for i, path in ipairs(rtp) do
-        path = path:gsub("\\", "/")
-        if path == base_dir then
-            idx_base = i + 1
-            break
-        end
-    end
-    table.insert(rtp, idx_base, lazy_install_dir)
-    table.insert(rtp, idx_base + 1, join_paths(plugins_dir, "*"))
-    vim.opt.rtp = rtp
-
-    vim.opt.packpath = vim.opt.rtp:get()
     pcall(function()
         -- set a custom path for lazy's cache
         local lazy_cache = require "lazy.core.cache"
@@ -189,7 +163,6 @@ function manager:load(spec)
             ui = {
                 border = "rounded",
             },
-            root = plugins_dir,
             git = {
                 timeout = 120,
             },

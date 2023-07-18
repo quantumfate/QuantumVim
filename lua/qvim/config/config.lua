@@ -81,6 +81,9 @@ return {
     icons = require "qvim.icons",
     ---@class autocommands
     autocommands = {},
+    ---@class log
+    ---@field level string
+    ---@field viewer table
     log = {
         ---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" },
         level = "error",

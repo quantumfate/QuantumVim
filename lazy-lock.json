@@ -1,6 +1,6 @@
 {
   "Comment": { "branch": "master", "commit": "176e85eeb63f1a5970d6b88f1725039d85ca0055" },
-  "LuaSnip": { "branch": "master", "commit": "45a4e899ca8f54936fe32ead6bba65f2a8d42e12" },
+  "LuaSnip": { "branch": "master", "commit": "1f72e43a446961a1372c54038882c1d36e105cab" },
   "alpha-nvim": { "branch": "main", "commit": "e4fc5e29b731bdf55d204c5c6a11dc3be70f3b65" },
   "barbecue": { "branch": "main", "commit": "cd7e7da622d68136e13721865b4d919efd6325ed" },
   "bufferline": { "branch": "main", "commit": "09b18b89ad2a2c2258a10bc06747f01bc1a42d0d" },
@@ -18,7 +18,6 @@
   "hop": { "branch": "master", "commit": "31e0e42e629bf16affea747132d9c54f55fb17c8" },
   "hover": { "branch": "main", "commit": "c366d1b0f9d6612d25681d3fea0f9ea46fa54f4d" },
   "indent-blankline": { "branch": "master", "commit": "4541d690816cb99a7fc248f1486aa87f3abce91c" },
-  "lazy.nvim": { "branch": "main", "commit": "25beed5e2e935ebc00d7e3eed1dc502df3c40e39" },
   "lualine": { "branch": "master", "commit": "05d78e9fd0cdfb4545974a5aa14b1be95a86e9c9" },
   "lualine-lsp-progress": { "branch": "master", "commit": "56842d097245a08d77912edf5f2a69ba29f275d7" },
   "mason": { "branch": "main", "commit": "5ad3e113b0c3fde3caba8630599373046f6197e8" },
