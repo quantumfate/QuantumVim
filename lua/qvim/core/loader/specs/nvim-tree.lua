@@ -6,4 +6,7 @@ return {
         "NvimTreeFindFileToggle",
     },
     event = "User DirOpened",
+    ft = {
+        "lua"
+    }
 }

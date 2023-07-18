@@ -122,7 +122,7 @@ return {
                     table.insert(lsps, client.name)
                 end
             end
-            if not lsps[0] then
+            if #lsps == 0 then
                 return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.LanguageServer)
             end
             return highlights.ItemActiveGreyLighterBg(qvim.icons.ui.LanguageServer) .. " " ..

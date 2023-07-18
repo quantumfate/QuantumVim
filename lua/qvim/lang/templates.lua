@@ -36,7 +36,14 @@ function M.generate_ftplugin(filetype, server_name, dir)
     if should_skip(server_name) then
         return
     end
+    local ft_buffer_cond = [[
+if vim.b.ftp_is_done then
+    return
+end
+]]
 
+    local set_buffer_cond = [[
+vim.b.ftp_is_done = true]]
     filetype = filetype:match "%.([^.]*)$" or filetype
     local filename = join_paths(dir, filetype .. ".lua")
     local setup_server_cmd = string.format(
@@ -55,12 +62,15 @@ function M.generate_ftplugin(filetype, server_name, dir)
         string.format([[require("qvim.lang.dap.manager").setup(%q)]], filetype)
     utils.write_file(
         filename,
-        setup_server_cmd
+        ft_buffer_cond
+        .. "\n"
+        .. setup_server_cmd
         .. "\n"
         .. setup_null_ls_cmd
         .. "\n"
         .. setup_dap_cmd
-        .. "\n",
+        .. "\n"
+        .. set_buffer_cond,
         "a"
     )
 end
