@@ -61,13 +61,12 @@ jobs:
           QV_IN_GIT_WORKFLOW: 1
         run: |
           qvim -c 'q'
-
-#       - name: Run unit-tests
-#         # NOTE: make sure to adjust the timeout if you start adding a lot of tests
-#         timeout-minutes: 4
-#         run: |
-#           nvim --version
-#           make test
+      - name: Run unit-tests
+        # NOTE: make sure to adjust the timeout if you start adding a lot of tests
+        timeout-minutes: 4
+        run: |
+          nvim --version
+          make test
 
 #   windows:
 #     name: "windows-latest"
