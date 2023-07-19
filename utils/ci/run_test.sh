@@ -2,7 +2,7 @@
 set -e
 
 export QV_FIRST_TIME_SETUP=1
-export QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$HOME/.local/config/qvim"}"
+export QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$HOME/.config/qvim"}"
 export NVIM_APPNAME="qvim"
 # we should start with an empty configuration
 QUANTUMVIM_CACHE_DIR="$(mktemp -d)"
@@ -14,7 +14,7 @@ echo "cache: $QUANTUMVIM_CACHE_DIR
 config: $QUANTUMVIM_CONFIG_DIR"
 
 qvim() {
-  nvim -u "$QUANTUMVIM_CONFIG_DIR/tests/minimal_init.lua" --cmd "set runtimepath+=$QUANTUMVIM_CONFIG_DIR" "$@"
+  nvim -u "$QUANTUMVIM_CONFIG_DIR/tests/minimal_init.lua" "$@"
 }
 
 if [ -n "$1" ]; then
