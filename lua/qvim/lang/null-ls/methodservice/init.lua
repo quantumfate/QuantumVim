@@ -32,7 +32,7 @@ local function find_root_dir()
         return ts_client.config.root_dir
     end
     local dirname = vim.fn.expand "%:p:h"
-    return util.root_pattern "package.json"(dirname)
+    return util.root_pattern "package.json" (dirname)
 end
 
 ---Find a command in the node_modules directory of the current project
@@ -126,7 +126,7 @@ function MethodService:register_sources(configs)
         local cmd = config.exe or config.command
         local name = config.name or cmd:gsub("-", "_")
         local type = self.method == null_ls.methods.CODE_ACTION
-                and "code_actions"
+            and "code_actions"
             or null_ls.methods[self.method]:lower()
         local source = type and null_ls.builtins[type][name]
         self.log:debug(
@@ -182,9 +182,9 @@ function MethodService:setup(generic_configs)
     if #registered > 0 then
         self.log:debug(
             "Registered the following "
-                .. self.method_str_arg
-                .. ": "
-                .. unpack(registered)
+            .. self.method_str_arg
+            .. ": "
+            .. unpack(registered)
         )
     end
 end

@@ -9,8 +9,7 @@ local fmt = string.format
 function M.setup(filetype)
     local package_available, package_name = utils.get_package_name(filetype)
 
-    local  ---@type booleancustom_spec_ok, ---@type Package|nilcustom_package, ---@type Package|nil
-        package
+    local custom_spec_ok, custom_package, package
 
     custom_spec_ok, custom_package = shared_util.register_custom_mason_package(
         filetype,

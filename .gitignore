@@ -12,4 +12,5 @@ store
 plugin
 lazy
 site
+after
 **/lsp.old

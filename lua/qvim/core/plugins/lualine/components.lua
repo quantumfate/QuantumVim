@@ -33,6 +33,7 @@ end
 ---@field encoding component
 ---@field filetype component
 ---@field scrollbar component
+---@field noice_recording component
 return {
     mode = {
         "mode",
@@ -122,7 +123,7 @@ return {
                     table.insert(lsps, client.name)
                 end
             end
-            if not lsps[0] then
+            if #lsps == 0 then
                 return highlights.ItemInactiveGreyLighterBg(qvim.icons.ui.LanguageServer)
             end
             return highlights.ItemActiveGreyLighterBg(qvim.icons.ui.LanguageServer) .. " " ..
@@ -228,32 +229,9 @@ return {
         }
 
     },
-    lsp_progress = {
-        'lsp_progress',
-        display_components = { 'lsp_client_name', { 'title', 'percentage', 'message' } },
-        -- With spinner
-        -- display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' }},
-        colors = {
-            percentage      = colors.sapphire,
-            title           = colors.sapphire,
-            message         = colors.sapphire,
-            spinner         = colors.sapphire,
-            lsp_client_name = colors.red,
-            use             = true,
-        },
-        separators = {
-            component = ' ',
-            progress = ' | ',
-            percentage = { pre = '', post = '%% ' },
-            title = { pre = '', post = ': ' },
-            lsp_client_name = { pre = '[', post = ']' },
-            spinner = { pre = '', post = '' },
-            message = { commenced = 'In Progress', completed = 'Completed' },
-        },
-        timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
-        spinner_symbols = { qvim.icons.ui.MoonOne .. " ", qvim.icons.ui.MoonTwo .. " ", qvim.icons.ui.MoonThree .. " ",
-            qvim.icons.ui.MoonFour .. " ", qvim.icons.ui.MoonFive .. " ", qvim.icons.ui.MoonSix .. " ",
-            qvim.icons.ui.MoonSeven .. " ", qvim.icons.ui.MoonEight .. " " },
+    noice_rocording = {
+        require("noice").api.statusline.mode.get,
+        cond = require("noice").api.statusline.mode.has,
     },
     location = {
         "location",

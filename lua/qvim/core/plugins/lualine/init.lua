@@ -78,7 +78,7 @@ local lualine = {
             lualine_c = {
                 lualine_components.diff,
                 lualine_components.python_env,
-                lualine_components.lsp_progress,
+                lualine_components.noice_recording,
             },
             lualine_x = {
                 lualine_components.diagnostics,
@@ -115,7 +115,7 @@ local lualine = {
             lualine_c = {
                 lualine_components.diff,
                 lualine_components.python_env,
-                lualine_components.lsp_progress,
+                lualine_components.noice_recording,
             },
             lualine_x = {
                 lualine_components.diagnostics,

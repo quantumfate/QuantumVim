@@ -5,9 +5,9 @@ local log = require "qvim.log"
 local join_paths = utils.join_paths
 local fmt = string.format
 
-local get_qvim_dir = _G.get_qvim_dir
+local get_qvim_config_dir = _G.get_qvim_config_dir
 
-local plugins_dir = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt")
+local plugins_dir = join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt")
 
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
@@ -21,16 +21,13 @@ function manager:init(opts)
     local lazy_install_dir = opts.install_path
         or join_paths(
             vim.fn.stdpath "data",
-            "site",
-            "pack",
             "lazy",
-            "opt",
             "lazy.nvim"
         )
 
     if not utils.is_directory(lazy_install_dir) then
         print "Initializing first time setup"
-        local core_plugins_dir = join_paths(get_qvim_base_dir(), "plugins")
+        local core_plugins_dir = join_paths(get_qvim_config_dir(), "plugins")
         if utils.is_directory(core_plugins_dir) then
             vim.fn.mkdir(plugins_dir, "p")
             vim.loop.fs_rmdir(plugins_dir)
@@ -45,7 +42,7 @@ function manager:init(opts)
                 lazy_install_dir,
             }
             local default_snapshot_path =
-                join_paths(get_qvim_base_dir(), "snapshots", "default.json")
+                join_paths(get_qvim_config_dir(), "snapshots", "default.json")
             local snapshot = assert(
                 vim.fn.json_decode(vim.fn.readfile(default_snapshot_path))
             )
@@ -57,19 +54,9 @@ function manager:init(opts)
                 snapshot["lazy.nvim"].commit,
             }
         end
-        vim.api.nvim_create_autocmd(
-            "User",
-            {
-                pattern = "LazyDone",
-                callback = function()
-                    require("qvim.lang").setup()
-                end
-            }
-        )
     end
-
     local rtp = vim.opt.rtp:get()
-    local base_dir = (get_qvim_base_dir() or get_qvim_dir()):gsub("\\", "/")
+    local base_dir = get_qvim_config_dir():gsub("\\", "/")
     local idx_base = #rtp + 1
     for i, path in ipairs(rtp) do
         path = path:gsub("\\", "/")
@@ -86,81 +73,12 @@ function manager:init(opts)
     pcall(function()
         -- set a custom path for lazy's cache
         local lazy_cache = require "lazy.core.cache"
-        lazy_cache.path = join_paths(get_cache_dir(), "lazy", "luac")
+        lazy_cache.path = join_paths(get_qvim_cache_dir(), "lazy", "luac")
     end)
 end
 
 function manager:reset_cache()
     os.remove(require("lazy.core.cache").path)
-end
-
----Reloads all the plugins configured in spec,
----resets the cache for installed plugins and unloads
----old plugins to ensure everything will be clean loaded.
----Plugins will be unloaded at the beginning of the function
----call and when something goes wrong in the critical
----section, the unloaded plugins will be loaded again
----with their preserved state before they were unloaded.
----
----The manager.load(spec) function will be called
----at the end when everything went right.
----
----@param spec table the spec table https://github.com/folke/lazy.nvim#-plugin-spec
-function manager:reload(spec)
-    local modules = require "qvim.utils.modules"
-    local old_modules = {}
-    for m, _ in pairs(package.loaded) do
-        local old = modules.unload(m)
-        old_modules[#old_modules + 1] = old
-    end
-
-    ---Critical section when reloading plugins.
-    local function relaod()
-        local Config = require "lazy.config"
-        local lazy = require "lazy"
-        local hooks = require "qvim.utils.hooks"
-
-        hooks.reset_cache()
-        Config.spec = spec
-
-        require("lazy.core.plugin").load(true)
-        require("lazy.core.plugin").update_state()
-
-        local not_installed_plugins = vim.tbl_filter(function(plugin)
-            return not plugin._.installed
-        end, Config.plugins)
-
-        require("lazy.manage").clear()
-
-        if #not_installed_plugins > 0 then
-            lazy.install { wait = true }
-        end
-
-        if #Config.to_clean > 0 then
-            -- TODO: set show to true when lazy shows something useful on clean
-            lazy.clean { wait = true, show = false }
-        end
-    end
-
-    local success, _ = pcall(relaod)
-    if not success then
-        local trace = debug.getinfo(2, "SL")
-        local shorter_src = trace.short_src
-        local lineinfo = shorter_src
-            .. ":"
-            .. (trace.currentline or trace.linedefined)
-        local msg = string.format(
-            "%s : something went wrong when trying to reload the lazy plugin config spec [%s]",
-            lineinfo
-        )
-        log:error(msg)
-        for m, _ in pairs(old_modules) do
-            modules.require_safe(m)
-        end
-        return
-    else
-        manager:load(spec)
-    end
 end
 
 ---Loads all plugins and calls their setup function
@@ -182,6 +100,7 @@ function manager:load(spec)
 
     local status_ok = xpcall(function()
         local opts = {
+            root = plugins_dir,
             install = {
                 missing = true,
                 colorscheme = { qvim.config.colorscheme, "habamax" },
@@ -189,18 +108,17 @@ function manager:load(spec)
             ui = {
                 border = "rounded",
             },
-            root = plugins_dir,
             git = {
                 timeout = 120,
             },
-            lockfile = join_paths(get_qvim_dir(), "lazy-lock.json"),
+            lockfile = join_paths(get_qvim_config_dir(), "lazy-lock.json"),
             performance = {
                 rtp = {
-                    reset = false,
+                    reset = true,
                 },
             },
             readme = {
-                root = join_paths(get_qvim_dir(), "lazy", "readme"),
+                root = join_paths(get_qvim_config_dir(), "lazy", "readme"),
             },
         }
 
@@ -263,7 +181,7 @@ function manager:lazy_do_plugins(action)
         log:error(fmt("Invalid mode '%s' for lazy update.", action))
     end
 
-    git { args = { "commit", "-o", "lazy-lock.json", "-m 'Lazy: lazy-lock.json state post-" .. action .. "'" } }
+    git { args = { "commit", "-o", "lazy-lock.json", [[-m Lazy: lazy-lock.json state post-]] .. action } }
 end
 
 function manager.ensure_plugins()

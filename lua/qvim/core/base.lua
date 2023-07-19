@@ -49,7 +49,7 @@ function core_base.new(hr_name)
 		local uv = vim.loop
 		local path_sep = uv.os_uname().version:match "Windows" and "\\" or "/"
 
-		if qvim_util.is_directory(join_paths(get_qvim_dir(), "lua", (plugin_path:gsub("%.", path_sep)))) then
+		if qvim_util.is_directory(join_paths(get_qvim_config_dir(), "lua", (plugin_path:gsub("%.", path_sep)))) then
 			core_util.vim_validate_wrapper({
 				enabled = { plugin.enabled, { "b", "f" }, true },
 				name = { plugin.name, "s", true },
@@ -164,7 +164,7 @@ function core_base.new_ext(hr_name_parent, extension_url, parent)
 				plugin["name"] = hr_name_ext
 			end
 			---@generic E
-			---@class AbstractExtension : core_meta_ext, AbstractParent
+			---@class AbstractExtension : AbstractParent
 			---@field enabled boolean
 			---@field name string|nil the human readable name
 			---@field options table|nil options used in the setup call of a neovim plugin

@@ -40,7 +40,7 @@ local mason = {
     },
 
     -- NOTE: should be available in $PATH
-    install_root_dir = join_paths(vim.fn.stdpath("data"), "mason"),
+    install_root_dir = join_paths(get_qvim_data_dir(), "mason"),
 
     -- NOTE: already handled in the bootstrap stage
     PATH = "skip",

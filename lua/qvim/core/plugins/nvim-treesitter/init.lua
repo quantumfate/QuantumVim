@@ -17,7 +17,7 @@ local nvim_treesitter = {
     extensions = {},
     conf_extensions = {},
     options = {
-        ensure_installed = { "comment", "markdown_inline", "regex", "dap_repl" },
+        ensure_installed = { "comment", "markdown_inline", "regex", "dap_repl", "bash", "vim", "markdown" },
 
         -- List of parsers to ignore installing (for "all")
         ignore_install = {},
@@ -68,7 +68,7 @@ local nvim_treesitter = {
     ---@param self nvim-treesitter
     ---@param instance table
     on_setup_start = function(self, instance)
-        local path = join_paths(get_qvim_dir(), "site", "pack", "lazy", "opt", "nvim-treesitter")
+        local path = join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt", "nvim-treesitter")
         vim.opt.rtp:prepend(path) -- treesitter needs to be before nvim's runtime in rtp
     end,
     setup = nil,

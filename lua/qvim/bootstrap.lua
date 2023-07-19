@@ -1,12 +1,13 @@
 local M = {}
+M.__index = M
 
 function _G.in_headless_mode()
     return #vim.api.nvim_list_uis() == 0
 end
 
-if vim.fn.has "nvim-0.8" ~= 1 then
+if vim.fn.has "nvim-0.9" ~= 1 then
     vim.notify(
-        "Please upgrade your Neovim base installation. This configuration requires v0.8+",
+        "Please upgrade your Neovim base installation. This configuration requires v0.9+",
         vim.log.levels.WARN
     )
     vim.wait(5000, function()
@@ -31,19 +32,39 @@ _G.require_clean = require("qvim.utils.modules").require_clean
 _G.require_safe = require("qvim.utils.modules").require_safe
 _G.reload = require("qvim.utils.modules").reload
 
----Get the full path to `$QUANTUMVIM_DIR`
+---Get the full path to `$QUANTUMVIM_CONFIG_DIR`
 ---@return string|nil
-function _G.get_qvim_dir()
-    local qvim_dir = os.getenv "QUANTUMVIM_DIR"
-    if not qvim_dir then
+function _G.get_qvim_config_dir()
+    local qvim_config_dir = os.getenv "QUANTUMVIM_CONFIG_DIR"
+    if not qvim_config_dir then
         return vim.call("stdpath", "config")
     end
-    return qvim_dir
+    return qvim_config_dir
+end
+
+---Get the full path to `$QUANTUMVIM_STATE_DIR`
+---@return string|nil
+function _G.get_qvim_state_dir()
+    local qvim_state_dir = os.getenv "QUANTUMVIM_STATE_DIR"
+    if not qvim_state_dir then
+        return vim.call("stdpath", "state")
+    end
+    return qvim_state_dir
+end
+
+---Get the full path to `$QUANTUMVIM_DATA_DIR`
+---@return string|nil
+function _G.get_qvim_data_dir()
+    local qvim_data_dir = os.getenv "QUANTUMVIM_DATA_DIR"
+    if not qvim_data_dir then
+        return vim.call("stdpath", "data")
+    end
+    return qvim_data_dir
 end
 
 ---Get the full path to `$QUANTUMVIM_CACHE_DIR`
 ---@return string
-function _G.get_cache_dir()
+function _G.get_qvim_cache_dir()
     local qvim_cache_dir = os.getenv "QUANTUMVIM_CACHE_DIR"
     if not qvim_cache_dir then
         return vim.call("stdpath", "cache")
@@ -51,58 +72,44 @@ function _G.get_cache_dir()
     return qvim_cache_dir
 end
 
+M.qvim_config_dir = get_qvim_config_dir()
+M.qvim_cache_dir = get_qvim_cache_dir()
+M.pack_dir = join_paths(get_qvim_data_dir(), "after", "pack")
+M.lazy_install_dir =
+    join_paths(M.pack_dir, "lazy", "opt", "lazy.nvim")
+
 ---Initialize the `&runtimepath` variables, load the globals and prepare for startup
 ---@return table
-function M:init(base_dir)
+function M:init()
     local utils = require "qvim.utils"
-    self.qvim_rtp_dir = get_qvim_dir()
-    self.cache_dir = get_cache_dir()
-    self.pack_dir = join_paths(self.qvim_rtp_dir, "site", "pack")
-    self.lazy_install_dir =
-        join_paths(self.pack_dir, "lazy", "opt", "lazy.nvim")
 
-    ---@meta overridden to use QUANTUMVIM_CACHE_DIR instead, since a lot of plugins call this function internally
-    ---NOTE: changes to "data" are currently unstable, see #2507
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.fn.stdpath = function(what)
-        if what == "cache" then
-            return _G.get_cache_dir()
-        end
-        return vim.call("stdpath", what)
-    end
-
-    local structlog_path = join_paths(self.pack_dir, "lazy", "opt", "structlog")
+    local structlog_path = join_paths(self.pack_dir, "structlog")
     if not os.getenv("QV_FIRST_TIME_SETUP") and utils.is_directory(structlog_path) then
         vim.opt.rtp:append(structlog_path)
         require("qvim.log"):init_pre_setup()
     end
-    function _G.get_qvim_base_dir()
-        return base_dir
-    end
-
-    vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site"))
-    vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site", "after"))
-    vim.opt.rtp:append(join_paths(self.qvim_rtp_dir, "after"))
-    vim.opt.rtp:append(join_paths(self.qvim_rtp_dir, "site", "after"))
-
-    vim.opt.rtp:remove(vim.call("stdpath", "config"))
-    vim.opt.rtp:remove(join_paths(vim.call("stdpath", "config"), "after"))
-    vim.opt.rtp:prepend(self.qvim_rtp_dir)
-    vim.opt.rtp:append(join_paths(self.qvim_rtp_dir, "after"))
 
     require("qvim.core.manager"):init {
         package_root = self.pack_dir,
         install_path = self.lazy_install_dir,
     }
-
-
     require("qvim.config"):init()
+
+    return self
+end
+
+function M:setup()
+    local utils = require "qvim.utils"
+
+    local structlog_path = join_paths(self.pack_dir, "structlog")
+
+    local manager = require "qvim.core.manager"
+    manager:load()
     if utils.is_directory(structlog_path) then
         require("qvim.log"):init_post_setup()
     end
-    --require("qvim.core.plugins.mason").bootstrap()
 
-    return self
+    require("qvim.core.plugins.mason").bootstrap()
 end
 
 ---Update qvimVim

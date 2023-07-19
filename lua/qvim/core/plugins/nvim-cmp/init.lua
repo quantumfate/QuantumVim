@@ -4,7 +4,6 @@ if not status_cmp_ok then
 end
 
 local methods = require("qvim.core.plugins.nvim-cmp.methods")
-
 local ConfirmBehavior = cmp_types.ConfirmBehavior
 local SelectBehavior = cmp_types.SelectBehavior
 

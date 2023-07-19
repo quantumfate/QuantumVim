@@ -158,67 +158,6 @@ function M.load_defaults()
                 end,
             },
         },
-        -- TODO: running these in between events is not my brightest moment
-        --[[         {
-            "User LazyUpdatePre",
-            {
-                group = "_qvim_health",
-                callback = function()
-                    local git = require("qvim.utils.git").git_cmd
-                    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-sync\"" } }
-                end
-            }
-        },
-        {
-            "User LazyUpdate",
-            {
-                group = "_qvim_health",
-                callback = function()
-                    local git = require("qvim.utils.git").git_cmd
-                    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-sync\"" } }
-                end
-            }
-        },
-        {
-            "User LazyInstallPre",
-            {
-                group = "_qvim_health",
-                callback = function()
-                    local git = require("qvim.utils.git").git_cmd
-                    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-sync\"" } }
-                end
-            }
-        },
-        {
-            "User LazyInstall",
-            {
-                group = "_qvim_health",
-                callback = function()
-                    local git = require("qvim.utils.git").git_cmd
-                    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-sync\"" } }
-                end
-            }
-        },
-        {
-            "User LazySyncPre",
-            {
-                group = "_qvim_health",
-                callback = function()
-                    local git = require("qvim.utils.git").git_cmd
-                    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-sync\"" } }
-                end
-            }
-        }, ]]
-        {
-            "User LazySync",
-            {
-                group = "_qvim_health",
-                callback = function()
-                    local git = require("qvim.utils.git").git_cmd
-                    git { args = { "commit", "-o", "lazy-lock.json", "-m \" Lazy: lazy-lock.json state post-sync\"" } }
-                end
-            }
-        },
         {
             "ColorScheme",
             {

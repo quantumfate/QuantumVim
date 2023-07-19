@@ -1,6 +1,6 @@
 local project_actions = require("telescope._extensions.project.actions")
 
----@class telescope-project : core_meta_ext, telescope
+---@class telescope-project : telescope
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin

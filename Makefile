@@ -41,3 +41,5 @@ style-lua:
 style-sh:
 	shfmt -f . | grep -v jdtls | xargs shfmt -i 2 -ci -bn -l -d
 	
+test:
+	bash ./utils/ci/run_test.sh "$(TEST)"

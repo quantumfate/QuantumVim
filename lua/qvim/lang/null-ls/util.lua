@@ -26,8 +26,8 @@ function M.resolve_null_ls_package_from_mason(null_ls_source_name)
     local registry = require "mason-registry"
 
     return Optional.of_nilable(
-        source_mappings.getPackageFromNullLs(null_ls_source_name)
-    )
+            source_mappings.getPackageFromNullLs(null_ls_source_name)
+        )
         :map(function(package_name)
             if not registry.has_package(package_name) then
                 Log:warn(
@@ -66,15 +66,21 @@ function M.register_sources_on_ft(method, source)
     if require("null-ls").is_registered(source) then
         return
     end
+
     local null_ls_methods = require("qvim.lang.null-ls._meta").method_bridge()
     local mason_null_ls_mapping = require "mason-null-ls.mappings.source"
+
     local source_options = {}
-    if not shared_util.is_package(source) then
-        local _, provided =
-            pcall(require, "qvim.lang.null-ls.sources." .. source)
-        source_options = provided or {}
-    else
+    local ok, provided
+    if shared_util.is_package(source) then
+        ok, provided = pcall(require, "qvim.lang.null-ls.sources." .. source.name)
         source = mason_null_ls_mapping.getNullLsFromPackage(source.name)
+    else
+        ok, provided = pcall(require, "qvim.lang.null-ls.sources." .. source)
+    end
+
+    if ok then
+        source_options = provided
     end
 
     source_options["name"] = source
@@ -99,7 +105,7 @@ function M.register_sources_on_ft(method, source)
 
     -- we need to pase this as a table itself to stay compatible with the service.register_sources(configs, method)
     ---@class MethodService
-    kind:setup { source_options }
+    kind:setup({ source_options })
     Log:info(fmt("Source '%s' for method '%s' was registered.", source, method))
     return true
 end

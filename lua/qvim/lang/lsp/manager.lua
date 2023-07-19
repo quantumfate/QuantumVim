@@ -107,6 +107,7 @@ local function launch_server(server_name, config)
         )
         return
     end
+
     require("lspconfig")[server_name].setup(config)
     buf_try_add(server_name)
     Log:debug(fmt("Server started: %s", server_name))
@@ -120,6 +121,7 @@ end
 function M.setup(server_name, filetype, user_config, skip_ft_ext)
     vim.validate { name = { server_name, "string" } }
     user_config = user_config or {}
+
 
     if not skip_ft_ext and filetype then
         local status_ok, filetypes = pcall(require, "qvim.lang.lsp.filetypes")
@@ -144,20 +146,13 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
 
     local package = lsp_utils.get_mason_package(server_name)
 
-    if
-        lsp_utils.is_client_active(server_name)
-        or client_is_configured(server_name)
-    then
-        if server_name == "jdtls" then
-            local config = resolve_config(server_name, user_config)
-            launch_server(server_name, config)
-        end
+    if lsp_utils.is_client_active(server_name) or client_is_configured(server_name) then
         return
     end
 
     if shared_util.is_package(package) then
         shared_util.try_install_and_setup_mason_package(
-            ---@diagnostic disable-next-line: param-type-mismatch
+        ---@diagnostic disable-next-line: param-type-mismatch
             package,
             fmt("language server %s", server_name),
             function(_server_name, _user_config)
@@ -166,6 +161,7 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
                     resolve_mason_config(_server_name),
                     _user_config
                 )
+
                 launch_server(_server_name, config)
             end,
             { server_name, user_config }

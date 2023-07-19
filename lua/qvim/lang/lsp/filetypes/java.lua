@@ -3,7 +3,9 @@
 local M = {}
 
 local Log = require "qvim.log"
-local fmt = string.format
+local lang_utils = require("qvim.lang.utils")
+local lsp_utils = require("qvim.lang.lsp.utils")
+local dap_utils = require("qvim.lang.dap.utils")
 ---Setup the jdtls for java
 ---@return boolean server_started whether the jdtls server started
 function M.setup()
@@ -60,7 +62,7 @@ function M.setup()
         vim.split(
             vim.fn.glob(
                 mason_path
-                    .. "packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
+                .. "packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
             ),
             "\n"
         )
@@ -135,17 +137,17 @@ function M.setup()
             "--add-opens",
             "java.base/java.lang=ALL-UNNAMED",
             "-javaagent:"
-                .. home
-                .. "/.local/share/nvim/mason/packages/jdtls/lombok.jar",
+            .. get_qvim_data_dir()
+            .. "/mason/packages/jdtls/lombok.jar",
             "-jar",
             vim.fn.glob(
-                home
-                    .. "/.local/share/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"
+                get_qvim_data_dir()
+                .. "/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"
             ),
             "-configuration",
-            home
-                .. "/.local/share/nvim/mason/packages/jdtls/config_"
-                .. os_config,
+            get_qvim_data_dir()
+            .. "/mason/packages/jdtls/config_"
+            .. os_config,
             "-data",
             workspace_dir,
         },
@@ -241,9 +243,23 @@ function M.setup()
         end,
     })
 
-    require("jdtls").start_or_attach(config)
+    local pkg_jdtls = lsp_utils.get_mason_package("jdtls")
+    ---@diagnostic disable-next-line: param-type-mismatch
+    lang_utils.try_install_and_setup_mason_package(pkg_jdtls, "jdtls", function()
 
-    local keymaps = require "qvim.keymaps"
+    end, {})
+    local pkg_java_test = dap_utils.resolve_test_package_from_mason("java")
+    ---@diagnostic disable-next-line: param-type-mismatch
+    lang_utils.try_install_and_setup_mason_package(pkg_java_test, "java-test", function()
+
+    end, {})
+    local pkg_java_debug_adapter = dap_utils.resolve_dap_package_from_mason("java")
+    ---@diagnostic disable-next-line: param-type-mismatch
+    lang_utils.try_install_and_setup_mason_package(pkg_java_debug_adapter, "java-debug-adapter", function()
+
+    end, {})
+    require("jdtls").start_or_attach(config)
+    --[[ local keymaps = require "qvim.keymaps"
 
     keymaps:register {
         {
@@ -303,7 +319,7 @@ function M.setup()
         },
     }
 
-    vim.cmd ":set ft=java" -- weird hack ik for seme reason java filetype doesn't load after opening the first file
+    vim.cmd ":set ft=java" -- weird hack ik fo ]]
     return true
 end
 

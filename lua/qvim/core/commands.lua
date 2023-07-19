@@ -67,12 +67,6 @@ commands.defaults = {
     --    require("qvim.integrations._loader.plugin-loader").sync_core_plugins()
     --  end,
     --},
-    --{
-    --  name = "qvimChangelog",
-    --  fn = function()
-    --    require("qvim.core.telescope.custom-finders").view_lunarvim_changelog()
-    --  end,
-    --},
     {
         name = "QvimVersion",
         fn = function()
