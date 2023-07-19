@@ -70,15 +70,19 @@ function M.register_sources_on_ft(method, source)
     local null_ls_methods = require("qvim.lang.null-ls._meta").method_bridge()
     local mason_null_ls_mapping = require "mason-null-ls.mappings.source"
 
-    local _, provided, source_options
+    local source_options = {}
+    local ok, provided
     if shared_util.is_package(source) then
-        _, provided = pcall(require, "qvim.lang.null-ls.sources." .. source.name)
+        ok, provided = pcall(require, "qvim.lang.null-ls.sources." .. source.name)
         source = mason_null_ls_mapping.getNullLsFromPackage(source.name)
     else
-        _, provided = pcall(require, "qvim.lang.null-ls.sources." .. source)
+        ok, provided = pcall(require, "qvim.lang.null-ls.sources." .. source)
     end
 
-    source_options = provided or {}
+    if ok then
+        source_options = provided
+    end
+
     source_options["name"] = source
 
     ---@class MethodService

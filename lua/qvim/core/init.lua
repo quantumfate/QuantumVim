@@ -59,6 +59,8 @@ core.plugins = {
     "utilyre/barbecue.nvim",
     "zbirenbaum/copilot.lua",
     "ThePrimeagen/refactoring.nvim",
+    "folke/trouble.nvim",
+    "folke/noice.nvim"
 }
 
 ---Populates the global table `qvim.plugins` with all the plugin specs that

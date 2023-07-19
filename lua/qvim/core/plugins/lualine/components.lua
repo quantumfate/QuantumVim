@@ -33,6 +33,7 @@ end
 ---@field encoding component
 ---@field filetype component
 ---@field scrollbar component
+---@field noice_recording component
 return {
     mode = {
         "mode",
@@ -228,28 +229,9 @@ return {
         }
 
     },
-    lsp_progress = {
-        'lsp_progress',
-        colors = {
-            percentage      = colors.sapphire,
-            title           = colors.sapphire,
-            message         = colors.sapphire,
-            spinner         = colors.sapphire,
-            lsp_client_name = colors.red,
-            use             = true,
-        },
-        separators = {
-            component = ' ',
-            progress = ' | ',
-            percentage = { pre = '', post = '%% ' },
-            title = { pre = '', post = ': ' },
-            lsp_client_name = { pre = '[', post = ']' },
-            spinner = { pre = '', post = '' },
-            message = { commenced = 'In Progress', completed = 'Completed' },
-        },
-        spinner_symbols = { qvim.icons.ui.MoonOne .. " ", qvim.icons.ui.MoonTwo .. " ", qvim.icons.ui.MoonThree .. " ",
-            qvim.icons.ui.MoonFour .. " ", qvim.icons.ui.MoonFive .. " ", qvim.icons.ui.MoonSix .. " ",
-            qvim.icons.ui.MoonSeven .. " ", qvim.icons.ui.MoonEight .. " " },
+    noice_rocording = {
+        require("noice").api.statusline.mode.get,
+        cond = require("noice").api.statusline.mode.has,
     },
     location = {
         "location",
