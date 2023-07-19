@@ -5,10 +5,10 @@ local home_dir = uv.os_homedir()
 a.describe("initial start", function()
     local qvim_config_path = get_qvim_config_dir()
     local qvim_data_path = get_qvim_data_dir()
+    local qvim_cache_path = get_qvim_cache_dir()
 
-
-    a.it("should be able to use lunarvim cache directory using vim.fn", function()
-        assert.equal(lvim_cache_path, vim.fn.stdpath "cache")
+    a.it("should be able to use QuantumVim cache directory using vim.fn", function()
+        assert.equal(qvim_cache_path, vim.fn.stdpath "cache")
     end)
 
     a.it("should be to retrieve default neovim directories", function()
@@ -16,9 +16,9 @@ a.describe("initial start", function()
         assert.equal(join_paths(xdg_config, "nvim"), vim.call("stdpath", "config"))
     end)
 
-    a.it("should be able to read lunarvim directories", function()
+    a.it("should be able to read QuantumVim directories", function()
         local rtp_list = vim.opt.rtp:get()
-        assert.truthy(vim.tbl_contains(rtp_list, qvim_data_path .. "/lvim"))
+        assert.truthy(vim.tbl_contains(rtp_list, qvim_data_path))
         assert.truthy(vim.tbl_contains(rtp_list, qvim_config_path))
     end)
 

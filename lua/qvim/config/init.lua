@@ -34,17 +34,13 @@ function M:init()
 
     if not os.getenv "QV_FIRST_TIME_SETUP" then
         require("qvim.core").init_plugin_configurations()
-    end
-    Log:set_level(qvim.log.level)
-    Log:info "Configs were loaded."
-end
-
-function M:setup()
-    if not os.getenv "QV_FIRST_TIME_SETUP" then
         local qvim_lsp_config = require "qvim.lang.config"
         qvim.lsp = vim.deepcopy(qvim_lsp_config)
         vim.cmd.colorscheme(qvim.config.colorscheme)
     end
+
+    Log:set_level(qvim.log.level)
+    Log:info "Configs were loaded."
 end
 
 --[[

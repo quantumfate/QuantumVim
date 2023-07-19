@@ -103,7 +103,6 @@ function M:setup()
 
     local structlog_path = join_paths(self.pack_dir, "structlog")
 
-    require("qvim.config"):setup()
     local manager = require "qvim.core.manager"
     manager:load()
     if utils.is_directory(structlog_path) then

@@ -1,8 +1,10 @@
 local a = require "plenary.async_lib.tests"
-local config = require "lvim.config"
 
 a.describe("config-loader", function()
-    local config_path = config:get_qvim_config_path()
+    local plugins = require("qvim.core").plugins
+    local core = require("qvim.core")
+    local core_util = require("qvim.core.util")
+    local manager = require("qvim.core.manager")
 
     before_each(function()
         vim.cmd [[
@@ -20,44 +22,20 @@ a.describe("config-loader", function()
         assert.True(vim.tbl_isempty(errors))
     end)
 
-    a.it("should be able to find user-config", function()
-        assert.equal(config_path, get_qvim_config_dir() .. "/config.lua")
-    end)
 
-    a.it("should be able to load user-config without errors", function()
-        config:load(config_path)
-    end)
-
-    a.it("should be able to reload user-config without errors", function()
-        config:load(config_path)
-        local test_path = "/tmp/lvim"
-        os.execute(string.format([[echo "vim.opt.undodir = '%s'" >> %s]], test_path, config_path))
-        config:reload()
-        vim.schedule(function()
-            assert.equal(vim.opt.undodir:get()[1], test_path)
-        end)
-    end)
-
-    a.it("should not get interrupted by errors in user-config", function()
-        local test_path = "/tmp/lunarvim"
-        os.execute(string.format([[echo "vim.opt.undodir = '%s'" >> %s]], test_path, config_path))
-        config:reload()
-        vim.schedule(function()
-            assert.equal(vim.opt.undodir:get()[1], test_path)
-        end)
-        os.execute(string.format("echo 'bad_string_test' >> %s", config_path))
-        local error_handler = function(msg)
-            return msg
+    a.it("All plugins should be able to pass name validation", function()
+        for _, plugin in ipairs(plugins) do
+            local isvalid, plugin_name, hr_name = core_util.is_valid_plugin_name(plugin)
+            assert.truthy(isvalid and plugin_name ~= nil and hr_name ~= nil)
         end
-        local err = xpcall(config:reload(), error_handler)
-        assert.falsy(err)
-        vim.schedule(function()
-            assert.equal(vim.opt.undodir:get()[1], test_path)
-            local errmsg = vim.fn.eval "v:errmsg"
-            local exception = vim.fn.eval "v:exception"
-            assert.equal("", errmsg) -- v:errmsg was not updated.
-            assert.equal("", exception)
-            os.execute(string.format("echo '' > %s", config_path))
-        end)
+    end)
+
+    a.it("Should be able to configure all plugins after fetching light spec without errors", function()
+        manager:load(core.load_lazy_spec_light())
+        core.init_plugin_configurations()
+        for _, plugin in ipairs(plugins) do
+            local _, plugin_name, _ = core_util.is_valid_plugin_name(plugin)
+            assert.truthy(vim.tbl_contains(qvim.plugins, plugin_name))
+        end
     end)
 end)

@@ -17,7 +17,7 @@ local nvim_treesitter = {
     extensions = {},
     conf_extensions = {},
     options = {
-        ensure_installed = { "comment", "markdown_inline", "regex", "dap_repl" },
+        ensure_installed = { "comment", "markdown_inline", "regex", "dap_repl", "bash", "vim", "markdown" },
 
         -- List of parsers to ignore installing (for "all")
         ignore_install = {},
