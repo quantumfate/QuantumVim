@@ -60,7 +60,7 @@ return {
         ---@usage list of filetypes that the automatic installer will skip
         skipped_filetypes = skipped_filetypes,
     },
-    --[[ buffer_mappings = {
+    buffer_mappings = {
         ["K"] = { callback = require("hover").hover, desc = "Show hover" },
         ["gK"] = {
             callback = require("hover").hover_select,
@@ -109,7 +109,7 @@ return {
                 prefix = "<leader>",
             },
         },
-    }, ]]
+    },
     buffer_options = {
         --- enable completion triggered by <c-x><c-o>
         omnifunc = "v:lua.vim.lsp.omnifunc",

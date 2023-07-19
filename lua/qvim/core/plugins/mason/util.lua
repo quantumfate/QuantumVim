@@ -2,7 +2,7 @@
 local mason_util = {}
 
 function mason_util.get_prefix()
-    local default_prefix = join_paths(vim.fn.stdpath("data"), "mason")
+    local default_prefix = join_paths(get_qvim_data_dir(), "mason")
     return vim.tbl_get(qvim.plugins, "mason", "options", "install_root_dir") or default_prefix
 end
 

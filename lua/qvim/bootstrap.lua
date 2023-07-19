@@ -1,4 +1,5 @@
 local M = {}
+M.__index = M
 
 function _G.in_headless_mode()
     return #vim.api.nvim_list_uis() == 0
@@ -71,15 +72,16 @@ function _G.get_qvim_cache_dir()
     return qvim_cache_dir
 end
 
+M.qvim_config_dir = get_qvim_config_dir()
+M.qvim_cache_dir = get_qvim_cache_dir()
+M.pack_dir = join_paths(get_qvim_data_dir(), "after", "pack")
+M.lazy_install_dir =
+    join_paths(M.pack_dir, "lazy", "opt", "lazy.nvim")
+
 ---Initialize the `&runtimepath` variables, load the globals and prepare for startup
 ---@return table
 function M:init()
     local utils = require "qvim.utils"
-    self.qvim_config_dir = get_qvim_config_dir()
-    self.qvim_cache_dir = get_qvim_cache_dir()
-    self.pack_dir = join_paths(get_qvim_data_dir(), "after", "pack")
-    self.lazy_install_dir =
-        join_paths(self.pack_dir, "lazy", "opt", "lazy.nvim")
 
     local structlog_path = join_paths(self.pack_dir, "structlog")
     if not os.getenv("QV_FIRST_TIME_SETUP") and utils.is_directory(structlog_path) then
@@ -98,13 +100,7 @@ end
 
 function M:setup()
     local utils = require "qvim.utils"
-    self.qvim_config_dir = get_qvim_config_dir()
-    self.qvim_cache_dir = get_qvim_cache_dir()
-    self.pack_dir = join_paths(get_qvim_data_dir(), "lazy")
-    self.lazy_install_dir =
-        join_paths(self.pack_dir, "lazy.nvim")
 
-    print(vim.inspect(vim.opt.rtp:get()))
     local structlog_path = join_paths(self.pack_dir, "structlog")
 
     require("qvim.config"):setup()

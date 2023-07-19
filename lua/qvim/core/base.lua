@@ -42,7 +42,6 @@ function core_base.new(hr_name)
 		))
 		return
 	else
-		print(hr_name)
 		if not plugin["name"] then
 			plugin["name"] = hr_name
 		end

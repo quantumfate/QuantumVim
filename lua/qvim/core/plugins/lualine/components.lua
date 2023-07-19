@@ -230,9 +230,6 @@ return {
     },
     lsp_progress = {
         'lsp_progress',
-        display_components = { 'lsp_client_name', { 'title', 'percentage', 'message' } },
-        -- With spinner
-        -- display_components = { 'lsp_client_name', 'spinner', { 'title', 'percentage', 'message' }},
         colors = {
             percentage      = colors.sapphire,
             title           = colors.sapphire,
@@ -250,7 +247,6 @@ return {
             spinner = { pre = '', post = '' },
             message = { commenced = 'In Progress', completed = 'Completed' },
         },
-        timer = { progress_enddelay = 500, spinner = 1000, lsp_client_name_enddelay = 1000 },
         spinner_symbols = { qvim.icons.ui.MoonOne .. " ", qvim.icons.ui.MoonTwo .. " ", qvim.icons.ui.MoonThree .. " ",
             qvim.icons.ui.MoonFour .. " ", qvim.icons.ui.MoonFive .. " ", qvim.icons.ui.MoonSix .. " ",
             qvim.icons.ui.MoonSeven .. " ", qvim.icons.ui.MoonEight .. " " },

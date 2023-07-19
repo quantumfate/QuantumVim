@@ -21,9 +21,9 @@ function M.setup()
         },
     }
 
-    local keymaps = require "qvim.keymaps"
+    --local keymaps = require "qvim.keymaps"
 
-    keymaps:register {
+    --[[  keymaps:register {
         {
             binding_group = "C",
             name = "+Python",
@@ -57,7 +57,7 @@ function M.setup()
                 prefix = "<leader>",
             },
         },
-    }
+    } ]]
     return false
 end
 
