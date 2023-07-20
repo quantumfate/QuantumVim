@@ -5,6 +5,7 @@ a.describe("config-loader", function()
     local core = require("qvim.core")
     local core_util = require("qvim.core.util")
     local manager = require("qvim.core.manager")
+    local plugin_path_prefix = "qvim.core.plugins."
 
     before_each(function()
         vim.cmd [[
@@ -30,12 +31,16 @@ a.describe("config-loader", function()
         end
     end)
 
-    a.it("Should be able to configure all plugins after fetching light spec without errors", function()
+    a.it("Should be able to configure all on light spec without errors", function()
         manager:load(core.load_lazy_spec_light())
         core.init_plugin_configurations()
         for _, plugin in ipairs(plugins) do
-            local _, plugin_name, _ = core_util.is_valid_plugin_name(plugin)
-            assert.truthy(vim.tbl_contains(qvim.plugins, plugin_name))
+            local _, plugin_name, hr_name = core_util.is_valid_plugin_name(plugin)
+            local status_ok, _ = pcall(require, plugin_path_prefix .. hr_name)
+            if status_ok then
+                -- only check plugins that provide a configuration
+                assert.truthy(qvim.plugins[plugin_name] ~= nil)
+            end
         end
     end)
 end)

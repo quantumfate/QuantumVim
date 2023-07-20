@@ -3,7 +3,7 @@ set -eo pipefail
 
 INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
-NVIM_APPNAME="qvim"
+NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
 XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"

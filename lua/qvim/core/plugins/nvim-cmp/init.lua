@@ -1,16 +1,10 @@
-local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
-if not status_cmp_ok then
-  return
-end
-
+local cmp_types = require("qvim.utils.modules").require_on_index("cmp.types.cmp")
 local methods = require("qvim.core.plugins.nvim-cmp.methods")
-local ConfirmBehavior = cmp_types.ConfirmBehavior
-local SelectBehavior = cmp_types.SelectBehavior
-
 local _cmp = require("qvim.utils.modules").require_on_index("cmp")
 local luasnip = require("qvim.utils.modules").require_on_index("luasnip")
-local cmp_window = require("cmp.config.window")
-local cmp_mapping = require("cmp.config.mapping")
+local cmp_window = require("qvim.utils.modules").require_on_index("cmp.config.window")
+local cmp_mapping = require("qvim.utils.modules").require_on_index("cmp.config.mapping")
+
 
 ---@class nvim-cmp : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil
@@ -41,7 +35,7 @@ local nvim_cmp = {
       return qvim.plugins.nvim_cmp.enabled
     end,
     confirm_opts = {
-      behavior = ConfirmBehavior.Replace,
+      behavior = cmp_types.ConfirmBehavior.Replace,
       select = false,
     },
     completion = {
@@ -183,18 +177,18 @@ local nvim_cmp = {
       { name = "tmux" },
       { name = "dap" },
     },
-    mapping = cmp_mapping.preset.insert({
+    --[[ mapping = cmp_mapping.preset.insert({
       ["<C-k>"] = cmp_mapping(cmp_mapping.select_prev_item(), { "i", "c" }),
       ["<C-j>"] = cmp_mapping(cmp_mapping.select_next_item(), { "i", "c" }),
-      ["<Down>"] = cmp_mapping(cmp_mapping.select_next_item({ behavior = SelectBehavior.Select }), { "i" }),
-      ["<Up>"] = cmp_mapping(cmp_mapping.select_prev_item({ behavior = SelectBehavior.Select }), { "i" }),
+      ["<Down>"] = cmp_mapping(cmp_mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
+      ["<Up>"] = cmp_mapping(cmp_mapping.select_prev_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
       ["<C-d>"] = cmp_mapping.scroll_docs(-4),
       ["<C-f>"] = cmp_mapping.scroll_docs(4),
       ["<C-y>"] = cmp_mapping({
-        i = cmp_mapping.confirm({ behavior = ConfirmBehavior.Replace, select = false }),
+        i = cmp_mapping.confirm({ behavior = cmp_types.ConfirmBehavior.Replace, select = false }),
         c = function(fallback)
           if _cmp.visible() then
-            _cmp.confirm({ behavior = ConfirmBehavior.Replace, select = false })
+            _cmp.confirm({ behavior = cmp_types.ConfirmBehavior.Replace, select = false })
           else
             fallback()
           end
@@ -232,12 +226,12 @@ local nvim_cmp = {
             return vim.api.nvim_get_mode().mode:sub(1, 1) == "i"
           end
           if is_insert_mode() then -- prevent overwriting brackets
-            confirm_opts.behavior = ConfirmBehavior.Insert
+            confirm_opts.behavior = cmp_types.ConfirmBehavior.Insert
           end
           local entry = _cmp.get_selected_entry()
           local is_copilot = entry and entry.source.name == "copilot"
           if is_copilot then
-            confirm_opts.behavior = ConfirmBehavior.Replace
+            confirm_opts.behavior = cmp_types.ConfirmBehavior.Replace
             confirm_opts.select = true
           end
           if _cmp.confirm(confirm_opts) then
@@ -246,7 +240,7 @@ local nvim_cmp = {
         end
         fallback() -- if not exited early, always fallback
       end),
-    }),
+    }), ]]
     cmdline = {
       enable = false,
       options = {
@@ -266,7 +260,9 @@ local nvim_cmp = {
       },
     },
   },
-  keymaps = {},
+  keymaps = {
+    -- TODO: do cmp mappings
+  },
   main = "cmp",
   on_setup_start = nil,
   setup = nil,

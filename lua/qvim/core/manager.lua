@@ -9,6 +9,24 @@ local get_qvim_config_dir = _G.get_qvim_config_dir
 
 local plugins_dir = join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt")
 
+local function ensure_plugins_in_rtp(lazy_install_dir)
+    local rtp = vim.opt.rtp:get()
+    local base_dir = get_qvim_data_dir():gsub("\\", "/")
+    local idx_base = #rtp + 1
+    for i, path in ipairs(rtp) do
+        path = path:gsub("\\", "/")
+        if path == base_dir then
+            idx_base = i + 1
+            break
+        end
+    end
+    table.insert(rtp, idx_base, lazy_install_dir)
+    table.insert(rtp, idx_base + 1, join_paths(plugins_dir, "*"))
+    vim.opt.rtp = rtp
+
+    vim.opt.packpath = vim.opt.rtp:get()
+end
+
 ---Initzialize lazy vim as the plugin loader. This function will
 ---make sure to only bootstrap lazy vim when it has not been
 ---installed yet. On subsequent runs this function will only
@@ -55,21 +73,8 @@ function manager:init(opts)
             }
         end
     end
-    local rtp = vim.opt.rtp:get()
-    local base_dir = get_qvim_config_dir():gsub("\\", "/")
-    local idx_base = #rtp + 1
-    for i, path in ipairs(rtp) do
-        path = path:gsub("\\", "/")
-        if path == base_dir then
-            idx_base = i + 1
-            break
-        end
-    end
-    table.insert(rtp, idx_base, lazy_install_dir)
-    table.insert(rtp, idx_base + 1, join_paths(plugins_dir, "*"))
-    vim.opt.rtp = rtp
 
-    vim.opt.packpath = vim.opt.rtp:get()
+    ensure_plugins_in_rtp(lazy_install_dir)
     pcall(function()
         -- set a custom path for lazy's cache
         local lazy_cache = require "lazy.core.cache"
@@ -95,7 +100,7 @@ function manager:load(spec)
     local lazy_available, lazy = pcall(require, "lazy")
     if not lazy_available then
         log:warn "skipping loading plugins until lazy.nvim is installed"
-        return
+        return false
     end
 
     local status_ok = xpcall(function()
@@ -128,7 +133,10 @@ function manager:load(spec)
     if not status_ok then
         log:warn "problems detected while loading plugins' configurations"
         log:trace(debug.traceback())
+        return false
     end
+
+    return true
 end
 
 ---Returns a list of plugins from the lazy spec

@@ -3,7 +3,6 @@ local base_dir = os.getenv "QUANTUMVIM_CONFIG_DIR"
 local tests_dir = base_dir .. path_sep .. "tests"
 
 vim.opt.rtp:append(tests_dir)
-
 require("qvim.bootstrap"):init()
 
 -- NOTE: careful about name collisions

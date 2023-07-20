@@ -32,7 +32,6 @@ function core_base.new(hr_name)
 	end
 
 	local plugin_spec
-
 	local status_ok, plugin =
 		xpcall(require, error_handler_closure, plugin_path)
 	if not status_ok then
@@ -41,6 +40,8 @@ function core_base.new(hr_name)
 			hr_name
 		))
 		return
+	elseif status_ok and type(plugin) == "boolean" then
+		log:error(fmt("The configuration of '%s' failed because the module '%s' returned nil.", hr_name, plugin_path))
 	else
 		if not plugin["name"] then
 			plugin["name"] = hr_name
