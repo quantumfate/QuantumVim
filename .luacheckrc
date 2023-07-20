@@ -28,6 +28,7 @@ stds.nvim = {
 		"get_qvim_data_dir",
 		"get_qvim_state_dir",
 		"get_qvim_base_dir",
+		"get_lazy_rtp_dir",
 		"require_clean",
 	},
 }

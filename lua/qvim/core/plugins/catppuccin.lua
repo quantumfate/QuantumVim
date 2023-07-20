@@ -1,3 +1,5 @@
+local modules = require("qvim.utils.modules")
+
 ---@class catppuccin : core_meta_plugin
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
@@ -101,7 +103,7 @@ local catppuccin = {
       -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
     },
     custom_highlights = function(colors)
-      local ucolors = require('catppuccin.utils.colors')
+      local ucolors = modules.require_on_index('catppuccin.utils.colors')
       local mocha = require('catppuccin.palettes').get_palette('mocha')
       return {
 

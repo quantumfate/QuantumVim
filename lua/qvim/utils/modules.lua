@@ -154,8 +154,12 @@ M.reload = function(mod)
     return old
 end
 
--- code from <https://github.com/tjdevries/lazy-require.nvim/blob/bb626818ebc175b8c595846925fd96902b1ce02b/lua/lazy-require.lua#L25>
+--- Require on index.
+---
+--- Will only require the module after the first index of a module.
+--- Only works for modules that export a table.
 function M.require_on_index(require_path)
+    -- code from <https://github.com/tjdevries/lazy-require.nvim/blob/bb626818ebc175b8c595846925fd96902b1ce02b/lua/lazy-require.lua#L25>
     return setmetatable({}, {
         __index = function(_, key)
             return require(require_path)[key]
@@ -167,8 +171,23 @@ function M.require_on_index(require_path)
     })
 end
 
--- code from <https://github.com/tjdevries/lazy-require.nvim/blob/bb626818ebc175b8c595846925fd96902b1ce02b/lua/lazy-require.lua#L25>
+--- Require when an exported method is called.
+---
+--- Creates a new function. Cannot be used to compare functions,
+--- set new values, etc. Only useful for waiting to do the require until you actually
+--- call the code.
+---
+--- <pre>
+--- -- This is not loaded yet
+--- local lazy_mod = lazy.require_on_exported_call('my_module')
+--- local lazy_func = lazy_mod.exported_func
+---
+--- -- ... some time later
+--- lazy_func(42)  -- <- Only loads the module now
+---
+--- </pre>
 function M.require_on_exported_call(require_path)
+    -- https://github.com/tjdevries/lazy-require.nvim/blob/bb626818ebc175b8c595846925fd96902b1ce02b/lua/lazy-require.lua#L64
     return setmetatable({}, {
         __index = function(_, k)
             return function(...)
