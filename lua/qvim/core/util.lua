@@ -85,21 +85,6 @@ function util.lazy_process_plugins(call, first_time_setup)
     return lazy_specs
 end
 
----A vim walidate wrapper to exit neovim with OS error code 1 in
----case the validation fails.
----@param args table
----@param hr_name string
-function util.vim_validate_wrapper(args, hr_name)
-    local status, err = pcall(vim.validate, args)
-    if not status then
-        vim.api.nvim_err_writeln(fmt("Validation of '%s' plugin configuration failed.", hr_name))
-        vim.api.nvim_err_writeln(err)
-        if os.getenv("QV_IN_GIT_WORKFLOW") then
-            os.exit(1)
-        end
-    end
-end
-
 ---Counts the amaunt of plugins in `qvim.plugins`
 ---@return number count
 function util.plugins_tbl_size()

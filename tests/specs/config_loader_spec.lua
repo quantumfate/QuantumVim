@@ -31,7 +31,7 @@ a.describe("config-loader", function()
         end
     end)
 
-    a.it("Should be able to configure all on light spec without errors", function()
+    a.it("Should be able to configure all plugins on light spec without errors", function()
         manager:load(core.load_lazy_spec_light())
         core.init_plugin_configurations()
         for _, plugin in ipairs(plugins) do
