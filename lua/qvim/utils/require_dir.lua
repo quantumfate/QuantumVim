@@ -56,7 +56,7 @@ function M:require_directory_files(module_name, inject_module_table)
         -- modules from directory will be injected into the table
         -- where this function is being called
         local obj = {}
-        for i, filename in ipairs(config_files) do
+        for _, filename in ipairs(config_files) do
             local config_module = string.match(filename, "(.+).lua$")
             -- require the languages in a protected call
             local status_ok, module =
@@ -66,14 +66,14 @@ function M:require_directory_files(module_name, inject_module_table)
             else
                 vim.notify(
                     "An error occured when trying to require the module:"
-                        .. module
+                    .. module
                 )
             end
         end
         setmetatable(obj, { __index = self })
         return obj
     else
-        for i, filename in ipairs(config_files) do
+        for _, filename in ipairs(config_files) do
             local config_module = string.match(filename, "(.+).lua$")
             -- require the languages in a protected call
             local status_ok, module =
@@ -81,7 +81,7 @@ function M:require_directory_files(module_name, inject_module_table)
             if not status_ok then
                 vim.notify(
                     "An error occured when trying to require the module:"
-                        .. module
+                    .. module
                 )
             end
         end

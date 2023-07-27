@@ -47,8 +47,7 @@ function lualine_util.env_cleanup(venv)
 end
 
 ---@param displayed string
----@param ctx table
-function lualine_util.unified_format(displayed, ctx)
+function lualine_util.unified_format(displayed)
     return displayed:lower()
 end
 

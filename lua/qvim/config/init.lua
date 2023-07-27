@@ -1,4 +1,3 @@
-local utils = require "qvim.utils"
 local Log = require "qvim.log"
 
 local M = {}

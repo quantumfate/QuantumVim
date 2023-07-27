@@ -1,5 +1,3 @@
-local log = require("qvim.log")
-
 ---@class mason : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name

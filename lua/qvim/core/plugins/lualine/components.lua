@@ -40,17 +40,17 @@ return {
         padding = { left = 1, right = 1 },
         cond = nil,
         ---@param displayed string
-        ---@param ctx table
-        fmt = function(displayed, ctx)
-            return util.unified_format(displayed, ctx)
+        ---@param _ table
+        fmt = function(displayed, _)
+            return util.unified_format(displayed)
         end
     },
     branch = {
         "b:gitsigns_head",
         icon = qvim.icons.git.Branch,
-        fmt = function(displayed, ctx)
+        fmt = function(displayed, _)
             local s = util.shorten_branch_name(displayed, 50)
-            return util.unified_format(s, ctx)
+            return util.unified_format(s)
         end
     },
     filename = {
@@ -235,7 +235,7 @@ return {
     },
     location = {
         "location",
-        fmt = function(string, ctx)
+        fmt = function(string, _)
             return fmt("%s", string)
         end,
         padding = { left = 1, right = 0 },

@@ -155,14 +155,14 @@ function M.setup(server_name, filetype, user_config, skip_ft_ext)
         ---@diagnostic disable-next-line: param-type-mismatch
             package,
             fmt("language server %s", server_name),
-            function(_server_name, _user_config)
+            function(sev_name, u_conf)
                 local config = resolve_config(
-                    _server_name,
-                    resolve_mason_config(_server_name),
-                    _user_config
+                    sev_name,
+                    resolve_mason_config(sev_name),
+                    u_conf
                 )
 
-                launch_server(_server_name, config)
+                launch_server(sev_name, config)
             end,
             { server_name, user_config }
         )
