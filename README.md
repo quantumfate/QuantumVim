@@ -35,6 +35,10 @@ bash <(curl -s https://raw.githubusercontent.com/quantumfate/quantumvim/main/uti
 
 ### SSH
 
+```bash
+bash <(curl -s https://raw.githubusercontent.com/quantumfate/quantumvim/main/utils/installer/install.sh) --ssh
+```
+
 ## Run and runtime
 
 Run QuantumVim by `qvim` instead of `nvim`. The runtime/configuration files are located in `~/.config/qvim/`

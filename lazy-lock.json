@@ -18,7 +18,7 @@
   "hop": { "branch": "master", "commit": "e41c04125fab05406be576640749352ad3eafcdb" },
   "hover": { "branch": "main", "commit": "c366d1b0f9d6612d25681d3fea0f9ea46fa54f4d" },
   "indent-blankline": { "branch": "master", "commit": "4541d690816cb99a7fc248f1486aa87f3abce91c" },
-  "lazy.nvim": { "branch": "main", "commit": "25beed5e2e935ebc00d7e3eed1dc502df3c40e39" },
+  "lazy.nvim": { "branch": "main", "commit": "6b2311a46a3808e366bb251270f4cc04afb421ed" },
   "lualine": { "branch": "master", "commit": "05d78e9fd0cdfb4545974a5aa14b1be95a86e9c9" },
   "mason": { "branch": "main", "commit": "fe9e34a9ab4d64321cdc3ecab4ea1809239bb73f" },
   "mason-lspconfig": { "branch": "main", "commit": "e86a4c84ff35240639643ffed56ee1c4d55f538e" },
