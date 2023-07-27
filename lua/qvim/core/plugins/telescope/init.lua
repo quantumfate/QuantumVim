@@ -9,7 +9,7 @@ local builtin = require("qvim.utils.modules").require_on_exported_call("telescop
 ---@field extensions table<string> a list of extension url's
 ---@field conf_extensions table<string, AbstractExtension> instances of configured extensions
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: telescope, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: telescope)|nil overwrite the setup function in core_meta_parent
@@ -119,26 +119,27 @@ local telescope = {
     },
     extensions_to_load = {},
     keymaps = {
-        --[[         {
-            binding_group = "s",
-            name = "Search",
-            bindings = {
-                ["cb"] = { rhs = "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-                c = { rhs = "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
-                h = { rhs = "<cmd>Telescope help_tags<cr>", desc = "Find Help" },
-                M = { rhs = "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-                r = { rhs = "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File" },
-                R = { rhs = "<cmd>Telescope registers<cr>", desc = "Registers" },
-                k = { rhs = "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-                C = { rhs = "<cmd>Telescope commands<cr>", desc = "Commands" },
-                f = { rhs = "", desc = "Fuzzy find files", callback = builtin.find_files },
-                l = { rhs = "", desc = "Live grep", callback = builtin.live_grep },
-                b = { rhs = "", desc = "Show buffers", callback = builtin.buffers },
+        mappings = {
+            s = {
+                name = "search",
+                ["cb"] = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
+                c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
+                h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
+                M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
+                r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+                R = { "<cmd>Telescope registers<cr>", "Registers" },
+                k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+                C = { "<cmd>Telescope commands<cr>", "Commands" },
+                f = { "Fuzzy find files", callback = builtin.find_files },
+                l = { "Live grep", callback = builtin.live_grep },
+                b = { "Show buffers", callback = builtin.buffers },
+                ["dc"] = { "<cmd>lua require'telescope'.extensions.dap.commands{}<cr>", "Show commands" },
+                ["ds"] = { "<cmd>lua require'telescope'.extensions.dap.configurations{}<cr>", "Show setups" },
+                ["dv"] = { "<cmd>lua require'telescope'.extensions.dap.variables{}<cr>", "Show variables" },
+                ["df"] = { "<cmd>lua require'telescope'.extensions.dap.frames{}<cr>", "Show frames" },
+                ["db"] = { "<cmd>lua require'telescope'.extensions.dap.list_breakpoints{}<cr>", "Show breakpoints" },
             },
-            options = {
-                prefix = "<leader>",
-            },
-        }, ]]
+        }
     },
     main = "telescope",
     ---@param self telescope
@@ -166,6 +167,7 @@ local telescope = {
         for _, extension in pairs(self.extensions_to_load) do
             telescope.load_extension(extension)
         end
+        require("qvim.core.util").register_keymaps(self)
     end,
     url = "https://github.com/nvim-telescope/telescope.nvim",
 }

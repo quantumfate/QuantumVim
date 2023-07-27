@@ -5,7 +5,7 @@ local icons = qvim.icons.kind
 ---@field name string|nil the human readable name
 ---@field winbar_filetype_exclude table<string> A list of filetypes that navic wont appear on
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: nvim-navic, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: nvim-navic)|nil overwrite the setup function in core_base

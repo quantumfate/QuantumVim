@@ -50,6 +50,9 @@ function core_base.new(hr_name)
 		local uv = vim.loop
 		local path_sep = uv.os_uname().version:match "Windows" and "\\" or "/"
 
+		if plugin.keymaps then
+			plugin.keymaps = setmetatable(plugin.keymaps, { __index = require("qvim.core.meta.keymap") })
+		end
 		if qvim_util.is_directory(join_paths(get_qvim_config_dir(), "lua", (plugin_path:gsub("%.", path_sep)))) then
 			vim.validate({
 				enabled = { plugin.enabled, { "b", "f" }, true },
@@ -79,7 +82,7 @@ function core_base.new(hr_name)
 			---@field extensions table<string> a list of extension url's
 			---@field conf_extensions table<string, AbstractExtension> instances of configured extensions
 			---@field options table|nil options used in the setup call of a neovim plugin
-			---@field keymaps table|nil keymaps parsed to yikes.nvim
+			---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 			---@field main string|nil the string to use when the neovim plugin is required
 			---@field on_setup_start fun(self: AbstractParent, instance: table)|nil hook setup logic at the beginning of the setup call
 			---@field setup fun(self: AbstractParent)|nil overwrite the setup function in core_base
@@ -102,7 +105,7 @@ function core_base.new(hr_name)
 			---@field enabled boolean|fun():boolean|nil
 			---@field name string|nil the human readable name
 			---@field options table|nil options used in the setup call of a neovim plugin
-			---@field keymaps table|nil keymaps parsed to yikes.nvim
+			---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 			---@field main string the string to use when the neovim plugin is required
 			---@field on_setup_start fun(self: AbstractPlugin, instance: table)|nil hook setup logic at the beginning of the setup call
 			---@field setup fun(self: AbstractPlugin)|nil overwrite the setup function in core_base
@@ -110,7 +113,6 @@ function core_base.new(hr_name)
 			---@field url string neovim plugin url
 			plugin_spec = setmetatable(plugin, core_base_mt)
 		end
-
 		return plugin_spec
 	end
 end
@@ -161,6 +163,9 @@ function core_base.new_ext(hr_name_parent, extension_url, parent)
 				on_setup_done = { plugin.on_setup_done, "f", true },
 				url = { plugin.url, "s", false },
 			}, hr_name_ext)
+			if plugin.keymaps then
+				plugin.keymaps = setmetatable(plugin.keymaps, { __index = require("qvim.core.meta.keymap") })
+			end
 			if not plugin["name"] then
 				plugin["name"] = hr_name_ext
 			end
@@ -169,7 +174,7 @@ function core_base.new_ext(hr_name_parent, extension_url, parent)
 			---@field enabled boolean
 			---@field name string|nil the human readable name
 			---@field options table|nil options used in the setup call of a neovim plugin
-			---@field keymaps table|nil keymaps parsed to yikes.nvim
+			---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 			---@field main string the string to use when the neovim plugin is required
 			---@field on_setup_start fun(self: AbstractExtension, instance: table|nil)|nil hook setup logic at the beginning of the setup call
 			---@field setup_ext fun(self: AbstractExtension)|nil overwrite the setup function in core_base

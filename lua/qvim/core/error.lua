@@ -18,6 +18,7 @@ function core_error_util.error_handler(err, hr_name, plugin_path)
             )
         )
     else
+        print(debug.traceback())
         log:error(
             fmt(
                 "Unknown error occured during configuration of '%s' in '%s'.",

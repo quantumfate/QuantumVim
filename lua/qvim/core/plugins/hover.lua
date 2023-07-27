@@ -2,7 +2,7 @@
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: hover, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: hover)|nil overwrite the setup function in core_base
@@ -30,14 +30,29 @@ local hover = {
     title = true,
   },
   keymaps = {
-    -- TODO:
-    -- vim.keymap.set("n", "K", require("hover").hover, {desc = "hover.nvim"})
-    -- vim.keymap.set("n", "gK", require("hover").hover_select, {desc = "hover.nvim (select)"})
+    mappings = {
+      K = {
+        "",
+        "Hover",
+        callback = function()
+          require("hover").hover()
+        end,
+      },
+      ["gK"] = {
+        "",
+        "Hover select",
+        callback = function()
+          require("hover").hover_select()
+        end,
+      }
+    },
   },
   main = "hover",
   on_setup_start = nil,
   setup = nil,
-  on_setup_done = nil,
+  on_setup_done = function(self)
+    require("qvim.core.util").register_keymaps(self)
+  end,
   url = "https://github.com/lewis6991/hover.nvim",
 }
 

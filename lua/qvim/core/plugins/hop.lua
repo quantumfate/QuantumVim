@@ -2,7 +2,7 @@
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: hop, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: hop)|nil overwrite the setup function in core_base
@@ -15,31 +15,32 @@ local hop = {
     keys = "etovxqpdygfblzhckisuran",
   },
   keymaps = {
-    --[[ t = {
-      desc = "Jump before any char on the current line.",
-      noremap = false,
-      callback = function()
-        local hop = require("hop")
-        hop.hint_char1({
-          current_line_only = true,
-        })
-      end,
-    },
-    T = {
-      desc = "Jump after any char on the current line.",
-      noremap = false,
-      callback = function()
-        local hop = require("hop")
-        hop.hint_char1({
-          current_line_only = true,
-          hint_offset = 1,
-        })
-      end,
-    },
-    {
-      binding_group = "h",
-      name = "+Hop",
-      bindings = {
+    mappings = {
+      t = {
+        "",
+        "Jump before any char on the current line.",
+        noremap = false,
+        callback = function()
+          local hop = require("hop")
+          hop.hint_char1({
+            current_line_only = true,
+          })
+        end,
+      },
+      T = {
+        "",
+        "Jump after any char on the current line.",
+        noremap = false,
+        callback = function()
+          local hop = require("hop")
+          hop.hint_char1({
+            current_line_only = true,
+            hint_offset = 1,
+          })
+        end,
+      },
+      h = {
+        name = "+Hop",
         h = {
           desc = "Jump before any char.",
           callback = function()
@@ -68,16 +69,16 @@ local hop = {
             })
           end,
         },
-      },
-      options = {
-        prefix = "<leader>",
-      },
-    }, ]]
+      }
+    },
   },
   main = "hop",
   on_setup_start = nil,
   setup = nil,
-  on_setup_done = nil,
+  ---@param self hop
+  on_setup_done = function(self)
+    require("qvim.core.util").register_keymaps(self)
+  end,
   url = "https://github.com/smoka7/hop.nvim",
 }
 

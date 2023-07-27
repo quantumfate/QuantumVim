@@ -1,7 +1,6 @@
 ---@class lsp
 local M = {}
 local Log = require "qvim.log"
-local utils = require "qvim.utils"
 local autocmds = require "qvim.core.autocmds"
 
 local function add_lsp_buffer_options(bufnr)
@@ -61,7 +60,7 @@ function M.common_on_attach(client, bufnr)
     if client.server_capabilities["documentSymbolProvider"] then
         require("nvim-navic").attach(client, bufnr)
     end
-    -- require("qvim.keymaps"):register(qvim.lsp.buffer_mappings, bufnr)
+    require("which-key").register(qvim.lsp.buffer_mappings, { prefix = "<leader>", buffer = bufnr })
     add_lsp_buffer_options(bufnr)
     lu.setup_document_symbols(client, bufnr)
 end

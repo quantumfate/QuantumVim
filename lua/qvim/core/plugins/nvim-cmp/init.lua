@@ -3,14 +3,14 @@ local methods = require("qvim.core.plugins.nvim-cmp.methods")
 local _cmp = require("qvim.utils.modules").require_on_index("cmp")
 local luasnip = require("qvim.utils.modules").require_on_index("luasnip")
 local cmp_window = require("qvim.utils.modules").require_on_index("cmp.config.window")
-local cmp_mapping = require("qvim.utils.modules").require_on_index("cmp.config.mapping")
+local cmp_mapping = require("cmp.config.mapping")
 
 
 ---@class nvim-cmp : core_meta_parent
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: nvim-cmp, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: nvim-cmp)|nil overwrite the setup function in core_base
@@ -177,7 +177,7 @@ local nvim_cmp = {
       { name = "tmux" },
       { name = "dap" },
     },
-    --[[ mapping = cmp_mapping.preset.insert({
+    mapping = cmp_mapping.preset.insert({
       ["<C-k>"] = cmp_mapping(cmp_mapping.select_prev_item(), { "i", "c" }),
       ["<C-j>"] = cmp_mapping(cmp_mapping.select_next_item(), { "i", "c" }),
       ["<Down>"] = cmp_mapping(cmp_mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }), { "i" }),
@@ -240,7 +240,7 @@ local nvim_cmp = {
         end
         fallback() -- if not exited early, always fallback
       end),
-    }), ]]
+    }),
     cmdline = {
       enable = false,
       options = {

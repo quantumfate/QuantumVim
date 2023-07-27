@@ -2,7 +2,7 @@
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string|nil the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: telescope-lazy, instance: table|nil)|nil hook setup logic at the beginning of the setup call
 ---@field setup_ext fun(self: telescope-lazy)|nil overwrite the setup function in core_meta_ext

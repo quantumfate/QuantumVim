@@ -2,7 +2,7 @@
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: refactoring, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: refactoring)|nil overwrite the setup function in core_base
@@ -29,46 +29,47 @@ local refactoring = {
     },
   },
   keymaps = {
-    --[[  {
-      binding_group = "r",
-      name = "+Refactoring",
-      bindings = {
+    mappings = {
+      r = {
+        name = "+Refactoring",
+
         e = {
           mode = { "n", "v" },
-          rhs = "<ESC><cmd>lua require('refactoring').refactor('Extract Function')<CR>",
-          desc = "Extract Function",
+          "<ESC><cmd>lua require('refactoring').refactor('Extract Function')<CR>",
+          "Extract Function",
         },
         f = {
           mode = "v",
-          rhs = "<ESC><cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
-          desc = "Extract Function To File",
+          "<ESC><cmd>lua require('refactoring').refactor('Extract Function To File')<CR>",
+          "Extract Function To File",
         },
         v = {
           mode = "v",
-          rhs = "<ESC><cmd>lua require('refactoring').refactor('Extract Variable')<CR>",
-          desc = "Extract Variable",
+          "<ESC><cmd>lua require('refactoring').refactor('Extract Variable')<CR>",
+          "Extract Variable",
         },
         i = {
           mode = "v",
-          rhs = "<ESC><cmd>lua require('refactoring').refactor('Inline Variable')<CR>",
-          desc = "Inline Variable",
+          "<ESC><cmd>lua require('refactoring').refactor('Inline Variable')<CR>",
+          "Inline Variable",
         },
         b = {
-          rhs = "<cmd>lua require('refactoring').refactor('Extract Block')<CR>",
-          desc = "Extract Block",
+          "<cmd>lua require('refactoring').refactor('Extract Block')<CR>",
+          "Extract Block",
         },
         ["bf"] = {
-          rhs = "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>",
-          desc = "Extract Block To File",
+          "<cmd>lua require('refactoring').refactor('Extract Block To File')<CR>",
+          "Extract Block To File",
         },
       },
-      options = {
-        prefix = "<leader>",
-        noremap = true,
-        silent = true,
-        expr = false,
-      },
-    }, ]]
+    },
+    options = {
+      prefix = "<leader>",
+      noremap = true,
+      silent = true,
+      expr = false,
+    },
+
   },
   main = "refactoring",
   on_setup_start = nil,

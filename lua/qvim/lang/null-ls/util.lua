@@ -30,7 +30,7 @@ function M.resolve_null_ls_package_from_mason(null_ls_source_name)
         )
         :map(function(package_name)
             if not registry.has_package(package_name) then
-                Log:warn(
+                Log:debug(
                     fmt(
                         "The null-ls source '%s' is not supported by mason.",
                         null_ls_source_name
@@ -106,7 +106,7 @@ function M.register_sources_on_ft(method, source)
     -- we need to pase this as a table itself to stay compatible with the service.register_sources(configs, method)
     ---@class MethodService
     kind:setup({ source_options })
-    Log:info(fmt("Source '%s' for method '%s' was registered.", source, method))
+    Log:debug(fmt("Source '%s' for method '%s' was registered.", source, method))
     return true
 end
 
@@ -255,7 +255,7 @@ function M.source_selection_sort(ft_builtins)
     local method_to_scores, method_to_score_to_source =
         M.compute_ft_builtins_score(ft_builtins)
 
-    for method, scores in pairs(method_to_scores) do
+    for _, scores in pairs(method_to_scores) do
         selection_sort(scores)
     end
 

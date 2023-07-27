@@ -23,7 +23,7 @@ local lualine_highlights = require("qvim.core.plugins.lualine.highlights")
 ---@field extensions table<string> a list of extension url's
 ---@field conf_extensions table<string, AbstractExtension> instances of configured extensions
 ---@field options lualine_options|nil options used in the setup call of lualine
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: lualine, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: lualine)|nil overwrite the setup function in core_meta_parent

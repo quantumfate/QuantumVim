@@ -1,7 +1,6 @@
 ---@class util
 local util = {}
 
-local fmt = string.format
 local log = require "qvim.log"
 
 ---Validates the plugin name. By comparing it against the accepted patterns:
@@ -101,6 +100,18 @@ end
 function util.get_plugin_basename(plugin_path)
     local basename = plugin_path:match("[^%.]+$")
     return basename
+end
+
+---@param self AbstractPlugin|AbstractParent|AbstractExtension|core_meta_parent|core_meta_plugin|table
+function util.register_keymaps(self)
+    local wk = require("which-key")
+    for lhs, spec in pairs(self.keymaps.mappings) do
+        if not spec.name then
+            wk.register({ [lhs] = spec })
+        else
+            wk.register({ [lhs] = spec }, self.keymaps.options)
+        end
+    end
 end
 
 ---Calls the setup function of the meta table that `self` extends.

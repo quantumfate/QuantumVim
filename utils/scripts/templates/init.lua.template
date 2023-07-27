@@ -5,7 +5,7 @@
 ---@field extensions table<string> a list of extension url's
 ---@field conf_extensions table<string, AbstractExtension> instances of configured extensions
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: QV_STRING_PLUGIN_NAME_VAR, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: QV_STRING_PLUGIN_NAME_VAR)|nil overwrite the setup function in core_meta_parent
@@ -17,7 +17,9 @@ local QV_PLUGIN_NAME_VAR = {
     extensions = {},
     conf_extensions = {},
     options = {},
-    keymaps = {},
+    keymaps = {
+        mappings = {},
+    },
     main = nil,
     on_setup_start = nil,
     setup = nil,

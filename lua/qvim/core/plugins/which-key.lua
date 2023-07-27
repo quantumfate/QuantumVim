@@ -2,7 +2,7 @@
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: which-key, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: which-key)|nil overwrite the setup function in core_base
@@ -44,7 +44,7 @@ local which_key = {
     icons = {
       breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
       separator = "➜", -- symbol used between a key and it's label
-      group = "+",      -- symbol prepended to a group
+      group = "+", -- symbol prepended to a group
     },
     popup_mappings = {
       scroll_down = "<c-d>", -- binding to scroll down inside the popup
@@ -76,11 +76,58 @@ local which_key = {
       v = { "j", "k" },
     },
   },
-  keymaps = {},
+  keymaps = {
+    mappings = {
+      ["<leader>"] = {
+        [";"] = { "<cmd>Alpha<CR>", "Dashboard" },
+        ["w"] = { "<cmd>w!<CR>", "Save" },
+        ["q"] = { "<cmd>confirm q<CR>", "Quit" },
+        ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
+        ["c"] = { "<cmd>BufferKill<CR>", "Close Buffer" },
+        ["f"] = {
+          function()
+            require("lvim.core.telescope.custom-finders").find_project_files { previewer = false }
+          end,
+          "Find File",
+        },
+        ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+        ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
+      },
+      b = {
+        name = "Buffers",
+        j = { "<cmd>BufferLinePick<cr>", "Jump" },
+        f = { "<cmd>Telescope buffers previewer=false<cr>", "Find" },
+        b = { "<cmd>BufferLineCyclePrev<cr>", "Previous" },
+        n = { "<cmd>BufferLineCycleNext<cr>", "Next" },
+        W = { "<cmd>noautocmd w<cr>", "Save without formatting (noautocmd)" },
+        -- w = { "<cmd>BufferWipeout<cr>", "Wipeout" }, -- TODO: implement this for bufferline
+        e = {
+          "<cmd>BufferLinePickClose<cr>",
+          "Pick which buffer to close",
+        },
+        h = { "<cmd>BufferLineCloseLeft<cr>", "Close all to the left" },
+        l = {
+          "<cmd>BufferLineCloseRight<cr>",
+          "Close all to the right",
+        },
+        D = {
+          "<cmd>BufferLineSortByDirectory<cr>",
+          "Sort by directory",
+        },
+        L = {
+          "<cmd>BufferLineSortByExtension<cr>",
+          "Sort by language",
+        },
+      },
+    }
+
+  },
   main = "which-key",
   on_setup_start = nil,
   setup = nil,
-  on_setup_done = nil,
+  on_setup_done = function(self)
+    require("qvim.core.util").register_keymaps(self)
+  end,
   url = "https://github.com/folke/which-key.nvim",
 }
 

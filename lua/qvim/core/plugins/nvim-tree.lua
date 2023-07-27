@@ -36,18 +36,17 @@ local nvim_tree = {
 
       api.config.mappings.default_on_attach(bufnr)
 
-      --[[       local useful_keys = {
+      local useful_keys = {
         ["l"] = { callback = api.node.open.edit, desc = "Open" },
         ["o"] = { api.node.open.edit, desc = "Open" },
         ["<CR>"] = { api.node.open.edit, desc = "Open" },
         ["v"] = { api.node.open.vertical, desc = "Open: Vertical Split" },
         ["h"] = { api.node.navigate.parent_close, desc = "Close Directory" },
         ["C"] = { api.tree.change_root_to_node, desc = "CD" },
-        ["gtg"] = { telescope_live_grep, desc = "Telescope Live Grep" },
-        ["gtf"] = { telescope_find_files, desc = "Telescope Find File" },
+        ["tg"] = { telescope_live_grep, desc = "Telescope Live Grep" },
+        ["tf"] = { telescope_find_files, desc = "Telescope Find File" },
       }
-
-      require("qvim.keymaps"):register(useful_keys, bufnr) ]]
+      require("which-key").register(useful_keys, { buffer = bufnr })
     end,
     remove_keymaps = false,
     select_prompts = false,
@@ -262,7 +261,13 @@ local nvim_tree = {
       args = {},
     },
   },
-  keymaps = {},
+  keymaps = {
+    mappings = {
+      ["<leader>e"] = { function()
+        require("nvim-tree.api").tree.toggle()
+      end, "Toggle nvim file tree" },
+    }
+  },
   main = "nvim-tree",
   ---@param self nvim-tree
   ---@param _ table

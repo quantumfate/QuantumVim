@@ -2,7 +2,7 @@
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
 ---@field options table|nil options used in the setup call of a neovim plugin
----@field keymaps table|nil keymaps parsed to yikes.nvim
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string the string to use when the neovim plugin is required
 ---@field on_setup_start fun(self: toggleterm, instance: table)|nil hook setup logic at the beginning of the setup call
 ---@field setup fun(self: toggleterm)|nil overwrite the setup function in core_base
@@ -34,19 +34,18 @@ local toggleterm = {
     },
   },
   keymaps = {
-    --[[     {
-      binding_group = "t",
-      name = "Toggleterm",
-      bindings = {
-        n = { rhs = "<cmd>lua _NODE_TOGGLE()<cr>", desc = "Node" },
+    mappings = {
+      t = {
+        name = "Toggleterm",
+        n = { "<cmd>lua _NODE_TOGGLE()<cr>", desc = "Node" },
         u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
         t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
-        p = { rhs = "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
-        f = { "<cmd>ToggleTerm direction=float<cr>", desc = "Float" },
+        p = { "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
+        f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
         h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
         v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
       },
-    }, ]]
+    }
   },
   main = "toggleterm",
   on_setup_start = nil,
@@ -55,31 +54,31 @@ local toggleterm = {
     local Terminal = require("toggleterm.terminal").Terminal
     local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
-    function _LAZYGIT_TOGGLE()
+    function _G._LAZYGIT_TOGGLE()
       lazygit:toggle()
     end
 
     local node = Terminal:new({ cmd = "node", hidden = true })
 
-    function _NODE_TOGGLE()
+    function _G._NODE_TOGGLE()
       node:toggle()
     end
 
     local ncdu = Terminal:new({ cmd = "ncdu", hidden = true })
 
-    function _NCDU_TOGGLE()
+    function _G._NCDU_TOGGLE()
       ncdu:toggle()
     end
 
     local htop = Terminal:new({ cmd = "htop", hidden = true })
 
-    function _HTOP_TOGGLE()
+    function _G._HTOP_TOGGLE()
       htop:toggle()
     end
 
     local python = Terminal:new({ cmd = "python", hidden = true })
 
-    function _PYTHON_TOGGLE()
+    function _G._PYTHON_TOGGLE()
       python:toggle()
     end
 
