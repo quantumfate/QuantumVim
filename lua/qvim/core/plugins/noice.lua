@@ -13,6 +13,12 @@ local noice = {
   name = nil,
   options = {
     lsp = {
+      message = {
+        -- Messages shown by lsp servers
+        enabled = false,
+        view = "notify",
+        opts = {},
+      },
       -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
       override = {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -66,6 +72,13 @@ local noice = {
         },
       },
     },
+    routes = {
+      {
+        view = "mini",
+        filter = { event = "msg_show", min_height = 20 },
+        ["not"] = { kind = { "search_count", "echo" }, find = { "null-ls" } },
+      },
+    }
   },
   keymaps = {},
   main = "noice",
