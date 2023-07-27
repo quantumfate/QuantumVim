@@ -1,3 +1,3 @@
 return {
-	code_actions = "refactoring",
+    code_actions = "refactoring",
 }

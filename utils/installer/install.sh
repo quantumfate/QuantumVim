@@ -2,6 +2,7 @@
 set -eo pipefail
 
 OS="$(uname -s)"
+declare -xr NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 #Set branch to master unless specified by the user
 declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
@@ -12,9 +13,11 @@ declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
 declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 declare -xr XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
 
-declare -xr QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/qvim"}"
-declare -xr QUANTUMVIM_DIR="${QUANTUMVIM_DIR:-"$XDG_CONFIG_HOME/qvim"}"
+declare -xr QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM_APPNAME"}"
+declare -xr QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_LEVEL="${QUANTUMVIM_LOG_LEVEL:-warn}"
+
+declare -xir QV_FIRST_TIME_SETUP=1
 
 declare BASEDIR
 BASEDIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
@@ -29,7 +32,7 @@ declare USE_SSH=0
 
 declare -a __qvim_dirs=(
     "$QUANTUMVIM_CACHE_DIR"
-    "$QUANTUMVIM_DIR"
+    "$QUANTUMVIM_CONFIG_DIR"
 )
 
 function usage() {
@@ -223,13 +226,13 @@ function clone_qvim() {
     if [ "$USE_SSH" -eq 0 ]; then
 
 	    if ! git clone --branch "$QV_BRANCH" \
-		"https://github.com/${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
+		"https://github.com/${QV_REMOTE}" "$QUANTUMVIM_CONFIG_DIR"; then
 		echo "Failed to clone repository. Installation failed."
 		exit 1
 	    fi
 	else
 	    if ! git clone --branch "$QV_BRANCH" \
-		"git@github.com:${QV_REMOTE}" "$QUANTUMVIM_DIR"; then
+		"git@github.com:${QV_REMOTE}" "$QUANTUMVIM_CONFIG_DIR"; then
 		echo "Failed to clone repository. Installation failed."
 		exit 1
 	    fi
@@ -237,7 +240,7 @@ function clone_qvim() {
 }
 
 function setup_exec() {
-    make -C "$QUANTUMVIM_DIR" install-bin
+    make -C "$QUANTUMVIM_CONFIG_DIR" install-bin
 }
 
 function remove_old_cache_files() {
@@ -258,7 +261,7 @@ function setup_qvim() {
 
     echo "Preparing Lazy setup"
 
-    "$INSTALL_PREFIX/bin/qvim" --headless -c 'quitall'
+    "$INSTALL_PREFIX/bin/$NVIM_APPNAME" --headless -c 'quitall'
 
     echo "Lazy setup complete"
 
@@ -268,13 +271,13 @@ function create_desktop_file() {
     ([ "$OS" != "Linux" ] || ! command -v xdg-desktop-menu &>/dev/null) && return
     echo "Creating desktop file"
 
-    for d in "$QUANTUMVIM_DIR"/utils/desktop/*/; do
+    for d in "$QUANTUMVIM_CONFIG_DIR"/utils/desktop/*/; do
         size_folder=$(basename "$d")
         mkdir -p "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps/"
-        cp "$QUANTUMVIM_DIR/utils/desktop/$size_folder/qvim.svg" "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps"
+        cp "$QUANTUMVIM_CONFIG_DIR/utils/desktop/$size_folder/$NVIM_APPNAME.svg" "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps"
     done
 
-    xdg-desktop-menu install --novendor "$QUANTUMVIM_DIR/utils/desktop/qvim.desktop" || true
+    xdg-desktop-menu install --novendor "$QUANTUMVIM_CONFIG_DIR/utils/desktop/$NVIM_APPNAME.desktop" || true
 }
 
 function print_logo() {
@@ -329,7 +332,7 @@ function main() {
 
     msg "$ADDITIONAL_WARNINGS"
     msg "Thank you for installing QuantumVim!!"
-    echo "You can start it by running: $INSTALL_PREFIX/bin/qvim"
+    echo "You can start it by running: $INSTALL_PREFIX/bin/$NVIM_APPNAME"
     echo "Do not forget to use a font with glyphs (icons) support [https://github.com/ryanoasis/nerd-fonts]"
 }
 

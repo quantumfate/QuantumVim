@@ -1,5 +1,3 @@
-local QV_PLUGIN_NAME_VAR = {
-
+return {
+    
 }
-
-return QV_PLUGIN_NAME_VAR

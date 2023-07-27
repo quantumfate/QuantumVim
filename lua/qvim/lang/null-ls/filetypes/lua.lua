@@ -1,4 +1,4 @@
 return {
-	code_actions = "refactoring",
-	formatting = "stylua",
+    code_actions = "refactoring",
+    formatting = "stylua",
 }

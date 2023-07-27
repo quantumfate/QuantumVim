@@ -1,22 +1,9 @@
-local base_dir = vim.env.QUANTUMVIM_DIR
-	or (function()
-		local init_path = debug.getinfo(1, "S").source
-		return init_path:sub(2):match("(.*[/\\])"):sub(1, -2)
-	end)()
+vim.loader.enable()
 
-if not vim.tbl_contains(vim.opt.rtp:get(), base_dir) then
-	vim.opt.rtp:prepend(base_dir)
-end
+require("qvim.bootstrap"):init()
 
-print(vim.env.QUANTUMVIM_DIR)
-
-print(base_dir)
-require("qvim.bootstrap"):init(base_dir)
-
-require("qvim.keymaps"):init()
-
-local integration_loader = require("qvim.integrations._loader")
-integration_loader:load()
+require("qvim.bootstrap"):setup()
+--require("qvim.keymaps"):init()
 
 local Log = require("qvim.log")
 Log:debug("Starting QuantumVim")

@@ -4,6 +4,7 @@ local c_cpp = {}
 function c_cpp.setup()
     -- install codelldb with :MasonInstall codelldb
     -- configure nvim-dap (codelldb)
+
     local dap = require("dap")
     dap.adapters.codelldb = {
         type = "server",
@@ -25,10 +26,12 @@ function c_cpp.setup()
             request = "launch",
             program = function()
                 local path
-                vim.ui.input({ prompt = "Path to executable: ", default = vim.loop.cwd() .. "/build/" },
-                    function(input)
-                        path = input
-                    end)
+                vim.ui.input({
+                    prompt = "Path to executable: ",
+                    default = vim.loop.cwd() .. "/build/",
+                }, function(input)
+                    path = input
+                end)
                 vim.cmd [[redraw]]
                 return path
             end,

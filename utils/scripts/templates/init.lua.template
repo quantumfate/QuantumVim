@@ -1,42 +1,32 @@
----The QV_STRING_PLUGIN_NAME_VAR configuration file
-local M = {}
-
-local Log = require "qvim.log"
-
----Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
-function M:init()
-  local QV_PLUGIN_NAME_VAR = {
-    active = true,
-    on_config_done = nil,
-    keymaps = {},
-    options = {
-        -- QV_PLUGIN_NAME_VAR option configuration
-
+---@generic T
+---@class QV_STRING_PLUGIN_NAME_VAR : core_meta_parent
+---@field enabled boolean|fun():boolean|nil
+---@field name string|nil the human readable name
+---@field extensions table<string> a list of extension url's
+---@field conf_extensions table<string, AbstractExtension> instances of configured extensions
+---@field options table|nil options used in the setup call of a neovim plugin
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
+---@field main string the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: QV_STRING_PLUGIN_NAME_VAR, instance: table)|nil hook setup logic at the beginning of the setup call
+---@field setup fun(self: QV_STRING_PLUGIN_NAME_VAR)|nil overwrite the setup function in core_meta_parent
+---@field on_setup_done fun(self: QV_STRING_PLUGIN_NAME_VAR, instance: table)|nil hook setup logic at the end of the setup call
+---@field url string neovim plugin url
+local QV_PLUGIN_NAME_VAR = {
+    enabled = true,
+    name = nil,
+    extensions = {},
+    conf_extensions = {},
+    options = {},
+    keymaps = {
+        mappings = {},
     },
-  }
-  return QV_PLUGIN_NAME_VAR
-end
+    main = nil,
+    on_setup_start = nil,
+    setup = nil,
+    on_setup_done = nil,
+    url = nil,
+}
 
-function M:config()
--- QV_PLUGIN_NAME_VAR config function to call additional configs
-end
+QV_PLUGIN_NAME_VAR.__index = QV_PLUGIN_NAME_VAR
 
----The QV_STRING_PLUGIN_NAME_VAR setup function. The module will be required by 
----this function and it will call the respective setup function.
----A on_config_done function will be called if the plugin implements it.
-function M:setup()
-  local status_ok, QV_PLUGIN_NAME_VAR = pcall(reload, "QV_STRING_PLUGIN_NAME_VAR")
-  if not status_ok then
-    Log:warn(string.format("The plugin '%s' could not be loaded.", QV_PLUGIN_NAME_VAR))
-    return
-  end
-
-  local _QV_PLUGIN_NAME_VAR = qvim.integrations.QV_PLUGIN_NAME_VAR
-  QV_PLUGIN_NAME_VAR.setup(_QV_PLUGIN_NAME_VAR.options)
-
-  if _QV_PLUGIN_NAME_VAR.on_config_done then
-    _QV_PLUGIN_NAME_VAR.on_config_done()
-  end
-end
-
-return M
+return QV_PLUGIN_NAME_VAR

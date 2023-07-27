@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v0.18.0
+    hooks:
+      - id: stylua-github
+      - id: shfmt
+        name: shfmt
+        minimum_pre_commit_version: 2.4.0
+        language: system
+        types: [shell]
+        entry: bash
+        args: [-c, make lint-sh]
+      - id: shellcheck
+        name: shellcheck
+        language: system
+        types: [shell]
+        entry: bash
+        args: [-c, make style-sh]
+      - id: stylua
+        name: StyLua
+        language: rust
+        entry: stylua
+        types: [lua]
+        args: ["-"]
+      - id: luacheck
+        name: luacheck
+        language: system
+        entry: luacheck
+        types: [lua]
+        args: [.]

@@ -1,5 +1,4 @@
-local utils = require("qvim.utils")
-local Log = require("qvim.log")
+local Log = require "qvim.log"
 
 local M = {}
 
@@ -7,38 +6,40 @@ local M = {}
 --- This must be called at the beginning when qvim is
 --- loaded since everything depends on this.
 function M:init()
-	_G.qvim = setmetatable({}, { __index = vim.deepcopy(require("qvim.config.config")) })
+    ---@class qvim
+    ---@field plugins Plugins
+    ---@field config config
+    ---@field format_on_save format_on_save
+    ---@field luasnip luasnip
+    ---@field icons icons
+    ---@field lsp table
+    ---@field autocommands autocommands
+    ---@field log log
+    _G.qvim = setmetatable(
+        {},
+        { __index = vim.deepcopy(require "qvim.config.config") }
+    )
 
-	vim.g.mapleader = qvim.config.leader
-	vim.g.maplocalleader = qvim.config.leader
-	local settings = require("qvim.config.settings")
-	settings.load_defaults()
+    vim.g.mapleader = qvim.config.leader
+    vim.g.maplocalleader = qvim.config.leader
+    local settings = require "qvim.config.settings"
+    settings.load_defaults()
 
-	---@return table integrations
-	function _G.qvim_integrations()
-		return qvim.config.integrations
-	end
+    ---@return table languages
+    function _G.qvim_languages()
+        local languages = qvim.config.languages
+        return languages
+    end
 
-	---@return table languages
-	function _G.qvim_languages()
-		local languages = qvim.config.languages
-		return languages
-	end
+    if not os.getenv "QV_FIRST_TIME_SETUP" then
+        require("qvim.core").init_plugin_configurations()
+        local qvim_lsp_config = require "qvim.lang.config"
+        qvim.lsp = vim.deepcopy(qvim_lsp_config)
+        vim.cmd.colorscheme(qvim.config.colorscheme)
+    end
 
-	require("qvim.integrations"):init()
-
-	if not _G.in_headless_mode() then
-		local qvim_lsp_config = require("qvim.lang.config")
-		qvim.lsp = vim.deepcopy(qvim_lsp_config)
-	end
-
-
-	if not _G.in_headless_mode() then
-		vim.cmd.colorscheme(qvim.config.colorscheme)
-	end
-
-	Log:set_level(qvim.log.level)
-	Log:info("Configs were loaded.")
+    Log:set_level(qvim.log.level)
+    Log:info "Configs were loaded."
 end
 
 --[[

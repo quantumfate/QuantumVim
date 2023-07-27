@@ -1,38 +1,27 @@
----The QV_STRING_EXT_PLUGIN_NAME_VAR configuration file of the QV_STRING_PLUGIN_NAME_VAR plugin
-local M = {}
-
-local Log = require "qvim.log"
-
----Registers the global configuration scope for QV_STRING_PLUGIN_NAME_VAR
-function M:config()
-  qvim.integrations.QV_PLUGIN_NAME_VAR.QV_EXT_PLUGIN_VAR = {
-    active = true,
-    on_config_done = nil,
-    keymaps = {},
-    options = {
-        -- QV_EXT_PLUGIN_VAR option configuration
-
+---@class QV_STRING_EXT_PLUGIN_NAME_VAR : QV_STRING_PLUGIN_NAME_VAR
+---@field enabled boolean|fun():boolean|nil
+---@field name string|nil the human readable name
+---@field options table|nil options used in the setup call of a neovim plugin
+---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
+---@field main string|nil the string to use when the neovim plugin is required
+---@field on_setup_start fun(self: QV_STRING_EXT_PLUGIN_NAME_VAR, instance: table|nil)|nil hook setup logic at the beginning of the setup call
+---@field setup_ext fun(self: QV_STRING_EXT_PLUGIN_NAME_VAR)|nil overwrite the setup function in core_meta_ext
+---@field on_setup_done fun(self: QV_STRING_EXT_PLUGIN_NAME_VAR, instance: table|nil)|nil hook setup logic at the end of the setup call
+---@field url string neovim plugin url
+local QV_EXT_PLUGIN_VAR = {
+    enabled = true,
+    name = nil,
+    options = {},
+    keymaps = {
+        mappings = {},
     },
-    url = "",
-  }
-end
+    main = nil,
+    on_setup_start = nil,
+    setup_ext = nil,
+    on_setup_done = nil,
+    url = nil,
+}
 
----The QV_STRING_EXT_PLUGIN_NAME_VAR setup function. The module will be required by 
----this function and it will call the respective setup function.
----A on_config_done function will be called if the plugin implements it.
-function M:setup()
-  local status_ok, QV_EXT_PLUGIN_VAR = pcall(reload, "QV_STRING_EXT_PLUGIN_NAME_VAR")
-  if not status_ok then
-    Log:warn(string.format("The extension '%s' could not be loaded.", QV_EXT_PLUGIN_VAR))
-    return
-  end
+QV_EXT_PLUGIN_VAR.__index = QV_EXT_PLUGIN_VAR
 
-  local _QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR = qvim.integrations.QV_PLUGIN_NAME_VAR.QV_EXT_PLUGIN_VAR
-  QV_EXT_PLUGIN_VAR.setup(_QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR.options)
-
-  if _QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR.on_config_done then
-    _QV_PLUGIN_NAME_VAR_QV_EXT_PLUGIN_VAR.on_config_done()
-  end
-end
-
-return M
+return QV_EXT_PLUGIN_VAR
