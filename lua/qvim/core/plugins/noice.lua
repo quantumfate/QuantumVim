@@ -66,16 +66,6 @@ local noice = {
         },
       },
     },
-    routes = {
-      {
-        view = "notify",
-        filter = {
-          event = "msg_show",
-          min_height = 10,
-          ["not"] = { kind = { "search_count", "echo" }, find = { "hop" } },
-        },
-      }
-    }
   },
   keymaps = {},
   main = "noice",

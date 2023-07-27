@@ -37,14 +37,14 @@ local nvim_tree = {
       api.config.mappings.default_on_attach(bufnr)
 
       local useful_keys = {
-        ["l"] = { callback = api.node.open.edit, desc = "Open" },
-        ["o"] = { api.node.open.edit, desc = "Open" },
-        ["<CR>"] = { api.node.open.edit, desc = "Open" },
-        ["v"] = { api.node.open.vertical, desc = "Open: Vertical Split" },
-        ["h"] = { api.node.navigate.parent_close, desc = "Close Directory" },
-        ["C"] = { api.tree.change_root_to_node, desc = "CD" },
-        ["tg"] = { telescope_live_grep, desc = "Telescope Live Grep" },
-        ["tf"] = { telescope_find_files, desc = "Telescope Find File" },
+        ["l"] = { callback = api.node.open.edit, "Open" },
+        ["o"] = { api.node.open.edit, "Open" },
+        ["<CR>"] = { api.node.open.edit, "Open" },
+        ["v"] = { api.node.open.vertical, "Open: Vertical Split" },
+        ["h"] = { api.node.navigate.parent_close, "Close Directory" },
+        ["C"] = { api.tree.change_root_to_node, "CD" },
+        ["tg"] = { telescope_live_grep, "Telescope Live Grep" },
+        ["tf"] = { telescope_find_files, "Telescope Find File" },
       }
       require("which-key").register(useful_keys, { buffer = bufnr })
     end,

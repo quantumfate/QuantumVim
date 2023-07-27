@@ -126,6 +126,78 @@ local which_key = {
   on_setup_start = nil,
   setup = nil,
   on_setup_done = function(self)
+    local wk = require("which-key")
+    local dvorak_defaults = {
+
+      insert_mode = {
+        -- navigation
+        ["<A-n>"] = { "<Esc>:m .+1<CR>==gi", "Move current line up" },
+        ["<A-t>"] = { "<Esc>:m .-2<CR>==gi", "Move current line down" },
+        ["<A-Up>"] = { "<C-\\><C-N><C-w>k", "Move up" },
+        ["<A-Down>"] = { "<C-\\><C-N><C-w>j", "Move down" },
+        ["<A-Left>"] = { "<C-\\><C-N><C-w>h", "Move left" },
+        ["<A-Right>"] = { "<C-\\><C-N><C-w>l", "Move right" },
+      },
+      normal_mode = {
+        -- Better window movement
+        ["<C-h>"] = { "<C-w>h", "Go to left window" },
+        ["<C-t>"] = { "<C-w>j", "Go to lower window" },
+        ["<C-n>"] = { "<C-w>k", "Go to upper window" },
+        ["<C-s>"] = { "<C-w>l", "Go to right window" },
+        -- Resize with arrows
+        ["<C-Up>"] = { ":resize -2<CR>", "Decrease window size horizontally" },
+        ["<C-Down>"] = { ":resize +2<CR>", "Increase window size horizontally" },
+        ["<C-Left>"] = { ":vertical resize -2<CR>", "Decrease window size vertically" },
+        ["<C-Right>"] = { ":vertical resize +2<CR>", "Increase window size vertically" },
+        -- Move current line / block with Alt-j/k a la vscode.
+        ["<A-n>"] = { ":m .+1<CR>==", "Move current line up" },
+        ["<A-t>"] = { ":m .-2<CR>==", "Move current line down" },
+        ["]q"] = { ":cnext<CR>", "Fix next error" },
+        ["[q"] = { ":cprev<CR>", "Fix previous error" },
+        -- Navigate buffers
+        ["<C-j>"] = { ":bnext<CR>", "Navigate to right buffer" },
+        ["<C-k>"] = { ":bprev<CR>", "Navigate to left buffer" },
+      },
+      term_mode = {
+        -- Terminal window navigation
+        ["<C-h>"] = { "<C-\\><C-N><C-w>h", "Go to left terminal" },
+        ["<C-t>"] = { "<C-\\><C-N><C-w>j", "Go to lower terminal" },
+        ["<C-n>"] = { "<C-\\><C-N><C-w>k", "Go to upper terminal" },
+        ["<C-s>"] = { "<C-\\><C-N><C-w>l", "Go to right terminal" },
+      },
+      visual_mode = {
+        -- Better indenting
+        ["<"] = { "<gv", "Indent right" },
+        [">"] = { ">gv", "Indent left" },
+        -- ["p"] = '"0p',
+        -- ["P"] = '"0P',
+      },
+      visual_block_mode = {
+        -- Move current line / block with Alt-j/k ala vscode.
+        ["<A-t>"] = { ":m '>+1<CR>gv-gv", "Move current line down" },
+        ["<A-n>"] = { ":m '<-2<CR>gv-gv", "Move current line up" },
+      },
+      command_mode = {
+        -- navigate tab completion with <c-j> and <c-k>
+        -- runs conditionally
+        ["<C-t>"] = {
+          'pumvisible() ? "\\<C-n>" : "\\<C-j>"',
+          "Navigate tab completion down",
+          expr = true,
+          noremap = true,
+        },
+        ["<C-n>"] = {
+          'pumvisible() ? "\\<C-p>" : "\\<C-k>"',
+          "Navigate tab completion up",
+          expr = true,
+          noremap = true,
+        },
+      },
+    }
+
+    for _, value in pairs(dvorak_defaults) do
+      wk.register(value)
+    end
     require("qvim.core.util").register_keymaps(self)
   end,
   url = "https://github.com/folke/which-key.nvim",
