@@ -30,120 +30,127 @@ local lualine_highlights = require("qvim.core.plugins.lualine.highlights")
 ---@field on_setup_done fun(self: lualine, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local lualine = {
-    enabled = true,
-    name = nil,
-    extensions = {},
-    conf_extensions = {},
-    ---@class lualine_options : table
-    ---@field options options
-    ---@field sections sections
-    ---@field inactive_sections inactive_sections
-    options = {
-        ---@class options : table
-        ---@field icons_enabled boolean
-        ---@field component_separators table<string, string>
-        ---@field section_separators table<string, string>
-        ---@field theme string|table
-        ---@field disabled_filetypes table<string,table<string>|string>
-        ---@field globalstatus boolean
-        options = {
-            -- lualine option configuration
-            icons_enabled = qvim.config.use_icons,
-            component_separators = {
-                left = lualine_highlights.ComponentSeparatorGreyBg(qvim.icons.misc.Stars),
-                right = lualine_highlights.ComponentSeparatorGreyBg(qvim.icons.misc.Stars)
-            },
-            section_separators = {
-                left = qvim.icons.ui.BoldCircleDividerLeft,
-                right = qvim.icons.ui.BoldCircleDividerRight
-            },
-            theme = color_template,
-            disabled_filetypes = { statusline = { "alpha" }, "dashboard", "NvimTree", "Outline" },
-            globalstatus = true,
-        },
-        ---@class sections : table
-        ---@field lualine_a table<component>|nil
-        ---@field lualine_b table<component>|nil
-        ---@field lualine_c table<component>|nil
-        ---@field lualine_x table<component>|nil
-        ---@field lualine_y table<component>|nil
-        ---@field lualine_z table<component>|nil
-        sections = {
-            lualine_a = {
-                lualine_components.mode,
-            },
-            lualine_b = {
-                lualine_components.branch,
-            },
-            lualine_c = {
-                lualine_components.diff,
-                lualine_components.python_env,
-                lualine_components.noice_recording,
-            },
-            lualine_x = {
-                lualine_components.diagnostics,
-                lualine_components.lsp,
-                lualine_components.diagnostics_source,
-                lualine_components.formatters_source,
-                lualine_components.code_action_source,
-                lualine_components.hover_source,
-                lualine_components.copilot,
-                lualine_components.filetype,
-            },
-            lualine_y = {
+	enabled = true,
+	name = nil,
+	extensions = {},
+	conf_extensions = {},
+	---@class lualine_options : table
+	---@field options options
+	---@field sections sections
+	---@field inactive_sections inactive_sections
+	options = {
+		---@class options : table
+		---@field icons_enabled boolean
+		---@field component_separators table<string, string>
+		---@field section_separators table<string, string>
+		---@field theme string|table
+		---@field disabled_filetypes table<string,table<string>|string>
+		---@field globalstatus boolean
+		options = {
+			-- lualine option configuration
+			icons_enabled = qvim.config.use_icons,
+			component_separators = {
+				left = lualine_highlights.ComponentSeparatorGreyBg(
+					qvim.icons.misc.Stars
+				),
+				right = lualine_highlights.ComponentSeparatorGreyBg(
+					qvim.icons.misc.Stars
+				),
+			},
+			section_separators = {
+				left = qvim.icons.ui.BoldCircleDividerLeft,
+				right = qvim.icons.ui.BoldCircleDividerRight,
+			},
+			theme = color_template,
+			disabled_filetypes = {
+				statusline = { "alpha" },
+				"dashboard",
+				"NvimTree",
+				"Outline",
+			},
+			globalstatus = true,
+		},
+		---@class sections : table
+		---@field lualine_a table<component>|nil
+		---@field lualine_b table<component>|nil
+		---@field lualine_c table<component>|nil
+		---@field lualine_x table<component>|nil
+		---@field lualine_y table<component>|nil
+		---@field lualine_z table<component>|nil
+		sections = {
+			lualine_a = {
+				lualine_components.mode,
+			},
+			lualine_b = {
+				lualine_components.branch,
+			},
+			lualine_c = {
+				lualine_components.diff,
+				lualine_components.python_env,
+			},
+			lualine_x = {
+				lualine_components.diagnostics,
+				lualine_components.lsp,
+				lualine_components.diagnostics_source,
+				lualine_components.formatters_source,
+				lualine_components.code_action_source,
+				lualine_components.hover_source,
+				lualine_components.copilot,
+				lualine_components.filetype,
+			},
+			lualine_y = {
 
-                lualine_components.location
-            },
-            lualine_z = {
-                lualine_components.progress,
-            },
-        },
-        ---@class inactive_sections : table
-        ---@field lualine_a table<component>|nil
-        ---@field lualine_b table<component>|nil
-        ---@field lualine_c table<component>|nil
-        ---@field lualine_x table<component>|nil
-        ---@field lualine_y table<component>|nil
-        ---@field lualine_z table<component>|nil
-        inactive_sections = {
-            lualine_a = {
-                lualine_components.mode,
-            },
-            lualine_b = {
-                lualine_components.branch,
-            },
-            lualine_c = {
-                lualine_components.diff,
-                lualine_components.python_env,
-                lualine_components.noice_recording,
-            },
-            lualine_x = {
-                lualine_components.diagnostics,
-                lualine_components.lsp,
-                lualine_components.diagnostics_source,
-                lualine_components.formatters_source,
-                lualine_components.code_action_source,
-                lualine_components.hover_source,
-                lualine_components.copilot,
-                lualine_components.filetype,
-            },
-            lualine_y = {
+				lualine_components.location,
+			},
+			lualine_z = {
+				lualine_components.progress,
+			},
+		},
+		---@class inactive_sections : table
+		---@field lualine_a table<component>|nil
+		---@field lualine_b table<component>|nil
+		---@field lualine_c table<component>|nil
+		---@field lualine_x table<component>|nil
+		---@field lualine_y table<component>|nil
+		---@field lualine_z table<component>|nil
+		inactive_sections = {
+			lualine_a = {
+				lualine_components.mode,
+			},
+			lualine_b = {
+				lualine_components.branch,
+			},
+			lualine_c = {
+				lualine_components.diff,
+				lualine_components.python_env,
+			},
+			lualine_x = {
+				lualine_components.diagnostics,
+				lualine_components.lsp,
+				lualine_components.diagnostics_source,
+				lualine_components.formatters_source,
+				lualine_components.code_action_source,
+				lualine_components.hover_source,
+				lualine_components.copilot,
+				lualine_components.filetype,
+			},
+			lualine_y = {
 
-                lualine_components.location
-            },
-            lualine_z = {
-                lualine_components.progress,
-            },
-            tabline = nil,
-            extensions = nil,
-        },
-    },
-    keymaps = {},
-    main = "lualine",
-    on_setup_start = nil,
-    setup = nil,
-    on_setup_done = nil,
-    url = "https://github.com/nvim-lualine/lualine.nvim",
+				lualine_components.location,
+			},
+			lualine_z = {
+				lualine_components.progress,
+			},
+			tabline = nil,
+			extensions = nil,
+		},
+	},
+	keymaps = {},
+	main = "lualine",
+	on_setup_start = nil,
+	setup = nil,
+	on_setup_done = nil,
+	url = "https://github.com/nvim-lualine/lualine.nvim",
 }
 lualine.__index = lualine
 
