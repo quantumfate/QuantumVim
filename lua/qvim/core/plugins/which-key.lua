@@ -212,22 +212,7 @@ local which_key = {
 				["<A-t>"] = { ":m '>+1<CR>gv-gv", "Move current line down" },
 				["<A-n>"] = { ":m '<-2<CR>gv-gv", "Move current line up" },
 			},
-			command_mode = {
-				-- navigate tab completion with <c-j> and <c-k>
-				-- runs conditionally
-				["<C-t>"] = {
-					'pumvisible() ? "\\<C-n>" : "\\<C-j>"',
-					"Navigate tab completion down",
-					expr = true,
-					noremap = true,
-				},
-				["<C-n>"] = {
-					'pumvisible() ? "\\<C-p>" : "\\<C-k>"',
-					"Navigate tab completion up",
-					expr = true,
-					noremap = true,
-				},
-			},
+			command_mode = {},
 		}
 
 		for mode, value in pairs(dvorak_defaults) do

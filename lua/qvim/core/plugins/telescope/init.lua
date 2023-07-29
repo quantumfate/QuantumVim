@@ -53,6 +53,7 @@ local telescope = {
 			---@usage Mappings are fully customizable. Many familiar mapping patterns are setup as defaults.
 			mappings = {
 				i = {
+					["<TAB>"] = function() end,
 					["<C-n>"] = actions.move_selection_next,
 					["<C-t>"] = actions.move_selection_previous,
 					["<C-c>"] = actions.close,
