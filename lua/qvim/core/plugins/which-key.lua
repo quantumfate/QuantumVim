@@ -95,7 +95,7 @@ local which_key = {
 				["f"] = {
 					function()
 						require("qvim.core.plugins.telescope.util").find_project_files({
-							previewer = false,
+							previewer = true,
 						})
 					end,
 					"Find File",

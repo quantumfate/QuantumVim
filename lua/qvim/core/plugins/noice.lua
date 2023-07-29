@@ -164,6 +164,18 @@ local noice = {
 			},
 			{
 				filter = {
+					find = "Lines Yanked",
+				},
+				opts = { skip = true },
+			},
+			{
+				filter = {
+					find = "Pick window:",
+				},
+				opts = { skip = true },
+			},
+			{
+				filter = {
 					event = "notify",
 				},
 				view = "mini",

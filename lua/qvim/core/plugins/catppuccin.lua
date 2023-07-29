@@ -110,6 +110,29 @@ local catppuccin = {
 			local ucolors = modules.require_on_index("catppuccin.utils.colors")
 			local mocha = require("catppuccin.palettes").get_palette("mocha")
 			return {
+				-- window picker
+				WindowPickerStatusLine = {
+					fg = colors.teal,
+					bg = colors.surface2,
+					style = { "bold" },
+				},
+				WindowPickerStatusLineNC = {
+					fg = colors.teal,
+					bg = colors.surface2,
+					style = { "bold" },
+				},
+				WindowPickerWinBar = {
+					fg = colors.teal,
+					bg = colors.surface2,
+					style = { "bold" },
+				},
+				WindowPickerWinBarNC = {
+					fg = colors.teal,
+					bg = colors.surface2,
+					style = { "bold" },
+				},
+
+				-- Indent Blankline
 				IndentBlanklineIndent1 = { fg = colors.surface0 },
 				IndentBlanklineIndent2 = { fg = colors.surface0 },
 				IndentBlanklineIndent3 = { fg = colors.surface0 },

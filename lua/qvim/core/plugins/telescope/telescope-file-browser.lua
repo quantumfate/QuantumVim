@@ -9,30 +9,30 @@
 ---@field on_setup_done fun(self: telescope-file-browser, instance: table|nil)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local telescope_file_browser = {
-    enabled = true,
-    name = nil,
-    options = {
-        theme = "ivy",
-        -- disables netrw and use telescope-file-browser in its place
-        hijack_netrw = true,
-        mappings = {
-            ["i"] = {
-                -- your custom insert mode mappings
-            },
-            ["n"] = {
-                -- your custom normal mode mappings
-            },
-        },
-    },
-    keymaps = {},
-    main = "file_browser",
-    on_setup_start = nil,
-    ---@param self telescope-file-browser<AbstractExtension>
-    setup_ext = function(self)
-        require("qvim.core.plugins.telescope.util").hook_extension(self)
-    end,
-    on_setup_done = nil,
-    url = "https://github.com/nvim-telescope/telescope-file-browser.nvim",
+	enabled = true,
+	name = nil,
+	options = {
+		theme = "ivy",
+		-- disables netrw and use telescope-file-browser in its place
+		hijack_netrw = true,
+		mappings = {
+			["i"] = {
+				-- your custom insert mode mappings
+			},
+			["n"] = {
+				-- your custom normal mode mappings
+			},
+		},
+	},
+	keymaps = {},
+	main = "file_browser",
+	on_setup_start = nil,
+	---@param self telescope-file-browser<AbstractExtension>
+	setup_ext = function(self)
+		require("qvim.core.plugins.telescope.util").hook_extension(self)
+	end,
+	on_setup_done = nil,
+	url = "https://github.com/nvim-telescope/telescope-file-browser.nvim",
 }
 
 telescope_file_browser.__index = telescope_file_browser

@@ -42,6 +42,7 @@ core.plugins = {
 	"folke/neodev.nvim",
 	"rcarriga/nvim-notify",
 	"akinsho/toggleterm.nvim",
+	"s1n7ax/nvim-window-picker",
 	"windwp/nvim-autopairs",
 	"nvim-treesitter/nvim-treesitter",
 	"Tastyep/structlog.nvim",

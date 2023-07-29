@@ -54,7 +54,7 @@ local telescope = {
 			mappings = {
 				i = {
 					["<C-n>"] = actions.move_selection_next,
-					["<C-p>"] = actions.move_selection_previous,
+					["<C-t>"] = actions.move_selection_previous,
 					["<C-c>"] = actions.close,
 					["<C-j>"] = actions.cycle_history_next,
 					["<C-k>"] = actions.cycle_history_prev,
@@ -66,7 +66,7 @@ local telescope = {
 				},
 				n = {
 					["<C-n>"] = actions.move_selection_next,
-					["<C-p>"] = actions.move_selection_previous,
+					["<C-t>"] = actions.move_selection_previous,
 					["<C-q>"] = function(...)
 						actions.smart_send_to_qflist(...)
 						actions.open_qflist(...)
@@ -124,11 +124,33 @@ local telescope = {
 		mappings = {
 			s = {
 				name = "search",
-				["cb"] = {
-					"<cmd>Telescope git_branches<cr>",
-					"Checkout branch",
+				g = {
+					name = "git",
+					f = {
+						name = "file",
+						["c"] = {
+							"<cmd>Telescope git_bcommits<cr>",
+							"Show commits",
+						},
+						["r"] = {
+							"<cmd>Telescope git_bcommits_range<cr>",
+							"Show commits in range",
+							mode = "v",
+						},
+					},
+					["b"] = {
+						"<cmd>Telescope git_branches<cr>",
+						"Checkout branch",
+					},
+					["i"] = {
+						"<cmd>Telescope git_status<cr>",
+						"Git status",
+					},
+					["s"] = {
+						"<cmd>Telescope git_stash<cr>",
+						"Show shash",
+					},
 				},
-				c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
 				h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
 				M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
 				r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
@@ -138,25 +160,28 @@ local telescope = {
 				f = { builtin.find_files, "Fuzzy find files" },
 				l = { builtin.live_grep, "Live grep" },
 				b = { builtin.buffers, "Show buffers" },
-				["dc"] = {
-					"<cmd>lua require'telescope'.extensions.dap.commands{}<cr>",
-					"Show commands",
-				},
-				["ds"] = {
-					"<cmd>lua require'telescope'.extensions.dap.configurations{}<cr>",
-					"Show setups",
-				},
-				["dv"] = {
-					"<cmd>lua require'telescope'.extensions.dap.variables{}<cr>",
-					"Show variables",
-				},
-				["df"] = {
-					"<cmd>lua require'telescope'.extensions.dap.frames{}<cr>",
-					"Show frames",
-				},
-				["db"] = {
-					"<cmd>lua require'telescope'.extensions.dap.list_breakpoints{}<cr>",
-					"Show breakpoints",
+				d = {
+					name = "DAP",
+					["c"] = {
+						"<cmd>lua require'telescope'.extensions.dap.commands{}<cr>",
+						"Show commands",
+					},
+					["s"] = {
+						"<cmd>lua require'telescope'.extensions.dap.configurations{}<cr>",
+						"Show setups",
+					},
+					["v"] = {
+						"<cmd>lua require'telescope'.extensions.dap.variables{}<cr>",
+						"Show variables",
+					},
+					["f"] = {
+						"<cmd>lua require'telescope'.extensions.dap.frames{}<cr>",
+						"Show frames",
+					},
+					["b"] = {
+						"<cmd>lua require'telescope'.extensions.dap.list_breakpoints{}<cr>",
+						"Show breakpoints",
+					},
 				},
 			},
 		},

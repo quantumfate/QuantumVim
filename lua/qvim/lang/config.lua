@@ -87,24 +87,28 @@ return {
 				mode = { "n", "s", "i" },
 			},
 			["gd"] = {
-				"<cmd>lua vim.lsp.buf.definition()<cr>",
-				"Goto definition",
+				"<cmd>Telescope lsp_definitions<cr>",
+				"Goto Definition",
 			},
 			["gD"] = {
 				"<cmd>lua vim.lsp.buf.declaration()<cr>",
 				"Goto Declaration",
 			},
+			["gt"] = {
+				"<cmd>Telescope lsp_type_definitions<cr>",
+				"Goto Type Definition",
+			},
 			["gr"] = {
-				"<cmd>lua vim.lsp.buf.references()<cr>",
-				"Goto references",
+				"<cmd>Telescope lsp_references<cr>",
+				"Goto References",
 			},
 			["gI"] = {
-				"<cmd>lua vim.lsp.buf.implementation()<cr>",
+				"<cmd>Telescope lsp_implementations<cr>",
 				"Goto Implementation",
 			},
 			["gs"] = {
 				"<cmd>lua vim.lsp.buf.signature_help()<cr>",
-				"show signature help",
+				"Show Signature Help",
 			},
 			["gl"] = {
 				function()
@@ -117,7 +121,7 @@ return {
 						vim.diagnostic.open_float(config)
 					end
 				end,
-				"Show line diagnostics",
+				"Show Line Diagnostics",
 			},
 		},
 		groups = {
@@ -136,23 +140,22 @@ return {
 					"Buffer Diagnostics",
 				},
 				w = { "<cmd>Telescope diagnostics<cr>", "Diagnostics" },
-				f = {
-					"<cmd>lua require('lvim.lsp.utils').format()<cr>",
-					"Format",
+				i = {
+					name = "Info",
+					s = { "<cmd>LspInfo<cr>", "Info" },
+					m = { "<cmd>Mason<cr>", "Mason Info" },
 				},
-				i = { "<cmd>LspInfo<cr>", "Info" },
-				I = { "<cmd>Mason<cr>", "Mason Info" },
-				j = {
+				n = {
 					"<cmd>lua vim.diagnostic.goto_next()<cr>",
 					"Next Diagnostic",
 				},
-				k = {
+				t = {
 					"<cmd>lua vim.diagnostic.goto_prev()<cr>",
 					"Prev Diagnostic",
 				},
 				L = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
 				q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
-				r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
+				R = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
 				s = {
 					"<cmd>Telescope lsp_document_symbols<cr>",
 					"Document Symbols",

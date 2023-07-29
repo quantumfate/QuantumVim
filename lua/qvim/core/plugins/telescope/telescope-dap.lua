@@ -9,18 +9,18 @@
 ---@field on_setup_done fun(self: telescope-dap, instance: table|nil)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local telescope_dap = {
-    enabled = true,
-    name = nil,
-    options = {},
-    keymaps = {},
-    main = "dap",
-    on_setup_start = nil,
-    ---@param self telescope-dap<AbstractExtension>
-    setup_ext = function(self)
-        require("qvim.core.plugins.telescope.util").hook_extension(self)
-    end,
-    on_setup_done = nil,
-    url = "https://github.com/nvim-telescope/telescope-dap.nvim",
+	enabled = true,
+	name = nil,
+	options = {},
+	keymaps = {},
+	main = "dap",
+	on_setup_start = nil,
+	---@param self telescope-dap<AbstractExtension>
+	setup_ext = function(self)
+		require("qvim.core.plugins.telescope.util").hook_extension(self)
+	end,
+	on_setup_done = nil,
+	url = "https://github.com/nvim-telescope/telescope-dap.nvim",
 }
 
 telescope_dap.__index = telescope_dap
