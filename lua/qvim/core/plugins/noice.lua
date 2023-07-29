@@ -105,6 +105,29 @@ local noice = {
 				},
 			},
 			mini = {},
+
+			hover = {
+				view = "popup",
+				relative = "cursor",
+				zindex = 45,
+				enter = false,
+				anchor = "auto",
+				size = {
+					width = "auto",
+					height = "auto",
+					max_height = 40,
+					max_width = 180,
+				},
+				border = {
+					style = "none",
+					padding = { 1, 2 },
+				},
+				position = { row = 1, col = 0 },
+				win_options = {
+					wrap = true,
+					linebreak = true,
+				},
+			},
 		},
 		routes = {
 			{

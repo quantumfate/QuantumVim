@@ -9,77 +9,92 @@
 ---@field on_setup_done fun(self: indent-blankline, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local indent_blankline = {
-  enabled = true,
-  name = nil,
-  options = {
-    show_current_context = true,
-    show_current_context_start = true,
-    show_trailing_blankline_indent = false,
-    show_first_indent_level = true,
-    blankline_enabled = false,
-    use_treesitter = true,
-    blankline_char = "▏",
-    space_char = "⋅",
-    char_highlight_list = {
-      "IndentBlanklineIndent1",
-      "IndentBlanklineIndent2",
-      "IndentBlanklineIndent3",
-      "IndentBlanklineIndent4",
-      "IndentBlanklineIndent5",
-      "IndentBlanklineIndent6",
-    },
-    buftype_exclude = { "nofile", "prompt", "quickfix, :terminal" },
-    context_patterns = {
-      "class",
-      "return",
-      "function",
-      "method",
-      "^if",
-      "^fi",
-      "^while",
-      "jsx_element",
-      "^for",
-      "^object",
-      "^table",
-      "block",
-      "arguments",
-      "if_statement",
-      "else_clause",
-      "jsx_element",
-      "jsx_self_closing_element",
-      "try_statement",
-      "catch_clause",
-      "import_statement",
-      "operation_type",
-    },
-    filetype_exclude = {
-      "help",
-      "startify",
-      "dashboard",
-      "packer",
-      "neogitstatus",
-      "NvimTree",
-      "Trouble",
-      "toggleterm",
-    },
-  },
-  keymaps = {},
-  main = "indent_blankline",
-  on_setup_start = nil,
-  ---@param self indent-blankline
-  setup = function(self)
-    vim.wo.colorcolumn = "99999"
-    vim.cmd([[highlight IndentBlanklineIndent1 guifg=#2e2e2e gui=nocombine]])
-    vim.cmd([[highlight IndentBlanklineIndent2 guifg=#2e2e2e gui=nocombine]])
-    vim.cmd([[highlight IndentBlanklineIndent3 guifg=#2e2e2e gui=nocombine]])
-    vim.cmd([[highlight IndentBlanklineIndent4 guifg=#2e2e2e gui=nocombine]])
-    vim.cmd([[highlight IndentBlanklineIndent5 guifg=#2e2e2e gui=nocombine]])
-    vim.cmd([[highlight IndentBlanklineIndent6 guifg=#2e2e2e gui=nocombine]])
-    vim.opt.list = true
-    require("qvim.core.util").call_super_setup(self)
-  end,
-  on_setup_done = nil,
-  url = "https://github.com/lukas-reineke/indent-blankline.nvim",
+	enabled = true,
+	name = nil,
+	options = {
+		show_current_context = true,
+		show_current_context_start = true,
+		show_trailing_blankline_indent = false,
+		show_first_indent_level = true,
+		blankline_enabled = true,
+		use_treesitter = true,
+		blankline_char = "▏",
+		space_char = "⋅",
+		char_highlight_list = {
+			"IndentBlanklineIndent1",
+			"IndentBlanklineIndent2",
+			"IndentBlanklineIndent3",
+			"IndentBlanklineIndent4",
+			"IndentBlanklineIndent5",
+			"IndentBlanklineIndent6",
+		},
+		indent_blankline_context_pattern_highlight = {
+			["function"] = "@function",
+		},
+		buftype_exclude = { "nofile", "prompt", "quickfix, :terminal" },
+		context_patterns = {
+			"^fi",
+			"^for",
+			"^func",
+			"^if",
+			"^object",
+			"^table",
+			"Block",
+			"ContainerDecl",
+			"FnCallArguments",
+			"IfExpr",
+			"IfStatement",
+			"InitList",
+			"ParamDeclList",
+			"SwitchExpr",
+			"arguments",
+			"argument_list",
+			"block",
+			"catch_clause",
+			"class",
+			"dictionary",
+			"do_block",
+			"element",
+			"else_clause",
+			"for",
+			"function",
+			"import_statement",
+			"jsx_element",
+			"jsx_self_closing_element",
+			"method",
+			"object",
+			"operation_type",
+			"return",
+			"table",
+			"try",
+			"try_statement",
+			"tuple",
+			"while",
+			"with",
+		},
+		filetype_exclude = {
+			"help",
+			"startify",
+			"dashboard",
+			"packer",
+			"neogitstatus",
+			"NvimTree",
+			"Trouble",
+			"toggleterm",
+		},
+	},
+	keymaps = {},
+	main = "indent_blankline",
+	on_setup_start = nil,
+	---@param self indent-blankline
+	setup = function(self)
+		vim.wo.colorcolumn = "99999"
+		vim.opt.list = true
+		vim.opt.termguicolors = true
+		require("qvim.core.util").call_super_setup(self)
+	end,
+	on_setup_done = nil,
+	url = "https://github.com/lukas-reineke/indent-blankline.nvim",
 }
 
 indent_blankline.__index = indent_blankline

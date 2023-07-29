@@ -9,29 +9,29 @@
 ---@field on_setup_done fun(self: nvim-notify, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local nvim_notify = {
-  enabled = true,
-  name = nil,
-  options = {
-    -- notify option configuration
-    icons = {
-      DEBUG = "",
-      ERROR = "",
-      INFO = "",
-      TRACE = "",
-      WARN = "",
-      OFF = "",
-    },
-  },
-  keymaps = {},
-  main = "notify",
-  on_setup_start = nil,
-  ---@param self nvim-notify
-  setup = function(self)
-    require("qvim.core.util").call_super_setup(self)
-    vim.notify = require(self.main)
-  end,
-  on_setup_done = nil,
-  url = "https://github.com/rcarriga/nvim-notify",
+	enabled = true,
+	name = nil,
+	options = {
+		background_colour = "#000000",
+		-- notify option configuration
+		icons = {
+			DEBUG = "",
+			ERROR = "",
+			INFO = "",
+			TRACE = "",
+			WARN = "",
+			OFF = "",
+		},
+	},
+	keymaps = {},
+	main = "notify",
+	on_setup_start = nil,
+	setup = nil,
+	---@param notify table
+	on_setup_done = function(_, notify)
+		vim.notify = notify
+	end,
+	url = "https://github.com/rcarriga/nvim-notify",
 }
 
 nvim_notify.__index = nvim_notify

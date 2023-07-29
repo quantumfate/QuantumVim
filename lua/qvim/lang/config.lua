@@ -63,6 +63,29 @@ return {
 	buffer_mappings = {
 
 		mappings = {
+			["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show hover" },
+			["<c-t>"] = {
+				function()
+					if not require("noice.lsp").scroll(4) then
+						return "<c-k>"
+					end
+				end,
+				"Hover scroll down",
+				silent = true,
+				expr = true,
+				mode = { "n", "s", "i" },
+			},
+			["<c-n>"] = {
+				function()
+					if not require("noice.lsp").scroll(-4) then
+						return "<c-n>"
+					end
+				end,
+				"Hover scroll up",
+				silent = true,
+				expr = true,
+				mode = { "n", "s", "i" },
+			},
 			["gd"] = {
 				"<cmd>lua vim.lsp.buf.definition()<cr>",
 				"Goto definition",
@@ -161,8 +184,8 @@ return {
 	null_ls = {
 		setup = {
 			debug = false,
-			update_in_insert = false,
-			debounce = 900,
+			update_in_insert = true,
+			debounce = 300,
 		},
 	},
 	mason_null_ls = {
