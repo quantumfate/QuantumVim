@@ -9,26 +9,26 @@
 ---@field on_setup_done fun(self: swenv, instance: table)|nil hook setup logic at the end of the setup call
 ---@field url string neovim plugin url
 local swenv = {
-  enabled = true,
-  name = nil,
-  options = {
-    -- swenv option configuration
-    get_venvs = function(venvs_path)
-      return require('swenv.api').get_venvs(venvs_path)
-    end,
-    -- Path passed to `get_venvs`.
-    venvs_path = vim.fn.expand('~/venvs'),
-    -- Something to do after setting an environment, for example call vim.cmd.LspRestart
-    post_set_venv = function()
-      return vim.cmd.LspRestart
-    end,
-  },
-  keymaps = {},
-  main = "swenv",
-  on_setup_start = nil,
-  setup = nil,
-  on_setup_done = nil,
-  url = "https://github.com/AckslD/swenv.nvim",
+	enabled = true,
+	name = nil,
+	options = {
+		-- swenv option configuration
+		get_venvs = function(venvs_path)
+			return require("swenv.api").get_venvs(venvs_path)
+		end,
+		-- Path passed to `get_venvs`.
+		venvs_path = vim.fn.expand("~/venvs"),
+		-- Something to do after setting an environment, for example call vim.cmd.LspRestart
+		post_set_venv = function()
+			return vim.cmd.LspRestart
+		end,
+	},
+	keymaps = {},
+	main = "swenv",
+	on_setup_start = nil,
+	setup = nil,
+	on_setup_done = nil,
+	url = "https://github.com/AckslD/swenv.nvim",
 }
 
 swenv.__index = swenv
