@@ -34,8 +34,8 @@ local function get_mappings()
 				fallback()
 			end
 		end, { "i", "s", "c" }),
-		["<TAB>"] = cmp.mapping.scroll_docs(-4),
-		["<C-TAB>"] = cmp.mapping.scroll_docs(4),
+		["<C-k>"] = cmp.mapping.scroll_docs(4),
+		["<C-j>"] = cmp.mapping.scroll_docs(-4),
 		["<C-e>"] = cmp.mapping.abort(),
 		["<CR>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
@@ -278,6 +278,17 @@ local nvim_cmp = {
 				name = "dap",
 			},
 		})
+		local wk = require("qvim.utils.modules").require_on_index("which-key")
+		wk.register({
+			["<TAB>"] = {
+				function() end,
+				"Redirect tab to do nothing",
+			},
+			["<S-TAB>"] = {
+				function() end,
+				"Redirect s-tab to do nothing",
+			},
+		}, { mode = "c", noremap = false, silent = true })
 	end,
 
 	url = "https://github.com/hrsh7th/nvim-cmp",

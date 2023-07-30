@@ -184,6 +184,7 @@ local noice = {
 				filter = {
 					kind = "echo",
 					find = "ServiceReady",
+					["not"] = { mode = "c" },
 				},
 				view = "mini",
 			},
@@ -191,6 +192,7 @@ local noice = {
 				filter = {
 					kind = "echo",
 					find = "Ready",
+					["not"] = { mode = "c" },
 				},
 				view = "mini",
 			},
@@ -198,6 +200,7 @@ local noice = {
 				filter = {
 					kind = "echo",
 					find = "OK",
+					["not"] = { mode = "c" },
 				},
 				view = "mini",
 			},
@@ -225,6 +228,7 @@ local noice = {
 			{
 				filter = {
 					find = "Hop",
+					["not"] = { mode = "c" },
 				},
 				view = "mini",
 			},
