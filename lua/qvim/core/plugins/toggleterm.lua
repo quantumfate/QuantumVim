@@ -12,7 +12,13 @@ local toggleterm = {
 	enabled = true,
 	name = nil,
 	options = {
-		size = 20,
+		size = function(term)
+			if term.direction == "horizontal" then
+				return 20
+			elseif term.direction == "vertical" then
+				return vim.o.columns * 0.3
+			end
+		end,
 		open_mapping = [[<c-\>]],
 		hide_numbers = true,
 		shade_filetypes = {},
@@ -28,7 +34,7 @@ local toggleterm = {
 		end,
 		shell = vim.o.shell,
 		float_opts = {
-			border = "curved",
+			border = "single",
 			winblend = 0,
 			highlights = {
 				border = "Normal",
@@ -46,11 +52,11 @@ local toggleterm = {
 				p = { "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
 				f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
 				h = {
-					"<cmd>ToggleTerm size=10 direction=horizontal<cr>",
+					"<cmd>ToggleTerm direction=horizontal<cr>",
 					"Horizontal",
 				},
 				v = {
-					"<cmd>ToggleTerm size=80 direction=vertical<cr>",
+					"<cmd>ToggleTerm direction=vertical<cr>",
 					"Vertical",
 				},
 			},

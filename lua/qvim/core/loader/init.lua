@@ -75,6 +75,13 @@ function core_loader.new(
 						dep_hr_name,
 						plugin_name
 					)
+					log:debug(
+						fmt(
+							"[core.loader] Loaded spec for dependency '%s', of the plugin '%s'.",
+							dep_hr_name,
+							plugin_name
+						)
+					)
 				else
 					log:debug(
 						fmt(

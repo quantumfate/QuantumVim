@@ -154,8 +154,8 @@ local which_key = {
 
 			insert_mode = {
 				-- navigation
-				["<A-n>"] = { "<Esc>:m .+1<CR>==gi", "Move current line up" },
-				["<A-t>"] = { "<Esc>:m .-2<CR>==gi", "Move current line down" },
+				--["<A-n>"] = { "<Esc>:m .+1<CR>==gi", "Move current line up" },
+				--["<A-t>"] = { "<Esc>:m .-2<CR>==gi", "Move current line down" },
 				["<A-Up>"] = { "<C-\\><C-N><C-w>k", "Move up" },
 				["<A-Down>"] = { "<C-\\><C-N><C-w>j", "Move down" },
 				["<A-Left>"] = { "<C-\\><C-N><C-w>h", "Move left" },
@@ -185,13 +185,13 @@ local which_key = {
 					"Increase window size vertically",
 				},
 				-- Move current line / block with Alt-j/k a la vscode.
-				["<A-n>"] = { ":m .+1<CR>==", "Move current line up" },
-				["<A-t>"] = { ":m .-2<CR>==", "Move current line down" },
+				--["<A-n>"] = { ":m .+1<CR>==", "Move current line up" },
+				--["<A-t>"] = { ":m .-2<CR>==", "Move current line down" },
 				["]q"] = { ":cnext<CR>", "Fix next error" },
 				["[q"] = { ":cprev<CR>", "Fix previous error" },
 				-- Navigate buffers
-				["<C-j>"] = { ":bnext<CR>", "Navigate to right buffer" },
-				["<C-k>"] = { ":bprev<CR>", "Navigate to left buffer" },
+				["<C-TAB>"] = { ":bnext<CR>", "Navigate to right buffer" },
+				["<C-S-TAB>"] = { ":bprev<CR>", "Navigate to left buffer" },
 			},
 			term_mode = {
 				-- Terminal window navigation
@@ -209,8 +209,8 @@ local which_key = {
 			},
 			visual_block_mode = {
 				-- Move current line / block with Alt-j/k ala vscode.
-				["<A-t>"] = { ":m '>+1<CR>gv-gv", "Move current line down" },
-				["<A-n>"] = { ":m '<-2<CR>gv-gv", "Move current line up" },
+				--["<A-t>"] = { ":m '>+1<CR>gv-gv", "Move current line down" },
+				--["<A-n>"] = { ":m '<-2<CR>gv-gv", "Move current line up" },
 			},
 			command_mode = {},
 		}

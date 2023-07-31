@@ -19,6 +19,7 @@ local QV_PLUGIN_NAME_VAR = {
     options = {},
     keymaps = {
         mappings = {},
+        groups = {}
     },
     main = nil,
     on_setup_start = nil,

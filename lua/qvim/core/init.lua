@@ -11,6 +11,7 @@ local core_base = require("qvim.core.base")
 local core_loader = require("qvim.core.loader")
 
 core.plugins = {
+	"hiphish/rainbow-delimiters.nvim",
 	"goolord/alpha-nvim",
 	"akinsho/bufferline.nvim",
 	"SmiteshP/nvim-navic",

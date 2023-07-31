@@ -64,7 +64,6 @@ return {
 
 		mappings = {
 			["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show hover" },
-			-- TODO fix this shit
 			["<c-k>"] = {
 				function()
 					if not require("noice.lsp").scroll(4) then

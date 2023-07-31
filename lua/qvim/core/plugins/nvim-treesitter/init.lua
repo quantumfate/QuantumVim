@@ -14,7 +14,13 @@
 local nvim_treesitter = {
 	enabled = true,
 	name = nil,
-	extensions = {},
+	extensions = {
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		"nvim-treesitter/nvim-treesitter-context",
+		"nvim-treesitter/playground",
+		"nvim-treesitter/nvim-treesitter-refactor",
+		"nvim-treesitter/nvim-treesitter-textobjects",
+	},
 	conf_extensions = {},
 	options = {
 		ensure_installed = {
@@ -65,18 +71,11 @@ local nvim_treesitter = {
 		indent = { enable = true, disable = { "yaml", "python" } },
 		autotag = { enable = false },
 	},
-	keymaps = {
-		--[[         {
-            name = "+Treesitter",
-            binding_group = "T",
-            bindings = {},
-            options = {
-                prefix = "<leader>",
-            },
-        }, ]]
-	},
+	keymaps = {},
 	main = "nvim-treesitter.configs",
-	on_setup_start = function(_, _)
+	---@param self nvim-treesitter
+	---@param _ table
+	on_setup_start = function(self, _)
 		local path = join_paths(
 			get_qvim_data_dir(),
 			"after",

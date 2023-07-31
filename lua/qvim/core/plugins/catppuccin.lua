@@ -93,7 +93,6 @@ local catppuccin = {
 				enabled = true,
 				custom_bg = "NONE",
 			},
-			ts_rainbow2 = true,
 			treesitter_context = true,
 			treesitter = true,
 			which_key = true,
@@ -110,6 +109,14 @@ local catppuccin = {
 			local ucolors = modules.require_on_index("catppuccin.utils.colors")
 			local mocha = require("catppuccin.palettes").get_palette("mocha")
 			return {
+				-- rainbow delimiter
+				RainbowDelimiterRed = { fg = colors.red },
+				RainbowDelimiterYellow = { fg = colors.mauve },
+				RainbowDelimiterBlue = { fg = colors.pink },
+				RainbowDelimiterOrange = { fg = colors.blue },
+				RainbowDelimiterGreen = { fg = colors.rosewater },
+				RainbowDelimiterViolet = { fg = colors.peach },
+				RainbowDelimiterCyan = { fg = colors.teal },
 				-- window picker
 				WindowPickerStatusLine = {
 					fg = colors.teal,
@@ -198,6 +205,7 @@ local catppuccin = {
 			---@return table
 			all = function(colors)
 				return {
+
 					-- borders
 					FloatBorder = { fg = colors.overlay0 },
 					LspInfoBorder = { link = "FloatBorder" },

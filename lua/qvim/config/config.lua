@@ -85,7 +85,7 @@ return {
 	---@field level string
 	---@field viewer table
 	log = {
-		---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" },
+		---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" }
 		level = "error",
 		viewer = {
 			---@usage this will fallback on "less +F" if not found
@@ -101,6 +101,7 @@ return {
 		-- currently disabled due to instabilities
 		override_notify = false,
 	},
+
 	---@alias Plugins table<string, AbstractPlugin>|table<string, AbstractParent>
 	---@type Plugins
 	plugins = {},

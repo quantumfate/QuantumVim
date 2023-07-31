@@ -1,6 +1,7 @@
 ---@class QV_STRING_EXT_PLUGIN_NAME_VAR : QV_STRING_PLUGIN_NAME_VAR
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
+---@field parent AbstractParent reference to the parent
 ---@field options table|nil options used in the setup call of a neovim plugin
 ---@field keymaps keymaps|nil keymaps parsed to yikes.nvim
 ---@field main string|nil the string to use when the neovim plugin is required
@@ -11,9 +12,11 @@
 local QV_EXT_PLUGIN_VAR = {
     enabled = true,
     name = nil,
+    parent = nil
     options = {},
     keymaps = {
         mappings = {},
+        groups = {}
     },
     main = nil,
     on_setup_start = nil,

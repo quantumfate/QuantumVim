@@ -208,6 +208,7 @@ function core_base.new_ext(hr_name_parent, extension_url, parent)
 			if not plugin["name"] then
 				plugin["name"] = hr_name_ext
 			end
+			plugin["parent"] = parent
 			---@generic E
 			---@class AbstractExtension : AbstractParent
 			---@field enabled boolean
