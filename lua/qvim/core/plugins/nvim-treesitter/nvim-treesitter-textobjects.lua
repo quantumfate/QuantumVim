@@ -64,12 +64,19 @@ local nvim_treesitter_textobjects = {
 			include_surrounding_whitespace = true,
 		},
 		swap = {
+			-- TODO custom capture group for functions with doc coments
 			enable = true,
 			swap_next = {
-				["<leader>a"] = "@parameter.inner",
+				["<leader>spn"] = "@parameter.inner",
+				["<leader>sfn"] = {
+					query = { "@comment", "@function.outer" },
+				},
 			},
 			swap_previous = {
-				["<leader>A"] = "@parameter.inner",
+				["<leader>spp"] = "@parameter.inner",
+				["<leader>sfp"] = {
+					query = { "@comment", "@function.outer" },
+				},
 			},
 		},
 		move = {
@@ -123,19 +130,47 @@ local nvim_treesitter_textobjects = {
 			border = "none",
 			floating_preview_opts = {},
 			peek_definition_code = {
-				["<leader>Df"] = "@function.outer",
-				["<leader>DF"] = "@class.outer",
+				["<leader>pf"] = {
+					query = { "@comment.outer", "@function.outer" },
+				},
+				["<leader>pc"] = "@class.outer",
+				["<leader>pm"] = {
+					query = { "@comment.outer", "@function.outer" },
+				},
 			},
 		},
 	},
 	keymaps = {
 		mappings = {},
+		groups = {
+			["<leader>s"] = {
+				name = "swap",
+				["p"] = {
+					name = "parameter",
+					["n"] = { "with next" },
+					["p"] = { "with previous" },
+				},
+				["f"] = {
+					name = "function",
+					["n"] = { "with next" },
+					["p"] = { "with previous" },
+				},
+			},
+			["<leader>p"] = {
+				name = "peek",
+				["f"] = { "function" },
+				["m"] = { "method" },
+				["c"] = { "class" },
+			},
+		},
 	},
 	main = "textobjects",
 	on_setup_start = nil,
-	---@param self nvim-treesitter-textobjects<AbstractExtension>
+	---@param self nvim-treesitter-textobjects
 	setup_ext = function(self)
 		ts_util.hook_extension_options(self)
+		local wk = require("which-key")
+		wk.register(self.keymaps.groups)
 	end,
 	on_setup_done = nil,
 	url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",

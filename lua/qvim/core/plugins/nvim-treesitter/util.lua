@@ -2,7 +2,7 @@
 local ts_util = {}
 
 ---Hooks the extension `self` into telescope
----@param self AbstractExtension
+---@param self nvim-treesitter
 function ts_util.hook_extension_options(self)
 	---@type nvim-treesitter
 	local nvim_treesitter = getmetatable(self).__index
