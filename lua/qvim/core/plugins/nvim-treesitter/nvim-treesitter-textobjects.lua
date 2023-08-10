@@ -69,13 +69,15 @@ local nvim_treesitter_textobjects = {
 			swap_next = {
 				["<leader>spn"] = "@parameter.inner",
 				["<leader>sfn"] = {
-					query = { "@comment", "@function.outer" },
+					query = { "@function_context" },
+					query_group = "context",
 				},
 			},
 			swap_previous = {
 				["<leader>spp"] = "@parameter.inner",
 				["<leader>sfp"] = {
-					query = { "@comment", "@function.outer" },
+					query = { "@function_context" },
+					query_group = "context",
 				},
 			},
 		},

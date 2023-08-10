@@ -1,0 +1,7 @@
+; inherits: lua
+
+(
+  (comment) @comment.outer
+  .
+  (function_declaration) @function.outer
+) @function_context
