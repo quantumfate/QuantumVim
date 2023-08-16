@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch, return-type-mismatch
 local M = {}
 M.__index = M
 
