@@ -24,6 +24,7 @@ stds.nvim = {
 		"vim",
 		"join_paths",
 		"get_qvim_cache_dir",
+		"get_qvim_state_dir",
 		"get_qvim_config_dir",
 		"get_qvim_data_dir",
 		"get_qvim_rtp_dir",

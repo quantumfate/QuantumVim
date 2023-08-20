@@ -2,6 +2,7 @@
 set -eo pipefail
 
 OS="$(uname -s)"
+qvim_state_name="quantumvim"
 declare -xr NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 #Set branch to master unless specified by the user
@@ -14,7 +15,8 @@ declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 declare -xr XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
 declare -xr XDG_STATE_HOME="${XDG_STATE_HOME:-"$HOME/.local/state"}"
 
-declare -xr QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$XDG_STATE_HOME/$NVIM_APPNAME"}"
+declare -xr QUANTUMVIM_STATE_DIR="${QUANTUMVIM_STATE_DIR:-"$XDG_STATE_HOME/$qvim_state_name"}"
+declare -xr QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$QUANTUMVIM_STATE_DIR/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_LEVEL="${QUANTUMVIM_LOG_LEVEL:-warn}"
@@ -33,7 +35,7 @@ declare ADDITIONAL_WARNINGS=""
 declare USE_SSH=0
 
 declare -a __qvim_dirs=(
-    "$QUANTUMVIM_RTP_DIR"
+    "$QUANTUMVIM_STATE_DIR"
     "$QUANTUMVIM_CACHE_DIR"
     "$QUANTUMVIM_CONFIG_DIR"
     # TODO log dir
@@ -156,7 +158,7 @@ function check_neovim_min_version() {
 
     # exit with an error if min_version not found
     if ! nvim --headless -u NONE -c "$verify_version_cmd"; then
-        echo "[ERROR]: LunarVim requires at least Neovim v0.8 or higher"
+        echo "[ERROR]: QuantimVim requires at least Neovim v0.8 or higher"
         exit 1
     fi
 }
