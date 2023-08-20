@@ -12,7 +12,9 @@ declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
 declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 declare -xr XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
+declare -xr XDG_STATE_HOME="${XDG_STATE_HOME:-"$HOME/.local/state"}"
 
+declare -xr QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$XDG_STATE_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_LEVEL="${QUANTUMVIM_LOG_LEVEL:-warn}"
@@ -31,8 +33,10 @@ declare ADDITIONAL_WARNINGS=""
 declare USE_SSH=0
 
 declare -a __qvim_dirs=(
+    "$QUANTUMVIM_RTP_DIR"
     "$QUANTUMVIM_CACHE_DIR"
     "$QUANTUMVIM_CONFIG_DIR"
+    # TODO log dir
 )
 
 function usage() {
@@ -51,9 +55,9 @@ function parse_arguments() {
             --overwrite)
                 ARGS_OVERWRITE=1
                 ;;
-	    --ssh)
-		USE_SSH=1
-		;;
+            --ssh)
+                USE_SSH=1
+                ;;
                 # Currently no supported dependencies
                 #-y | --yes)
                 #  INTERACTIVE_MODE=0
@@ -225,22 +229,22 @@ function clone_qvim() {
 
     if [ "$USE_SSH" -eq 0 ]; then
 
-	    if ! git clone --branch "$QV_BRANCH" \
-		"https://github.com/${QV_REMOTE}" "$QUANTUMVIM_CONFIG_DIR"; then
-		echo "Failed to clone repository. Installation failed."
-		exit 1
-	    fi
-	else
-	    if ! git clone --branch "$QV_BRANCH" \
-		"git@github.com:${QV_REMOTE}" "$QUANTUMVIM_CONFIG_DIR"; then
-		echo "Failed to clone repository. Installation failed."
-		exit 1
-	    fi
+        if ! git clone --branch "$QV_BRANCH" \
+            "https://github.com/${QV_REMOTE}" "$QUANTUMVIM_RTP_DIR"; then
+            echo "Failed to clone repository. Installation failed."
+            exit 1
+        fi
+    else
+        if ! git clone --branch "$QV_BRANCH" \
+            "git@github.com:${QV_REMOTE}" "$QUANTUMVIM_RTP_DIR"; then
+            echo "Failed to clone repository. Installation failed."
+            exit 1
+        fi
     fi
 }
 
 function setup_exec() {
-    make -C "$QUANTUMVIM_CONFIG_DIR" install-bin
+    make -C "$QUANTUMVIM_RTP_DIR" install-bin
 }
 
 function remove_old_cache_files() {
@@ -271,13 +275,13 @@ function create_desktop_file() {
     ([ "$OS" != "Linux" ] || ! command -v xdg-desktop-menu &>/dev/null) && return
     echo "Creating desktop file"
 
-    for d in "$QUANTUMVIM_CONFIG_DIR"/utils/desktop/*/; do
+    for d in "$QUANTUMVIM_RTP_DIR"/utils/desktop/*/; do
         size_folder=$(basename "$d")
         mkdir -p "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps/"
-        cp "$QUANTUMVIM_CONFIG_DIR/utils/desktop/$size_folder/$NVIM_APPNAME.svg" "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps"
+        cp "$QUANTUMVIM_RTP_DIR/utils/desktop/$size_folder/$NVIM_APPNAME.svg" "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps"
     done
 
-    xdg-desktop-menu install --novendor "$QUANTUMVIM_CONFIG_DIR/utils/desktop/$NVIM_APPNAME.desktop" || true
+    xdg-desktop-menu install --novendor "$QUANTUMVIM_RTP_DIR/utils/desktop/$NVIM_APPNAME.desktop" || true
 }
 
 function print_logo() {
