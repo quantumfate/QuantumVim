@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+qvim_state_name="quantumvim"
 INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
 NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
@@ -13,7 +14,8 @@ XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 
 QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$NVIM_APPNAME"}"
 QUANTUMVIM_DATA_DIR="${QUANTUMVIM_DATA_DIR:-"$XDG_DATA_HOME/$NVIM_APPNAME"}"
-QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$XDG_STATE_HOME/$NVIM_APPNAME"}"
+QUANTUMVIM_STATE_DIR="${QUANTUMVIM_STATE_DIR:-"$XDG_STATE_HOME/$qvim_state_name"}"
+QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$QUANTUMVIM_STATE_DIR/$NVIM_APPNAME"}"
 QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM_APPNAME"}"
 
 function setup_qvim() {
@@ -30,6 +32,7 @@ function setup_qvim() {
     sed -e s"#CONFIG_DIR_VAR#\"${QUANTUMVIM_CONFIG_DIR}\"#"g \
         -e s"#DATA_DIR_VAR#\"${QUANTUMVIM_DATA_DIR}\"#"g \
         -e s"#STATE_DIR_VAR#\"${QUANTUMVIM_STATE_DIR}\"#"g \
+        -e s"#RTP_DIR_VAR#\"${QUANTUMVIM_RTP_DIR}\"#"g \
         -e s"#CACHE_DIR_VAR#\"${QUANTUMVIM_CACHE_DIR}\"#"g \
         -e s"#APPNAME_VAR#\"${NVIM_APPNAME}\"#"g "$src" \
         | tee "$dst" >/dev/null

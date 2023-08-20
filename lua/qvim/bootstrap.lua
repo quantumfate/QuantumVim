@@ -45,12 +45,18 @@ end
 
 ---Get the full path to `$QUANTUMVIM_STATE_DIR`
 ---@return string
-function _G.get_qvim_rtp_dir()
-	local qvim_state_dir = os.getenv("QUANTUMVIM_RTP_DIR")
+function _G.get_qvim_state_dir()
+	local qvim_state_dir = os.getenv("QUANTUMVIM_STATE_DIR")
 	if not qvim_state_dir then
 		return vim.call("stdpath", "state")
 	end
 	return qvim_state_dir
+end
+
+---Get the full path to `$QUANTUMVIM_RTP_DIR`
+---@return string
+function _G.get_qvim_rtp_dir()
+	return os.getenv("QUANTUMVIM_RTP_DIR")
 end
 
 ---Get the full path to `$QUANTUMVIM_DATA_DIR`
@@ -93,8 +99,10 @@ function M:init()
 	vim.fn.stdpath = function(what)
 		if what == "cache" then
 			return get_qvim_cache_dir()
-		elseif what == "state" then
+		elseif what == "rtp" then
 			return get_qvim_rtp_dir()
+		elseif what == "state" then
+			return get_qvim_state_dir()
 		elseif what == "data" then
 			return get_qvim_data_dir()
 		elseif what == "config" then
