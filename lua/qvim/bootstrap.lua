@@ -43,6 +43,16 @@ function _G.get_qvim_config_dir()
 	return qvim_config_dir
 end
 
+---Get the full path to `$QUANTUMVIM_LOG_DIR`
+---@return string
+function _G.get_qvim_log_dir()
+	local qvim_log_dir = os.getenv("QUANTUMVIM_LOG_DIR")
+	if not qvim_log_dir then
+		return vim.call("stdpath", "log")
+	end
+	return qvim_log_dir
+end
+
 ---Get the full path to `$QUANTUMVIM_STATE_DIR`
 ---@return string
 function _G.get_qvim_state_dir()
@@ -83,6 +93,8 @@ M.qvim_config_dir = get_qvim_config_dir()
 M.qvim_state_dir = get_qvim_state_dir()
 M.qvim_rtp_dir = get_qvim_rtp_dir()
 M.qvim_cache_dir = get_qvim_cache_dir()
+M.qvim_data_dir = get_qvim_data_dir()
+M.qvim_log_dir = get_qvim_log_dir()
 M.opt_dir = join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt")
 M.lazy_install_dir = join_paths(M.opt_dir, "lazy.nvim")
 
@@ -109,19 +121,15 @@ function M:init()
 			return get_qvim_data_dir()
 		elseif what == "config" then
 			return get_qvim_config_dir()
+		elseif what == "log" then
+			return get_qvim_log_dir()
 		else
 			return vim.call("stdpath", what)
 		end
 	end
 
-	local structlog_path = join_paths(self.opt_dir, "structlog")
-	if
-		not os.getenv("QV_FIRST_TIME_SETUP")
-		and utils.is_directory(structlog_path)
-	then
-		vim.opt.rtp:append(structlog_path)
-		require("qvim.log"):init_pre_setup()
-	end
+	local log_path = join_paths(self.opt_dir, "structlog")
+	vim.opt.rtp:prepend(log_path)
 
 	require("qvim.core.manager"):init({
 		package_root = self.opt_dir,
@@ -136,16 +144,8 @@ function M:init()
 end
 
 function M:setup()
-	local utils = require("qvim.utils")
-
-	local structlog_path = join_paths(self.opt_dir, "structlog")
-
 	local manager = require("qvim.core.manager")
 	manager:load()
-	if utils.is_directory(structlog_path) then
-		require("qvim.log"):init_post_setup()
-	end
-
 	require("qvim.core.plugins.mason").bootstrap()
 end
 
