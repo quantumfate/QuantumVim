@@ -80,6 +80,8 @@ function _G.get_qvim_cache_dir()
 end
 
 M.qvim_config_dir = get_qvim_config_dir()
+M.qvim_state_dir = get_qvim_state_dir()
+M.qvim_rtp_dir = get_qvim_rtp_dir()
 M.qvim_cache_dir = get_qvim_cache_dir()
 M.opt_dir = join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt")
 M.lazy_install_dir = join_paths(M.opt_dir, "lazy.nvim")
@@ -126,7 +128,7 @@ function M:init()
 		install_path = self.lazy_install_dir,
 	})
 
-  vim.opt.rtp = self:bootstrap()
+	vim.opt.rtp = self:bootstrap()
 
 	require("qvim.config"):init()
 
@@ -174,16 +176,12 @@ function M:bootstrap(stds, expands)
 					-- remove
 					vim.tbl_contains(
 						rtp_paths,
-						_G.join_paths(
-							vim.call("stdpath", what),
-							unpack(expand)
-						)
+						_G.join_paths(vim.call("stdpath", what), unpack(expand))
 					)
 				then
-					rtp:remove(_G.join_paths(
-						vim.call("stdpath", what),
-						unpack(expand)
-					))
+					rtp:remove(
+						_G.join_paths(vim.call("stdpath", what), unpack(expand))
+					)
 				end
 				if
 					not vim.tbl_contains(
@@ -201,6 +199,7 @@ function M:bootstrap(stds, expands)
 	end
 	return rtp
 end
+
 ---Update qvimVim
 ---pulls the latest changes from github and, resets the startup cache
 function M:update()
