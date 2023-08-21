@@ -14,11 +14,13 @@ declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
 declare -xr XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 declare -xr XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
 declare -xr XDG_STATE_HOME="${XDG_STATE_HOME:-"$HOME/.local/state"}"
+declare -xr XDG_LOG_HOME="${XDG_LOG_HOME:-"$HOME/.local/log"}"
 
 declare -xr QUANTUMVIM_STATE_DIR="${QUANTUMVIM_STATE_DIR:-"$XDG_STATE_HOME/$qvim_state_name"}"
 declare -xr QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$QUANTUMVIM_STATE_DIR/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$NVIM_APPNAME"}"
+declare -xr QUANTUMVIM_LOG_DIR="${QUANTUMVIM_LOG_DIR:-"$XDG_LOG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_LEVEL="${QUANTUMVIM_LOG_LEVEL:-warn}"
 
 declare -xir QV_FIRST_TIME_SETUP=1
@@ -38,7 +40,7 @@ declare -a __qvim_dirs=(
     "$QUANTUMVIM_STATE_DIR"
     "$QUANTUMVIM_CACHE_DIR"
     "$QUANTUMVIM_CONFIG_DIR"
-    # TODO log dir
+    "$QUANTUMVIM_LOG_DIR"
 )
 
 function usage() {

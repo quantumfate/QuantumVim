@@ -113,14 +113,14 @@ function manager:load(spec)
 			git = {
 				timeout = 120,
 			},
-			lockfile = join_paths(get_qvim_config_dir(), "lazy-lock.json"),
+			lockfile = join_paths(get_qvim_rtp_dir(), "lazy-lock.json"),
 			performance = {
 				rtp = {
 					reset = true,
 				},
 			},
 			readme = {
-				root = join_paths(get_qvim_config_dir(), "lazy", "readme"),
+				root = join_paths(get_qvim_rtp_dir(), "lazy", "readme"),
 			},
 		}
 

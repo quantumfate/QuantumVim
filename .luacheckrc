@@ -23,6 +23,7 @@ stds.nvim = {
 		"path_sep",
 		"vim",
 		"join_paths",
+		"get_qvim_log_dir",
 		"get_qvim_cache_dir",
 		"get_qvim_state_dir",
 		"get_qvim_config_dir",
