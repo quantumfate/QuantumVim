@@ -126,6 +126,8 @@ function M:init()
 		install_path = self.lazy_install_dir,
 	})
 
+  vim.opt.rtp = self:bootstrap()
+
 	require("qvim.config"):init()
 
 	return self
@@ -145,6 +147,60 @@ function M:setup()
 	require("qvim.core.plugins.mason").bootstrap()
 end
 
+--Modifies the runtimepath by removing standard paths from `vim.call("stdpath", what)` with `vim.fn.stdpath(what)`
+---@param stds string[]|nil @default: { "config", "data" }
+---@param expands string[][]|nil @default: { {}, { "site", "after" }, { "site" }, { "after" } }
+---@return vim.opt.runtimepath
+function M:bootstrap(stds, expands)
+	stds = stds or { "config", "data" }
+	expands = expands or { {}, { "site", "after" }, { "site" }, { "after" } }
+	---@type vim.opt.runtimepath
+	local rtp_paths = vim.opt.rtp:get()
+	local rtp = vim.opt.rtp
+
+	for _, what in ipairs(stds) do
+		for _, expand in ipairs(expands) do
+			if #expand == 0 then
+				if vim.tbl_contains(rtp_paths, vim.call("stdpath", what)) then
+					-- remove
+					rtp:remove(vim.call("stdpath", what))
+				end
+				if not vim.tbl_contains(rtp_paths, vim.fn.stdpath(what)) then
+					-- add
+					rtp:prepend(vim.fn.stdpath(what))
+				end
+			else
+				if
+					-- remove
+					vim.tbl_contains(
+						rtp_paths,
+						_G.join_paths(
+							vim.call("stdpath", what),
+							unpack(expand)
+						)
+					)
+				then
+					rtp:remove(_G.join_paths(
+						vim.call("stdpath", what),
+						unpack(expand)
+					))
+				end
+				if
+					not vim.tbl_contains(
+						rtp_paths,
+						_G.join_paths(vim.fn.stdpath(what), unpack(expand))
+					)
+				then
+					-- add
+					rtp:prepend(
+						_G.join_paths(vim.fn.stdpath(what), unpack(expand))
+					)
+				end
+			end
+		end
+	end
+	return rtp
+end
 ---Update qvimVim
 ---pulls the latest changes from github and, resets the startup cache
 function M:update()
