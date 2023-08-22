@@ -114,7 +114,7 @@ function manager:load(spec)
 			lockfile = join_paths(get_qvim_rtp_dir(), "lazy-lock.json"),
 			performance = {
 				rtp = {
-					reset = true,
+					reset = false,
 				},
 			},
 			readme = {
