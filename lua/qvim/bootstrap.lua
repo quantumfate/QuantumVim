@@ -169,6 +169,8 @@ end
 function M:setup()
 	local manager = require("qvim.core.manager")
 	manager:load()
+	print("post manager load")
+	print(vim.inspect(vim.opt.rtp:get()))
 	require("qvim.core.plugins.mason").bootstrap()
 end
 
