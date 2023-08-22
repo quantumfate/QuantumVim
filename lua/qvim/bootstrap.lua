@@ -148,19 +148,13 @@ function M:init()
 	local log = require("qvim.log")
 	log:setup()
 
-	print("pre lazy")
-	print(vim.inspect(vim.opt.rtp:get()))
 	require("qvim.core.manager"):init({
 		package_root = self.qvim_pack_dir,
 		install_path = self.lazy_install_dir,
 	})
 
-	print("post lazy")
-	print(vim.inspect(vim.opt.rtp:get()))
 	vim.opt.rtp = self:bootstrap()
 
-	print("post bootstrap")
-	print(vim.inspect(vim.opt.rtp:get()))
 	require("qvim.config"):init()
 
 	return self
@@ -169,8 +163,6 @@ end
 function M:setup()
 	local manager = require("qvim.core.manager")
 	manager:load()
-	print("post manager load")
-	print(vim.inspect(vim.opt.rtp:get()))
 	require("qvim.core.plugins.mason").bootstrap()
 end
 
