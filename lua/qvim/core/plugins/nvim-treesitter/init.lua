@@ -73,9 +73,7 @@ local nvim_treesitter = {
 	},
 	keymaps = {},
 	main = "nvim-treesitter.configs",
-	---@param self nvim-treesitter
-	---@param _ table
-	on_setup_start = function(self, _)
+	on_setup_start = function(_, _)
 		local path = join_paths(
 			get_qvim_data_dir(),
 			"after",
