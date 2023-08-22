@@ -2,7 +2,10 @@
 set -eo pipefail
 
 OS="$(uname -s)"
+
 qvim_state_name="quantumvim"
+structlog_url="https://github.com/Tastyep/structlog.nvim.git"
+
 declare -xr NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 #Set branch to master unless specified by the user
@@ -22,6 +25,9 @@ declare -xr QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM
 declare -xr QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_DIR="${QUANTUMVIM_LOG_DIR:-"$XDG_LOG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_LEVEL="${QUANTUMVIM_LOG_LEVEL:-warn}"
+
+declare -xr QUANTUMVIM_PACK_DIR="${QUANTUMVIM_DATA_PROFILE}/after/pack/lazy/opt"
+declare -xr QUANTUMVIM_STRUCTLOG_DIR="${QUANTUMVIM_PACK_DIR}/structlog"
 
 declare -xir QV_FIRST_TIME_SETUP=1
 
@@ -98,6 +104,45 @@ function msg() {
     local div_width="80"
     printf "%${div_width}s\n" ' ' | tr ' ' -
     printf "%s\n" "$text"
+}
+
+function clone_plugins() {
+    declare -a plugins=(
+        # order matters
+        "$structlog_url"
+    )
+
+    declare -a plugin_dirs=(
+        # order matters
+        "$QUANTUMVIM_STRUCTLOG_DIR"
+    )
+    counter=0
+    for i in "${!plugins[@]}"; do
+        if [ ! -d "${plugin_dirs[$i]}" ]; then
+            counter=$((counter+1))
+        fi
+    done
+
+    if [ "$counter" -eq 0 ]; then
+        return
+    fi
+
+    msg "Cloning plugins..."
+
+    mkdir -p "${QUANTUMVIM_PACK_DIR}"
+    for i in "${!plugins[@]}"; do
+        if [ ! -d "${plugin_dirs[$i]}" ]; then
+            msg "[INFO]: Cloning plugin: ${plugins[$i]} into: ${plugin_dirs[$i]}"
+            output=$(git clone "${plugins[$i]}" "${plugin_dirs[$i]}" 2>&1)
+
+            if [ ! "$output" ]; then
+                echo "$output" | tail -n +2 | while IFS= read -r line; do
+                    msg "$line"
+                done
+            fi
+        fi
+    done
+    msg "Plugins cloned successfully."
 }
 
 #function confirm() {
@@ -335,6 +380,8 @@ function main() {
     verify_qvim_dirs
 
     clone_qvim
+
+    clone_plugins
 
     setup_qvim
 

@@ -30,6 +30,8 @@ stds.nvim = {
 		"get_qvim_data_dir",
 		"get_qvim_rtp_dir",
 		"get_qvim_base_dir",
+		"get_qvim_pack_dir",
+		"get_qvim_structlog_dir",
 		"get_lazy_rtp_dir",
 		"require_clean",
 	},
