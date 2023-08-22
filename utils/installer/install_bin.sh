@@ -19,6 +19,9 @@ QUANTUMVIM_STATE_DIR="${QUANTUMVIM_STATE_DIR:-"$XDG_STATE_HOME/$qvim_state_name"
 QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$QUANTUMVIM_STATE_DIR/$NVIM_APPNAME"}"
 QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM_APPNAME"}"
 
+QUANTUMVIM_PACK_DIR="${QUANTUMVIM_DATA_PROFILE}/after/pack/lazy/opt"
+QUANTUMVIM_STRUCTLOG_DIR="${QUANTUMVIM_PACK_DIR}/structlog"
+
 function setup_qvim() {
     local src="$QUANTUMVIM_RTP_DIR/utils/bin/${NVIM_APPNAME}.template"
     local dst="$INSTALL_PREFIX/bin/${NVIM_APPNAME}"
@@ -31,6 +34,9 @@ function setup_qvim() {
     cp "$src" "$dst"
 
     sed -e s"#CONFIG_DIR_VAR#\"${QUANTUMVIM_CONFIG_DIR}\"#"g \
+        -e s"#LOG_DIR_VAR#\"${QUANTUMVIM_LOG_DIR}\"#"g \
+        -e s"#PACK_DIR_VAR#\"${QUANTUMVIM_PACK_DIR}\"#"g \
+        -e s"#STRUCTLOG_DIR_VAR#\"${QUANTUMVIM_STRUCTLOG_DIR}\"#"g \
         -e s"#DATA_DIR_VAR#\"${QUANTUMVIM_DATA_DIR}\"#"g \
         -e s"#STATE_DIR_VAR#\"${QUANTUMVIM_STATE_DIR}\"#"g \
         -e s"#RTP_DIR_VAR#\"${QUANTUMVIM_RTP_DIR}\"#"g \
