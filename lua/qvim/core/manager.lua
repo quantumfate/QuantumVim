@@ -54,7 +54,7 @@ function manager:init(opts)
 				lazy_install_dir,
 			})
 			local default_snapshot_path =
-				join_paths(get_qvim_state_dir(), "snapshots", "default.json")
+				join_paths(get_qvim_rtp_dir(), "snapshots", "default.json")
 			local snapshot = assert(
 				vim.fn.json_decode(vim.fn.readfile(default_snapshot_path))
 			)
