@@ -25,8 +25,10 @@ echo "config: $QUANTUMVIM_CONFIG_DIR"
 
 # TODO log dir
 
-mkdir -p "$QUANTUMVIM_RTP_DIR/after/pack/lazy/opt"
-git clone https://github.com/nvim-lua/plenary.nvim.git "$QUANTUMVIM_RTP_DIR/after/pack/lazy/opt/plenary"
+if [ ! -d "$QUANTUMVIM_RTP_DIR/after/pack/lazy/opt/plenary" ]; then
+    mkdir -p "$QUANTUMVIM_RTP_DIR/after/pack/lazy/opt"
+    git clone https://github.com/nvim-lua/plenary.nvim.git "$QUANTUMVIM_RTP_DIR/after/pack/lazy/opt/plenary"
+fi
 
 qvim() {
     exec -a qvim nvim -u "$QUANTUMVIM_RTP_DIR/tests/minimal_init.lua" \
