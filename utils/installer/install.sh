@@ -26,7 +26,7 @@ declare -xr QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$N
 declare -xr QUANTUMVIM_LOG_DIR="${QUANTUMVIM_LOG_DIR:-"$XDG_LOG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_LEVEL="${QUANTUMVIM_LOG_LEVEL:-warn}"
 
-declare -xr QUANTUMVIM_PACK_DIR="${QUANTUMVIM_DATA_PROFILE}/after/pack/lazy/opt"
+declare -xr QUANTUMVIM_PACK_DIR="${QUANTUMVIM_RTP_DIR}/after/pack/lazy/opt"
 declare -xr QUANTUMVIM_STRUCTLOG_DIR="${QUANTUMVIM_PACK_DIR}/structlog"
 
 declare -xir QV_FIRST_TIME_SETUP=1
@@ -274,7 +274,7 @@ function verify_qvim_dirs() {
 }
 
 function clone_qvim() {
-    msg "Cloning LunarVim configuration"
+    msg "Cloning QuantumVim configuration"
 
     if [ "$USE_SSH" -eq 0 ]; then
 
