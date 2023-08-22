@@ -10,7 +10,7 @@ declare -xr NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 #Set branch to master unless specified by the user
 declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
-declare -xr QV_REMOTE="${QV_REMOTE:-quantumfate/qvim.git}"
+declare -xr QV_REMOTE="${QV_REMOTE:-"quantumfate/qvim.git"}"
 declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
 declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
@@ -26,8 +26,8 @@ declare -xr QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/$N
 declare -xr QUANTUMVIM_LOG_DIR="${QUANTUMVIM_LOG_DIR:-"$XDG_LOG_HOME/$NVIM_APPNAME"}"
 declare -xr QUANTUMVIM_LOG_LEVEL="${QUANTUMVIM_LOG_LEVEL:-warn}"
 
-declare -xr QUANTUMVIM_PACK_DIR="${QUANTUMVIM_RTP_DIR}/after/pack/lazy/opt"
-declare -xr QUANTUMVIM_STRUCTLOG_DIR="${QUANTUMVIM_PACK_DIR}/structlog"
+declare -xr QUANTUMVIM_PACK_DIR="${QUANTUMVIM_PACK_DIR:-"${QUANTUMVIM_RTP_DIR}/after/pack/lazy/opt"}"
+declare -xr QUANTUMVIM_STRUCTLOG_DIR="${QUANTUMVIM_STRUCTLOG_DIR:-"${QUANTUMVIM_PACK_DIR}/structlog"}"
 
 declare -xir QV_FIRST_TIME_SETUP=1
 
