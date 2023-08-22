@@ -1,6 +1,5 @@
 ---@class ts_util
 local ts_util = require("qvim.core.plugins.nvim-treesitter.util")
-
 ---@class nvim-treesitter-textobjects : nvim-treesitter
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
@@ -18,10 +17,8 @@ local nvim_treesitter_textobjects = {
 	options = {
 		select = {
 			enable = true,
-
 			-- Automatically jump forward to textobj, similar to targets.vim
 			lookahead = true,
-
 			keymaps = {
 				-- You can use the capture groups defined in textobjects.scm
 				["af"] = "@function.outer",

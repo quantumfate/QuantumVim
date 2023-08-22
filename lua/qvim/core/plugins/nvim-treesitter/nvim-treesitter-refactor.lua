@@ -1,6 +1,5 @@
 ---@class ts_util
 local ts_util = require("qvim.core.plugins.nvim-treesitter.util")
-
 ---@class nvim-treesitter-refactor : nvim-treesitter
 ---@field enabled boolean|fun():boolean|nil
 ---@field name string|nil the human readable name
