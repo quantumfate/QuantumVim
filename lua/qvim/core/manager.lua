@@ -9,7 +9,7 @@ local plugins_dir = get_qvim_pack_dir()
 
 local function ensure_plugins_in_rtp(lazy_install_dir)
 	local rtp = vim.opt.rtp:get()
-	local base_dir = get_qvim_data_dir():gsub("\\", "/")
+	local base_dir = get_lazy_rtp_dir():gsub("\\", "/")
 	local idx_base = #rtp + 1
 	for i, path in ipairs(rtp) do
 		path = path:gsub("\\", "/")
