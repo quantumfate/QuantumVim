@@ -68,14 +68,17 @@ while getopts ":p:e:tn" opt; do
     esac
 done
 
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"$HOME/.config"}"
+qvim_state_name="quantumvim"
+
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+XDG_STATE_HOME="${XDG_STATE_HOME:-"$HOME/.local/state"}"
 
-QUANTUMVIM_CONFIG_DIR="${QUANTUMVIM_CONFIG_DIR:-"$XDG_CONFIG_HOME/qvim"}"
-QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/qvim"}"
+QUANTUMVIM_STATE_DIR="${QUANTUMVIM_STATE_DIR:-"$XDG_STATE_HOME/$qvim_state_name"}"
+QUANTUMVIM_RTP_DIR="${QUANTUMVIM_RTP_DIR:-"$QUANTUMVIM_STATE_DIR/$NVIM_APPNAME"}"
+QUANTUMVIM_CACHE_DIR="${QUANTUMVIM_CACHE_DIR:-"$XDG_CACHE_HOME/$NVIM_APPNAME"}"
 
-QV_PLUGIN_CONFIG_DIR="${QV_PLUGIN_CONFIG_DIR:-"$QUANTUMVIM_CONFIG_DIR"/lua/qvim/core/plugins}"
-QV_LAZY_PLUGIN_SPEC_DIR="${QV_LAZY_PLUGIN_SPEC_DIR:-"$QUANTUMVIM_CONFIG_DIR"/lua/qvim/core/loader/specs/}"
+QV_PLUGIN_CONFIG_DIR="${QV_PLUGIN_CONFIG_DIR:-"$QUANTUMVIM_RTP_DIR"/lua/qvim/core/plugins}"
+QV_LAZY_PLUGIN_SPEC_DIR="${QV_LAZY_PLUGIN_SPEC_DIR:-"$QUANTUMVIM_RTP_DIR"/lua/qvim/core/loader/specs/}"
 
 QV_PLUGIN_PARENT_DIR="${QV_PLUGIN_PARENT_DIR:-"$QV_PLUGIN_CONFIG_DIR"/"$HR_NAME"}"
 
@@ -83,8 +86,8 @@ function generate_plugin_config_file() {
 
     [ ! -d "$QV_PLUGIN_CONFIG_DIR" ] && mkdir -p "$QV_PLUGIN_CONFIG_DIR"
 
-    local src_plugin="$QUANTUMVIM_CONFIG_DIR/utils/scripts/templates/plugin.lua.template"
-    local src_spec="$QUANTUMVIM_CONFIG_DIR/utils/scripts/templates/spec.lua.template"
+    local src_plugin="$QUANTUMVIM_RTP_DIR/utils/scripts/templates/plugin.lua.template"
+    local src_spec="$QUANTUMVIM_RTP_DIR/utils/scripts/templates/spec.lua.template"
     local dst_spec="$QV_LAZY_PLUGIN_SPEC_DIR/$HR_NAME.lua"
     local dst_ext_spec="$QV_LAZY_PLUGIN_SPEC_DIR/$EXT_HR_NAME.lua"
 
@@ -92,7 +95,7 @@ function generate_plugin_config_file() {
     if [[ -n "$PLUGIN_NAME"  && -n "$EXT_PLUGIN_NAME" && -n "$EXT_HR_NAME" && "$IS_PARENT" == "false" && "$IS_EXTENDING" == "true" ]]; then
         mkdir -p "${QV_PLUGIN_PARENT_DIR}"
         # Create an extension in an existing parent
-        local src_plugin="$QUANTUMVIM_CONFIG_DIR/utils/scripts/templates/extension.lua.template"
+        local src_plugin="$QUANTUMVIM_RTP_DIR/utils/scripts/templates/extension.lua.template"
         local dst_plugin="${QV_PLUGIN_PARENT_DIR}/${EXT_HR_NAME}.lua"
         if [ -f "$dst_spec" ]; then
             ITERATIONS=2
@@ -107,15 +110,15 @@ function generate_plugin_config_file() {
     elif [[  -n "$PLUGIN_NAME" && "$IS_PARENT" == "true" && -z "$EXT_PLUGIN_NAME" && -z "$EXT_HR_NAME" ]]; then
         # Create a parent folder
         mkdir -p "${QV_PLUGIN_PARENT_DIR}"
-        local src_plugin="$QUANTUMVIM_CONFIG_DIR/utils/scripts/templates/init.lua.template"
+        local src_plugin="$QUANTUMVIM_RTP_DIR/utils/scripts/templates/init.lua.template"
         local dst_plugin="${QV_PLUGIN_PARENT_DIR}/init.lua"
         local sources=("$src_plugin" "$src_spec")
         local destinations=("$dst_plugin" "$dst_spec")
     elif [[ -n "$PLUGIN_NAME" && "$IS_PARENT" == "true" && -n "$EXT_PLUGIN_NAME" && -n "$EXT_HR_NAME" && "$IS_EXTENDING" == "false" ]]; then
         # make parent with extension
         mkdir -p "${QV_PLUGIN_PARENT_DIR}"
-        local src_plugin="$QUANTUMVIM_CONFIG_DIR/utils/scripts/templates/init.lua.template"
-        local src_ext="$QUANTUMVIM_CONFIG_DIR/utils/scripts/templates/extension.lua.template"
+        local src_plugin="$QUANTUMVIM_RTP_DIR/utils/scripts/templates/init.lua.template"
+        local src_ext="$QUANTUMVIM_RTP_DIR/utils/scripts/templates/extension.lua.template"
         local dst_plugin="${QV_PLUGIN_PARENT_DIR}/init.lua"
         local dst_ext="${QV_PLUGIN_PARENT_DIR}/${EXT_HR_NAME}.lua"
         local sources=("$src_plugin" "$src_ext" "$src_spec" "$src_spec")
