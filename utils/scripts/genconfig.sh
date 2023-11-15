@@ -69,6 +69,7 @@ while getopts ":p:e:tn" opt; do
 done
 
 qvim_state_name="quantumvim"
+NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 XDG_CACHE_HOME="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 XDG_STATE_HOME="${XDG_STATE_HOME:-"$HOME/.local/state"}"
