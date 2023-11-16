@@ -8,9 +8,12 @@ structlog_url="https://github.com/Tastyep/structlog.nvim.git"
 
 declare -xr NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
-#Set branch to master unless specified by the user
 declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
-declare -xr QV_REMOTE="${QV_REMOTE:-"quantumfate/qvim.git"}"
+declare -xr QV_REMOTE="${QV_REMOTE:-"QuantumVim/QuantumVim.git"}"
+
+declare -xr QV_CONFIG_BRANCH="${QV_CONFIG_BRANCH:-"main"}"
+declare -xr QV_CONFIG_REMOTE="${QV_CONFIG_REMOTE:-"QuantumVim/config.git"}"
+
 declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
 declare -xr XDG_DATA_HOME="${XDG_DATA_HOME:-"$HOME/.local/share"}"
@@ -41,6 +44,21 @@ declare ARGS_OVERWRITE=0
 #declare INTERACTIVE_MODE=1
 declare ADDITIONAL_WARNINGS=""
 declare USE_SSH=0
+
+declare -a __qvim_remotes=(
+    "$QV_REMOTE"
+    "$QV_CONFIG_REMOTE"
+)
+
+declare -a __qvim_branches=(
+    "$QV_BRANCH"
+    "$QV_CONFIG_BRANCH"
+)
+
+declare -a __qvim_destinations=(
+    "$QUANTUMVIM_RTP_DIR"
+    "$QUANTUMVIM_CONFIG_DIR"
+)
 
 declare -a __qvim_dirs=(
     "$QUANTUMVIM_STATE_DIR"
@@ -274,22 +292,28 @@ function verify_qvim_dirs() {
 }
 
 function clone_qvim() {
-    msg "Cloning QuantumVim configuration"
+    msg "Cloning QuantumVim Repositories"
 
-    if [ "$USE_SSH" -eq 0 ]; then
+    for scope in "${!__qvim_remotes[@]}"; do
+        local repo="${__qvim_remotes[$scope]}"
+        local branch="${__qvim_branches[$scope]}"
+        local destination="${__qvim_destinations[$scope]}"
+        local method=""
 
-        if ! git clone --branch "$QV_BRANCH" \
-            "https://github.com/${QV_REMOTE}" "$QUANTUMVIM_RTP_DIR"; then
-            echo "Failed to clone repository. Installation failed."
+        __backup_dir "$destination"
+
+        if [ "$USE_SSH" -eq 0 ]; then
+            method="https://github.com/"
+        else
+            method="git@github.com:/"
+        fi
+        if ! git clone --branch "$branch" \
+            "${method}${repo}" "$destination"; then
+            echo "Failed to clone repository '${repo}'. Installation failed."
             exit 1
         fi
-    else
-        if ! git clone --branch "$QV_BRANCH" \
-            "git@github.com:${QV_REMOTE}" "$QUANTUMVIM_RTP_DIR"; then
-            echo "Failed to clone repository. Installation failed."
-            exit 1
-        fi
-    fi
+        msg "Cloned $repo to $destination"
+    done
 }
 
 function setup_exec() {
