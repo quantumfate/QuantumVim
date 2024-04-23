@@ -52,7 +52,7 @@ jobs:
 
           installer_url="https://raw.githubusercontent.com/${QV_REMOTE}/${QV_BRANCH}/utils/installer/install.sh"
           curl -LSsO "$installer_url"
-          bash ./install.sh --install-dependencies
+          bash ./install.sh --install-dependencies --yes
 
       - name: Test QuantumVim startup
         env:
