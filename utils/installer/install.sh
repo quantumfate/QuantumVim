@@ -236,15 +236,6 @@ function install_rust_deps() {
     echo "All Rust dependencies are successfully installed"
 }
 
-function install_system_deps() {
-    for dep in "${__system_deps[@]}"; do
-        if ! command -v "$dep" &>/dev/null; then
-            echo "Installing missing system dependency: $dep"
-            __install_with_pkg_manager "$dep"
-        fi
-    done
-}
-
 function msg() {
     local text="$1"
     local div_width="80"
@@ -442,8 +433,13 @@ function clone_qvim() {
         local destination="${__qvim_destinations[$scope]}"
         local method=""
 
-        __backup_dir "$destination"
+        if [ "$repo" -eq "$QV_CONFIG_REMOTE" ] && [ -d "$destination" ]; then
+            if confirm "Existing Configuration detected. Do you want to skip pulling a new configuration?"; then
+                continue
+            fi
+        fi
 
+        __backup_dir "$destination"
         if [ "$USE_SSH" -eq 0 ]; then
             method="https://github.com/"
         else
@@ -520,8 +516,6 @@ function main() {
     msg "Detecting platform for managing any additional neovim dependencies"
     detect_platform
 
-    check_system_deps
-
     if [ "$ARGS_INSTALL_DEPENDENCIES" -eq 1 ]; then
         if [ "$INTERACTIVE_MODE" -eq 1 ]; then
             if confirm "Would you like to install QuantumVim's NodeJS dependencies: $(stringify_array "${__npm_deps[@]}")?"; then
@@ -539,6 +533,8 @@ function main() {
             install_rust_deps
         fi
     fi
+
+    check_system_deps
 
     remove_old_cache_files
     verify_qvim_dirs
