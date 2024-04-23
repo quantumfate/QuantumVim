@@ -5,10 +5,10 @@ on:
     branches:
       - "main"
     paths:
-      - '.github/workflows/**'
-      - 'lua/**'
-      - 'snapshots/**'
-      - 'utils/**'
+      - ".github/workflows/**"
+      - "lua/**"
+      - "snapshots/**"
+      - "utils/**"
 
 jobs:
   unixish:
@@ -52,8 +52,8 @@ jobs:
 
           installer_url="https://raw.githubusercontent.com/${QV_REMOTE}/${QV_BRANCH}/utils/installer/install.sh"
           curl -LSsO "$installer_url"
-          bash ./install.sh
-      
+          bash ./install.sh --install-dependencies
+
       - name: Test QuantumVim startup
         env:
           QUANTUMVIM_DIR: "$HOME/.config/qvim"
