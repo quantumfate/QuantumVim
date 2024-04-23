@@ -9,10 +9,10 @@ structlog_url="https://github.com/Tastyep/structlog.nvim.git"
 declare -xr NVIM_APPNAME="${NVIM_APPNAME:-"qvim"}"
 
 declare -x QV_BRANCH="${QV_BRANCH:-"main"}"
-declare -xr QV_REMOTE="${QV_REMOTE:-"QuantumVim/QuantumVim.git"}"
+declare -xr QV_REMOTE="${QV_REMOTE:-"quantumfate/QuantumVim.git"}"
 
 declare -xr QV_CONFIG_BRANCH="${QV_CONFIG_BRANCH:-"main"}"
-declare -xr QV_CONFIG_REMOTE="${QV_CONFIG_REMOTE:-"QuantumVim/config.git"}"
+declare -xr QV_CONFIG_REMOTE="${QV_CONFIG_REMOTE:-"quantumfate/QuantumVimConfig.git"}"
 
 declare -xr INSTALL_PREFIX="${INSTALL_PREFIX:-"$HOME/.local"}"
 
