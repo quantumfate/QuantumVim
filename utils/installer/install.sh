@@ -386,7 +386,7 @@ function check_system_deps() {
 
     if ! command -v rg &>/dev/null; then
         print_missing_dep_msg "${ripgrep_pkg}"
-        exit 1
+        msg "\033[0;32mWarning: Missing dependency Ripgrep\033[0m"
     fi
     check_neovim_min_version
 }
@@ -516,6 +516,8 @@ function main() {
     msg "Detecting platform for managing any additional neovim dependencies"
     detect_platform
 
+    check_system_deps
+
     if [ "$ARGS_INSTALL_DEPENDENCIES" -eq 1 ]; then
         if [ "$INTERACTIVE_MODE" -eq 1 ]; then
             if confirm "Would you like to install QuantumVim's NodeJS dependencies: $(stringify_array "${__npm_deps[@]}")?"; then
@@ -534,7 +536,6 @@ function main() {
         fi
     fi
 
-    check_system_deps
 
     remove_old_cache_files
     verify_qvim_dirs
