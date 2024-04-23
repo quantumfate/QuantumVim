@@ -433,7 +433,7 @@ function clone_qvim() {
         local destination="${__qvim_destinations[$scope]}"
         local method=""
 
-        if [ "$repo" -eq "$QV_CONFIG_REMOTE" ] && [ -d "$destination" ]; then
+        if [ "$repo" = "$QV_CONFIG_REMOTE" ] && [ -d "$destination" ]; then
             if confirm "Existing Configuration detected. Do you want to skip pulling a new configuration?"; then
                 continue
             fi
