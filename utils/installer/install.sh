@@ -385,8 +385,7 @@ function check_system_deps() {
     fi
 
     if ! command -v rg &>/dev/null; then
-        print_missing_dep_msg "${ripgrep_pkg}"
-        msg "\033[0;32mWarning: Missing dependency Ripgrep\033[0m"
+        msg "[WARN] Missing dependency $ripgrep_pkg"
     fi
     check_neovim_min_version
 }
@@ -539,8 +538,8 @@ function main() {
 
     remove_old_cache_files
     verify_qvim_dirs
-    clone_plugins
     clone_qvim
+    clone_plugins
     setup_qvim
 
     msg "$ADDITIONAL_WARNINGS"
