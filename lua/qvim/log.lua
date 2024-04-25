@@ -1,16 +1,15 @@
 ---@class Log
 ---@field levels table
----@field set_level function
----@field init function
----@field configure_notifications function
+---@field set_level fun(self: Log, level: number)
+---@field setup fun(self: Log):Log?
 ---@field add_entry function
 ---@field get_logger function
 ---@field get_path function
----@field trace function
----@field debug function
----@field info function
----@field warn function
----@field error function
+---@field info fun(self: Log, msg: string, pipeline: string?, event: table?)
+---@field trace fun(self: Log, msg: string, pipeline: string?, event: table?)
+---@field debug fun(self: Log, msg: string, pipeline: string?, event: table?)
+---@field warn fun(self: Log, msg: string, pipeline: string?, event: table?)
+---@field error fun(self: Log, msg: string, pipeline: string?, event: table?)
 local Log = {}
 Log.__index = Log
 
@@ -43,6 +42,8 @@ function Log:set_level(level)
 	end
 end
 
+---Setup the logger with its pipelines
+---@return Log?
 function Log:setup()
 	local status_ok, structlog = pcall(require, "structlog")
 	if not status_ok then
@@ -184,6 +185,8 @@ function Log:setup()
 			},
 		},
 	})
+	setmetatable(self, Log_mt)
+	return self
 end
 
 ---@param level integer [same as vim.log.levels]
@@ -225,61 +228,54 @@ function Log:get_path(variant, pipeline)
 	variant = variant or ""
 	pipeline = pipeline or "qvim"
 
-	if pipeline == "qvim" then
-		return string.format(
-			"%s/%s-%s.log",
-			get_qvim_log_dir(),
-			"qvim",
-			variant:lower()
-		)
-	else
-		return string.format(
-			"%s/%s/%s.log",
-			get_qvim_log_dir(),
-			pipeline,
-			variant:lower()
-		)
-	end
+	local path = pipeline == "qvim" and "%s/%s-%s.log" or "%s/%s/%s.log"
+
+	return string.format(path, get_qvim_log_dir(), pipeline, variant:lower())
 end
 
 ---Add a log entry at TRACE level
+---@param self Log
 ---@param msg any
----@param event any
 ---@param pipeline string|nil
-function Log:trace(msg, event, pipeline)
+---@param event any
+function Log:trace(msg, pipeline, event)
 	Log:add_entry(self.levels.TRACE, msg, event, pipeline)
 end
 
 ---Add a log entry at DEBUG level
+---@param self Log
 ---@param msg any
----@param event any
 ---@param pipeline string|nil
-function Log:debug(msg, event, pipeline)
+---@param event any
+function Log:debug(msg, pipeline, event)
 	Log:add_entry(self.levels.DEBUG, msg, event, pipeline)
 end
 
 ---Add a log entry at INFO level
+---@param self Log
 ---@param msg any
----@param event any
 ---@param pipeline string|nil
-function Log:info(msg, event, pipeline)
+---@param event any
+function Log:info(msg, pipeline, event)
 	Log:add_entry(self.levels.INFO, msg, event, pipeline)
 end
 
 ---Add a log entry at WARN level
+---@param self Log
 ---@param msg any
----@param event any
 ---@param pipeline string|nil
-function Log:warn(msg, event, pipeline)
+---@param event any
+function Log:warn(msg, pipeline, event)
 	Log:add_entry(self.levels.WARN, msg, event, pipeline)
 end
 
 ---Add a log entry at ERROR level
+---@param self Log
 ---@param msg any
----@param event any
----@param pipeline string|nil
-function Log:error(msg, event, pipeline)
+---@param pipeline string?
+---@param event any?
+function Log:error(msg, pipeline, event)
 	Log:add_entry(self.levels.ERROR, msg, event, pipeline)
 end
 
-return setmetatable(Log, Log_mt)
+return Log

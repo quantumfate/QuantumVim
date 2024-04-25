@@ -1,5 +1,6 @@
 local manager = {}
 
+local core = require("qvim.core")
 local log = require("qvim.log")
 local utils = require("qvim.utils")
 local join_paths = utils.join_paths
@@ -80,15 +81,15 @@ function manager:reset_cache()
 	os.remove(require("lazy.core.cache").path)
 end
 
+local function fetch_lazy_spec()
+	return os.getenv("QV_FIRST_TIME_SETUP") and core.load_lazy_spec_light()
+		or core.load_lazy_spec()
+end
+
 ---Loads all plugins and calls their setup function
 ---@param spec table|nil the plugin configuration table
 function manager:load(spec)
-	local startup_spec
-	if os.getenv("QV_FIRST_TIME_SETUP") then
-		startup_spec = require("qvim.core").load_lazy_spec_light()
-	else
-		startup_spec = require("qvim.core").load_lazy_spec()
-	end
+	local startup_spec = fetch_lazy_spec()
 	spec = spec or startup_spec
 	log:debug("loading plugins configuration")
 	local lazy_available, lazy = pcall(require, "lazy")
@@ -138,7 +139,7 @@ end
 ---@return table
 function manager:get_integrations()
 	local names = {}
-	local integrations = require("qvim.core").load_lazy_spec_light()
+	local integrations = core.load_lazy_spec_light()
 	for _, spec in pairs(integrations) do
 		if spec.enabled == true or spec.enabled == nil then
 			table.insert(names, spec.name)
