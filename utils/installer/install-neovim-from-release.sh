@@ -15,8 +15,12 @@ if [ "$OS" == "Linux" ]; then
     ARCHIVE_NAME="nvim-linux64"
     RELEASE_NAME="nvim-linux64"
 elif [ "$OS" == "Darwin" ]; then
-    ARCHIVE_NAME="nvim-macos-x86_64"
     # for some reason the archive has a different name
+    if [[ "${RELEASE_VER}" == "latest" ]]; then
+        ARCHIVE_NAME="nvim-macos"
+    else
+        ARCHIVE_NAME="nvim-macos-x86_64"
+    fi
     RELEASE_NAME="nvim-osx64"
 else
     echo "$OS platform is not supported currently"
@@ -47,6 +51,7 @@ function main() {
 
 function download_neovim() {
     echo "Downloading Neovim's binary from $RELEASE_VER release.."
+    echo "From Archive: ${RELEASE_URL}"
     if ! curl --progress-bar --fail -L "$RELEASE_URL" -o "$DOWNLOAD_DIR/$ARCHIVE_NAME.tar.gz"; then
         echo "Download failed.  Check that the release/filename are correct."
         exit 1
