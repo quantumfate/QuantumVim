@@ -126,7 +126,7 @@ function StructlogImpl.get_path(variant, channel)
 
 	local path = channel == "qvim" and "%s/%s-%s.log" or "%s/%s/%s.log"
 
-	return string.format(path, get_qvim_log_dir(), channel, variant:lower())
+	return string.format(path, get_qvim_log_dir(), channel, variant)
 end
 
 ---Add a log entry at TRACE level
