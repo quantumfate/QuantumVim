@@ -146,7 +146,7 @@ function M:init()
 	vim.opt.rtp:prepend(log_path)
 
 	local log = require("qvim.log")
-	log:setup()
+	log.setup()
 
 	require("qvim.core.manager"):init({
 		package_root = self.qvim_pack_dir,
