@@ -1,4 +1,3 @@
-local fn_t = require("qvim.utils.fn_t")
 local utils = require("qvim.utils")
 
 ---@class StructlogImpl
@@ -24,6 +23,18 @@ StructlogImpl.levels = {
 	ERROR = 5,
 }
 vim.tbl_add_reverse_lookup(StructlogImpl.levels)
+
+---@param t any
+---@param predicate fun(entry: any):boolean
+---@return boolean
+local function any(t, predicate)
+	for _, entry in pairs(t) do
+		if predicate(entry) then
+			return true
+		end
+	end
+	return false
+end
 
 ---Setup Structlog with its channels and mutates the log table to index the log functions
 ---@param self StructlogImpl
@@ -51,7 +62,7 @@ function StructlogImpl:setup(channels, log)
 			---@return function
 			__index = function(tbl, key)
 				if
-					fn_t.any(vim.tbl_keys(channels), function(entry)
+					any(vim.tbl_keys(channels), function(entry)
 						return key == entry
 					end)
 				then

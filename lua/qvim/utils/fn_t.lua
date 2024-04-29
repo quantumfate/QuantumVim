@@ -58,7 +58,7 @@ end
 
 ---Checks if any entry in a table satisfies a predicate
 ---@param t any
----@param predicate any
+---@param predicate fun(entry: any):boolean
 ---@return boolean
 function Table.any(t, predicate)
 	for _, entry in pairs(t) do
