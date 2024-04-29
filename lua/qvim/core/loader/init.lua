@@ -1,7 +1,7 @@
 ---@class core_loader
 local core_loader = {}
 
-local log = require("qvim.log")
+local log = require("qvim.log").qvim
 local fmt = string.format
 local core_loader_util = require("qvim.core.loader.util")
 local core_util = require("qvim.core.util")
@@ -75,7 +75,7 @@ function core_loader.new(
 						dep_hr_name,
 						plugin_name
 					)
-					log:debug(
+					log.debug(
 						fmt(
 							"[core.loader] Loaded spec for dependency '%s', of the plugin '%s'.",
 							dep_hr_name,
@@ -83,7 +83,7 @@ function core_loader.new(
 						)
 					)
 				else
-					log:debug(
+					log.debug(
 						fmt(
 							"[core.loader] Failed to load spec for dependency '%s', of the plugin '%s'.",
 							dep,
@@ -94,7 +94,7 @@ function core_loader.new(
 			elseif type(dep) == "table" then
 				dep_spec[#dep_spec + 1] = dep
 			else
-				log:debug(
+				log.debug(
 					fmt(
 						"[core.loader] Unknown dependency listed in '%s'. Should be type string or table but was '%s'.",
 						plugin_name,

@@ -4,7 +4,7 @@ local core_meta_parent = {}
 ---@param self AbstractExtension
 function core_meta_parent:setup_ext()
 	local core_error_util = require("qvim.core.error")
-	local log = require("qvim.log")
+	local log = require("qvim.log").qvim
 	local fmt = string.format
 
 	---@type AbstractParent
@@ -12,7 +12,7 @@ function core_meta_parent:setup_ext()
 
 	local status_ok, plugin = pcall(require, self.main)
 	if not status_ok then
-		log:warn(
+		log.warn(
 			fmt(
 				"The extension '%s' from '%s' could not be loaded with '%s'. Check 'RTP' and 'main'.",
 				self.name,
@@ -37,7 +37,7 @@ function core_meta_parent:setup_ext()
 		setup_ok, _ = xpcall(plugin.setup, error_handler_closure)
 	end
 	if setup_ok then
-		log:debug(
+		log.debug(
 			fmt(
 				"SUCCESS: Called setup function from the extension '%s' of '%s' configured by '%s'.",
 				self.name,
@@ -46,7 +46,7 @@ function core_meta_parent:setup_ext()
 			)
 		)
 	else
-		log:trace(
+		log.trace(
 			fmt(
 				"Setup from the extension '%s' of '%s' configured by '%s' not called. More information in logs.",
 				self.name,
@@ -63,12 +63,12 @@ end
 
 ---@param self AbstractParent|AbstractPlugin
 function core_meta_parent:setup()
-	local log = require("qvim.log")
+	local log = require("qvim.log").qvim
 	local fmt = string.format
 
 	local status_ok, plugin = pcall(require, self.main)
 	if not status_ok then
-		log:warn(
+		log.warn(
 			fmt(
 				"The plugin '%s' could not be loaded with '%s'. Check 'RTP' and 'main'.",
 				self.name,
@@ -83,7 +83,7 @@ function core_meta_parent:setup()
 
 	local setup_ok, _ = pcall(plugin.setup, self.options)
 	if setup_ok then
-		log:debug(
+		log.debug(
 			fmt(
 				"SUCCESS: Called setup function from '%s' configured by '%s'.",
 				self.main,
@@ -91,7 +91,7 @@ function core_meta_parent:setup()
 			)
 		)
 	else
-		log:error(
+		log.error(
 			fmt(
 				"Required Plugin: '%s'. The setup call of '%s' failed. Consult '%s' to see validate the configuration."
 					.. "\n"

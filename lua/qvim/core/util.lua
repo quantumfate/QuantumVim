@@ -1,7 +1,8 @@
 ---@class util
 local util = {}
 
-local log = require("qvim.log")
+local log = require("qvim.log").qvim
+local fmt = string.format
 
 ---Validates the plugin name. By comparing it against the accepted patterns:
 ---- user/`plugin`.nvim
@@ -53,9 +54,11 @@ function util.qvim_process_plugins(call)
 		if name_ok and plugin_name and hr_name then
 			qvim.plugins[plugin_name] = call(hr_name)
 		else
-			log:debug(
-				"The plugin url '%s' did not pass the plugin name validation. No configuration or setup will be called.",
-				url
+			log.debug(
+				fmt(
+					"The plugin url '%s' did not pass the plugin name validation. No configuration or setup will be called.",
+					url
+				)
 			)
 		end
 	end
@@ -75,9 +78,11 @@ function util.lazy_process_plugins(call, first_time_setup)
 			lazy_specs[#lazy_specs + 1] =
 				call(plugin_name, url, first_time_setup, hr_name)
 		else
-			log:debug(
-				"The plugin url '%s' did not pass the plugin name validation. No configuration or setup will be called.",
-				url
+			log.debug(
+				fmt(
+					"The plugin url '%s' did not pass the plugin name validation. No configuration or setup will be called.",
+					url
+				)
 			)
 		end
 	end

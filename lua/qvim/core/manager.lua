@@ -1,7 +1,7 @@
 local manager = {}
 
 local core = require("qvim.core")
-local log = require("qvim.log")
+local log = require("qvim.log").qvim
 local utils = require("qvim.utils")
 local join_paths = utils.join_paths
 local fmt = string.format
@@ -91,10 +91,10 @@ end
 function manager:load(spec)
 	local startup_spec = fetch_lazy_spec()
 	spec = spec or startup_spec
-	log:debug("loading plugins configuration")
+	log.debug("loading plugins configuration")
 	local lazy_available, lazy = pcall(require, "lazy")
 	if not lazy_available then
-		log:warn("skipping loading plugins until lazy.nvim is installed")
+		log.warn("skipping loading plugins until lazy.nvim is installed")
 		return false
 	end
 
@@ -127,8 +127,8 @@ function manager:load(spec)
 	end, debug.traceback)
 
 	if not status_ok then
-		log:warn("problems detected while loading plugins' configurations")
-		log:trace(debug.traceback())
+		log.warn("problems detected while loading plugins' configurations")
+		log.trace(debug.traceback())
 		return false
 	end
 
@@ -162,7 +162,7 @@ function manager:lazy_do_plugins(action)
 		end,
 	})
 	local integrations = manager:get_integrations()
-	log:trace(
+	log.trace(
 		string.format(
 			"[%s] Plugins: [%q]",
 			action:upper(),
@@ -190,7 +190,7 @@ function manager:lazy_do_plugins(action)
 	elseif mode == 4 then
 		require("lazy").sync(opts)
 	else
-		log:error(fmt("Invalid mode '%s' for lazy update.", action))
+		log.error(fmt("Invalid mode '%s' for lazy update.", action))
 	end
 
 	git({
@@ -204,7 +204,7 @@ function manager:lazy_do_plugins(action)
 end
 
 function manager.ensure_plugins()
-	log:debug("calling lazy.install()")
+	log.debug("calling lazy.install()")
 	require("lazy").install({ wait = true })
 end
 

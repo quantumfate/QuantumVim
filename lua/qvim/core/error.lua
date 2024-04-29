@@ -1,4 +1,4 @@
-local log = require("qvim.log")
+local log = require("qvim.log").qvim
 local fmt = string.format
 local core_error_util = {}
 
@@ -8,9 +8,9 @@ local core_error_util = {}
 ---@param plugin_path string
 function core_error_util.error_handler(err, hr_name, plugin_path)
 	if err:match(".*" .. plugin_path .. ".*") then
-		log:debug(fmt("No configuration file found for '%s'.", hr_name))
+		log.debug(fmt("No configuration file found for '%s'.", hr_name))
 	elseif err:match(".*module .* not found.*") then
-		log:debug(
+		log.debug(
 			fmt(
 				"A module in the configuration of '%s' caused an error. Is this first time setup? If it's not some plugin in '%s' is missing or malfunctioning require path was used.",
 				hr_name,
@@ -19,7 +19,7 @@ function core_error_util.error_handler(err, hr_name, plugin_path)
 		)
 	else
 		print(debug.traceback())
-		log:error(
+		log.error(
 			fmt(
 				"Unknown error occured during configuration of '%s' in '%s'.",
 				hr_name,
@@ -41,7 +41,7 @@ function core_error_util.error_handler_ext(
 	plugin_path
 )
 	if err:match(".*'" .. plugin_path .. "'.*") then
-		log:debug(
+		log.debug(
 			fmt(
 				"No configuration file found for extension '%s' of '%s'.",
 				hr_name_ext,
@@ -49,7 +49,7 @@ function core_error_util.error_handler_ext(
 			)
 		)
 	elseif err:match(".*module '.*' not found.*") then
-		log:debug(
+		log.debug(
 			fmt(
 				"A module in the configuration of the '%s' extension '%s' caused an error. Is this first time setup? If it's not some plugin in '%s' is missing or malfunctioning require path was used.",
 				hr_name_parent,
@@ -58,7 +58,7 @@ function core_error_util.error_handler_ext(
 			)
 		)
 	else
-		log:error(
+		log.error(
 			fmt(
 				"Unknown error occured during configuration of the '%s' extension '%s' in '%s'.",
 				hr_name_parent,
@@ -73,7 +73,7 @@ end
 ---@param self table
 ---@param err any
 function core_error_util.setup_error_handler(self, err)
-	log:debug(
+	log.debug(
 		fmt(
 			"Required Plugin: '%s'. The setup call of '%s' failed. Consult '%s' to see validate the configuration."
 				.. "\n"

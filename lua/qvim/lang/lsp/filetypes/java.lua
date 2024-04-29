@@ -3,7 +3,7 @@
 ---@field setup function
 local M = {}
 
-local Log = require("qvim.log")
+local log = require("qvim.log").lsp
 local dap_utils = require("qvim.lang.dap.utils")
 local lang_utils = require("qvim.lang.utils")
 local lsp_utils = require("qvim.lang.lsp.utils")
@@ -21,11 +21,11 @@ function M.setup()
 	local jdk_home = os.getenv("JDK_HOME")
 
 	if not java_home then
-		Log:error("Java home environment variable not set.")
+		log.error("Java home environment variable not set.")
 	end
 
 	if not jdk_home then
-		Log:error("JDK home environment variable not set.")
+		log.error("JDK home environment variable not set.")
 	end
 
 	local workspace_path = home .. "/.local/share/quantumvim/jdtls-workspace/"
@@ -120,7 +120,7 @@ function M.setup()
 	elseif is_java_20_arch then
 		runtime = runtimes[java_20_arch_path]
 	else
-		Log:error("Java runtime not found.")
+		log.error("Java runtime not found.")
 	end
 
 	local config = {

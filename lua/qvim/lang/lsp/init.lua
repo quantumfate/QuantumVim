@@ -1,6 +1,6 @@
 ---@class lsp
 local M = {}
-local Log = require("qvim.log")
+local log = require("qvim.log").lsp
 local autocmds = require("qvim.core.autocmds")
 
 local function add_lsp_buffer_options(bufnr)
@@ -40,7 +40,7 @@ end
 function M.common_on_init(client, bufnr)
 	if qvim.lsp.on_init_callback then
 		qvim.lsp.on_init_callback(client, bufnr)
-		Log:debug("Called lsp.on_init_callback")
+		log.debug("Called lsp.on_init_callback")
 		return
 	end
 end
@@ -48,7 +48,7 @@ end
 function M.common_on_attach(client, bufnr)
 	if qvim.lsp.on_attach_callback then
 		qvim.lsp.on_attach_callback(client, bufnr)
-		Log:debug("Called lsp.on_attach_callback")
+		log.debug("Called lsp.on_attach_callback")
 	end
 	local lu = require("qvim.lang.lsp.utils")
 	if qvim.lsp.document_highlight then
@@ -80,7 +80,7 @@ function M.get_common_opts()
 end
 
 function M.setup()
-	Log:debug("Setting up LSP support")
+	log.debug("Setting up LSP support")
 
 	local lsp_status_ok, _ = pcall(require, "lspconfig")
 	if not lsp_status_ok then

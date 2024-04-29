@@ -5,12 +5,12 @@ local core_meta_plugin = {}
 ---Can be called from tables that inherit from plugin with: `getmetatable(self).__index.setup(self)`
 ---@param self AbstractPlugin
 function core_meta_plugin:setup()
-	local log = require("qvim.log")
+	local log = require("qvim.log").qvim
 	local fmt = string.format
 
 	local status_ok, plugin = pcall(require, self.main)
 	if not status_ok then
-		log:warn(
+		log.warn(
 			fmt(
 				"The plugin '%s' could not be loaded with '%s'. Check 'RTP' and 'main'.",
 				self.name,
@@ -25,7 +25,7 @@ function core_meta_plugin:setup()
 
 	local setup_ok, _ = pcall(plugin.setup, self.options)
 	if setup_ok then
-		log:debug(
+		log.debug(
 			fmt(
 				"SUCCESS: Called setup function from '%s' configured by '%s'.",
 				self.main,
@@ -33,7 +33,7 @@ function core_meta_plugin:setup()
 			)
 		)
 	else
-		log:error(
+		log.error(
 			fmt(
 				"Required Plugin: '%s'. The setup call of '%s' failed. Consult '%s' to see validate the configuration."
 					.. "\n"

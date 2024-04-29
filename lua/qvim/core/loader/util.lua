@@ -1,7 +1,7 @@
 local util = {}
 
 local core_utils = require("qvim.core.util")
-local log = require("qvim.log")
+local log = require("qvim.log").qvim
 local fmt = string.format
 
 ---Requires a lazy spec of a plugin by a given path. The spec will extend a given `spec_mt`.
@@ -12,7 +12,7 @@ function util.load_lazy_config_spec_for_plugin(path, default_spec)
 	local success, spec = pcall(require, path)
 	if not success then
 		path = core_utils.get_plugin_basename(path)
-		log:debug(fmt("[core.loader] No spec available for '%s'.", path))
+		log.debug(fmt("[core.loader] No spec available for '%s'.", path))
 		spec = {}
 	end
 
@@ -40,7 +40,7 @@ function util.load_lazy_config_spec_for_plugin(path, default_spec)
 		keys = { plugin_spec.keys, { "s", "t", "f" }, true },
 		priority = { plugin_spec.priority, "n", true },
 	})
-	log:debug(
+	log.debug(
 		fmt("[core.loader] lazy config spec for '%s' was obtained.", path)
 	)
 	return plugin_spec
@@ -83,7 +83,7 @@ end
 ---@return table
 function util.core_plugin_spec_or_default(plugin_name, url, hr_name)
 	local function init()
-		log:debug(fmt("[core] Loaded the plugin '%s'", url))
+		log.debug(fmt("[core] Loaded the plugin '%s'", url))
 	end
 
 	if qvim.plugins[plugin_name] then
@@ -123,7 +123,7 @@ function util.extension_or_standalone_dependency_spec(
 	url
 )
 	local function init()
-		log:debug(
+		log.debug(
 			fmt("[core.loader] Loaded the dependency plugin spec '%s'", url)
 		)
 	end
@@ -169,7 +169,7 @@ end
 ---@return table
 function util.minimal_plugin_spec(url, hr_name, path)
 	local function init()
-		log:debug(
+		log.debug(
 			fmt("[core.loader] First time setup! Loaded the plugin '%s'", url)
 		)
 	end
@@ -177,7 +177,7 @@ function util.minimal_plugin_spec(url, hr_name, path)
 	local success, spec = pcall(require, path)
 	if not success then
 		path = core_utils.get_plugin_basename(path)
-		log:debug(fmt("[core.loader] No spec available for '%s'.", path))
+		log.debug(fmt("[core.loader] No spec available for '%s'.", path))
 		spec = {}
 	end
 
