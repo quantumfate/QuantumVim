@@ -46,18 +46,14 @@ local possible_functions = { "info", "debug", "warn", "error", "trace" }
 function StructlogImpl:setup(channels, log)
 	local status_ok, structlog = pcall(require, "structlog")
 	if not status_ok then
-		print("fuck")
 		return nil
 	end
 
 	local opts = {}
-	for channel, _ in pairs(channels) do
+
+	for _, channel in pairs(vim.tbl_keys(channels)) do
 		opts[channel] = {
-			pipelines = utils.create_log_pipeline(
-				self,
-				structlog,
-				channel:lower()
-			),
+			pipelines = utils.create_log_pipeline(self, structlog, channel),
 		}
 		log[channel] = setmetatable({ channel = channel }, {
 			---@param tbl AbstractLog
@@ -70,7 +66,7 @@ function StructlogImpl:setup(channels, log)
 					end)
 				then
 					return function(msg, event)
-						self[key](self, msg, tbl.channel:lower(), event)
+						self[key](self, msg, tbl.channel, event)
 					end
 				end
 				self.error(
@@ -99,7 +95,7 @@ function StructlogImpl:add_entry(level, msg, event, channel)
 			if not logger then
 				return
 			end
-			logger:log(level, vim.inspect(msg), event)
+			logger[StructlogImpl.levels[level]:lower()](logger, msg, event)
 		end)
 	then
 		vim.notify(msg, level, { title = channel })
@@ -128,7 +124,6 @@ function StructlogImpl.get_path(variant, channel)
 	channel = channel or "qvim"
 
 	local path = channel == "qvim" and "%s/%s-%s.log" or "%s/%s/%s.log"
-
 	return string.format(path, get_qvim_log_dir(), channel, variant)
 end
 

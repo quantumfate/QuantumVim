@@ -1,7 +1,9 @@
 local M = {}
 local uv = vim.loop
 
----Crates a loppipeline for structured logging.
+local initial_log_call = { max_parents = 5, stack_level = 6 }
+---Crates a loppipeline for structured logging with a `stack_level=6` for each channel because it takes exactly
+---`6` stack calls from the initial log call to the internal log call writing to the target sink.
 ---@param log StructlogImpl The logger instance
 ---@param structlog table The structlog instace
 ---@param name string Name of the pipeline
@@ -13,7 +15,7 @@ function M.create_log_pipeline(log, structlog, name)
 			processors = {
 				structlog.processors.StackWriter(
 					{ "line", "file" },
-					{ max_parents = 0, stack_level = 0 }
+					initial_log_call
 				),
 				structlog.processors.Timestamper("%H:%M:%S"),
 			},
@@ -31,7 +33,7 @@ function M.create_log_pipeline(log, structlog, name)
 			processors = {
 				structlog.processors.StackWriter(
 					{ "line", "file" },
-					{ max_parents = 3 }
+					initial_log_call
 				),
 				structlog.processors.Timestamper("%H:%M:%S"),
 			},
@@ -39,14 +41,14 @@ function M.create_log_pipeline(log, structlog, name)
 				"%s [%s] %s: %-30s",
 				{ "timestamp", "level", "logger_name", "msg" }
 			),
-			sink = structlog.sinks.File(log:get_path("error", name)),
+			sink = structlog.sinks.File(log.get_path("error", name)),
 		},
 		{
 			level = structlog.level.DEBUG,
 			processors = {
 				structlog.processors.StackWriter(
 					{ "line", "file" },
-					{ max_parents = 3 }
+					initial_log_call
 				),
 				structlog.processors.Timestamper("%H:%M:%S"),
 			},
@@ -54,14 +56,14 @@ function M.create_log_pipeline(log, structlog, name)
 				"%s [%s] %s: %-30s",
 				{ "timestamp", "level", "logger_name", "msg" }
 			),
-			sink = structlog.sinks.File(log:get_path("debug", name)),
+			sink = structlog.sinks.File(log.get_path("debug", name)),
 		},
 		{
 			level = structlog.level.TRACE,
 			processors = {
 				structlog.processors.StackWriter(
 					{ "line", "file" },
-					{ max_parents = 3 }
+					initial_log_call
 				),
 				structlog.processors.Timestamper("%H:%M:%S"),
 			},
@@ -69,7 +71,7 @@ function M.create_log_pipeline(log, structlog, name)
 				"%s [%s] %s: %-30s",
 				{ "timestamp", "level", "logger_name", "msg" }
 			),
-			sink = structlog.sinks.File(log:get_path("trace", name)),
+			sink = structlog.sinks.File(log.get_path("trace", name)),
 		},
 	}
 end
