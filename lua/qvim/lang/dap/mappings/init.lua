@@ -89,7 +89,7 @@ M.mason_test_package_to_ft = setmetatable({}, {
 		if test_to_ft[k] then
 			return test_to_ft[k]
 		else
-			Log.warn(
+			log.warn(
 				fmt(
 					"No such mason package available '%s' for a debug adapter.",
 					k

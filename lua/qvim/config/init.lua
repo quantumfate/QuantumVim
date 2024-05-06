@@ -38,7 +38,7 @@ function M:init()
 		vim.cmd.colorscheme(qvim.config.colorscheme)
 	end
 
-	log.qvim.info("Configs were loaded.")
+	log.info("Configs were loaded.")
 end
 
 --[[
