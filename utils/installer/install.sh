@@ -488,10 +488,10 @@ function create_desktop_file() {
     for d in "$QUANTUMVIM_RTP_DIR"/utils/desktop/*/; do
         size_folder=$(basename "$d")
         mkdir -p "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps/"
-        cp "$QUANTUMVIM_RTP_DIR/utils/desktop/$size_folder/$NVIM_APPNAME.svg" "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps"
+        cp "$QUANTUMVIM_RTP_DIR/utils/desktop/$size_folder/qvim.svg" "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps"
     done
 
-    xdg-desktop-menu install --novendor "$QUANTUMVIM_RTP_DIR/utils/desktop/$NVIM_APPNAME.desktop" || true
+    xdg-desktop-menu install --novendor "$QUANTUMVIM_RTP_DIR/utils/desktop/qvim.desktop" || true
 }
 
 function print_logo() {
