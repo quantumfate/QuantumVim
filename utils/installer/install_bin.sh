@@ -22,7 +22,7 @@ QUANTUMVIM_PACK_DIR="${QUANTUMVIM_PACK_DIR:-"${QUANTUMVIM_RTP_DIR}/after/pack/la
 QUANTUMVIM_STRUCTLOG_DIR="${QUANTUMVIM_STRUCTLOG_DIR:-"${QUANTUMVIM_PACK_DIR}/structlog"}"
 
 function setup_qvim() {
-    local src="$QUANTUMVIM_RTP_DIR/utils/bin/${NVIM_APPNAME}.template"
+    local src="$QUANTUMVIM_RTP_DIR/utils/bin/qvim.template"
     local dst="$INSTALL_PREFIX/bin/${NVIM_APPNAME}"
 
     [ ! -d "$INSTALL_PREFIX/bin" ] && mkdir -p "$INSTALL_PREFIX/bin"
