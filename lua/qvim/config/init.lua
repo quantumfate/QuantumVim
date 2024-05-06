@@ -1,4 +1,4 @@
-local Log = require("qvim.log").qvim
+local log = require("qvim.log").qvim
 
 local M = {}
 
@@ -38,7 +38,7 @@ function M:init()
 		vim.cmd.colorscheme(qvim.config.colorscheme)
 	end
 
-	Log.info("Configs were loaded.")
+	log.qvim.info("Configs were loaded.")
 end
 
 --[[
