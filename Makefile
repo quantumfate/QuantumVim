@@ -1,4 +1,5 @@
 SHELL := /usr/bin/env bash
+CURRENT_DIR := $(shell pwd)
 
 install:
 	@echo starting QuantumVim installer
@@ -43,3 +44,6 @@ style-sh:
 	
 test:
 	bash ./utils/ci/run_test.sh "$(TEST)"
+
+test-local:
+	export QUANTUMVIM_RTP_DIR="$(CURRENT_DIR)"; bash ./utils/scripts/test_local.sh "$(TEST)"

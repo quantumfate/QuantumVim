@@ -148,6 +148,9 @@ function M:init()
 	local log = require("qvim.log")
 	log.setup()
 
+	local test = require("qvim.log")
+
+	print(vim.inspect(test))
 	require("qvim.core.manager"):init({
 		package_root = self.qvim_pack_dir,
 		install_path = self.lazy_install_dir,
@@ -155,6 +158,7 @@ function M:init()
 
 	vim.opt.rtp = self:bootstrap()
 
+	print(vim.inspect(vim.opt.rtp:get()))
 	require("qvim.config"):init()
 
 	return self

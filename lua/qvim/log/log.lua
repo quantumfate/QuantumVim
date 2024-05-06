@@ -36,6 +36,8 @@ local function any(t, predicate)
 	return false
 end
 
+local possible_functions = { "info", "debug", "warn", "error", "trace" }
+
 ---Setup Structlog with its channels and mutates the log table to index the log functions
 ---@param self StructlogImpl
 ---@param channels table<string, table>
@@ -44,6 +46,7 @@ end
 function StructlogImpl:setup(channels, log)
 	local status_ok, structlog = pcall(require, "structlog")
 	if not status_ok then
+		print("fuck")
 		return nil
 	end
 
@@ -62,7 +65,7 @@ function StructlogImpl:setup(channels, log)
 			---@return function
 			__index = function(tbl, key)
 				if
-					any(vim.tbl_keys(channels), function(entry)
+					any(possible_functions, function(entry)
 						return key == entry
 					end)
 				then
@@ -135,7 +138,7 @@ end
 ---@param channel string|nil
 ---@param event any
 function StructlogImpl:trace(msg, channel, event)
-	self.add_entry(self.levels.TRACE, msg, event, channel)
+	self:add_entry(self.levels.TRACE, msg, event, channel)
 end
 
 ---Add a log entry at DEBUG level
@@ -144,7 +147,7 @@ end
 ---@param channel string|nil
 ---@param event any
 function StructlogImpl:debug(msg, channel, event)
-	self.add_entry(self.levels.DEBUG, msg, event, channel)
+	self:add_entry(self.levels.DEBUG, msg, event, channel)
 end
 
 ---Add a log entry at INFO level
@@ -153,7 +156,7 @@ end
 ---@param channel string|nil
 ---@param event any
 function StructlogImpl:info(msg, channel, event)
-	self.add_entry(self.levels.INFO, msg, event, channel)
+	self:add_entry(self.levels.INFO, msg, event, channel)
 end
 
 ---Add a log entry at WARN level
@@ -162,7 +165,7 @@ end
 ---@param channel string|nil
 ---@param event any
 function StructlogImpl:warn(msg, channel, event)
-	self.add_entry(self.levels.WARN, msg, event, channel)
+	self:add_entry(self.levels.WARN, msg, event, channel)
 end
 
 ---Add a log entry at ERROR level
@@ -171,7 +174,7 @@ end
 ---@param channel string?
 ---@param event any?
 function StructlogImpl:error(msg, channel, event)
-	self.add_entry(self.levels.ERROR, msg, event, channel)
+	self:add_entry(self.levels.ERROR, msg, event, channel)
 end
 
 return StructlogImpl
