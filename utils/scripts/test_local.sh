@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-qvim_state_name="quantumvim"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_LOG_HOME="$HOME/.local/log"
 
