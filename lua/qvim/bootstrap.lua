@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch, return-type-mismatch
 local M = {}
 M.__index = M
 
@@ -42,6 +43,16 @@ function _G.get_qvim_config_dir()
 	return qvim_config_dir
 end
 
+---Get the full path to `$QUANTUMVIM_LOG_DIR`
+---@return string
+function _G.get_qvim_log_dir()
+	local qvim_log_dir = os.getenv("QUANTUMVIM_LOG_DIR")
+	if not qvim_log_dir then
+		return vim.call("stdpath", "log")
+	end
+	return qvim_log_dir
+end
+
 ---Get the full path to `$QUANTUMVIM_STATE_DIR`
 ---@return string
 function _G.get_qvim_state_dir()
@@ -50,6 +61,12 @@ function _G.get_qvim_state_dir()
 		return vim.call("stdpath", "state")
 	end
 	return qvim_state_dir
+end
+
+---Get the full path to `$QUANTUMVIM_RTP_DIR`
+---@return string
+function _G.get_qvim_rtp_dir()
+	return os.getenv("QUANTUMVIM_RTP_DIR")
 end
 
 ---Get the full path to `$QUANTUMVIM_DATA_DIR`
@@ -72,50 +89,73 @@ function _G.get_qvim_cache_dir()
 	return qvim_cache_dir
 end
 
+---Get the full path to `$QUANTUMVIM_PACK_DIR`
+---@return string
+function _G.get_qvim_pack_dir()
+	return os.getenv("QUANTUMVIM_PACK_DIR")
+end
+
+---Get the full path to `$QUANTUMVIM_STRUCTLAG_DIR`
+---@return string
+function _G.get_qvim_structlog_dir()
+	return os.getenv("QUANTUMVIM_STRUCTLOG_DIR")
+end
+
 M.qvim_config_dir = get_qvim_config_dir()
+M.qvim_state_dir = get_qvim_state_dir()
+M.qvim_rtp_dir = get_qvim_rtp_dir()
 M.qvim_cache_dir = get_qvim_cache_dir()
-M.opt_dir = join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt")
-M.lazy_install_dir = join_paths(M.opt_dir, "lazy.nvim")
+M.qvim_data_dir = get_qvim_data_dir()
+M.qvim_log_dir = get_qvim_log_dir()
+M.qvim_pack_dir = get_qvim_pack_dir()
+M.lazy_install_dir = join_paths(M.qvim_pack_dir, "lazy.nvim")
 
 function _G.get_lazy_rtp_dir()
-	return M.opt_dir
+	return M.qvim_pack_dir
 end
 
 ---Initialize the `&runtimepath` variables, load the globals and prepare for startup
 ---@return table
 function M:init()
-	local utils = require("qvim.utils")
-
 	---@meta overridden
 	---@param what any
 	---@return string
 	vim.fn.stdpath = function(what)
 		if what == "cache" then
 			return get_qvim_cache_dir()
+		elseif what == "rtp" then
+			return get_qvim_rtp_dir()
 		elseif what == "state" then
 			return get_qvim_state_dir()
 		elseif what == "data" then
 			return get_qvim_data_dir()
 		elseif what == "config" then
 			return get_qvim_config_dir()
+		elseif what == "log" then
+			return get_qvim_log_dir()
+		elseif what == "pack" then
+			return get_qvim_pack_dir()
+		elseif what == "structlog" then
+			return get_qvim_structlog_dir()
 		else
 			return vim.call("stdpath", what)
 		end
 	end
 
-	local structlog_path = join_paths(self.opt_dir, "structlog")
-	if
-		not os.getenv("QV_FIRST_TIME_SETUP")
-		and utils.is_directory(structlog_path)
-	then
-		vim.opt.rtp:append(structlog_path)
-		require("qvim.log"):init_pre_setup()
-	end
+	local log_path = join_paths(self.qvim_pack_dir, "structlog")
+	vim.opt.rtp:prepend(log_path)
+
+	local log = require("qvim.log")
+	log.setup()
+
+	require("qvim.log")
 
 	require("qvim.core.manager"):init({
-		package_root = self.opt_dir,
+		package_root = self.qvim_pack_dir,
 		install_path = self.lazy_install_dir,
 	})
+
+	vim.opt.rtp = self:bootstrap()
 
 	require("qvim.config"):init()
 
@@ -123,17 +163,60 @@ function M:init()
 end
 
 function M:setup()
-	local utils = require("qvim.utils")
-
-	local structlog_path = join_paths(self.opt_dir, "structlog")
-
 	local manager = require("qvim.core.manager")
 	manager:load()
-	if utils.is_directory(structlog_path) then
-		require("qvim.log"):init_post_setup()
-	end
-
 	require("qvim.core.plugins.mason").bootstrap()
+end
+
+--Modifies the runtimepath by removing standard paths from `vim.call("stdpath", what)` with `vim.fn.stdpath(what)`
+---@param stds string[]|nil @default: { "config", "data" }
+---@param expands string[][]|nil @default: { {}, { "site", "after" }, { "site" }, { "after" } }
+---@return vim.opt.runtimepath
+function M:bootstrap(stds, expands)
+	stds = stds or { "config", "data" }
+	expands = expands or { {}, { "site", "after" }, { "site" }, { "after" } }
+	---@type vim.opt.runtimepath
+	local rtp_paths = vim.opt.rtp:get()
+	local rtp = vim.opt.rtp
+
+	for _, what in ipairs(stds) do
+		for _, expand in ipairs(expands) do
+			if #expand == 0 then
+				if vim.tbl_contains(rtp_paths, vim.call("stdpath", what)) then
+					-- remove
+					rtp:remove(vim.call("stdpath", what))
+				end
+				if not vim.tbl_contains(rtp_paths, vim.fn.stdpath(what)) then
+					-- add
+					rtp:prepend(vim.fn.stdpath(what))
+				end
+			else
+				if
+					-- remove
+					vim.tbl_contains(
+						rtp_paths,
+						_G.join_paths(vim.call("stdpath", what), unpack(expand))
+					)
+				then
+					rtp:remove(
+						_G.join_paths(vim.call("stdpath", what), unpack(expand))
+					)
+				end
+				if
+					not vim.tbl_contains(
+						rtp_paths,
+						_G.join_paths(vim.fn.stdpath(what), unpack(expand))
+					)
+				then
+					-- add
+					rtp:prepend(
+						_G.join_paths(vim.fn.stdpath(what), unpack(expand))
+					)
+				end
+			end
+		end
+	end
+	return rtp
 end
 
 ---Update qvimVim

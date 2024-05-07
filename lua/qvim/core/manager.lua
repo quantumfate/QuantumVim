@@ -1,18 +1,16 @@
 local manager = {}
 
-local log = require("qvim.log")
+local core = require("qvim.core")
+local log = require("qvim.log").qvim
 local utils = require("qvim.utils")
 local join_paths = utils.join_paths
 local fmt = string.format
 
-local get_qvim_config_dir = _G.get_qvim_config_dir
-
-local plugins_dir =
-	join_paths(get_qvim_data_dir(), "after", "pack", "lazy", "opt")
+local plugins_dir = get_qvim_pack_dir()
 
 local function ensure_plugins_in_rtp(lazy_install_dir)
 	local rtp = vim.opt.rtp:get()
-	local base_dir = get_qvim_data_dir():gsub("\\", "/")
+	local base_dir = get_lazy_rtp_dir():gsub("\\", "/")
 	local idx_base = #rtp + 1
 	for i, path in ipairs(rtp) do
 		path = path:gsub("\\", "/")
@@ -42,7 +40,7 @@ function manager:init(opts)
 
 	if not utils.is_directory(lazy_install_dir) then
 		print("Initializing first time setup")
-		local core_plugins_dir = join_paths(get_qvim_config_dir(), "plugins")
+		local core_plugins_dir = join_paths(get_qvim_state_dir(), "plugins")
 		if utils.is_directory(core_plugins_dir) then
 			vim.fn.mkdir(plugins_dir, "p")
 			vim.loop.fs_rmdir(plugins_dir)
@@ -57,7 +55,7 @@ function manager:init(opts)
 				lazy_install_dir,
 			})
 			local default_snapshot_path =
-				join_paths(get_qvim_config_dir(), "snapshots", "default.json")
+				join_paths(get_qvim_rtp_dir(), "snapshots", "default.json")
 			local snapshot = assert(
 				vim.fn.json_decode(vim.fn.readfile(default_snapshot_path))
 			)
@@ -83,20 +81,20 @@ function manager:reset_cache()
 	os.remove(require("lazy.core.cache").path)
 end
 
+local function fetch_lazy_spec()
+	return os.getenv("QV_FIRST_TIME_SETUP") and core.load_lazy_spec_light()
+		or core.load_lazy_spec()
+end
+
 ---Loads all plugins and calls their setup function
 ---@param spec table|nil the plugin configuration table
 function manager:load(spec)
-	local startup_spec
-	if os.getenv("QV_FIRST_TIME_SETUP") then
-		startup_spec = require("qvim.core").load_lazy_spec_light()
-	else
-		startup_spec = require("qvim.core").load_lazy_spec()
-	end
+	local startup_spec = fetch_lazy_spec()
 	spec = spec or startup_spec
-	log:debug("loading plugins configuration")
+	log.debug("loading plugins configuration")
 	local lazy_available, lazy = pcall(require, "lazy")
 	if not lazy_available then
-		log:warn("skipping loading plugins until lazy.nvim is installed")
+		log.warn("skipping loading plugins until lazy.nvim is installed")
 		return false
 	end
 
@@ -113,14 +111,15 @@ function manager:load(spec)
 			git = {
 				timeout = 120,
 			},
-			lockfile = join_paths(get_qvim_config_dir(), "lazy-lock.json"),
+			-- TODO I'm not exactly sure about this location
+			lockfile = join_paths(get_qvim_rtp_dir(), "lazy-lock.json"),
 			performance = {
 				rtp = {
-					reset = true,
+					reset = false,
 				},
 			},
 			readme = {
-				root = join_paths(get_qvim_config_dir(), "lazy", "readme"),
+				root = join_paths(get_qvim_rtp_dir(), "lazy", "readme"),
 			},
 		}
 
@@ -128,8 +127,8 @@ function manager:load(spec)
 	end, debug.traceback)
 
 	if not status_ok then
-		log:warn("problems detected while loading plugins' configurations")
-		log:trace(debug.traceback())
+		log.warn("problems detected while loading plugins' configurations")
+		log.trace(debug.traceback())
 		return false
 	end
 
@@ -140,7 +139,7 @@ end
 ---@return table
 function manager:get_integrations()
 	local names = {}
-	local integrations = require("qvim.core").load_lazy_spec_light()
+	local integrations = core.load_lazy_spec_light()
 	for _, spec in pairs(integrations) do
 		if spec.enabled == true or spec.enabled == nil then
 			table.insert(names, spec.name)
@@ -163,7 +162,7 @@ function manager:lazy_do_plugins(action)
 		end,
 	})
 	local integrations = manager:get_integrations()
-	log:trace(
+	log.trace(
 		string.format(
 			"[%s] Plugins: [%q]",
 			action:upper(),
@@ -191,7 +190,7 @@ function manager:lazy_do_plugins(action)
 	elseif mode == 4 then
 		require("lazy").sync(opts)
 	else
-		log:error(fmt("Invalid mode '%s' for lazy update.", action))
+		log.error(fmt("Invalid mode '%s' for lazy update.", action))
 	end
 
 	git({
@@ -205,7 +204,7 @@ function manager:lazy_do_plugins(action)
 end
 
 function manager.ensure_plugins()
-	log:debug("calling lazy.install()")
+	log.debug("calling lazy.install()")
 	require("lazy").install({ wait = true })
 end
 

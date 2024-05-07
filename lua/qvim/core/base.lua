@@ -11,7 +11,7 @@ local core_base_parent_mt = { __index = core_meta_parent }
 local fmt = string.format
 local core_error_util = require("qvim.core.error")
 local core_util = require("qvim.core.util")
-local log = require("qvim.log")
+local log = require("qvim.log").qvim
 local qvim_util = require("qvim.utils")
 
 local plugin_path_prefix = "qvim.core.plugins."
@@ -35,7 +35,7 @@ function core_base.new(hr_name)
 	local status_ok, plugin =
 		xpcall(require, error_handler_closure, plugin_path)
 	if not status_ok then
-		log:debug(
+		log.debug(
 			fmt(
 				"Skipping configuration of '%s'. No configuration available.",
 				hr_name
@@ -43,7 +43,7 @@ function core_base.new(hr_name)
 		)
 		return
 	elseif status_ok and type(plugin) == "boolean" then
-		log:error(
+		log.error(
 			fmt(
 				"The configuration of '%s' failed because the module '%s' returned nil.",
 				hr_name,
@@ -152,7 +152,7 @@ function core_base.new_ext(hr_name_parent, extension_url, parent)
 	local is_valid, plugin_name_ext, hr_name_ext =
 		core_util.is_valid_plugin_name(extension_url)
 	if not (is_valid and plugin_name_ext and hr_name_ext) then
-		log:debug(
+		log.debug(
 			fmt(
 				"The extension url '%s' of the plugin '%s' did not pass the name check valitation.",
 				extension_url,
@@ -180,7 +180,7 @@ function core_base.new_ext(hr_name_parent, extension_url, parent)
 		local status_ok, plugin =
 			xpcall(require, error_handler_closure, plugin_path)
 		if not status_ok then
-			log:debug(
+			log.debug(
 				fmt(
 					"Plugin: '%s'. Skipping configuration of the '%s' extension. No configuration available.",
 					hr_name_parent,

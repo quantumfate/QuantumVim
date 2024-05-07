@@ -1,7 +1,7 @@
 ---@class dap.manager
 local M = {}
 
-local Log = require("qvim.log")
+local log = require("qvim.log").dap
 local shared_util = require("qvim.lang.utils")
 local utils = require("qvim.lang.dap.utils")
 local fmt = string.format
@@ -21,7 +21,7 @@ function M.setup(filetype)
 	elseif package_available then
 		package = utils.resolve_dap_package_from_mason(filetype)
 	else
-		Log:debug(
+		log.debug(
 			fmt(
 				"No mason debug adapter package found for the filetype '%s'.",
 				filetype
@@ -38,7 +38,7 @@ function M.setup(filetype)
 			{ filetype }
 		)
 	else
-		Log:error(
+		log.error(
 			fmt(
 				"The debug adapter package '%s' from the filetype '%s' is not a package supported by mason.",
 				package_name,

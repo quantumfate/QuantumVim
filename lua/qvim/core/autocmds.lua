@@ -1,5 +1,5 @@
 local M = {}
-local Log = require("qvim.log")
+local Log = require("qvim.log").qvim
 
 --- Load the default set of autogroups and autocommands.
 function M.load_defaults()
@@ -37,7 +37,6 @@ function M.load_defaults()
 				"BufWinEnter",
 				"CursorHold",
 				"InsertLeave",
-
 				-- include this if you have set `show_modified` to `true`
 				"BufModifiedSet",
 			},
@@ -378,12 +377,12 @@ function M.enable_format_on_save()
 			})
 		end,
 	})
-	Log:debug("enabled format-on-save")
+	Log.debug("enabled format-on-save")
 end
 
 function M.disable_format_on_save()
 	M.clear_augroup("lsp_format_on_save")
-	Log:debug("disabled format-on-save")
+	Log.debug("disabled format-on-save")
 end
 
 function M.configure_format_on_save()
@@ -452,7 +451,7 @@ end
 ---@param name string the augroup name
 function M.clear_augroup(name)
 	-- defer the function in case the autocommand is still in-use
-	Log:debug("request to clear autocmds  " .. name)
+	Log.debug("request to clear autocmds  " .. name)
 	vim.schedule(function()
 		pcall(function()
 			vim.api.nvim_clear_autocmds({ group = name })

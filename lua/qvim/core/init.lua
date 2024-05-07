@@ -2,7 +2,7 @@
 local core = {}
 
 local fmt = string.format
-local log = require("qvim.log")
+local log = require("qvim.log").qvim
 ---@class util
 local util = require("qvim.core.util")
 ---@class core_base
@@ -69,7 +69,7 @@ core.plugins = {
 ---`qvim.core.plugins`.
 function core.init_plugin_configurations()
 	util.qvim_process_plugins(core_base.new)
-	log:debug(
+	log.debug(
 		fmt(
 			"[core] Global qvim plugins table initialized. It total: '%s'",
 			util.plugins_tbl_size()
@@ -84,7 +84,7 @@ end
 ---@return table lazy_spec
 function core.load_lazy_spec()
 	local lazy_spec = util.lazy_process_plugins(core_loader.new, false)
-	log:debug(
+	log.debug(
 		fmt(
 			"[core] Lazy spec initialized. Total plugins (without dependencies): %s",
 			#lazy_spec
@@ -98,7 +98,7 @@ end
 ---@return table lazy_spec_minimal
 function core.load_lazy_spec_light()
 	local lazy_spec_minimal = util.lazy_process_plugins(core_loader.new, true)
-	log:debug(
+	log.debug(
 		fmt(
 			"[core] Minimal lazy spec initialized. Total plugins (without dependencies): %s",
 			#lazy_spec_minimal

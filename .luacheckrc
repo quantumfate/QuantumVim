@@ -23,11 +23,15 @@ stds.nvim = {
 		"path_sep",
 		"vim",
 		"join_paths",
+		"get_qvim_log_dir",
 		"get_qvim_cache_dir",
+		"get_qvim_state_dir",
 		"get_qvim_config_dir",
 		"get_qvim_data_dir",
-		"get_qvim_state_dir",
+		"get_qvim_rtp_dir",
 		"get_qvim_base_dir",
+		"get_qvim_pack_dir",
+		"get_qvim_structlog_dir",
 		"get_lazy_rtp_dir",
 		"require_clean",
 	},
@@ -44,6 +48,6 @@ self = false
 cache = true
 
 ignore = {
-	"631",  -- max_line_length
+	"631", -- max_line_length
 	"212/_.*", -- unused argument, for vars with "_" prefix
 }
