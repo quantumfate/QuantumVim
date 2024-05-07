@@ -1,5 +1,7 @@
 local utils = require("qvim.utils")
 
+local fmt = string.format
+
 ---@class StructlogImpl
 ---@field levels table
 ---@field setup fun(self: StructlogImpl, channels: table, log: Log):StructlogImpl?
@@ -55,7 +57,9 @@ function StructlogImpl:setup(channels, log)
 		opts[channel] = {
 			pipelines = utils.create_log_pipeline(self, structlog, channel),
 		}
-		log[channel] = setmetatable({ channel = channel }, {
+		log[channel] = setmetatable({
+			channel = channel,
+		}, {
 			---@param tbl AbstractLog
 			---@param key function<AbstractLog>
 			---@return function
@@ -69,6 +73,13 @@ function StructlogImpl:setup(channels, log)
 						self[key](self, msg, tbl.channel, event)
 					end
 				end
+
+				if key == "log_file_path" then
+					return function(kind)
+						return self.get_path(tbl.channel, kind)
+					end
+				end
+
 				self.error(
 					self,
 					"Illegal function call.",
@@ -124,7 +135,7 @@ function StructlogImpl.get_path(variant, channel)
 	channel = channel or "qvim"
 
 	local path = channel == "qvim" and "%s/%s-%s.log" or "%s/%s/%s.log"
-	return string.format(path, get_qvim_log_dir(), channel, variant)
+	return fmt(path, get_qvim_log_dir(), channel, variant)
 end
 
 ---Add a log entry at TRACE level

@@ -10,6 +10,8 @@ M.load_default_options = function()
 		vim.fn.mkdir(undodir, "p")
 	end
 
+	---@type vim.opt
+	--- https://neovim.io/doc/user/quickref.html#option-list
 	local default_options = {
 		backup = false, -- creates a backup file
 		clipboard = "unnamedplus", -- allows neovim to access the system clipboard
@@ -53,6 +55,7 @@ M.load_default_options = function()
 		showcmd = false,
 		ruler = false,
 		laststatus = 3,
+		relativenumber = true,
 	}
 
 	---  SETTINGS  ---

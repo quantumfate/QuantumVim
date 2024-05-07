@@ -73,6 +73,16 @@ function M.create_log_pipeline(log, structlog, name)
 			),
 			sink = structlog.sinks.File(log.get_path("trace", name)),
 		},
+		{
+			level = structlog.level.WARN,
+			processors = {},
+			formatter = structlog.formatters.Format(
+				"%s",
+				{ "msg" },
+				{ blacklist = { "level", "logger_name" } }
+			),
+			sink = structlog.sinks.NvimNotify(),
+		},
 	}
 end
 

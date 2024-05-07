@@ -37,7 +37,6 @@ function M.load_defaults()
 				"BufWinEnter",
 				"CursorHold",
 				"InsertLeave",
-
 				-- include this if you have set `show_modified` to `true`
 				"BufModifiedSet",
 			},

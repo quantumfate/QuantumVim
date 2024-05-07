@@ -81,26 +81,6 @@ return {
 	icons = require("qvim.icons"),
 	---@class autocommands
 	autocommands = {},
-	---@class log
-	---@field level string
-	---@field viewer table
-	log = {
-		---@usage can be { "trace", "debug", "info", "warn", "error" }
-		level = "info",
-		viewer = {
-			---@usage this will fallback on "less +F" if not found
-			cmd = "qnav",
-			layout_config = {
-				---@usage direction = 'vertical' | 'horizontal' | 'window' | 'float',
-				direction = "horizontal",
-				open_mapping = "",
-				size = 40,
-				float_opts = {},
-			},
-		},
-		-- currently disabled due to instabilities
-		override_notify = false,
-	},
 
 	---@alias Plugins table<string, AbstractPlugin>|table<string, AbstractParent>
 	---@type Plugins

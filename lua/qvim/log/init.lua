@@ -7,6 +7,7 @@ local internal = require("qvim.log.log")
 ---@field debug fun(msg: string, event: table?)
 ---@field warn fun(msg: string, event: table?)
 ---@field error fun(msg: string, event: table?)
+---@field log_file_path fun(kind: string):string
 
 ---@class QvimLog : AbstractLog
 ---@class UserconfLog : AbstractLog

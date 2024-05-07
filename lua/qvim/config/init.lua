@@ -14,7 +14,6 @@ function M:init()
 	---@field icons icons
 	---@field lsp table
 	---@field autocommands autocommands
-	---@field log log
 	_G.qvim = setmetatable(
 		{},
 		{ __index = vim.deepcopy(require("qvim.config.config")) }
