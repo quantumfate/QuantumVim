@@ -148,8 +148,6 @@ function M:init()
 	local log = require("qvim.log")
 	log.setup()
 
-	require("qvim.log")
-
 	require("qvim.core.manager"):init({
 		package_root = self.qvim_pack_dir,
 		install_path = self.lazy_install_dir,
@@ -166,6 +164,8 @@ function M:setup()
 	local manager = require("qvim.core.manager")
 	manager:load()
 	require("qvim.core.plugins.mason").bootstrap()
+	local log = require("qvim.log")
+	log.update()
 end
 
 --Modifies the runtimepath by removing standard paths from `vim.call("stdpath", what)` with `vim.fn.stdpath(what)`
@@ -192,7 +192,7 @@ function M:bootstrap(stds, expands)
 				end
 			else
 				if
-					-- remove
+				-- remove
 					vim.tbl_contains(
 						rtp_paths,
 						_G.join_paths(vim.call("stdpath", what), unpack(expand))

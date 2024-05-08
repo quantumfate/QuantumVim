@@ -6,6 +6,7 @@ vim.opt.rtp:append(base_dir)
 vim.opt.rtp:append(tests_dir)
 
 require("qvim.bootstrap"):init()
+require("qvim.bootstrap"):setup()
 
 -- NOTE: careful about name collisions
 -- see https://github.com/nvim-lualine/lualine.nvim/pull/621
