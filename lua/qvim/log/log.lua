@@ -1,4 +1,4 @@
-local utils = require("qvim.utils")
+local utils = require("qvim.log.utils")
 
 local fmt = string.format
 
@@ -40,13 +40,16 @@ end
 
 local possible_functions = { "info", "debug", "warn", "error", "trace" }
 
+local structlog
+local status_ok
+
 ---Setup Structlog with its channels and mutates the log table to index the log functions
 ---@param self StructlogImpl
 ---@param channels table<string, table>
 ---@param log Log
 ---@return StructlogImpl?
 function StructlogImpl:setup(channels, log)
-	local status_ok, structlog = pcall(require, "structlog")
+	status_ok, structlog = pcall(require, "structlog")
 	if not status_ok then
 		return nil
 	end
@@ -55,7 +58,7 @@ function StructlogImpl:setup(channels, log)
 
 	for _, channel in pairs(vim.tbl_keys(channels)) do
 		opts[channel] = {
-			pipelines = utils.create_log_pipeline(self, structlog, channel),
+			pipelines = utils.get_basic_pipelines(self, structlog, channel),
 		}
 		log[channel] = setmetatable({
 			channel = channel,
@@ -80,8 +83,7 @@ function StructlogImpl:setup(channels, log)
 					end
 				end
 
-				self.error(
-					self,
+				self:error(
 					"Illegal function call.",
 					"qvim",
 					{ error = "None existing function call on a Log instance." }
@@ -91,6 +93,22 @@ function StructlogImpl:setup(channels, log)
 	end
 	structlog.configure(opts)
 	setmetatable(self, Log_mt)
+	return self
+end
+
+---Update the structlog configuration with stuff thats available once plugins are loaded.
+---@param channels table<string, table>
+---@return StructlogImpl?
+function StructlogImpl:update(channels)
+	for _, channel in pairs(vim.tbl_keys(channels)) do
+		local pipeline_ok, pipeline = pcall(utils.get_additional_pipeline, structlog)
+		if not pipeline_ok then
+			self:error(fmt("Failed to update '%s' logger with additional pipelines.", channel), "qvim",
+				{ error = "Pipeline depends on missing plugins." })
+			return nil
+		end
+		structlog.get_logger(channel):add_pipeline(pipeline)
+	end
 	return self
 end
 

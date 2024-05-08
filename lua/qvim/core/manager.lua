@@ -1,8 +1,10 @@
 local manager = {}
 
 local core = require("qvim.core")
-local log = require("qvim.log").qvim
 local utils = require("qvim.utils")
+local modules = require("qvim.utils.modules")
+---@type Log
+local log = modules.require_on_exported_call("qvim.log")
 local join_paths = utils.join_paths
 local fmt = string.format
 
@@ -91,10 +93,9 @@ end
 function manager:load(spec)
 	local startup_spec = fetch_lazy_spec()
 	spec = spec or startup_spec
-	log.debug("loading plugins configuration")
 	local lazy_available, lazy = pcall(require, "lazy")
 	if not lazy_available then
-		log.warn("skipping loading plugins until lazy.nvim is installed")
+		error("Lazy Plugin manager not available.")
 		return false
 	end
 
@@ -127,8 +128,6 @@ function manager:load(spec)
 	end, debug.traceback)
 
 	if not status_ok then
-		log.warn("problems detected while loading plugins' configurations")
-		log.trace(debug.traceback())
 		return false
 	end
 
@@ -151,8 +150,9 @@ end
 ---Update, clean, install or sync the plugins from lazy. Stages and commits the lazy lock pre and post update.
 ---@param action string update, clean, install or sync
 function manager:lazy_do_plugins(action)
+	local qvim_log = log.qvim
 	local actions =
-		{ ["update"] = 1, ["clean"] = 2, ["install"] = 3, ["sync"] = 4 }
+	{ ["update"] = 1, ["clean"] = 2, ["install"] = 3, ["sync"] = 4 }
 	local proxy = setmetatable({}, {
 		__index = function(_, k)
 			return actions[k:lower()]
@@ -162,13 +162,6 @@ function manager:lazy_do_plugins(action)
 		end,
 	})
 	local integrations = manager:get_integrations()
-	log.trace(
-		string.format(
-			"[%s] Plugins: [%q]",
-			action:upper(),
-			table.concat(integrations, ", ")
-		)
-	)
 	local git = require("qvim.utils.git").git_cmd
 	git({
 		args = {
@@ -190,7 +183,7 @@ function manager:lazy_do_plugins(action)
 	elseif mode == 4 then
 		require("lazy").sync(opts)
 	else
-		log.error(fmt("Invalid mode '%s' for lazy update.", action))
+		qvim_log.error(fmt("Invalid mode '%s' for lazy update.", action))
 	end
 
 	git({
@@ -204,7 +197,8 @@ function manager:lazy_do_plugins(action)
 end
 
 function manager.ensure_plugins()
-	log.debug("calling lazy.install()")
+	local qvim_log = log.qvim
+	qvim_log.debug("calling lazy.install()")
 	require("lazy").install({ wait = true })
 end
 

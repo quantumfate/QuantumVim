@@ -32,12 +32,20 @@ local channels = {
 	none_ls = {},
 }
 
+local logger
+
 ---Setup the logger with its channels
 function M.setup()
-	local logger = internal:setup(channels, M)
+	logger = internal:setup(channels, M)
 	if not logger then
 		vim.notify("Structlog not available.", vim.log.levels.ERROR)
-		return
+	end
+end
+
+function M.update()
+	logger = internal:update(channels)
+	if not logger then
+		vim.notify("Structlog not available.", vim.log.levels.ERROR)
 	end
 end
 

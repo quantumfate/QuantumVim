@@ -43,7 +43,7 @@ if [ ! -d "$QUANTUMVIM_STRUCTLOG_DIR" ]; then
 fi
 
 qvim() {
-    exec -a qvim nvim -u "$QUANTUMVIM_RTP_DIR/tests/minimal_init.lua" \
+    exec -a qvim nvim -u "$QUANTUMVIM_RTP_DIR/tests/local_init.lua" \
         --cmd "set runtimepath+=$QUANTUMVIM_RTP_DIR/after/pack/lazy/opt/plenary" \
         "$@"
 }
@@ -51,5 +51,5 @@ qvim() {
 if [ -n "$1" ]; then
     qvim --headless -c "lua require('plenary.busted').run('$1')"
 else
-    qvim --headless -c "PlenaryBustedDirectory tests/specs { minimal_init = './tests/minimal_init.lua' }"
+    qvim --headless -c "PlenaryBustedDirectory tests/specs { minimal_init = './tests/local_init.lua' }"
 fi
