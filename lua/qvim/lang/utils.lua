@@ -2,7 +2,7 @@
 ---@field get_all_supported_filetypes_to_servers function
 ---@field select_language_server function
 local M = {}
-local Log = require "qvim.log"
+local log = require("qvim.log").qvim
 local fmt = string.format
 
 ---Get a proxy table that maps filetypes to there specific ft file.
@@ -70,7 +70,7 @@ function M.try_install_and_setup_mason_package(package, scope, setup, args)
     ---@field name string
 
     if not package:is_installed() then
-        Log:debug(
+        log.debug(
             fmt(
                 "Automatically installing '%s' by the mason package '%s'.",
                 scope,
@@ -80,7 +80,7 @@ function M.try_install_and_setup_mason_package(package, scope, setup, args)
         package:install():once("closed", function()
             vim.schedule(function()
                 if package:is_installed() then
-                    Log:info(
+                    log.info(
                         fmt(
                             "Installed '%s' by the mason package '%s'.",
                             scope,
@@ -89,7 +89,7 @@ function M.try_install_and_setup_mason_package(package, scope, setup, args)
                     )
                     setup(unpack(args))
                 else
-                    Log:warn(
+                    log.warn(
                         fmt(
                             "Installation of '%s' by the mason package '%s' failed. Consult mason logs.",
                             scope,
@@ -117,7 +117,7 @@ function M.register_custom_mason_package(require_name, require_path)
     local _ok, source_package_spec =
         pcall(require, require_path .. "." .. require_name)
     if _ok then
-        Log:debug(
+        log.debug(
             fmt(
                 "A custom mason package '%s' was instanciated from the source '%s' that will be used for installation. Module was: '%s'.",
                 source_package_spec.name,

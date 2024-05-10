@@ -6,7 +6,7 @@ local M = {}
 
 local shared_util = require("qvim.lang.utils")
 
-local log = require("qvim.log").lsp
+local log = require("qvim.log").dap
 local fmt = string.format
 
 local req_path = "qvim.lang.dap.filetypes."
