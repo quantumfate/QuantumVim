@@ -1,8 +1,8 @@
 local M = {}
 
-local Log = require "qvim.log"
-local utils = require "qvim.utils"
-local lang_utils = require "qvim.lang.utils"
+local log = require("qvim.log").qvim
+local utils = require("qvim.utils")
+local lang_utils = require("qvim.lang.utils")
 
 local ftplugin_dir = qvim.lsp.templates_dir
 local fmt = string.format
@@ -81,7 +81,7 @@ end
 function M.generate_templates(filetype_server_map)
     filetype_server_map = filetype_server_map
         or lang_utils.get_all_supported_filetypes_to_servers()
-    Log:debug "Templates installation in progress"
+    log.debug("Templates installation in progress")
 
     M.remove_template_files()
 
@@ -96,10 +96,10 @@ function M.generate_templates(filetype_server_map)
                 lang_utils.select_language_server(ft, servers)
             M.generate_ftplugin(ft, selected_server, ftplugin_dir)
         else
-            Log:debug(fmt("Skipped filetype generation for filetype '%s'.", ft))
+            log.debug(fmt("Skipped filetype generation for filetype '%s'.", ft))
         end
     end
-    Log:debug "Templates installation is complete"
+    log.debug("Templates installation is complete")
 end
 
 return M
